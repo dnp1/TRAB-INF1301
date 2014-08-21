@@ -20,9 +20,15 @@ Progresso
 
 > ./make install
 
-### As dificuldades encontradas baseam-se na Case-sensitiveness do ambiente, ao contrario do ambiente proposto, windows.
+##### As dificuldades encontradas baseam-se na Case-sensitiveness do ambiente, ao contrario do ambiente proposto, windows.
 
 * Para resolver esta questão estamos desenvolvendo um script que muda,  apenas para a etapa de compilação os nomes dos includes nos arquivos, de modo que combinem com os nomes dos arquivos, que são de forma %w+.H, onde %w+ é sempre upper case.
+
+##### O marcelo nos forneceu seu port para linux do arcabouco 
+
+https://github.com/rbertoche/t2
+
+* Temos que descobrir como usar
 
 ### Estratégia de trabalho modular sugerida
 

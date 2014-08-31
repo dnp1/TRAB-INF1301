@@ -120,8 +120,7 @@ typedef struct LIS_tagLista * LIS_tppLista ;
 *
 ***********************************************************************/
 
-   LIS_tppLista LIS_CriarLista(
-             void   ( * ExcluirValor ) ( void * pDado ) ) ;
+   LIS_tppLista LIS_CriarLista() ;
 
 
 /***********************************************************************
@@ -178,7 +177,7 @@ typedef struct LIS_tagLista * LIS_tppLista ;
 ***********************************************************************/
 
    LIS_tpCondRet LIS_InserirElementoAntes( LIS_tppLista pLista ,
-                                           void * pValor        ) ;
+                                           char pValor        ) ;
 
 
 /***********************************************************************
@@ -204,7 +203,7 @@ typedef struct LIS_tagLista * LIS_tppLista ;
 ***********************************************************************/
 
    LIS_tpCondRet LIS_InserirElementoApos( LIS_tppLista pLista ,
-                                          void * pValor        )
+                                          char pValor        )
        ;
 
 
@@ -247,7 +246,7 @@ typedef struct LIS_tagLista * LIS_tppLista ;
 *
 ***********************************************************************/
 
-   void * LIS_ObterValor( LIS_tppLista pLista ) ;
+   char LIS_ObterValor( LIS_tppLista pLista ) ;
 
 
 /***********************************************************************
@@ -336,7 +335,7 @@ typedef struct LIS_tagLista * LIS_tppLista ;
 ***********************************************************************/
 
    LIS_tpCondRet LIS_ProcurarValor( LIS_tppLista pLista ,
-                                    void * pValor        ) ;
+                                    char pValor        ) ;
 
 #undef LISTA_EXT
 

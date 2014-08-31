@@ -56,9 +56,7 @@ static const char AVANCAR_ELEM_CMD        [ ] = "=avancarelem"    ;
 
 LIS_tppLista   vtListas[ DIM_VT_LISTA ] ;
 
-/***** Protótipos das funções encapuladas no módulo *****/
-
-   static void DestruirValor( void * pValor ) ;
+/***** Protótipos das funções encapsuladas no módulo *****/
 
    static int ValidarInxLista( int inxLista , int Modo ) ;
 
@@ -138,7 +136,7 @@ LIS_tppLista   vtListas[ DIM_VT_LISTA ] ;
             } /* if */
 
             vtListas[ inxLista ] =
-                 LIS_CriarLista( DestruirValor ) ;
+                 LIS_CriarLista(  ) ;
 
             return TST_CompararPonteiroNulo( 1 , vtListas[ inxLista ] ,
                "Erro em ponteiro de nova lista."  ) ;
@@ -373,21 +371,6 @@ LIS_tppLista   vtListas[ DIM_VT_LISTA ] ;
 
 
 /*****  Código das funções encapsuladas no módulo  *****/
-
-
-/***********************************************************************
-*
-*  $FC Função: TLIS -Destruir valor
-*
-***********************************************************************/
-
-   void DestruirValor( void * pValor )
-   {
-
-      free( pValor ) ;
-
-   } /* Fim função: TLIS -Destruir valor */
-
 
 /***********************************************************************
 *

@@ -39,7 +39,7 @@
 
    typedef struct tagElemLista {
 
-         void * pValor ;
+         char pValor ;
                /* Ponteiro para o valor contido no elemento */
 
          struct tagElemLista * pAnt ;
@@ -71,18 +71,15 @@
          int numElem ;
                /* Número de elementos da lista */
 
-         void ( * ExcluirValor ) ( void * pValor ) ;
-               /* Ponteiro para a função de destruição do valor contido em um elemento */
-
    } LIS_tpLista ;
 
-/***** Protótipos das funções encapuladas no módulo *****/
+/***** Protótipos das funções encapsuladas no módulo *****/
 
    static void LiberarElemento( LIS_tppLista   pLista ,
                                 tpElemLista  * pElem   ) ;
 
    static tpElemLista * CriarElemento( LIS_tppLista pLista ,
-                                       void *       pValor  ) ;
+                                       char       pValor  ) ;
 
    static void LimparCabeca( LIS_tppLista pLista ) ;
 
@@ -93,8 +90,7 @@
 *  Função: LIS  &Criar lista
 *  ****/
 
-   LIS_tppLista LIS_CriarLista(
-             void   ( * ExcluirValor ) ( void * pDado ) )
+   LIS_tppLista LIS_CriarLista()
    {
 
       LIS_tpLista * pLista = NULL ;
@@ -106,8 +102,6 @@
       } /* if */
 
       LimparCabeca( pLista ) ;
-
-      pLista->ExcluirValor = ExcluirValor ;
 
       return pLista ;
 
@@ -164,7 +158,7 @@
 *  ****/
 
    LIS_tpCondRet LIS_InserirElementoAntes( LIS_tppLista pLista ,
-                                           void * pValor        )
+                                           char pValor        )
    {
 
       tpElemLista * pElem ;
@@ -214,7 +208,7 @@
 *  ****/
 
    LIS_tpCondRet LIS_InserirElementoApos( LIS_tppLista pLista ,
-                                          void * pValor        )
+                                          char pValor        )
       
    {
 
@@ -224,7 +218,7 @@
          assert( pLista != NULL ) ;
       #endif
 
-      /* Criar elemento a inerir após */
+      /* Criar elemento a inserir após */
 
          pElem = CriarElemento( pLista , pValor ) ;
          if ( pElem == NULL )
@@ -313,7 +307,7 @@
 *  Função: LIS  &Obter referência para o valor contido no elemento
 *  ****/
 
-   void * LIS_ObterValor( LIS_tppLista pLista )
+   char LIS_ObterValor( LIS_tppLista pLista )
    {
 
       #ifdef _DEBUG
@@ -451,7 +445,7 @@
 *  ****/
 
    LIS_tpCondRet LIS_ProcurarValor( LIS_tppLista pLista ,
-                                    void * pValor        )
+                                    char pValor        )
    {
 
       tpElemLista * pElem ;
@@ -498,15 +492,11 @@
                          tpElemLista  * pElem   )
    {
 
-      if ( ( pLista->ExcluirValor != NULL )
-        && ( pElem->pValor != NULL        ))
+      if (pElem->pValor != NULL)
       {
-         pLista->ExcluirValor( pElem->pValor ) ;
+		free( pElem ) ;
+		pLista->numElem-- ;
       } /* if */
-
-      free( pElem ) ;
-
-      pLista->numElem-- ;
 
    } /* Fim função: LIS  -Liberar elemento da lista */
 
@@ -518,7 +508,7 @@
 ***********************************************************************/
 
    tpElemLista * CriarElemento( LIS_tppLista pLista ,
-                                void *       pValor  )
+                                char       pValor  )
    {
 
       tpElemLista * pElem ;

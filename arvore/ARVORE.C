@@ -27,8 +27,6 @@
 #include "ARVORE.H"
 #undef ARVORE_OWN
 
-#include "../../lista/LISTA.H"
-
 /***********************************************************************
 *
 *  $TC Tipo de dados: ARV Descritor do nó da árvore
@@ -61,7 +59,7 @@
                *$EED Assertivas estruturais
                *   se pNoDir do nó X != NULL então pNoPai de pNoDir aponta para o nó X */
 
-         LIS_tppLista Lista ;
+         char Valor ;
                /* Valor do nó */
 
    } tpNoArvore ;
@@ -91,14 +89,14 @@
 
 /*****  Dados encapsulados no módulo  *****/
 
-      //static tpArvore * pArvore = NULL ;
+      static tpArvore * pArvore = NULL ;
             /* Ponteiro para a cabe‡a da árvore */
 
 /***** Protótipos das funções encapuladas no módulo *****/
 
-   static tpNoArvore * CriarNo( tpArvore * pArvore, void* ListaCharParm ) ;
+   static tpNoArvore * CriarNo( char ValorParm ) ;
 
-   static ARV_tpCondRet CriarNoRaiz( tpArvore * pArvore, void* ListaCharParm ) ;
+   static ARV_tpCondRet CriarNoRaiz( char ValorParm ) ;
 
    static void DestroiArvore( tpNoArvore * pNo ) ;
 
@@ -109,17 +107,15 @@
 *  Função: ARV Criar árvore
 *  ****/
 
-   ARV_tpCondRet ARV_CriarArvore( void** ppArvoreParm )
+   ARV_tpCondRet ARV_CriarArvore( void )
    {
-      tpArvore* pArvore ;
 
-      if ( *ppArvoreParm != NULL )
+      if ( pArvore != NULL )
       {
-         ARV_DestruirArvore( ppArvoreParm ) ;
-      }
+         ARV_DestruirArvore( ) ;
+      } /* if */
 
-      pArvore = ( tpArvore* ) malloc( sizeof( tpArvore )) ;
-
+      pArvore = ( tpArvore * ) malloc( sizeof( tpArvore )) ;
       if ( pArvore == NULL )
       {
          return ARV_CondRetFaltouMemoria ;
@@ -127,8 +123,6 @@
 
       pArvore->pNoRaiz = NULL ;
       pArvore->pNoCorr = NULL ;
-
-      *ppArvoreParm = pArvore ;
 
       return ARV_CondRetOK ;
 
@@ -139,11 +133,8 @@
 *  Função: ARV Destruir árvore
 *  ****/
 
-   void ARV_DestruirArvore( void** ppArvoreParm )
+   void ARV_DestruirArvore( void )
    {
-      tpArvore* pArvore ;
-
-      pArvore = ( tpArvore * )( * ppArvoreParm ) ;
 
       if ( pArvore != NULL )
       {
@@ -152,7 +143,7 @@
             DestroiArvore( pArvore->pNoRaiz ) ;
          } /* if */
          free( pArvore ) ;
-         *ppArvoreParm = NULL ;
+         pArvore = NULL ;
       } /* if */
 
    } /* Fim função: ARV Destruir árvore */
@@ -162,25 +153,17 @@
 *  Função: ARV Adicionar filho à esquerda
 *  ****/
 
-   ARV_tpCondRet ARV_InserirEsquerda( void* pArvoreParm, void* ListaCharParm )
+   ARV_tpCondRet ARV_InserirEsquerda( char ValorParm )
    {
-      tpArvore * pArvore ;
 
       ARV_tpCondRet CondRet ;
 
       tpNoArvore * pCorr ;
       tpNoArvore * pNo ;
 
-      if ( pArvoreParm == NULL )
-      {
-         return ARV_CondRetArvoreNaoExiste ;
-      } 
-
-      pArvore = ( tpArvore* )( pArvoreParm );
-
       /* Tratar vazio, esquerda */
 
-         CondRet = CriarNoRaiz( pArvore, ListaCharParm ) ;
+         CondRet = CriarNoRaiz( ValorParm ) ;
          if ( CondRet != ARV_CondRetNaoCriouRaiz )
          {
             return CondRet ;
@@ -196,7 +179,7 @@
                
          if ( pCorr->pNoEsq == NULL )
          {
-            pNo = CriarNo( pArvore, ListaCharParm ) ;
+            pNo = CriarNo( ValorParm ) ;
             if ( pNo == NULL )
             {
                return ARV_CondRetFaltouMemoria ;
@@ -219,25 +202,17 @@
 *  Função: ARV Adicionar filho à direita
 *  ****/
 
-   ARV_tpCondRet ARV_InserirDireita( void* pArvoreParm, void* ListaCharParm )
+   ARV_tpCondRet ARV_InserirDireita( char ValorParm )
    {
-      tpArvore * pArvore ;
 
       ARV_tpCondRet CondRet ;
 
       tpNoArvore * pCorr ;
       tpNoArvore * pNo ;
 
-      if ( pArvoreParm == NULL )
-      {
-         return ARV_CondRetArvoreNaoExiste ;
-      } 
-
-      pArvore = ( tpArvore* )( pArvoreParm );
-
       /* Tratar vazio, direita */
 
-         CondRet = CriarNoRaiz( pArvore, ListaCharParm ) ;
+         CondRet = CriarNoRaiz( ValorParm ) ;
          if ( CondRet != ARV_CondRetNaoCriouRaiz )
          {
             return CondRet ;
@@ -253,7 +228,7 @@
 
          if ( pCorr->pNoDir == NULL )
          {
-            pNo = CriarNo( pArvore, ListaCharParm ) ;
+            pNo = CriarNo( ValorParm ) ;
             if ( pNo == NULL )
             {
                return ARV_CondRetFaltouMemoria ;
@@ -276,12 +251,8 @@
 *  Função: ARV Ir para nó pai
 *  ****/
 
-   ARV_tpCondRet ARV_IrPai( void* pArvoreParm )
+   ARV_tpCondRet ARV_IrPai( void )
    {
-
-      tpArvore * pArvore ;
-
-      pArvore = ( tpArvore* )( pArvoreParm );
 
       if ( pArvore == NULL )
       {
@@ -307,11 +278,8 @@
 *  Função: ARV Ir para nó à esquerda
 *  ****/
 
-   ARV_tpCondRet ARV_IrNoEsquerda( void* pArvoreParm )
+   ARV_tpCondRet ARV_IrNoEsquerda( void )
    {
-      tpArvore * pArvore ;
-      
-      pArvore = ( tpArvore* )( pArvoreParm );
 
       if ( pArvore == NULL )
       {
@@ -338,11 +306,8 @@
 *  Função: ARV Ir para nó à direita
 *  ****/
 
-   ARV_tpCondRet ARV_IrNoDireita( void* pArvoreParm )
+   ARV_tpCondRet ARV_IrNoDireita( void )
    {
-      tpArvore * pArvore ;
-      
-      pArvore = ( tpArvore* )( pArvoreParm );
 
       if ( pArvore == NULL )
       {
@@ -369,11 +334,8 @@
 *  Função: ARV Obter valor corrente
 *  ****/
 
-   ARV_tpCondRet ARV_ObterValorCorr( void* pArvoreParm, void** ListaCharParm )
+   ARV_tpCondRet ARV_ObterValorCorr( char * ValorParm )
    {
-
-      tpArvore * pArvore ;
-      pArvore = ( tpArvore* )( pArvoreParm );
 
       if ( pArvore == NULL )
       {
@@ -383,7 +345,7 @@
       {
          return ARV_CondRetArvoreVazia ;
       } /* if */
-      (*ListaCharParm) = pArvore->pNoCorr->Lista ;
+      * ValorParm = pArvore->pNoCorr->Valor ;
 
       return ARV_CondRetOK ;
 
@@ -405,7 +367,7 @@
 *
 ***********************************************************************/
 
-   tpNoArvore * CriarNo( tpArvore* pArvore, void* ListaCharParm )
+   tpNoArvore * CriarNo( char ValorParm )
    {
 
       tpNoArvore * pNo ;
@@ -419,7 +381,7 @@
       pNo->pNoPai = NULL ;
       pNo->pNoEsq = NULL ;
       pNo->pNoDir = NULL ;
-      pNo->Lista  = ListaCharParm ;
+      pNo->Valor  = ValorParm ;
       return pNo ;
 
    } /* Fim função: ARV Criar nó da árvore */
@@ -436,15 +398,25 @@
 *
 ***********************************************************************/
 
-   ARV_tpCondRet CriarNoRaiz( tpArvore* pArvore, void* ListaCharParm )
+   ARV_tpCondRet CriarNoRaiz( char ValorParm )
    {
-      tpNoArvore * pNo ;
-      
+
       ARV_tpCondRet CondRet ;
-      
+      tpNoArvore * pNo ;
+
+      if ( pArvore == NULL )
+      {
+         CondRet = ARV_CriarArvore( ) ;
+
+         if ( CondRet != ARV_CondRetOK )
+         {
+            return CondRet ;
+         } /* if */
+      } /* if */
+
       if ( pArvore->pNoRaiz == NULL )
       {
-         pNo = CriarNo( pArvore, ListaCharParm ) ;
+         pNo = CriarNo( ValorParm ) ;
          if ( pNo == NULL )
          {
             return ARV_CondRetFaltouMemoria ;

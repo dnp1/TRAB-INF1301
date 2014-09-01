@@ -115,7 +115,7 @@
 *  $FC Função: ARV Adicionar filho à esquerda
 *
 *  $EP Parâmetros
-*     $P ValorParm - valor a ser inserido no novo nó.
+*     $P ListaCharParm - lista a ser inserida no novo nó.
 *
 *  $FV Valor retornado
 *     ARV_CondRetOK
@@ -125,7 +125,7 @@
 *
 ***********************************************************************/
 
-   ARV_tpCondRet ARV_InserirEsquerda( void* pArvoreParm, char ValorParm ) ;
+   ARV_tpCondRet ARV_InserirEsquerda( void* pArvoreParm, void* ListaCharParm ) ;
 
 
 /***********************************************************************
@@ -133,7 +133,7 @@
 *  $FC Função: ARV Adicionar filho à direita
 *
 *  $EP Parâmetros
-*     $P ValorParm - valor a ser inserido no novo nó
+*     $P ListaCharParm - lista a ser inserida no novo nó.
 *
 *  $FV Valor retornado
 *     ARV_CondRetOK
@@ -143,7 +143,7 @@
 *
 ***********************************************************************/
 
-   ARV_tpCondRet ARV_InserirDireita( void* pArvoreParm, char ValorParm ) ;
+   ARV_tpCondRet ARV_InserirDireita( void* pArvoreParm, void* ListaCharParm ) ;
 
 
 /***********************************************************************
@@ -193,10 +193,10 @@
 
 /***********************************************************************
 *
-*  $FC Função: ARV Obter valor corrente
+*  $FC Função: ARV Obter lista no nó corrente
 *
 *  $EP Parâmetros
-*     $P ValorParm - é o parâmetro que receberá o valor contido no nó.
+*     $P ListaCharParm - é o parâmetro que receberá o endereço da lista contida no nó.
 *                    Este parâmetro é passado por referência.
 *
 *  $FV Valor retornado
@@ -206,7 +206,7 @@
 *
 ***********************************************************************/
 
-   ARV_tpCondRet ARV_ObterValorCorr( void* pArvoreParm, char* ValorParm ) ;
+   ARV_tpCondRet ARV_ObterValorCorr( void* pArvoreParm, void** ListaCharParm ) ;
 
 #undef ARVORE_EXT
 

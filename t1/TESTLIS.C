@@ -24,12 +24,12 @@
 #include    <stdio.h>
 #include    <malloc.h>
 
-#include    "TST_Espc.h"
+#include    "TST_ESPC.H"
 
 #include    "GENERICO.H"
 #include    "LERPARM.H"
 
-#include    "Lista.h"
+#include    "LISTA.H"
 
 
 static const char RESET_LISTA_CMD         [ ] = "=resetteste"     ;

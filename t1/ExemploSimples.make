@@ -61,7 +61,7 @@ limpa :
 ### Dependências de módulos objeto a compilar
 
 $(Fobj)\TestArv.obj :  {$(Pc)}\TestArv.c \
-    {$(PDEFAULT)}TST_ESPC.H           {$(PDEFAULT)}TST_ESPC.H           {$(PDEFAULT)}arvore.h             \
+    {$(PDEFAULT)}TST_ESPC.H           {$(PDEFAULT)}TST_ESPC.H           {$(PDEFAULT)}ARVORE.H             \
     {$(PDEFAULT)}GENERICO.H           {$(PDEFAULT)}LERPARM.H           
    cl $(O) $(OPT) /Fo$(Fobj)\ $(Fc)\$(@B).c               >> $(Ferr)\$(NOME).err
 

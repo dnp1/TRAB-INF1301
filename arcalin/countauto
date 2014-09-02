@@ -1,0 +1,8 @@
+#!/usr/bin/sed -nf
+#
+# script para criar uma lista de contadores do arcabouco.
+# deve printar, para cada linha no formato abaixo
+#    CNT_CONTAR("%s");
+# uma linha contendo apenas %s.
+
+s/^\s*CNT_CONTAR("\(.*\)");/\1/p

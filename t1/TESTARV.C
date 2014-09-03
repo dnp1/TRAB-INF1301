@@ -86,6 +86,7 @@
 ***********************************************************************/
 
 #define NUM_ARVORES 12
+#define TAM_STR_TESTE 255
 
 
 // Inicia arvores locais como NULL
@@ -103,15 +104,31 @@ static ARV_tppArvore arvores[NUM_ARVORES] = {
    }
 
    static TST_tpCondRet comparaListaComString(LIS_tppLista lista, char* str) {
-      IrInicioLista(lista);
+      if(lista != NULL) {
+         IrInicioLista(lista);
 
-      for (str; *str; str++) {
-         if (LIS_ObterValor(lista) != *str) {
-            return TST_CondRetErro;
+         for (str; *str; str++) {
+            if (LIS_ObterValor(lista) != *str) {
+               return TST_CondRetErro;
+            }
+            LIS_AvancarElementoCorrente(lista, 1);
          }
-         LIS_AvancarElementoCorrente(lista, 1);
       }
       return (*str == '\0') ? TST_CondRetOK : TST_CondRetErro; //Se nulo, string acabou e é igual. Se não é diferente.
+   }
+
+   static TST_tpCondRet preencheStringComLista(LIS_tppLista lista, char* str) {
+      if(lista == NULL) {
+         str[0]='\0';
+         return TST_CondRetOK;
+      }
+      IrInicioLista(lista);
+      do {
+         *str = LIS_ObterValor(lista);
+         str++;
+      }while (LIS_AvancarElementoCorrente(lista,1) != LIS_CondRetFimLista);
+      *str = '\0';
+      return TST_CondRetOK;
    }
    
 
@@ -119,7 +136,8 @@ static ARV_tppArvore arvores[NUM_ARVORES] = {
 
    TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
    {
-      char str[255]; //Vetor de Caracteres temporário utilizado para ler outros
+      char str[TAM_STR_TESTE]; //Vetor de Caracteres temporário utilizado para ler outros
+      char str_[TAM_STR_TESTE]; //Vetor de Caracteres temporário utilizado para ler outros
 
       ARV_tpCondRet CondRetObtido   = ARV_CondRetOK ;
       ARV_tpCondRet CondRetEsperada = ARV_CondRetFaltouMemoria ;
@@ -193,7 +211,6 @@ static ARV_tppArvore arvores[NUM_ARVORES] = {
 
             ListaDada = LIS_CriarLista( );
             preencheListaComString(ListaDada, str);
-
             
             CondRetObtido = ARV_InserirEsquerda( arvores[arvindex], ListaDada ) ;
 
@@ -273,21 +290,20 @@ static ARV_tppArvore arvores[NUM_ARVORES] = {
                return TST_CondRetParm ;
             } /* if */
 
-            /* Cast (void*) necessário para compilação */
             CondRetObtido = ARV_ObterValorCorr( arvores[arvindex], &ListaObtida ) ;
-
             
             Ret = TST_CompararInt( CondRetEsperada , CondRetObtido ,
                                    "Retorno errado ao obter valor corrente." );
 
-            if ( Ret != TST_CondRetOK ) // RET != 0
+            if ( Ret != TST_CondRetOK || CondRetObtido != ARV_CondRetOK ) // RET != 0
             {
-               return Ret ;
+               return Ret;
             } /* if */
-			
-			   Ret = comparaListaComString( ListaObtida , str );
 
-            return TST_CompararInt( Ret , 0 ,
+			   Ret = comparaListaComString( ListaObtida , str );
+            preencheStringComLista(ListaObtida, str_);
+
+            return TST_CompararString( str , str_ ,
                                      "Conteúdo do nó está errado." ) ;
 
          } /* fim ativa: Testar ARV Obter valor corrente */
@@ -296,7 +312,13 @@ static ARV_tppArvore arvores[NUM_ARVORES] = {
 
          else if ( strcmp( ComandoTeste , DESTROI_CMD ) == 0 )
          {
-
+            NumLidos = LER_LerParametros( "i" ,
+                              &arvindex ) ;
+            if ( NumLidos != 1 )
+            {
+               return TST_CondRetParm ;
+            } /* if */
+               
             ARV_DestruirArvore( (arvores+arvindex) ) ;
 
             return TST_CondRetOK ;

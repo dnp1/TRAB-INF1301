@@ -270,6 +270,13 @@ static ARV_tppArvore arvores[NUM_ARVORES] = {
             {
                return Ret ;
             } /* if */
+			
+			ListaEsperada = LIS_CriarLista( );
+
+            for (i = 0; str[i]; i++) {
+               LIS_InserirElementoApos(ListaEsperada, str[i]);
+               LIS_AvancarElementoCorrente(ListaEsperada, 1);
+            }
 
             return TST_CompararPonteiro( ListaEsperada , ListaObtida ,
                                      "Conteúdo do nó está errado." ) ;

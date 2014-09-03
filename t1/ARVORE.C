@@ -369,9 +369,9 @@
 *  Função: ARV Obter valor corrente
 *  ****/
 
-   ARV_tpCondRet ARV_ObterValorCorr( tpArvore* pArvoreParm, void** ListaCharParm )
+   ARV_tpCondRet ARV_ObterValorCorr( tpArvore* pArvoreParm, void* ListaCharParm )
    {
-
+      LIS_tppLista* plista = (LIS_tppLista*)ListaCharParm;
       tpArvore * pArvore ;
       pArvore = ( tpArvore* )( pArvoreParm );
 
@@ -383,7 +383,7 @@
       {
          return ARV_CondRetArvoreVazia ;
       } /* if */
-      (*ListaCharParm) = pArvore->pNoCorr->Lista ;
+      (*plista) = pArvore->pNoCorr->Lista ;
 
       return ARV_CondRetOK ;
 
@@ -471,6 +471,9 @@
 
    void DestroiArvore( tpNoArvore * pNo )
    {
+
+      LIS_DestruirLista(pNo->Lista);
+      pNo->Lista = NULL;
 
       if ( pNo->pNoEsq != NULL )
       {

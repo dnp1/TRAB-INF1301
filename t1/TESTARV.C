@@ -90,22 +90,31 @@
 
 // Inicia arvores locais como NULL
 static ARV_tppArvore arvores[NUM_ARVORES] = {
-   0,0,0,0,0,0,0,0,0,0,0,0
+   NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL // Deselegante mas prático.
 };
 
+
+// Função auxiliar que cria uma lista de caracteres a partir de um vetor de caracteres terminado com '\0'
+   static void preencheListaComString(LIS_tppLista lista, char* str) {
+      int i;
+      for (i = 0; str[i]; i++) {
+         LIS_InserirElementoApos(lista, str[i]);
+         LIS_AvancarElementoCorrente(lista, 1);
+      }
+   }
+   
 
 // Seta arvore ok como nula
 
    TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
    {
-      int i = 0;
-      char str[255];
+      char str[255]; //Vetor de Caracteres temporário utilizado para ler outros
 
       ARV_tpCondRet CondRetObtido   = ARV_CondRetOK ;
       ARV_tpCondRet CondRetEsperada = ARV_CondRetFaltouMemoria ;
 
       int arvindex = -1;
-                                      /* inicializa para qualquer coisa */
+                                      /* inicializa para qual
 
       //char ValorEsperado = '?'  ;
       //char ValorObtido   = '!'  ;
@@ -151,11 +160,8 @@ static ARV_tppArvore arvores[NUM_ARVORES] = {
             } /* if */
 
             ListaDada = LIS_CriarLista( );
-
-            for (i = 0; str[i]; i++) {
-               LIS_InserirElementoApos(ListaDada, str[i]);
-               LIS_AvancarElementoCorrente(ListaDada, 1);
-            }
+            preencheListaComString(ListaDada, str);
+            
 
             CondRetObtido = ARV_InserirDireita( arvores[arvindex], ListaDada ) ;
 
@@ -177,12 +183,9 @@ static ARV_tppArvore arvores[NUM_ARVORES] = {
             } /* if */
 
             ListaDada = LIS_CriarLista( );
+            preencheListaComString(ListaDada, str);
 
-            for (i = 0; str[i]; i++) {
-               LIS_InserirElementoApos(ListaDada, str[i]);
-               LIS_AvancarElementoCorrente(ListaDada, 1);
-            }
-
+            
             CondRetObtido = ARV_InserirEsquerda( arvores[arvindex], ListaDada ) ;
 
             return TST_CompararInt( CondRetEsperada , CondRetObtido ,
@@ -261,7 +264,8 @@ static ARV_tppArvore arvores[NUM_ARVORES] = {
                return TST_CondRetParm ;
             } /* if */
 
-            CondRetObtido = ARV_ObterValorCorr( arvores[arvindex], (void**)&ListaObtida ) ;
+            /* Cast (void*) necessário para compilação */
+            CondRetObtido = ARV_ObterValorCorr( arvores[arvindex], &ListaObtida ) ;
 
             Ret = TST_CompararInt( CondRetEsperada , CondRetObtido ,
                                    "Retorno errado ao obter valor corrente." );

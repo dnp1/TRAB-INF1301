@@ -211,7 +211,7 @@ typedef struct tgArvore* ARV_tppArvore;
 *
 ***********************************************************************/
 
-   ARV_tpCondRet ARV_ObterValorCorr( ARV_tppArvore pArvoreParm, void** ListaCharParm ) ;
+   ARV_tpCondRet ARV_ObterValorCorr( ARV_tppArvore pArvoreParm, void* ListaCharParm ) ;
 
 #undef ARVORE_EXT
 

@@ -1,0 +1,17 @@
+Searching 258 files for "#include[ ]*["]lista.h["]" (regex)
+
+/home/danilo/modular/arcabouco/lista/LISTA.C:
+   28  
+   29  #define LISTA_OWN
+   30: #include "LISTA.h"
+   31  #undef LISTA_OWN
+   32  
+
+/home/danilo/modular/arcabouco/lista/TESTLIS.C:
+   30  #include    "LerParm.h"
+   31  
+   32: #include    "Lista.h"
+   33  
+   34  
+
+2 matches across 2 files

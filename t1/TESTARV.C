@@ -102,16 +102,16 @@ static ARV_tppArvore arvores[NUM_ARVORES] = {
       }
    }
 
-   static void comparaListaComString(LIS_tppLista lista, char* str) {
+   static TST_tpCondRet comparaListaComString(LIS_tppLista lista, char* str) {
       IrInicioLista(lista);
 
       for (str; *str; str++) {
          if (LIS_ObterValor(lista) != *str) {
-            return 1;
+            return TST_CondRetErro;
          }
          LIS_AvancarElementoCorrente(lista, 1);
       }
-      return (*str) == '\0'; //Se nulo, string acabou e é igual. Se não é diferente.
+      return (*str == '\0') ? TST_CondRetOK : TST_CondRetErro; //Se nulo, string acabou e é igual. Se não é diferente.
    }
    
 
@@ -125,13 +125,11 @@ static ARV_tppArvore arvores[NUM_ARVORES] = {
       ARV_tpCondRet CondRetEsperada = ARV_CondRetFaltouMemoria ;
 
       int arvindex = -1;
-                                      /* inicializa para qual
 
       //char ValorEsperado = '?'  ;
       //char ValorObtido   = '!'  ;
       LIS_tppLista ListaObtida = NULL;
       LIS_tppLista ListaDada = NULL;
-      LIS_tppLista ListaEsperada = NULL;
       //char ValorDado     = '\0' ;
 
       int  NumLidos = -1 ;
@@ -278,22 +276,18 @@ static ARV_tppArvore arvores[NUM_ARVORES] = {
             /* Cast (void*) necessário para compilação */
             CondRetObtido = ARV_ObterValorCorr( arvores[arvindex], &ListaObtida ) ;
 
+            
             Ret = TST_CompararInt( CondRetEsperada , CondRetObtido ,
                                    "Retorno errado ao obter valor corrente." );
 
-            if ( Ret != TST_CondRetOK )
+            if ( Ret != TST_CondRetOK ) // RET != 0
             {
                return Ret ;
             } /* if */
 			
-			ListaEsperada = LIS_CriarLista( );
+			   Ret = comparaListaComString( ListaObtida , str );
 
-            for (i = 0; str[i]; i++) {
-               LIS_InserirElementoApos(ListaEsperada, str[i]);
-               LIS_AvancarElementoCorrente(ListaEsperada, 1);
-            }
-
-            return TST_CompararPonteiro( ListaEsperada , ListaObtida ,
+            return TST_CompararInt( Ret , 0 ,
                                      "Conteúdo do nó está errado." ) ;
 
          } /* fim ativa: Testar ARV Obter valor corrente */

@@ -7,48 +7,23 @@
 //            Este script é muito superficial !!!
 //
 
-=declararparm  OK           int 0
-=declararparm  NaoCriouRaiz      int 1 
-=declararparm  Estrutura    int 2
-=declararparm  NaoEhFolha     int 3
-=declararparm  NaoHaArvore    int 4
-=declararparm  NaoCorr      int 5
-=declararparm  EhRaiz       int 6
-=declararparm  NaoHaFilho     int 7
-=declararparm  Memoria      int 8
+== Inicializar valores
+
+=declararparm 	Ok				int 0
+=declararparm 	NaoCriouRaiz	int 1 
+=declararparm 	Estrutura		int 2
+=declararparm 	NaoEhFolha		int 3
+=declararparm 	NaoHaArvore		int 4
+=declararparm 	NaoCorr			int 5
+=declararparm 	EhRaiz			int 6
+=declararparm 	NaoHaFilho		int 7
+=declararparm 	Memoria			int 8
 
 
 
 == Verificar assertivas de entrada de 
 
-=criar 0 Ok
-=destruir 1
-=destruir 0
-=criar 1 Ok
-=insdir 1 "breno" Ok
-=insdir 1 "magro" NaoEhFolha
-=criar 0 Ok
-=insesq 0 "danilo" Ok
-=iresq 0
-=insesq 0 "andre" Ok
-=iresq 0
-=insesq 0 "do" Ok
-=iresq 0
-=insesq 0 "nascimento" Ok
-=iresq 0
-=insesq 0 "pereira" Ok
-=irpai 0
-=irpai 0
-=irpai 0
-=irpai 0
-=insdir 0 "eduardo" Ok
-=iresq 0
-=insdir 0 "verdeja" Ok
-=irdir 0
-=obter 0 "verdeja" Ok
-
-
-
+=criar	0	Ok
 
 
 // fim

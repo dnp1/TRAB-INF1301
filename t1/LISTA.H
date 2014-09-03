@@ -22,33 +22,10 @@
 *     1       avs   16/abr/2003 início desenvolvimento
 *
 *  $ED Descrição do módulo
-*     Implementa listas genéricas duplamente encadeadas.
+*     Implementa listas de caracteres duplamente encadeadas.
 *     Podem existir n listas em operação simultaneamente.
 *     As listas possuem uma cabeça encapsulando o seu estado.
-*
-*     Cada lista é homogênea quanto ao tipo dos dados que armazena.
-*     Cada elemento da lista referencia o valor que contém.
-*
-*     Os ponteiros para os dados são copiados para elementos da lista.
-*        Não é copiado o valor apontado por estes ponteiros.
-*
-*     O controle da destruição do valor de um elemento a ser excluído
-*        é realizado por uma função fornecida pelo usuário.
-*
-*     Cada lista referencia uma função que determina como devem ser
-*        desalocados os dados nela contidos.
-*
-*     A função de liberação dos valores contidos nos elementos deve
-*        assegurar a liberação de todos os espaços referênciados pelo
-*        valor contido em um elemento.
-*        Esta função é chamada antes de se desalocar um elemento
-*        de uma lista.
-*        Caso não seja necessário desalocar o valor referenciado pelo
-*        elemento, o ponteiro para a função de liberação poderá ser NULL .
-*        Caso o elemento da lista seja a única âncora do valor referenciado,
-*        esta função deve promover a destruição (free) desse valor e
-*        de todos os dados nele ancorados.
-*
+*     
 ***************************************************************************/
  
 #if defined( LISTA_OWN )
@@ -167,8 +144,7 @@ typedef struct LIS_tagLista * LIS_tppLista ;
 *
 *  $EP Parâmetros
 *     pLista - ponteiro para a lista onde deve ser inserido o elemento
-*     pValor - ponteiro para o valor do novo elemento
-*              Pode ser NULL
+*     pValor - char a ser armazenado no novo elemento
 *
 *  $FV Valor retornado
 *     LIS_CondRetOK
@@ -191,8 +167,7 @@ typedef struct LIS_tagLista * LIS_tppLista ;
 *  $EP Parâmetros
 *     Parâmetros
 *        pLista - ponteiro para a lista onde deve ser inserido o elemento
-*        pValor - ponteiro para o valor do novo elemento
-*                 Pode ser NULL
+*        pValor - char a ser armazenado no novo elemento
 *           
 *
 *  $FV Valor retornado
@@ -240,7 +215,7 @@ typedef struct LIS_tagLista * LIS_tppLista ;
 *     pLista - ponteiro para a lista de onde se quer o valor
 *
 *  $FV Valor retornado
-*     não NULL - se o elemento corrente existe
+*     char	   - se o elemento corrente existe
 *     NULL     - se a lista estiver vazia
 *                Pode retornar NULL se o valor inserido no elemento for NULL.
 *
@@ -319,8 +294,7 @@ typedef struct LIS_tagLista * LIS_tppLista ;
 *
 *  $EP Parâmetros
 *     pLista  - ponteiro para a lista onde procura
-*     pValor  - ponteiro para o valor procurado
-*               Pode ser NULL
+*     pValor  - char procurado
 *
 *  $FV Valor retornado
 *     LIS_CondRetOK  - se encontrou.

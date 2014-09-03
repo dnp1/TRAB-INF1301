@@ -26,7 +26,7 @@
 *     explorar árvores binárias.
 *     A árvore possui uma cabeça que contém uma referência para a raíz da
 *     árvore e outra para um nó corrente da árvore.
-*     A cada momento o módulo admite no máximo uma única árvore.
+*     O módulo admite no máximo a criação de 10 árvores.
 *     Ao iniciar a execução do programa não existe árvore.
 *     A árvore poderá estar vazia. Neste caso a raiz e o nó corrente
 *     serão nulos, embora a cabeça esteja definida.
@@ -91,7 +91,9 @@ typedef struct tgArvore* ARV_tppArvore;
 *
 *  $ED Descrição da função
 *     Cria uma nova árvore vazia.
-*     Caso já exista uma árvore, esta será destruída.
+*
+*  $EP Parâmetros
+*     $P ppArvoreParm - ponteiro para árvore a ser criada
 *
 *  $FV Valor retornado
 *     ARV_CondRetOK
@@ -105,6 +107,9 @@ typedef struct tgArvore* ARV_tppArvore;
 /***********************************************************************
 *
 *  $FC Função: ARV Destruir árvore
+*
+*  $EP Parâmetros
+*     $P ppArvoreParm - ponteiro para árvore a ser criada
 *
 *  $ED Descrição da função
 *     Destrói o corpo e a cabeça da árvore, anulando a árvore corrente.

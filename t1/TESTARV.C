@@ -96,11 +96,22 @@ static ARV_tppArvore arvores[NUM_ARVORES] = {
 
 // Função auxiliar que cria uma lista de caracteres a partir de um vetor de caracteres terminado com '\0'
    static void preencheListaComString(LIS_tppLista lista, char* str) {
-      int i;
-      for (i = 0; str[i]; i++) {
-         LIS_InserirElementoApos(lista, str[i]);
+      for (str; *str; str++) {
+         LIS_InserirElementoApos(lista, *str);
          LIS_AvancarElementoCorrente(lista, 1);
       }
+   }
+
+   static void comparaListaComString(LIS_tppLista lista, char* str) {
+      IrInicioLista(lista);
+
+      for (str; *str; str++) {
+         if (LIS_ObterValor(lista) != *str) {
+            return 1;
+         }
+         LIS_AvancarElementoCorrente(lista, 1);
+      }
+      return (*str) == '\0'; //Se nulo, string acabou e é igual. Se não é diferente.
    }
    
 

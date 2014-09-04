@@ -73,7 +73,7 @@
 
 == Verificar Inserção Válida
 =insesq 1 "Tudo bem?" Ok
-=insdir 10 "Beleza?"+ Ok
+=insdir 10 "Beleza?" Ok
 
 == Verificar Movimentação para o Pai
 =irpai 1 Ok

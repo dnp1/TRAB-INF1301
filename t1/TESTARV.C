@@ -65,39 +65,57 @@
 /*****  Código das funções exportadas pelo módulo  *****/
 
 
-/***********************************************************************
-*
-*  $FC Função: TARV Efetuar operações de teste específicas para árvore
-*
-*  $ED Descrição da função
-*     Efetua os diversos comandos de teste específicos para o módulo
-*     árvore sendo testado.
-*
-*  $EP Parâmetros
-*     $P ComandoTeste - String contendo o comando
-*
-*  $FV Valor retornado
-*     Ver TST_tpCondRet definido em TST_ESPC.H
-*
-***********************************************************************/
+
 
 #define NUM_ARVORES 12
 #define TAM_STR_TESTE 255
 
 
-// Inicia arvores locais como NULL
+// Inicia arvores locais como NULL;
 static ARV_tppArvore arvores[NUM_ARVORES] = {
-   NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL // Deselegante mas prático.
+   NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL
 };
 
 
-// Função auxiliar que cria uma lista de caracteres a partir de um vetor de caracteres terminado com '\0'
+/***********************************************************************
+*
+*  $FC Função: comparaListaComString 
+*
+*  $ED Descrição da função
+*     Função Local ao módulo que preenche uma lista com caracteres de um espaço contíguo de memória referenciado por um ponteiro para caracteres utilizando como marcador de fim o caracter nulo '\0'(aka String)
+*     
+*
+*  $EP Parâmetros
+*     $P Lista - Lista de Caracteres disponibilizada pelo Módulo LISTA
+*     $P str - Ponteiro para caracter com espaços contíguos alocados(aka Vetor de caracteres)
+*
+*  $FV Valor retornado
+*     Ver TST_tpCondRet definido em TST_ESPC.H
+*
+***********************************************************************/
    static void preencheListaComString(LIS_tppLista lista, char* str) {
       for (str; *str; str++) {
          LIS_InserirElementoApos(lista, *str);
          LIS_AvancarElementoCorrente(lista, 1);
       }
    }
+
+/***********************************************************************
+*
+*  $FC Função: comparaListaComString 
+*
+*  $ED Descrição da função
+*     Função Local ao módulo que compara os caracteres de uma lista com caracteres em um espaço contíguo de memória referenciado por um ponteiro para Caracteres e utilizando como terminador o caracter nulo '\0'(aka String)
+*     
+*
+*  $EP Parâmetros
+*     $P Lista - Lista de Caracteres disponibilizada pelo Módulo LISTA
+*     $P str - Ponteiro para caracter com espaços contíguos alocados(aka Vetor de caracteres)
+*
+*  $FV Valor retornado
+*     Ver TST_tpCondRet definido em TST_ESPC.H
+*
+***********************************************************************/
 
    static TST_tpCondRet comparaListaComString(LIS_tppLista lista, char* str) {
       if(lista != NULL) {
@@ -112,6 +130,24 @@ static ARV_tppArvore arvores[NUM_ARVORES] = {
       }
       return (*str == '\0') ? TST_CondRetOK : TST_CondRetErro; //Se nulo, string acabou e é igual. Se não é diferente.
    }
+
+
+/***********************************************************************
+*
+*  $FC Função: preencheStringComLista 
+*
+*  $ED Descrição da função
+*     Função Local ao módulo que coloca os caracteres de uma lista em um espaço contíguo de memória referenciado por um ponteiro para Caracteres.
+*     
+*
+*  $EP Parâmetros
+*     $P Lista - Lista de Caracteres disponibilizada pelo Módulo LISTA
+*     $P str - Ponteiro para caracter com espaços contíguos alocados(aka Vetor de caractere)
+*
+*  $FV Valor retornado
+*     Ver TST_tpCondRet definido em TST_ESPC.H
+*
+***********************************************************************/
 
    static TST_tpCondRet preencheStringComLista(LIS_tppLista lista, char* str) {
       if(lista == NULL) {
@@ -128,12 +164,27 @@ static ARV_tppArvore arvores[NUM_ARVORES] = {
    }
    
 
-// Seta arvore ok como nula
+/***********************************************************************
+*
+*  $FC Função: TARV Efetuar operações de teste específicas para árvore
+*
+*  $ED Descrição da função
+*     Efetua os diversos comandos de teste específicos para o módulo
+*     árvore sendo testado.
+*
+*  $EP Parâmetros
+*     $P ComandoTeste - String contendo o comando
+*
+*  $FV Valor retornado
+*     Ver TST_tpCondRet definido em TST_ESPC.H
+*
+***********************************************************************/
 
    TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
    {
-      char str[TAM_STR_TESTE]; //Vetor de Caracteres temporário utilizado para ler outros
-      char str_[TAM_STR_TESTE]; //Vetor de Caracteres temporário utilizado para ler outros
+      char stringObtida[TAM_STR_TESTE];
+      char stringDada[TAM_STR_TESTE];
+
 
       ARV_tpCondRet CondRetObtido   = ARV_CondRetOK ;
       ARV_tpCondRet CondRetEsperada = ARV_CondRetFaltouMemoria ;
@@ -175,7 +226,7 @@ static ARV_tppArvore arvores[NUM_ARVORES] = {
          {
 
             NumLidos = LER_LerParametros( "isi" ,
-                               &arvindex, str , &CondRetEsperada ) ;
+                               &arvindex, stringDada , &CondRetEsperada ) ;
             
             if ( NumLidos != 3 )
             {
@@ -183,7 +234,7 @@ static ARV_tppArvore arvores[NUM_ARVORES] = {
             } /* if */
 
             ListaDada = LIS_CriarLista( );
-            preencheListaComString(ListaDada, str);
+            preencheListaComString(ListaDada, stringDada);
             
 
             CondRetObtido = ARV_InserirDireita( arvores[arvindex], ListaDada ) ;
@@ -199,14 +250,14 @@ static ARV_tppArvore arvores[NUM_ARVORES] = {
          {
 
             NumLidos = LER_LerParametros( "isi" ,
-                               &arvindex,  &str , &CondRetEsperada ) ;
+                               &arvindex,  stringDada , &CondRetEsperada ) ;
             if ( NumLidos != 3 )
             {
                return TST_CondRetParm;
             } /* if */
 
             ListaDada = LIS_CriarLista( );
-            preencheListaComString(ListaDada, str);
+            preencheListaComString(ListaDada, stringDada);
             
             CondRetObtido = ARV_InserirEsquerda( arvores[arvindex], ListaDada ) ;
 
@@ -279,7 +330,7 @@ static ARV_tppArvore arvores[NUM_ARVORES] = {
 
             NumLidos = LER_LerParametros( "isi" ,
                               &arvindex,
-                              &str,
+                              stringDada,
                               &CondRetEsperada ) ;
             if ( NumLidos != 3 )
             {
@@ -296,10 +347,10 @@ static ARV_tppArvore arvores[NUM_ARVORES] = {
                return Ret;
             } /* if */
 
-			   Ret = comparaListaComString( ListaObtida , str );
-            preencheStringComLista(ListaObtida, str_);
+			   Ret = comparaListaComString( ListaObtida , stringDada );
+            preencheStringComLista(ListaObtida, stringObtida);
 
-            return TST_CompararString( str , str_ ,
+            return TST_CompararString( stringDada , stringObtida ,
                                      "Conteúdo do nó está errado." ) ;
 
          } /* fim ativa: Testar ARV Obter valor corrente */

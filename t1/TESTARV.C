@@ -4,7 +4,7 @@
 *  Arquivo gerado:              TESTARV.C
 *  Letras identificadoras:      TARV
 *
-*  Nome da base de software:    Exemplo de teste automatizado
+*  Nome da base de software:    Teste Automatizado do Módulo Árvore de Listas.
 *  Arquivo da base de software: D:\AUTOTEST\PROJETOS\SIMPLES.BSW
 *
 *  Projeto: Disciplinas INF 1628 / 1301
@@ -15,28 +15,33 @@
 *     Versão  Autor    Data     Observações
 *      01      dan    02/09/14
 *  $ED Descrição do módulo
-*     Este mÇodulo contém as funções específicas para o teste do
+*     Este móodulo contém as funções específicas para o teste do
 *     módulo árvore. Ilustra como redigir um interpretador de comandos
 *     de teste específicos utilizando o arcabouço de teste para C.
 *
 *  $EIU Interface com o usuário pessoa
 *     Comandos de teste específicos para testar o módulo árvore:
 *
-*     =criar        - chama a função ARV_CriarArvore( )
-*     =insdir <Char>
-*                   - chama a função ARV_InserirDireita( <Char> )
-*                     Obs. notação: <Char>  é o valor do parâmetro
-*                     que se encontra no comando de teste.
+*     Obs. notação: 
+*               <ind> é o primeiro parâmetro de cada comando que se encontra no script de teste.
+*               <ListaChar>  é a lista criada a partir do parâmetro string
+                     que se encontra no comando de teste.
+*               <pArvores>[<ind>] é a referência a arvore que está na posição <ind> do 
+                  vetor de referencias local 'arvore', definido abaixo.
 *
-*     "=insesq" <Char>
-*                   - chama a função ARV_InserirEsquerda( <Char> )
-*     "=irpai"      - chama a função ARV_IrPai( )
-*     "=iresq"      - chama a função ARV_IrEsquerda( )
-*     "=irdir"      - chama a função ARV_IrDireita( )
-*     "=obter" <Char>
-*                   - chama a função ARV_ObterValorCorr( ) e compara
+*     =criar  <ind>  - chama a função ARV_CriarArvore( <pArvores> )
+*     =insdir <ind> <ListaChar>
+*                   - chama a função ARV_InserirDireita( <ListaChar> )
+*
+*     "=insesq" <ListaChar>
+*                   - chama a função ARV_InserirEsquerda( <pArvores>, <ListaChar> )
+*     "=irpai" <ind>     - chama a função ARV_IrPai(  <pArvores> )
+*     "=iresq" <ind>     - chama a função ARV_IrEsquerda( <pArvores>[<ind>] )
+*     "=irdir" <ind>     - chama a função ARV_IrDireita( <pArvores>[<ind>] )
+*     "=obter" <ind> <ListaChar>
+*                   - chama a função ARV_ObterValorCorr( <pArvores>[<ind>] ) e compara
 *                     o valor retornado com o valor <Char>
-*     "=destroi"    - chama a função ARV_DestruirArvore( )
+*     "=destroi"    - chama a função ARV_DestruirArvore( <pArvores>[<ind>] )
 *
 ***************************************************************************/
 
@@ -62,20 +67,18 @@
 #define     OBTER_VAL_CMD       "=obter"
 #define     DESTROI_CMD         "=destruir"
 
-/*****  Código das funções exportadas pelo módulo  *****/
-
-
 
 
 #define NUM_ARVORES 12
 #define TAM_STR_TESTE 255
 
 
-// Inicia arvores locais como NULL;
+// Inicia variaveis de árvores locais como ponteiros nulos;
 static ARV_tppArvore arvores[NUM_ARVORES] = {
    NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL
 };
 
+/*****  Código das funções locais ao módulo  *****/
 
 /***********************************************************************
 *
@@ -131,6 +134,7 @@ static ARV_tppArvore arvores[NUM_ARVORES] = {
       return (*str == '\0') ? TST_CondRetOK : TST_CondRetErro; //Se nulo, string acabou e é igual. Se não é diferente.
    }
 
+/*****  Código das funções exportadas pelo módulo  *****/
 
 /***********************************************************************
 *

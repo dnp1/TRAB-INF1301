@@ -368,6 +368,7 @@
 
    ARV_tpCondRet ARV_ObterValorCorr( tpArvore* pArvoreParm, void* ListaCharParm )
    {
+
       LIS_tppLista* plista = (LIS_tppLista*)ListaCharParm;
       tpArvore * pArvore ;
       pArvore = ( tpArvore* )( pArvoreParm );
@@ -380,6 +381,7 @@
       {
          return ARV_CondRetArvoreVazia ;
       } /* if */
+
       (*plista) = pArvore->pNoCorr->Lista ;
 
       return ARV_CondRetOK ;

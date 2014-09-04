@@ -12,11 +12,11 @@
 *
 *  Projeto: INF 1301 / 1628 Automatização dos testes de módulos C
 *  Gestor:  DI/PUC-Rio
-*  Autores: eav,lsk
+*  Autores: eav,lsk - Eduardo Alberto Verdeja & Leonardo Slipoi Kaplan
 *
 *  $HA Histórico de evolução:
 *     Versão  Autor    Data     Observações
-*     01     eav,lks  02/09/14 
+*     01     eav,lsk  02/09/14 
 *  $ED Descrição do módulo
 *     Implementa listas de caracteres duplamente encadeadas.
 *     Podem existir n listas em operação simultaneamente.
@@ -72,16 +72,7 @@ typedef struct LIS_tagLista * LIS_tppLista ;
 *  $FC Função: LIS  &Criar lista
 *
 *  $ED Descrição da função
-*     Cria uma lista genérica duplamente encadeada.
-*     Os possíveis tipos são desconhecidos a priori.
-*     A tipagem é implicita.
-*     Não existe identificador de tipo associado à lista.
-*
-*  $EP Parâmetros
-*     ExcluirValor  - ponteiro para a função que processa a
-*                     exclusão do valor referenciado pelo elemento
-*                     a ser excluído.
-*                     Ver descrição do módulo.
+*     Cria uma lista de caracteres duplamente encadeada.
 *
 *  $FV Valor retornado
 *     Se executou corretamente retorna o ponteiro para a lista.

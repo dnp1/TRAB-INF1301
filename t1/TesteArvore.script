@@ -1,7 +1,7 @@
 // Script:    TesteArvore.script
 // Autor:     Danilo André Nascimento
 // Data:      02/09/14
-// Prop�sito: Ilustrar arquivo de script, 
+// Prop�sito: Testar Módulo Árvore Implementado para o T1
 //            Testa a constru��o de uma �rvore usando par�metros literais
 //            N�o verifica se as opera��es modificaram corretamente as refer�ncias
 //

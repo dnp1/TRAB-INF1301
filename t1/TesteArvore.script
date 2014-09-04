@@ -1,0 +1,49 @@
+// Script:    TesteArvore.script
+// Autor:     Danilo André Nascimento
+// Data:      02/09/14
+// Prop�sito: Ilustrar arquivo de script, 
+//            Testa a constru��o de uma �rvore usando par�metros literais
+//            N�o verifica se as opera��es modificaram corretamente as refer�ncias
+//
+
+== Inicializar valores
+
+=declararparm 	Ok				int 0
+=declararparm 	NaoCriouRaiz	int 1 
+=declararparm 	Estrutura		int 2
+=declararparm 	NaoEhFolha		int 3
+=declararparm 	NaoHaArvore		int 4
+=declararparm 	NaoCorr			int 5
+=declararparm 	EhRaiz			int 6
+=declararparm 	NaoHaFilho		int 7
+=declararparm 	Memoria			int 8
+
+== Verificar assertivas de entrada de 
+=criar	0	Ok
+=criar	1	Ok
+=criar	2	Ok
+=criar	3	Ok
+
+== Verificar assertivas de entrada de 1
+=insdir 0 "Nulo"	Ok
+=insesq 0 "Danilo"	Ok
+=insesq 0 "Andre" Ok
+=irpai 0 Ok
+=insdir 0 "do" Ok
+=insesq 0 "Nascimento" Ok
+=irpai 0 Ok
+=insdir 0 "Pereira" Ok
+=irpai 0 Ok
+=irpai 0 Ok
+=irpai 0 Ok
+=obter 0 "Nulo" Ok
+=iresq 0 Ok
+=obter 0 "Verdeja" Ok 
+=recuperar
+
+== Verificar destruir arvore inexistente
+=destruir 5
+
+=obter 4 "xxx" NaoHaArvore
+
+// fim

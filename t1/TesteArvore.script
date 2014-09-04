@@ -73,7 +73,7 @@
 
 == Verificar Inserção Válida
 =insesq 1 "Tudo bem?" Ok
-=insdir 10 "Beleza?" Ok
+=insdir 10 "Beleza?"+ Ok
 
 == Verificar Movimentação para o Pai
 =irpai 1 Ok
@@ -125,9 +125,10 @@
 =obter 0 "Verdeja" Ok // Nó corrente contém "Danilo"
 =recuperar
 
-== Verificar destruir arvore inexistente
-=destruir 5
+== Destruir Arvores Restantes
+=destruir 0
+=destruir 1
+=destruir 10
 
-=obter 4 "xxx" NaoHaArvore
 
 // fim

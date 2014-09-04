@@ -9,15 +9,11 @@
 *
 *  Projeto: Disciplinas INF 1628 / 1301
 *  Gestor:  DI/PUC-Rio
-*  Autores: avs - Arndt von Staa
+*  Autores: dan - Danilo André Nascimento
 *
 *  $HA Histórico de evolução:
 *     Versão  Autor    Data     Observações
-*       3.00   avs   28/02/2003 Uniformização da interface das funções e
-*                               de todas as condições de retorno.
-*       2.00   avs   03/08/2002 Eliminação de código duplicado, reestruturação
-*       1.00   avs   15/08/2001 Início do desenvolvimento
-*
+*      01      dan    02/09/14
 *  $ED Descrição do módulo
 *     Este mÇodulo contém as funções específicas para o teste do
 *     módulo árvore. Ilustra como redigir um interpretador de comandos

@@ -1,3 +1,4 @@
-Tabela de Horários - Modular 2014.2 - T2
+﻿Tabela de Horários - Modular 2014.2 - T2
 
 18/09 - Eduardo, Leonardo & Danilo - 18h - 20h - Estudo da arquitetura da aplicação, Especificação dos módulos Lista e Grafo;
+25/09 - Eduardo, Leonardo & Danilo - 19h - 21h - Estudo da arquitetura da aplicação, Especificação dos módulos Lista e Grafo;

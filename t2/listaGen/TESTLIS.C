@@ -93,19 +93,14 @@ LIS_tppLista   vtListas[ DIM_VT_LISTA ] ;
    {
 
       int inxLista  = -1 ,
-          numLidos   = -1 ,
-          CondRetEsp = -1  ;
+          numLidos   = -1 ;
 
-      TST_tpCondRet CondRet ;
+      LIS_tpCondRet CondRetObtida , CondRetEsperada;
+
+      char   CharDado = '\0' ;
 
       char   StringDado[  DIM_VALOR ] ;
       char * pDado ;
-
-      int ValEsp = -1 ;
-
-      int i ;
-
-      int numElem = -1 ;
 
       StringDado[ 0 ] = 0 ;
 
@@ -113,7 +108,7 @@ LIS_tppLista   vtListas[ DIM_VT_LISTA ] ;
 
          if ( strcmp( ComandoTeste , RESET_LISTA_CMD ) == 0 )
          {
-
+			int i;
             for( i = 0 ; i < DIM_VT_LISTA ; i++ )
             {
                vtListas[ i ] = NULL ;
@@ -192,7 +187,7 @@ LIS_tppLista   vtListas[ DIM_VT_LISTA ] ;
          {
 
             numLidos = LER_LerParametros( "isi" ,
-                       &inxLista , StringDado , &CondRetEsp ) ;
+                       &inxLista , StringDado , &CondRetEsperada ) ;
 
             if ( ( numLidos != 3 )
               || ( ! ValidarInxLista( inxLista , NAO_VAZIO )) )
@@ -216,7 +211,7 @@ LIS_tppLista   vtListas[ DIM_VT_LISTA ] ;
                free( pDado ) ;
             } /* if */
 
-            return TST_CompararInt( CondRetEsp , CondRet ,
+            return TST_CompararInt( CondRetEsperada  , CondRet ,
                      "Condicao de retorno errada ao inserir antes."                   ) ;
 
          } /* fim ativa: Testar inserir elemento antes */
@@ -227,7 +222,7 @@ LIS_tppLista   vtListas[ DIM_VT_LISTA ] ;
          {
 
             numLidos = LER_LerParametros( "isi" ,
-                       &inxLista , StringDado , &CondRetEsp ) ;
+                       &inxLista , StringDado , &CondRetEsperada  ) ;
 
             if ( ( numLidos != 3 )
               || ( ! ValidarInxLista( inxLista , NAO_VAZIO )) )
@@ -244,14 +239,14 @@ LIS_tppLista   vtListas[ DIM_VT_LISTA ] ;
             strcpy( pDado , StringDado ) ;
 
 
-            CondRet = LIS_InserirElementoApos( vtListas[ inxLista ] , pDado ) ;
+            CondRetObtida = LIS_InserirElementoApos( vtListas[ inxLista ] , pDado ) ;
 
-            if ( CondRet != LIS_CondRetOK )
+            if ( CondRetObtida != LIS_CondRetOK )
             {
                free( pDado ) ;
             } /* if */
 
-            return TST_CompararInt( CondRetEsp , CondRet ,
+            return TST_CompararInt( CondRetEsperada  , CondRetObtida ,
                      "Condicao de retorno errada ao inserir apos."                   ) ;
 
          } /* fim ativa: Testar inserir elemento apos */
@@ -262,7 +257,7 @@ LIS_tppLista   vtListas[ DIM_VT_LISTA ] ;
          {
 
             numLidos = LER_LerParametros( "ii" ,
-                  &inxLista , &CondRetEsp ) ;
+                  &inxLista , &CondRetEsperada  ) ;
 
             if ( ( numLidos != 2 )
               || ( ! ValidarInxLista( inxLista , NAO_VAZIO )) )
@@ -270,7 +265,7 @@ LIS_tppLista   vtListas[ DIM_VT_LISTA ] ;
                return TST_CondRetParm ;
             } /* if */
 
-            return TST_CompararInt( CondRetEsp ,
+            return TST_CompararInt( CondRetEsperada  ,
                       LIS_ExcluirElemento( vtListas[ inxLista ] ) ,
                      "Condição de retorno errada ao excluir."   ) ;
 
@@ -282,7 +277,7 @@ LIS_tppLista   vtListas[ DIM_VT_LISTA ] ;
          {
 
             numLidos = LER_LerParametros( "isi" ,
-                       &inxLista , StringDado , &ValEsp ) ;
+                       &inxLista , StringDado , &CondRetEsperada ) ;
 
             if ( ( numLidos != 3 )
               || ( ! ValidarInxLista( inxLista , NAO_VAZIO )) )
@@ -351,9 +346,10 @@ LIS_tppLista   vtListas[ DIM_VT_LISTA ] ;
 
          else if ( strcmp( ComandoTeste , AVANCAR_ELEM_CMD ) == 0 )
          {
+			int numElem = -1 ;
 
             numLidos = LER_LerParametros( "iii" , &inxLista , &numElem ,
-                                &CondRetEsp ) ;
+                                &CondRetEsperada ) ;
 
             if ( ( numLidos != 3 )
               || ( ! ValidarInxLista( inxLista , NAO_VAZIO )) )
@@ -361,7 +357,7 @@ LIS_tppLista   vtListas[ DIM_VT_LISTA ] ;
                return TST_CondRetParm ;
             } /* if */
 
-            return TST_CompararInt( CondRetEsp ,
+            return TST_CompararInt( CondRetEsperada ,
                       LIS_AvancarElementoCorrente( vtListas[ inxLista ] , numElem ) ,
                       "Condicao de retorno errada ao avancar" ) ;
 

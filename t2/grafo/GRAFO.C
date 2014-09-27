@@ -166,6 +166,31 @@
                
    } GRA_tpVertice ;
      
+/***********************************************************************
+*
+*  $TC Tipo de dados: GRA Descritor da lista de vértices
+*
+*
+***********************************************************************/
+
+   typedef struct GRA_tagListaVertice {
+
+         // id ?
+         
+         tpElemVertice * pOrigemVertice ;
+               /* Ponteiro para a origem do vértice */
+
+         tpElemVertice * pFimVertice ;
+               /* Ponteiro para o final do vértice */
+
+         tpElemVertice * pElemVertice ;
+               /* Ponteiro para o elemento corrente do vértice */
+
+         int numElem ;
+               /* Número de elementos do vértice */
+               
+   } GRA_tpVertice ;
+     
     
 /***********************************************************************
 *

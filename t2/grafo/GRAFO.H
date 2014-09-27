@@ -1,28 +1,3 @@
-/*
-grafo.h
-typedef *Grafo tpGrafo;
-typedef *Vertice tpVertice;
-
-tpCondRet CriarGrafo(tpGrafo grafo);
-
-tpCondRet DestruirGrafo(tpGrafo grafo);
-
-tpCondRet InserirVertice(tpGrafo grafo);
-
-tpCondRet InserirValor(tpGrafo grafo);
-
-tpCondRet InserirAresta(tpGrafo grafo,tpVertice v1, tpVertice v2);
-
-tpCondRet ExcluirAresta(tpGrafo grafo,tpVertice v1, tpVertice v2);
-
-tpCondRet ObterVizinhos(tpGrafo grafo, tpVertice v1, int * quantidade);
-
-tpCondRet IrParaVizinho(tpGrafo grafo, tpVertice v1);
-
-tpCondRet AcessarCorrente(tpGrafo grafo);
-
-tpCondRet ExcluirVerticeCorrente(tpGrafo grafo);
-*/
 #if ! defined( GRAFO_ )
 #define GRAFO_
 /***************************************************************************
@@ -62,7 +37,6 @@ tpCondRet ExcluirVerticeCorrente(tpGrafo grafo);
 
 typedef struct GRA_tagGrafo * GRA_tppGrafo ;
 typedef struct GRA_tagVertice * GRA_tppVertice ;
-typedef struct GRA_tagListaVertice * GRA_tppListaVertice ;
 
 
 /***********************************************************************

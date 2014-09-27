@@ -24,12 +24,14 @@
 *     O grafo possui uma cabeça encapsulando o seu estado.
 *
 ***************************************************************************/
- 
+
 #if defined( GRAFO_OWN )
    #define GRAFO_EXT
 #else
    #define GRAFO_EXT extern
 #endif
+
+#include "LISTA.H"
 
 /***** Declarações exportadas pelo módulo *****/
 

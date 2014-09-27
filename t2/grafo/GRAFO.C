@@ -240,4 +240,109 @@
    } GRA_tpGrafo ;
 
 /***** Protótipos das funções encapsuladas no módulo *****/
+tpCondRet EsvaziarGrafo(GRA_tpGrafo){
+};
+/*****  Código das funções exportadas pelo módulo  *****/
+
+
+/***************************************************************************
+*
+*  Função: GRA  &Criar Grafo
+*  ****/
+
+
+   GRA_tppGrafo LIS_CriarGrafo(
+             void   ( * ExcluirValor ) ( void * pDado ) )
+   {
+
+      GRA_tpGrafo * pGrafo = NULL ;
+
+      pGrafo = ( GRA_tpGrafo * ) malloc( sizeof( LIS_tpLista )) ;
+      if ( pGrafo == NULL )
+      {
+         return NULL ;
+      } /* if */
+
+      LimparCabeca( pGrafo ) ;
+
+      pGrafo->ExcluirValor = ExcluirValor ;
+
+      return pGrafo ;
+
+   } /* Fim função: GRA  &Criar grafo */
+
+
+
+/***************************************************************************
+*
+*  Função: GRA  &Destruir grafo
+*  ****/
+
+   tpCondRet GRA_DestruirGrafo( LIS_tppGrafo pGrafo )
+   {
+
+      #ifdef _DEBUG
+         assert( pGrafo != NULL ) ;
+      #endif
+
+      tpCondRet ret1 = GRA_EsvaziarGrafo( pGrafo ) ;
+      if(ret1!=GRA_CondRetOK){
+           return ret1;
+      }
+      else{
+           free( pGrafo ) ;
+      }
+      return GRA_CondRetOK;
+   } /* Fim função: GRA  &Destruir grafo */
+
+
+/***************************************************************************
+*
+*  Função: GRA  &Inserir elemento antes
+*  ****/
+
+   GRA_tpCondRet GRA_InserirElementoAntes( GRA_tppGrafo pGrafo ,
+                                           void * pValor        )
+   {
+
+      tpElemGrafo * pElem ;
+
+      #ifdef _DEBUG
+         assert( pGrafo != NULL ) ;
+      #endif
+
+      /* Criar elemento a inerir antes */
+
+         pElem = CriarElemento( pGrafo , pValor ) ;
+         if ( pElem == NULL )
+         {
+            return GRA_CondRetFaltouMemoria ;
+         } /* if */
+
+      /* Encadear o elemento antes do elemento corrente */
+
+         if ( pGrafo->pElemCorr == NULL )
+         {
+            pGrafo->pOrigemGrafo = pElem ;
+            pGrafo->pFimGrafo = pElem ;
+         } else
+         {
+            if ( pGrafo->pElemCorr->pAnt != NULL )
+            {
+               pElem->pAnt  = pGrafo->pElemCorr->pAnt ;
+               pGrafo->pElemCorr->pAnt->pProx = pElem ;
+            } else
+            {
+               pGrafo->pOrigemGrafo = pElem ;
+            } /* if */
+
+            pElem->pProx = pGrafo->pElemCorr ;
+            pGrafo->pElemCorr->pAnt = pElem ;
+         } /* if */
+
+         pGrafo->pElemCorr = pElem ;
+
+         return GRA_CondRetOK ;
+
+   } /* Fim função: GRA  &Inserir elemento antes */
 

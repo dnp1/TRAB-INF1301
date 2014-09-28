@@ -138,7 +138,7 @@
          GRA_tpNode * pNode ;
                /* Ponteiro para a cabeça de nó */      
                
-   } tpElemVertice ;
+   } GRA_tpElemVertice ;
 
 
 /***********************************************************************
@@ -240,8 +240,76 @@
    } GRA_tpGrafo ;
 
 /***** Protótipos das funções encapsuladas no módulo *****/
-tpCondRet EsvaziarGrafo(GRA_tpGrafo){
-};
+//as funcoes de exclusao de vertice e arestas sao chamadas internamente e externamente
+
+//apaga aresta(u,v) e a aresta(v,u)
+//essa tambem sera exportada
+void EsvaziarAresta(tpAresta a,tpVertice v){
+{
+    vai para o vertice apontado por a
+        procura v na lista de vizinhos de u
+            apaga a referencia para v
+    free a
+}
+//apaga um vertice e suas referencias
+//essa tambem eh exportada
+void EsvaziarVertice(tpVertice v){
+    p cada aresta
+        Esvaziar Aresta
+    free cabeca lista de arestas
+    chama a funcao de excluir valor do no(dada pelo cria grafo)
+    free no
+    free cabeca no
+    free vertice
+}
+
+
+//funcao interna, a bfs eh para conseguirmos excluir todos sem ciclo.
+void EsvaziarComponente(tpComponente comp){
+    BFS na origem do componente, para evitar ciclos. sempre que achar uma folha(folha = nao tem vizinhos nao marcados), apaga ela.
+    elemento da bfs é um tpVertice, excluido com a esvaziar vertice
+    free componente
+}
+
+//interna
+void EsvaziarGrafo(GRA_tppGrafo grafo){
+    p cada componente
+        EsvaziarComponente(comp);
+    
+    free cabeca da lista de componentes
+    free cabeca da lista de vertices
+    limpa cabeca
+    //da free na cabeca do grafo ou isso eh responsabilidade do cliente??
+}
+
+//interna, nao sei se eh necessaria, copiei o modelo da lista
+void LimparCabeca(GRA_tppGrafo grafo){
+    limpa os ponteiros
+}
+//interna
+//responsavel por alocar memoria para a componente e aponta-la para o vetice dado
+tpComp * CriarComponente(GRA_tppGrafo g, tpVertice * v){
+    tpComp * comp = malloc sizeof(tpComp)
+    comp->vertice = v;
+    return comp;
+}
+
+//interna
+//cria um vertice e sua estrutura interna
+tpVertice * CriarVertice(GRA_tppGrafo grafo){
+    v = malloc vertice
+    if v == NULL return NULL
+    l_aresta = malloc lista aresta
+    if l_aresta == NULL return NULL
+    l_no = malloc lista no
+    if l_no == NULL return NULL
+    insere elemento(l_no)
+    no = obter valor corrente(l_no)
+    no->vizinhos = l_aresta
+    v->no = no
+    return v
+}
+
 /*****  Código das funções exportadas pelo módulo  *****/
 
 
@@ -257,12 +325,12 @@ tpCondRet EsvaziarGrafo(GRA_tpGrafo){
 
       GRA_tpGrafo * pGrafo = NULL ;
 
-      pGrafo = ( GRA_tpGrafo * ) malloc( sizeof( LIS_tpLista )) ;
+      pGrafo = ( GRA_tpGrafo * ) malloc( sizeof( GRA_tpGrafo )) ;
       if ( pGrafo == NULL )
       {
          return NULL ;
       } /* if */
-
+      //criar cabeca de componentes e cabeca de vertice
       LimparCabeca( pGrafo ) ;
 
       pGrafo->ExcluirValor = ExcluirValor ;
@@ -278,71 +346,50 @@ tpCondRet EsvaziarGrafo(GRA_tpGrafo){
 *  Função: GRA  &Destruir grafo
 *  ****/
 
-   tpCondRet GRA_DestruirGrafo( LIS_tppGrafo pGrafo )
+   tpCondRet GRA_DestruirGrafo( GRA_tppGrafo pGrafo )
    {
 
       #ifdef _DEBUG
          assert( pGrafo != NULL ) ;
       #endif
 
-      tpCondRet ret1 = GRA_EsvaziarGrafo( pGrafo ) ;
-      if(ret1!=GRA_CondRetOK){
-           return ret1;
-      }
-      else{
-           free( pGrafo ) ;
-      }
+      GRA_EsvaziarGrafo( pGrafo ) ;
+      
+      free( pGrafo ) ;
+      
       return GRA_CondRetOK;
    } /* Fim função: GRA  &Destruir grafo */
 
 
 /***************************************************************************
 *
-*  Função: GRA  &Inserir elemento antes
+*  Função: GRA  &Inserir vertice 
 *  ****/
 
-   GRA_tpCondRet GRA_InserirElementoAntes( GRA_tppGrafo pGrafo ,
-                                           void * pValor        )
+   GRA_tpCondRet GRA_InserirVertice( GRA_tppGrafo pGrafo , GRA_tppVertice * pVertice ) ;
    {
 
-      tpElemGrafo * pElem ;
+      tpVertice * pElem ;
+      tpComponente * pComp ;
 
       #ifdef _DEBUG
          assert( pGrafo != NULL ) ;
       #endif
 
-      /* Criar elemento a inerir antes */
+      /* Criar o Vertice antes */
 
-         pElem = CriarElemento( pGrafo , pValor ) ;
+         pElem = CriarVertice( pGrafo ) ;
          if ( pElem == NULL )
          {
             return GRA_CondRetFaltouMemoria ;
          } /* if */
-
-      /* Encadear o elemento antes do elemento corrente */
-
-         if ( pGrafo->pElemCorr == NULL )
+         pComp = CriarComponente( pGrafo, pElem );
+         if ( pComp == NULL )
          {
-            pGrafo->pOrigemGrafo = pElem ;
-            pGrafo->pFimGrafo = pElem ;
-         } else
-         {
-            if ( pGrafo->pElemCorr->pAnt != NULL )
-            {
-               pElem->pAnt  = pGrafo->pElemCorr->pAnt ;
-               pGrafo->pElemCorr->pAnt->pProx = pElem ;
-            } else
-            {
-               pGrafo->pOrigemGrafo = pElem ;
-            } /* if */
-
-            pElem->pProx = pGrafo->pElemCorr ;
-            pGrafo->pElemCorr->pAnt = pElem ;
-         } /* if */
-
-         pGrafo->pElemCorr = pElem ;
-
+             return GRA_CondRetFaltouMemoria;
+         }
+         pVertice = pElem;
          return GRA_CondRetOK ;
 
-   } /* Fim função: GRA  &Inserir elemento antes */
+   } /* Fim função: GRA  &Inserir vertice */
 

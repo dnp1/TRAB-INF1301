@@ -21,8 +21,8 @@ inserir vertice(GRA_grafo g,GRA_vertice* v)
 excluir aresta(GRA_grafo g,GRA_vertice u,GRA_vertice v)
     se u ou v nao existem, erro de inexistencia
     se u nao esta nos vizinhos de v, erro de inexistencia
-    se v nao esta nos vizinhos de u, erro de inexistencia
         
+    se v nao esta nos vizinhos de u, erro de inexistencia
         busca u nos vizinhos de v, (cc. erro de inexistencia)
             busca v nos vizinhos de u, (cc. erro de inexistencia)
                 exclui aresta de ambos lados

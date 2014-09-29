@@ -105,35 +105,69 @@
          void ( * ExcluirValor ) ( void * pValor ) ;
                /* Ponteiro para a função de destruição do valor contido em um elemento */
 
-   } GRA_tpGrafo ;
+   } GRA_tpGrafo;
 
 /***** Protótipos das funções encapsuladas no módulo *****/
 //as funcoes de exclusao de vertice e arestas sao chamadas internamente e externamente
 
 //apaga aresta(u,v) e a aresta(v,u)
 //essa tambem sera exportada
-void EsvaziarAresta(tpVertice u, tpVertice v){
+
+
+void GRA_RemoverAresta(GRA_tpElemVertice* u, GRA_tpElemVertice* v){
 {
-   encontra a aresta A que aponta pra u nos vizinhos(v);
-      remove(a)
-   encontra a aresta A que aponta pra v nos vizinhos(u);
-      remove(a)
+   LIS_tppLista vizinhos
+   GRA_tpElemVertice* vizinho;
+   
+   //Codigo duplicado, melhorar!!!
+   vizinhos = u->pNode->pAresta;
+   LIS_IrInicio(vizinhos);
+   do {
+      LIS_ObterCorr(vizinhos, vizinho);
+      if (vizinho == v) {
+         LIS_RemoverCorrente(vizinhos);
+         break;
+      }
+      
+   } while(LIS_AvancarElemento(vizinhos));
+   
+   vizinhos = v->pNode->pAresta;
+   LIS_IrInicio(vizinhos);
+   do {
+      LIS_ObterCorr(vizinhos, vizinho);
+      if (vizinho == u) {
+         LIS_ExcluirElemento(vizinhos);
+         break;
+      }
+   } while(LIS_AvancarElemento(vizinhos));
+   // FAZER BUSCA na componente e ve se grafos ainda fazem parte da mesma;
 }
 //apaga um vertice e suas referencias
 //essa tambem eh exportada
-void EsvaziarVertice(tpVertice v){
-    p cada aresta a
-        Esvaziar Aresta(a->pVertice,v) 
-    free cabeca lista de arestas
-    chama a funcao de excluir valor do no(dada pelo cria grafo)
-    free no
+
+void EsvaziarVertice(GRA_tpElemVertice* v) {
+   GRA_tpElemVertice* vizinho;
+   LIS_tppLista arestas;
+   LIS_tppLista cabecaNo;
+   
+   cabecaNo = v->pNode;
+   arestas = LI->pAresta;
+   LIS_IrInicio(arestas);
+   do {
+      LIS_ObterCorr (vizinhos, vizinho);
+      GRA_RemoverAresta (v, vizinho);
+   } while(LIS_AvancarElemento(vizinhos));
+   
+   LIS_DestruirLista(arestas);
+   // Exluir No
+   chama a funcao de excluir valor do no(dada pelo cria grafo)
     free cabeca no
     free vertice
 }
 
 
 //funcao interna, a bfs eh para conseguirmos excluir todos sem ciclo.
-void ExcluirComponente(tpComponente comp){
+void ExcluirComponente(tpComponente comp) {
     BFS na origem do componente, para evitar ciclos. sempre que achar uma folha(folha = nao tem vizinhos nao marcados), apaga ela.
     elemento da bfs é um tpVertice, excluido com a esvaziar vertice
     free componente

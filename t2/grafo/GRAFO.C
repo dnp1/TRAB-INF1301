@@ -221,19 +221,21 @@
 ***********************************************************************/
 
    typedef struct GRA_tagGrafo {
-
+         LIS_tppLista vertices;
+         LIS_tppLista componentes;
+         /*
          tpElemGrafo * pOrigemGrafo ;
-               /* Ponteiro para a origem do grafo */
+           //     Ponteiro para a origem do grafo 
 
          tpElemGrafo * pFimGrafo ;
-               /* Ponteiro para o final do grafo */
-
+             //   Ponteiro para o final do grafo 
+     
          tpElemGrafo * pElemGrafo ;
-               /* Ponteiro para o elemento corrente do grafo */
+              //  Ponteiro para o elemento corrente do grafo
 
          int numElem ;
-               /* Número de elementos da grafo */
-
+             //   Número de elementos da grafo 
+         */
          void ( * ExcluirValor ) ( void * pValor ) ;
                /* Ponteiro para a função de destruição do valor contido em um elemento */
 
@@ -244,7 +246,7 @@
 
 //apaga aresta(u,v) e a aresta(v,u)
 //essa tambem sera exportada
-void EsvaziarAresta(tpAresta a,tpVertice v){
+void ExcluirAresta(tpAresta a,tpVertice v){
 {
     vai para o vertice apontado por a
         procura v na lista de vizinhos de u
@@ -253,9 +255,9 @@ void EsvaziarAresta(tpAresta a,tpVertice v){
 }
 //apaga um vertice e suas referencias
 //essa tambem eh exportada
-void EsvaziarVertice(tpVertice v){
+void ExcluirVertice(tpVertice v){
     p cada aresta
-        Esvaziar Aresta
+        Excluir Aresta
     free cabeca lista de arestas
     chama a funcao de excluir valor do no(dada pelo cria grafo)
     free no
@@ -265,16 +267,16 @@ void EsvaziarVertice(tpVertice v){
 
 
 //funcao interna, a bfs eh para conseguirmos excluir todos sem ciclo.
-void EsvaziarComponente(tpComponente comp){
+void ExcluirComponente(tpComponente comp){
     BFS na origem do componente, para evitar ciclos. sempre que achar uma folha(folha = nao tem vizinhos nao marcados), apaga ela.
     elemento da bfs é um tpVertice, excluido com a esvaziar vertice
     free componente
 }
 
 //interna
-void EsvaziarGrafo(GRA_tppGrafo grafo){
+void ExcluirGrafo(GRA_tppGrafo grafo){
     p cada componente
-        EsvaziarComponente(comp);
+        ExcluirComponente(comp);
     
     free cabeca da lista de componentes
     free cabeca da lista de vertices
@@ -289,7 +291,7 @@ void LimparCabeca(GRA_tppGrafo grafo){
 //interna
 //responsavel por alocar memoria para a componente e aponta-la para o vetice dado
 tpComp * CriarComponente(GRA_tppGrafo g, tpVertice * v){
-    tpComp * comp = malloc sizeof(tpComp)
+    tpComp * comp = malloc (sizeof(tpComp))
     comp->vertice = v;
     return comp;
 }
@@ -333,9 +335,11 @@ tpVertice * CriarVertice(GRA_tppGrafo grafo){
       {
          return NULL ;
       } /* if */
-      //criar cabeca de componentes e cabeca de vertice
+      LIS_tppLista l_vertice = LIS_CriarLista(ExcluirVertice);
+      LIS_tppLista l_componente = LIS_CriarLista(ExcluirComp);
       LimparCabeca( pGrafo ) ;
-
+      pGrafo->vertices = l_vertice;
+      pGrafo->componentes = l_componente;
       pGrafo->ExcluirValor = ExcluirValor ;
 
       return pGrafo ;

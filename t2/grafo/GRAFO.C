@@ -71,7 +71,7 @@
                /* Número de elementos do nó */
                
    } GRA_tpAresta ;
-   
+   //GRA??
 
 /***********************************************************************
 *
@@ -118,7 +118,7 @@
                /* Número de elementos do nó */
                
    } GRA_tpNode ;
-   
+  //GRA??? 
 
 /***********************************************************************
 *
@@ -297,16 +297,19 @@ tpComp * CriarComponente(GRA_tppGrafo g, tpVertice * v){
 //interna
 //cria um vertice e sua estrutura interna
 tpVertice * CriarVertice(GRA_tppGrafo grafo){
-    v = malloc vertice
-    if v == NULL return NULL
-    l_aresta = malloc lista aresta
-    if l_aresta == NULL return NULL
-    l_no = malloc lista no
-    if l_no == NULL return NULL
-    insere elemento(l_no)
-    no = obter valor corrente(l_no)
-    no->vizinhos = l_aresta
-    v->no = no
+    tpVertice * v = NULL;    
+    v = (* tpVertice) malloc( sizeof(tpVertice) );
+    if (v == NULL) 
+        return NULL;
+    LIS_tppLista l_aresta = LIS_CriarLista(ExcluirAresta);
+    LIS_tppLista l_no = LIS_CriarLista(ExcluirNo);
+    tpElemNode * no = malloc( sizeof(tpElemNode) );
+    no->pAresta = l_aresta;
+    no->pAnt = NULL;
+    no->pProx = NULL;
+    no->pValor = NULL; 
+    LIS_InserirElementoAntes(l_no,no);
+    v->pNode = l_no;
     return v
 }
 

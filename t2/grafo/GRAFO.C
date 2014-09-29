@@ -112,18 +112,18 @@
 
 //apaga aresta(u,v) e a aresta(v,u)
 //essa tambem sera exportada
-void ExcluirAresta(tpAresta a,tpVertice v){
+void EsvaziarAresta(tpVertice u, tpVertice v){
 {
-    vai para o vertice apontado por a
-        procura v na lista de vizinhos de u
-            apaga a referencia para v
-    free a
+   encontra a aresta A que aponta pra u nos vizinhos(v);
+      remove(a)
+   encontra a aresta A que aponta pra v nos vizinhos(u);
+      remove(a)
 }
 //apaga um vertice e suas referencias
 //essa tambem eh exportada
-void ExcluirVertice(tpVertice v){
-    p cada aresta
-        Excluir Aresta
+void EsvaziarVertice(tpVertice v){
+    p cada aresta a
+        Esvaziar Aresta(a->pVertice,v) 
     free cabeca lista de arestas
     chama a funcao de excluir valor do no(dada pelo cria grafo)
     free no

@@ -36,39 +36,8 @@
 
    typedef struct tagElemAresta {
 
-         struct tagElemAresta * pAnt ;
-               /* Ponteiro para o elemento predecessor */
-
-         struct tagElemAresta * pProx ;
-               /* Ponteiro para o elemento sucessor */
-         
          struct tagElemVertice * pVertice;
                /* Ponteiro para o vértice correspondente */
-
-   } tpElemAresta ;
-
-/***********************************************************************
-*
-*  $TC Tipo de dados: GRA Descritor da cabeça de aresta
-*
-*
-***********************************************************************/
-
-   typedef struct GRA_tagAresta {
-
-         // id ?
-         
-         tpElemGrafo * pOrigemAresta ;
-               /* Ponteiro para a origem do nó */
-
-         tpElemGrafo * pFimAresta ;
-               /* Ponteiro para o final do nó */
-
-         tpElemGrafo * pElemAresta ;
-               /* Ponteiro para o elemento corrente do nó */
-
-         int numElem ;
-               /* Número de elementos do nó */
                
    } GRA_tpAresta ;
    //GRA??
@@ -85,40 +54,10 @@
          void * pValor ;
                /* Ponteiro para o valor contido no elemento */
 
-         struct tagElemNode * pAnt ;
-               /* Ponteiro para o elemento predecessor */
-
-         struct tagElemNode * pProx ;
-               /* Ponteiro para o elemento sucessor */
-               
-         GRA_tpAresta * pAresta ;
+         LIS_tppLista * pAresta ;
                /* Ponteiro para a cabeça de aresta */
 
    } tpElemNode ;
-
-/***********************************************************************
-*
-*  $TC Tipo de dados: GRA Descritor da cabeça de nó
-*
-*
-***********************************************************************/
-
-   typedef struct GRA_tagNode {
-
-         tpElemGrafo * pOrigemNode ;
-               /* Ponteiro para a origem do nó */
-
-         tpElemGrafo * pFimNode ;
-               /* Ponteiro para o final do nó */
-
-         tpElemGrafo * pElemNode ;
-               /* Ponteiro para o elemento corrente do nó */
-
-         int numElem ;
-               /* Número de elementos do nó */
-               
-   } GRA_tpNode ;
-  //GRA??? 
 
 /***********************************************************************
 *
@@ -129,43 +68,11 @@
 
    typedef struct tagElemVertice {
 
-         struct tagElemVertice * pAnt ;
-               /* Ponteiro para o elemento predecessor */
-
-         struct tagElemVertice * pProx ;
-               /* Ponteiro para o elemento sucessor */
-         
          GRA_tpNode * pNode ;
                /* Ponteiro para a cabeça de nó */      
                
    } GRA_tpElemVertice ;
 
-
-/***********************************************************************
-*
-*  $TC Tipo de dados: GRA Descritor da cabeça de vértice
-*
-*
-***********************************************************************/
-
-   typedef struct GRA_tagVertice {
-
-         // id ?
-         
-         tpElemVertice * pOrigemVertice ;
-               /* Ponteiro para a origem do vértice */
-
-         tpElemVertice * pFimVertice ;
-               /* Ponteiro para o final do vértice */
-
-         tpElemVertice * pElemVertice ;
-               /* Ponteiro para o elemento corrente do vértice */
-
-         int numElem ;
-               /* Número de elementos do vértice */
-               
-   } GRA_tpVertice ;
-     
     
 /***********************************************************************
 *
@@ -176,41 +83,10 @@
 
    typedef struct tagElemComp {
 
-         struct tagElemComp * pAnt ;
-               /* Ponteiro para o elemento predecessor */
-
-         struct tagElemComp * pProx ;
-               /* Ponteiro para o elemento sucessor */
-         
          struct tagElemVertice * pVertice;
                /* Ponteiro para o vértice origem do componente */
 
    } tpElemComp ;
-
-/***********************************************************************
-*
-*  $TC Tipo de dados: GRA Descritor da cabeça de componentes
-*
-*
-***********************************************************************/
-
-   typedef struct GRA_tagComp {
-
-         // id ?
-         
-         tpElemComp * pOrigemComp ;
-               /* Ponteiro para a origem do nó */
-
-         tpElemComp * pFimComp ;
-               /* Ponteiro para o final do nó */
-
-         tpElemComp * pElemComp ;
-               /* Ponteiro para o elemento corrente do nó */
-
-         int numElem ;
-               /* Número de elementos do nó */
-               
-   } GRA_tpComp ;
 
 
 /***********************************************************************
@@ -221,21 +97,11 @@
 ***********************************************************************/
 
    typedef struct GRA_tagGrafo {
+         
          LIS_tppLista vertices;
+         
          LIS_tppLista componentes;
-         /*
-         tpElemGrafo * pOrigemGrafo ;
-           //     Ponteiro para a origem do grafo 
-
-         tpElemGrafo * pFimGrafo ;
-             //   Ponteiro para o final do grafo 
-     
-         tpElemGrafo * pElemGrafo ;
-              //  Ponteiro para o elemento corrente do grafo
-
-         int numElem ;
-             //   Número de elementos da grafo 
-         */
+         
          void ( * ExcluirValor ) ( void * pValor ) ;
                /* Ponteiro para a função de destruição do valor contido em um elemento */
 
@@ -360,7 +226,7 @@ tpVertice * CriarVertice(GRA_tppGrafo grafo){
          assert( pGrafo != NULL ) ;
       #endif
 
-      GRA_EsvaziarGrafo( pGrafo ) ;
+      GRA_ExcluirGrafo( pGrafo ) ;
       
       free( pGrafo ) ;
       

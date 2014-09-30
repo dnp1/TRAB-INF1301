@@ -86,6 +86,7 @@
 	 
 		void ( * ExcluirValor ) ( void * pValor ) ;
 				 /* Ponteiro para a função de destruição do valor contido em um elemento */
+        GRA_tpVertice corrente;
 	 } GRA_tpGrafo;
 
 /***** Protótipos das funções encapsuladas no módulo *****/
@@ -388,4 +389,20 @@ GRA_tpCondRet GRA_ExcluirAresta( GRA_tppGrafo pGrafo , GRA_tppVertice * pVertice
 
 
 	return GRA_CondRetOK;
+}
+
+GRA_tpCondRet GRA_AcessarCorrente ( GRA_tppGrafo pGrafo , void * pDado ){
+    if(pGrafo->corrente == NULL) 
+        return GRA_CondRetGrafoVazio;
+    pDado = pGrafo->corrente->pNode->pValor;
+	return GRA_CondRetOK;
+}
+
+GRA_tpCondRet GRA_IrParaVizinho ( GRA_tppGrafo pGrafo, GRA_tppVertice * pVertice ){
+   if(pVertice == NULL ) 
+       return GRA_CondRetNaoEhVertice; 
+   if(LIS_ProcurarValor(pGrafo->corrente->pNode->vizinhos,pVertice) != LIS_CondRetOK)
+       return GRA_CondRetNaoEhVertice; 
+   pGrafo->corrente = pVertice;
+   return GRA_CondRetOK;
 }

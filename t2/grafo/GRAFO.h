@@ -181,7 +181,7 @@ typedef struct LIS_tagLista * LIS_tppLista ;
 *
 ***********************************************************************/
 
-   GRA_tpCondRet GRA_InserirAresta( GRA_tppGrafo pGrafo , GRA_tppVertice * pVertice1, GRA_tppVertice * pVertice2 ) ;
+   GRA_tpCondRet GRA_InserirAresta( GRA_tppGrafo pGrafo , GRA_tppVertice pVertice1, GRA_tppVertice pVertice2 ) ;
 
 /***********************************************************************
 *
@@ -206,7 +206,7 @@ typedef struct LIS_tagLista * LIS_tppLista ;
 *
 ***********************************************************************/
 
-   GRA_tpCondRet GRA_ExcluirAresta( GRA_tppGrafo pGrafo , GRA_tppVertice * pVertice1, GRA_tppVertice * pVertice2 ) ;
+   GRA_tpCondRet GRA_ExcluirAresta( GRA_tppGrafo pGrafo , GRA_tppVertice pVertice1, GRA_tppVertice pVertice2 ) ;
 
 /***********************************************************************
 *
@@ -230,7 +230,10 @@ typedef struct LIS_tagLista * LIS_tppLista ;
 *
 ***********************************************************************/
 
-GRA_tpCondRet GRA_ObterVizinhos ( GRA_tppGrafo pGrafo, GRA_tppGrafo * pVertice, LIS_tppLista * pLista, int * quantidade);
+GRA_tpCondRet GRA_ObterVizinhos ( GRA_tppGrafo pGrafo, GRA_tppVertice pVertice, LIS_tppLista * pLista, int * quantidade);
+
+
+
 
 /***********************************************************************
 *
@@ -253,26 +256,6 @@ GRA_tpCondRet GRA_ObterVizinhos ( GRA_tppGrafo pGrafo, GRA_tppGrafo * pVertice, 
 ***********************************************************************/
 
 GRA_tpCondRet GRA_IrParaVizinho ( GRA_tppGrafo pGrafo, GRA_tppVertice * pVertice );
-
-/***********************************************************************
-*
-*  $FC Função: GRA  &AcessarVertice
-*
-*  $ED Descrição da função
-*     Acessa o valor contido no vértice explicitado
-*
-*  $EP Parâmetros
-*     pGrafo - ponteiro para o grafo aonde deve ser inserida a aresta
-*     pVertice - ponteiro para o vértice explicitado
-*     pDado - ponteiro a ser preenchido com o dado obtido
-*
-*  $FV Valor retornado
-*     GRA_CondRetOK  - vértice corrente foi acessado com sucesso
-*     GRA_CondRetNaoEhVertice - pVertice não é um vértice do grafo
-*
-***********************************************************************/
-
-GRA_tpCondRet GRA_AcessarVertice ( GRA_tppGrafo pGrafo , GRA_tppVertice * pVertice, void * pDado );
 
 /***********************************************************************
 *

@@ -118,3 +118,9 @@
 =destruirlista   lista2
 
 // fim
+
+
+== insvertice 1 d ok
+== insvertice 1 f ok
+
+== insaresta 1 d f ok

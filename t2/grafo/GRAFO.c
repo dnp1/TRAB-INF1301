@@ -143,8 +143,8 @@ GRA_tpVertice* CriarVertice(GRA_tppGrafo grafo) {
 }
 
 static int BFS(GRA_tpVertice* v, GRA_tpVertice* u) {
-	LIS_tppLista V = NULL;
-	LIS_tppLista Q = NULL;
+	LIS_tppLista V = NULL; // LISTA VERTICE VISITADOS
+	LIS_tppLista Q = NULL; //FILA
 	LIS_tppLista arestas = NULL;
  	GRA_tpVertice* t = NULL;
  	GRA_tpVertice* s = NULL;
@@ -191,6 +191,24 @@ static void ExcluirAresta (GRA_tpGrafo* grafo, GRA_tpVertice* v, GRA_tpVertice* 
 	if (BFS(v,u) == 0) { //Estão em componentes distintas
 		LIS_InserirElementoApos(grafo->componentes, u);
 	}
+}
+
+static GRA_tpVertice* ObterOrigem (GRA_tpGrafo* grafo, GRA_tpVertice* v) {
+	GRA_tpVertice* u = NULL;
+	LIS_tppLista origens = grafo->componentes;
+
+	if (LIS_ProcurarValor(origens, v) == LIS_CondRetOK) {
+		return v; //é a origem da própria componente
+	}
+
+	LIS_IrInicioLista(origens);
+
+	do {
+		u = LIS_ObterValor(origens);
+		if (BFS(u,v) != 0) {
+			return u;
+		}
+	} while(LIS_AvancarElementoCorrente(origens, 1) != LIS_CondRetFimLista);
 }
 
 
@@ -319,23 +337,26 @@ void GRA_RemoverVertice (GRA_tpGrafo* g, GRA_tpVertice* v) {
 }
 
 GRA_tpCondRet GRA_InserirAresta( GRA_tppGrafo pGrafo, GRA_tppVertice pVertice1, GRA_tppVertice pVertice2 ) {
+	GRA_tpVertice* origem1= NULL, origem2 = NULL;
 	/* Verifica se vertice pertence ao grafo; */
- 	if (LIS_ProcurarValor(pGrafo->vertices, (*pVertice1)) != LIS_CondRetOK) {
+ 	if (LIS_ProcurarValor(pGrafo->vertices, pVertice1) != LIS_CondRetOK) {
 		return GRA_CondRetNaoEhVertice;
 	}
 
 	/* Verifica se vertice pertence ao grafo; */
-	if (LIS_ProcurarValor(pGrafo->vertices, (*pVertice2)) != LIS_CondRetOK) {
+	if (LIS_ProcurarValor(pGrafo->vertices, pVertice2) != LIS_CondRetOK) {
 		return GRA_CondRetNaoEhVertice;
 	}
+
+	if (pVertice1)
 
 	if (LIS_ProcurarValor(pVertice1->pNode>arestas, pVertice2) != LIS_CondRetOK && LIS_ProcurarValor(pVertice2->pNode>arestas, pVertice1) != LIS_CondRetO ) {
-		
 
-		if (BFS(pVertice1, pVertice2) == 0) { //Estavam em componentes distintas? Se sim, busca.
-			
-			//juntar componentes; Parece MUITO CARO
+		origem1 = ObterOrigem(pVertice1);
+		origem2 = ObterOrigem(pVertice2);
 
+		if (origem1 != origem2) { //Estavam em componentes distintas? Se sim, junta
+			LIS_ExcluirElemento(g->componentes, origem1);
 		}
 
 		LIS_InserirElementoApos(pVertice1->pNode>arestas, pVertice2);

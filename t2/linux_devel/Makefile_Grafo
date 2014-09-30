@@ -1,0 +1,12 @@
+CC=gcc
+CFLAGS=-I. -I../linux_devel -ansi -Wall -g -O0 -fdiagnostics-color=auto
++CFLAGS=-Wall
+
+all:
+grafo: $(CC) $(CFLAGS) -c GRAFO.c
+teste-grafo: grafo
+    $(CC) $(CFLAGS) -c TESTGRAFO.c
+    $(CC) $(CFLAGS) -o teste_lista.exe LISTA.o testlis.o libArcaboucoTeste.a
+clean:
+    rm *.o
+    rm *.exe

@@ -113,7 +113,7 @@ static void RemoverAresta(GRA_tpVertice* u, GRA_tpVertice* v) {
 
 //interna
 //cria um vertice e sua estrutura interna
-GRA_tpVertice* CriarVertice(GRA_tppGrafo grafo) {
+GRA_tpVertice* CriarVertice(GRA_tppGrafo grafo, void* pValor) {
 		GRA_tpVertice* v = NULL;    
 		tpNode* no = NULL;
 		LIS_tppLista arestas = NULL;
@@ -124,7 +124,7 @@ GRA_tpVertice* CriarVertice(GRA_tppGrafo grafo) {
 		}
 
 		no = (tpNode*) malloc( sizeof(tpNode) );
-		if(no == NULL) {
+		if (no == NULL) {
 			free(v);
 			return NULL;
 		}
@@ -137,7 +137,7 @@ GRA_tpVertice* CriarVertice(GRA_tppGrafo grafo) {
 		}
 
 		no->arestas = NULL;
-		no->pValor = NULL; //Really?
+		no->pValor = pValor; //Really?
 		v->pNode = no;
 
 		return v;
@@ -284,27 +284,27 @@ static GRA_tpVertice* ObterOrigem (GRA_tppGrafo grafo, GRA_tpVertice* v) {
 *  Função: GRA  &Inserir vertice 
 *  ****/
 
-	 GRA_tpCondRet GRA_InserirVertice (GRA_tppGrafo g, GRA_tppVertice* pVertice )
+	 GRA_tpCondRet GRA_InserirVertice (GRA_tppGrafo pGrafo, GRA_tppVertice* pVertice, void* pValor)
 	 {
 
-		#ifdef _DEBUGa
-			 assert( g != NULL ) ;
+		#ifdef _DEBUG
+			 assert( pGrafo != NULL ) ;
 		#endif
 
 		/* Criar o Vertice antes */
 
-		GRA_tppVertice pElem = (GRA_tppVertice) CriarVertice( g ) ;
+		GRA_tppVertice pElem = CriarVertice( pGrafo, pValor ) ;
 		
         if ( pElem == NULL )
 			return GRA_CondRetFaltouMemoria ;
 
-	 	if( LIS_InserirElementoApos (g->componentes, pElem) != LIS_CondRetOK)
+	 	if( LIS_InserirElementoApos (pGrafo->componentes, pElem) != LIS_CondRetOK)
 			return GRA_CondRetFaltouMemoria ;
-		 
+		
 		*pVertice = pElem;
         
-        if (g->corrente == NULL) 
-            g->corrente = pElem;
+        if (pGrafo->corrente == NULL) 
+            pGrafo->corrente = pElem;
 
 		return GRA_CondRetOK ;
 
@@ -319,7 +319,7 @@ void GRA_RemoverVertice (GRA_tpGrafo* g, GRA_tpVertice* v) {
 	if (g->vertices == NULL) {
 		return;
 	}
-	if (LIS_ProcurarValor(g->vertices, v) != LIS_CondRetOK) { //Verifica se vertice pertence ao grafo, factualmente
+	if (LIS_ProcurarValor(g->vertices, v) != LIS_CondRetOK) { //Verifica se vertice pertence ao grafo.
 		return;
 	}
 	

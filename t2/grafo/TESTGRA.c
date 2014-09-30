@@ -25,7 +25,7 @@
 #include    "Generico.h"
 #include    "LerParm.h"
 
-#include    "GRAFO.H"
+#include    "GRAFO.h"
 
 
 static const char RESET_GRAFO_CMD         [ ] = "=resetteste"     ;

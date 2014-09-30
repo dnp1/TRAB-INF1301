@@ -27,20 +27,6 @@
 #include "GRAFO.h"
 #undef GRAFO_OWN
 
-/***********************************************************************
-*
-*  $TC Tipo de dados: GRA Elemento de aresta
-*
-*
-***********************************************************************/
-
-   typedef struct tagElemAresta {
-
-         struct tagElemVertice * pVertice;
-               /* Ponteiro para o vértice correspondente */
-               
-   } GRA_tpAresta ;
-   //GRA??
 
 /***********************************************************************
 *
@@ -49,15 +35,14 @@
 *
 ***********************************************************************/
 
-   typedef struct tagElemNode {
+	 typedef struct tpNode_ {
 
-         void * pValor ;
-               /* Ponteiro para o valor contido no elemento */
+				 void* pValor ;
+							 /* Ponteiro para o valor contido no elemento */
 
-         LIS_tppLista * pAresta ;
-               /* Ponteiro para a cabeça de aresta */
-
-   } tpElemNode ;
+				 LIS_tppLista arestas ;
+					/* Ponteiro para a cabeça de aresta */
+	 } tpNode ;
 
 /***********************************************************************
 *
@@ -66,14 +51,12 @@
 *
 ***********************************************************************/
 
-   typedef struct tagElemVertice {
+	 typedef struct tpVertice_ {
+				 tpNode* pNode ;
+							 /* Ponteiro para a cabeça de nó */      
+	 } GRA_tpVertice ;
 
-         GRA_tpNode * pNode ;
-               /* Ponteiro para a cabeça de nó */      
-               
-   } GRA_tpElemVertice ;
-
-    
+		
 /***********************************************************************
 *
 *  $TC Tipo de dados: GRA Elemento de componente
@@ -81,12 +64,12 @@
 *
 ***********************************************************************/
 
-   typedef struct tagElemComp {
+	 typedef struct tagElemComp {
 
-         struct tagElemVertice * pVertice;
-               /* Ponteiro para o vértice origem do componente */
+		 struct tagElemVertice* pVertice;
+			 /* Ponteiro para o vértice origem do componente */
 
-   } tpElemComp ;
+	 } tpElemComp ;
 
 
 /***********************************************************************
@@ -96,123 +79,128 @@
 *
 ***********************************************************************/
 
-   typedef struct GRA_tagGrafo {
-         
-         LIS_tppLista vertices;
-         
-         LIS_tppLista componentes;
-         
-         void ( * ExcluirValor ) ( void * pValor ) ;
-               /* Ponteiro para a função de destruição do valor contido em um elemento */
+	 typedef struct GRA_tagGrafo {
+				 
+				 LIS_tppLista vertices;
+				 
+				 LIS_tppLista componentes;
+				 
+				 void ( * ExcluirValor ) ( void * pValor ) ;
+							 /* Ponteiro para a função de destruição do valor contido em um elemento */
 
-   } GRA_tpGrafo;
+	 } GRA_tpGrafo;
 
 /***** Protótipos das funções encapsuladas no módulo *****/
 //as funcoes de exclusao de vertice e arestas sao chamadas internamente e externamente
 
 //apaga aresta(u,v) e a aresta(v,u)
 //essa tambem sera exportada
-
-
-void GRA_RemoverAresta(GRA_tpElemVertice* u, GRA_tpElemVertice* v){
+void GRA_RemoverAresta (GRA_tpVertice* u, GRA_tpVertice* v)
 {
-   LIS_tppLista vizinhos
-   GRA_tpElemVertice* vizinho;
-   
-   //Codigo duplicado, melhorar!!!
-   vizinhos = u->pNode->pAresta;
-   LIS_IrInicio(vizinhos);
-   do {
-      LIS_ObterCorr(vizinhos, vizinho);
-      if (vizinho == v) {
-         LIS_RemoverCorrente(vizinhos);
-         break;
-      }
-      
-   } while(LIS_AvancarElemento(vizinhos));
-   
-   vizinhos = v->pNode->pAresta;
-   LIS_IrInicio(vizinhos);
-   do {
-      LIS_ObterCorr(vizinhos, vizinho);
-      if (vizinho == u) {
-         LIS_ExcluirElemento(vizinhos);
-         break;
-      }
-   } while(LIS_AvancarElemento(vizinhos));
-   // FAZER BUSCA na componente e ve se grafos ainda fazem parte da mesma;
+	 LIS_tppLista vizinhos;
+	 GRA_tpVertice* vizinho;
+	 
+	 //Codigo duplicado, melhorar!!!
+	 vizinhos = u->pNode->arestas;
+	 LIS_IrInicioLista(vizinhos);
+	 do {
+			vizinho = LIS_ObterValor(vizinhos);
+			if (vizinho == v) {
+				 LIS_ExcluirElemento(vizinhos);
+				 break;
+			}
+			
+	 } while(LIS_AvancarElementoCorrente(vizinhos, 1) != LIS_CondRetFimLista);
+	 
+	 vizinhos = v->pNode->arestas;
+	 LIS_IrInicioLista(vizinhos);
+	 do {
+			vizinho = LIS_ObterValor(vizinhos);
+			if (vizinho == u) {
+				 LIS_ExcluirElemento(vizinhos);
+				 break;
+			}
+	 } while(LIS_AvancarElementoCorrente(vizinhos, 1) != LIS_CondRetFimLista);
+	 
+	 // FAZER BUSCA na componente e ve se grafos ainda fazem parte da mesma;
 }
+
+
+void ExcluirVertice(GRA_tpVertice* v) {
+	GRA_tpVertice* vizinho;
+	LIS_tppLista vizinhos;
+
+	if(v == NULL) {
+		return;
+	}
+	
+	vizinhos = v->pNode->arestas;
+	LIS_IrInicioLista(vizinhos);
+	do {
+		vizinho = LIS_ObterValor (vizinhos);
+		GRA_RemoverAresta (v, vizinho);
+	} while(LIS_AvancarElementoCorrente(vizinhos, 1) != LIS_CondRetFimLista);
+	LIS_DestruirLista(vizinhos);
+
+}
+
 //apaga um vertice e suas referencias
 //essa tambem eh exportada
-
-void EsvaziarVertice(GRA_tpElemVertice* v) {
-   GRA_tpElemVertice* vizinho;
-   LIS_tppLista arestas;
-   LIS_tppLista cabecaNo;
-   
-   cabecaNo = v->pNode;
-   arestas = LI->pAresta;
-   LIS_IrInicio(arestas);
-   do {
-      LIS_ObterCorr (vizinhos, vizinho);
-      GRA_RemoverAresta (v, vizinho);
-   } while(LIS_AvancarElemento(vizinhos));
-   
-   LIS_DestruirLista(arestas);
-   // Exluir No
-   chama a funcao de excluir valor do no(dada pelo cria grafo)
-    free cabeca no
-    free vertice
+void GRA_RemoverVertice (GRA_tpGrafo* g, GRA_tpVertice* v) {
+	if (g->vertices == NULL) {
+		return;
+	}
+	if (LIS_ProcurarValor(g->vertices, v) != LIS_CondRetOK) {
+		return;
+	}
+	LIS_ExcluirElemento(g->vertices);
 }
 
 
 //funcao interna, a bfs eh para conseguirmos excluir todos sem ciclo.
-void ExcluirComponente(tpComponente comp) {
-    BFS na origem do componente, para evitar ciclos. sempre que achar uma folha(folha = nao tem vizinhos nao marcados), apaga ela.
-    elemento da bfs é um tpVertice, excluido com a esvaziar vertice
-    free componente
+void ExcluirPonteiro(void* comp) {
+	free(comp);
 }
 
-//interna
-void ExcluirGrafo(GRA_tppGrafo grafo){
-    p cada componente
-        ExcluirComponente(comp);
-    
-    free cabeca da lista de componentes
-    free cabeca da lista de vertices
-    limpa cabeca
-    //da free na cabeca do grafo ou isso eh responsabilidade do cliente??
-}
 
-//interna, nao sei se eh necessaria, copiei o modelo da lista
-void LimparCabeca(GRA_tppGrafo grafo){
-    limpa os ponteiros
-}
 //interna
 //responsavel por alocar memoria para a componente e aponta-la para o vetice dado
-tpComp * CriarComponente(GRA_tppGrafo g, tpVertice * v){
-    tpComp * comp = malloc (sizeof(tpComp))
-    comp->vertice = v;
-    return comp;
-}
+// tpComp * CriarComponente(GRA_tppGrafo g, tpVertice * v){
+// 		tpComp * comp = malloc (sizeof(tpComp))
+// 		comp->vertice = v;
+// 		return comp;
+// }
 
 //interna
 //cria um vertice e sua estrutura interna
-tpVertice * CriarVertice(GRA_tppGrafo grafo){
-    tpVertice * v = NULL;    
-    v = (* tpVertice) malloc( sizeof(tpVertice) );
-    if (v == NULL) 
-        return NULL;
-    LIS_tppLista l_aresta = LIS_CriarLista(ExcluirAresta);
-    LIS_tppLista l_no = LIS_CriarLista(ExcluirNo);
-    tpElemNode * no = malloc( sizeof(tpElemNode) );
-    no->pAresta = l_aresta;
-    no->pAnt = NULL;
-    no->pProx = NULL;
-    no->pValor = NULL; 
-    LIS_InserirElementoAntes(l_no,no);
-    v->pNode = l_no;
-    return v
+GRA_tpVertice* CriarVertice(GRA_tppGrafo grafo) {
+		GRA_tpVertice* v = NULL;    
+		tpNode* no = NULL;
+		LIS_tppLista arestas = NULL;
+
+		v = (GRA_tpVertice*) malloc( sizeof(GRA_tpVertice) );
+		if (v == NULL) {
+			return NULL;
+		}
+
+		no = (tpNode*) malloc( sizeof(tpNode) );
+		if(no == NULL) {
+			free(v);
+			return NULL;
+		}
+
+		arestas = LIS_CriarLista(NULL);
+		if(arestas == NULL) {
+			free(v);
+			free(no);
+			return NULL;
+		}
+
+		no->arestas = arestas;
+		no->pValor = NULL; //Really?
+		v->pNode = no;
+
+		return v;
 }
 
 /*****  Código das funções exportadas pelo módulo  *****/
@@ -224,27 +212,27 @@ tpVertice * CriarVertice(GRA_tppGrafo grafo){
 *  ****/
 
 
-   GRA_tppGrafo LIS_CriarGrafo(
-             void   ( * ExcluirValor ) ( void * pDado ) )
-   {
+	 GRA_tppGrafo LIS_CriarGrafo(
+		void   ( * ExcluirValor ) ( void * pDado ) )
+	 {
 
-      GRA_tpGrafo * pGrafo = NULL ;
+			GRA_tpGrafo * pGrafo = NULL ;
 
-      pGrafo = ( GRA_tpGrafo * ) malloc( sizeof( GRA_tpGrafo )) ;
-      if ( pGrafo == NULL )
-      {
-         return NULL ;
-      } /* if */
-      LIS_tppLista l_vertice = LIS_CriarLista(ExcluirVertice);
-      LIS_tppLista l_componente = LIS_CriarLista(ExcluirComp);
-      LimparCabeca( pGrafo ) ;
-      pGrafo->vertices = l_vertice;
-      pGrafo->componentes = l_componente;
-      pGrafo->ExcluirValor = ExcluirValor ;
+			pGrafo = ( GRA_tpGrafo * ) malloc( sizeof( GRA_tpGrafo )) ;
+			if (pGrafo == NULL) {
+			
+				 return NULL ;
+			} /* if */
+			LIS_tppLista l_vertice = LIS_CriarLista(free); //A Exclusão será manual, iterando sobre os elementos;
+			LIS_tppLista l_componente = LIS_CriarLista(NULL); //Controle interno e autocontido; Componentes não cuidam de dados do valor, só armazenam ponteiros.
+			
+			pGrafo->vertices = l_vertice;
+			pGrafo->componentes = l_componente;
+			pGrafo->ExcluirValor = ExcluirValor ;
 
-      return pGrafo ;
+			return pGrafo ;
 
-   } /* Fim função: GRA  &Criar grafo */
+	 } /* Fim função: GRA  &Criar grafo */
 
 
 
@@ -253,19 +241,29 @@ tpVertice * CriarVertice(GRA_tppGrafo grafo){
 *  Função: GRA  &Destruir grafo
 *  ****/
 
-   tpCondRet GRA_DestruirGrafo( GRA_tppGrafo pGrafo )
-   {
+	 GRA_tpCondRet GRA_DestruirGrafo( GRA_tppGrafo g )
+	 {
+	 		tpNode* no;
+			#ifdef _DEBUG
+				 assert( pGrafo != NULL ) ;
+			#endif
 
-      #ifdef _DEBUG
-         assert( pGrafo != NULL ) ;
-      #endif
+			LIS_DestruirLista(g->componentes);
 
-      GRA_ExcluirGrafo( pGrafo ) ;
-      
-      free( pGrafo ) ;
-      
-      return GRA_CondRetOK;
-   } /* Fim função: GRA  &Destruir grafo */
+			LIS_IrInicioLista(g->vertices);
+			do {
+				no = LIS_ObterValor(g->vertices);
+				g->ExcluirValor(no->pValor);
+				LIS_DestruirLista(no->arestas);
+				free(no);
+			} while(LIS_AvancarElementoCorrente(g->vertices, 1) != LIS_CondRetFimLista);
+
+			LIS_DestruirLista(g->vertices);
+
+			free( g ) ;
+			
+			return GRA_CondRetOK;
+	 } /* Fim função: GRA  &Destruir grafo */
 
 
 /***************************************************************************
@@ -273,30 +271,28 @@ tpVertice * CriarVertice(GRA_tppGrafo grafo){
 *  Função: GRA  &Inserir vertice 
 *  ****/
 
-   GRA_tpCondRet GRA_InserirVertice( GRA_tppGrafo pGrafo , GRA_tppVertice * pVertice ) ;
-   {
+	 GRA_tpCondRet GRA_InserirVertice (GRA_tppGrafo g, GRA_tppVertice* pVertice )
+	 {
 
-      tpVertice * pElem ;
-      tpComponente * pComp ;
+		GRA_tppVertice pElem ;
+		#ifdef _DEBUG
+			 assert( g != NULL ) ;
+		#endif
 
-      #ifdef _DEBUG
-         assert( pGrafo != NULL ) ;
-      #endif
+		/* Criar o Vertice antes */
 
-      /* Criar o Vertice antes */
+		pElem = (GRA_tppVertice) CriarVertice( g ) ;
+		if ( pElem == NULL )
+		{
+			return GRA_CondRetFaltouMemoria ;
+		} /* if */
 
-         pElem = CriarVertice( pGrafo ) ;
-         if ( pElem == NULL )
-         {
-            return GRA_CondRetFaltouMemoria ;
-         } /* if */
-         pComp = CriarComponente( pGrafo, pElem );
-         if ( pComp == NULL )
-         {
-             return GRA_CondRetFaltouMemoria;
-         }
-         pVertice = pElem;
-         return GRA_CondRetOK ;
+	 	LIS_InserirElementoApos (g->componentes, (void*)pElem);
+		 
+		(*pVertice) = pElem;
 
-   } /* Fim função: GRA  &Inserir vertice */
+		return GRA_CondRetOK ;
+
+	 } 
+	 /* Fim função: GRA  &Inserir vertice */
 

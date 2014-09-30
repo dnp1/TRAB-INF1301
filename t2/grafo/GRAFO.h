@@ -31,14 +31,14 @@
    #define GRAFO_EXT extern
 #endif
 
-#include "LISTA.H"
+#include "../lista/LISTA.h"
 
 /***** Declarações exportadas pelo módulo *****/
 
 /* Tipo referência para uma grafo */
 
 typedef struct GRA_tagGrafo * GRA_tppGrafo ;
-typedef struct GRA_tagElemVertice * GRA_tppVertice ;
+typedef struct GRA_tpVertice* GRA_tppVertice ;
 typedef struct LIS_tagLista * LIS_tppLista ;
 
 /***********************************************************************
@@ -115,7 +115,7 @@ typedef struct LIS_tagLista * LIS_tppLista ;
 *
 ***********************************************************************/
 
-   void GRA_DestruirGrafo( GRA_tppGrafo pGrafo ) ;
+   GRA_tpCondRet GRA_DestruirGrafo( GRA_tppGrafo pGrafo ) ;
 
 /***********************************************************************
 *
@@ -311,3 +311,4 @@ GRA_tpCondRet GRA_AcessarCorrente ( GRA_tppGrafo pGrafo , void * pDado );
 
 GRA_tpCondRet GRA_ExcluirVerticeCorrente( GRA_tppGrafo pGrafo);
 
+#endif

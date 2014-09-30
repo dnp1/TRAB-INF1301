@@ -101,7 +101,6 @@ static void RemoverAresta(GRA_tpVertice* u, GRA_tpVertice* v) {
 	vizinhos = u->pNode->arestas;
 	LIS_ProcurarValor(vizinhos, v);
 	LIS_ExcluirElemento(vizinhos);
-	
 }
 
 //interna
@@ -311,7 +310,7 @@ static GRA_tpVertice* ObterOrigem (GRA_tppGrafo grafo, GRA_tpVertice* v) {
 	 /* Fim função: GRA  &Inserir vertice */
 
 //apaga um vertice e suas referencias
-void GRA_RemoverVertice (GRA_tpGrafo* g, GRA_tpVertice* v) {
+void GRA_ExluirVertice (GRA_tpGrafo* g, GRA_tpVertice* v) {
 	GRA_tpVertice* vizinho = NULL;
 	tpNode* no = NULL;
 
@@ -325,13 +324,15 @@ void GRA_RemoverVertice (GRA_tpGrafo* g, GRA_tpVertice* v) {
 	no = LIS_ObterValor(g->vertices);
 	g->ExcluirValor(no->pValor);
 
+	// arestas
 	LIS_IrInicioLista(no->arestas);
 
 	do {
 		vizinho = LIS_ObterValor(no->arestas);
-		ExcluirAresta(g, v, vizinho); //Caro!
+		ExcluirAresta(g, v, vizinho); 
 	} 
 	while (LIS_AvancarElementoCorrente(no->arestas, 1) != LIS_CondRetFimLista);
+
 
 	LIS_DestruirLista(no->arestas);
 	free(no);
@@ -410,11 +411,12 @@ GRA_tpCondRet GRA_IrParaVizinho ( GRA_tppGrafo pGrafo, GRA_tppVertice pVertice )
    return GRA_CondRetOK;
 }
 
-GRA_tpCondRet GRA_ObterVizinhos ( GRA_tppGrafo pGrafo, GRA_tppVertice pVertice, LIS_tppLista * pLista){
+GRA_tpCondRet GRA_ObterVizinhos ( GRA_tppGrafo pGrafo, GRA_tppVertice pVertice, LIS_tppLista * pLista) {
+	
     if (pVertice == NULL) 
         return GRA_CondRetNaoEhVertice; 
     LIS_tppLista Ret_vizinhos = LIS_CriarLista(NULL);
-    if (vizinhos == NULL)
+    if (Ret_vizinhos == NULL)
         return GRA_CondRetFaltouMemoria;
     LIS_tppLista vizinhos = pGrafo->corrente->pNode->arestas;
 	LIS_IrInicioLista(vizinhos);
@@ -423,5 +425,6 @@ GRA_tpCondRet GRA_ObterVizinhos ( GRA_tppGrafo pGrafo, GRA_tppVertice pVertice, 
                 LIS_InserirElementoApos(Ret_vizinhos,no);
 			} while(LIS_AvancarElementoCorrente(vizinhos, 1) != LIS_CondRetFimLista);
     *pLista = Ret_vizinhos;
+
     return GRA_CondRetOK;
 }

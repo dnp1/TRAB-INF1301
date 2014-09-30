@@ -16,6 +16,8 @@
 *
 ***************************************************************************/
 
+
+
 #include    <string.h>
 #include    <stdio.h>
 #include    <malloc.h>
@@ -81,10 +83,17 @@ GRA_tppGrafo vtRefGrafos[ DIM_VT_GRAFO ] ;
 *     =excvertcorr            inxGrafo  CondRetEsp
 *
 ***********************************************************************/
+#define TAMANHO 256
+
+GRA_TppVertice vertices[TAMANHO]; 
+int sujo = 1;
 
 TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
    {
-
+      if(sujo){
+          memset(vertices,0,TAMANHO*sizeof(GRA_TppVertice));      
+          sujo = 0;
+      }
       GRA_tpCondRet CondRetObtido   = GRA_CondRetOK ;
       GRA_tpCondRet CondRetEsperada = GRA_CondRetFaltouMemoria ;
                                       /* inicializa para qualquer coisa */
@@ -99,6 +108,7 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
       int  inxGrafo     = -1 ;
 
       int i ;
+      int id;
 
       TST_tpCondRet Ret ;
 
@@ -172,20 +182,17 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
 
          else if ( strcmp( ComandoTeste , INS_VERT_CMD ) == 0 )
          {
-            GRA_tppVertice * pVertice = (GRA_tppVertice *)malloc(sizeof(GRA_tppVertice)); 
-            
-            NumLidos = LER_LerParametros( "ii" ,
-                               &inxGrafo , &CondRetEsperada ) ;
-            if ( ( NumLidos != 2 )
-              || !VerificarInx( inxGrafo ))
+            NumLidos = LER_LerParametros( "iisi" , &inxGrafo , &id, &stringDado, &CondRetEsperada ) ;
+            if ( ( NumLidos != 2 ) || !VerificarInx( inxGrafo ) || !VerificarId(id))
             {
                return TST_CondRetParm ;
             } /* if */
             
-            CondRetObtido = GRA_InserirVertice( vtRefGrafo[ inxGrafo ] , &pVertice);
+            vertices[id] = (GRA_tppVertice *)malloc(sizeof(GRA_tppVertice)); 
+            CondRetObtido = GRA_InserirVertice( vtRefGrafo[ inxGrafo ] , (vertices+id), stringDado);
             
             return TST_CompararInt( CondRetEsperada , CondRetObtido ,
-                                    "Retorno errado ao criar árvore." );
+                                    "Retorno errado ao criar vértice." );
             
          } /* fim ativa: Testar GRA Inserir valor */
          
@@ -220,16 +227,17 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
             
          } /* fim ativa: Testar GRA Inserir valor */
 
+//excluir: logo apos, setar vertices[id]=0
 /*****  Código das funções encapsuladas no módulo  *****/
 
 
 /***********************************************************************
 *
-*  $FC Função: TARV -Verificar índice de árvore
+*  $FC Função: TGRA -Verificar índice de grafo
 *
 *  $FV Valor retornado
-*     0 - inxArvore não vale
-*     0 - inxArvore vale
+*     0 - inxGrafo não vale
+*     1 - inxGrafo vale
 *
 ***********************************************************************/
 
@@ -246,4 +254,17 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
 
    } /* Fim função: TARV -Verificar índice de árvore */
 
+/***********************************************************************
+*
+*  $FC Função: TGRA - Verificar Id
+*
+*  $FV Valor retornado
+*     0 - vertice ja existe
+*     1 - vertice nao existe
+*
+***********************************************************************/
+    int VerificarId(int id){
+        if (vertices[id] == 0 ) return 1;
+        else return 0;
+    }
 /********** Fim do módulo de implementação: TARV Teste específico para o módulo árvore **********/

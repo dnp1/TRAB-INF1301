@@ -428,3 +428,12 @@ GRA_tpCondRet GRA_ObterVizinhos ( GRA_tppGrafo pGrafo, GRA_tppVertice pVertice, 
 
     return GRA_CondRetOK;
 }
+
+GRA_tpCondRet GRA_AlterarValorCorrente( GRA_tppGrafo pGrafo , void * pDado ) {
+    if (pGrafo->corrente == NULL )
+        return GRA_CondRetGrafoVazio;
+    corrente->pNode->pValor = pDado;
+
+    return GRA_CondRetOK;
+
+}

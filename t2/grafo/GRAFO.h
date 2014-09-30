@@ -197,13 +197,12 @@ typedef struct LIS_tagLista * LIS_tppLista ;
 *  $FC Função: GRA  &ObterVizinhos
 *
 *  $ED Descrição da função
-*     Obtem os vizinhos de um vértice pVertice
+*     Obtem os vizinhos do vértice corrente
 *     Se pVertice não existir, erro de inexistencia
 *   Se pVertice não possuir vizinhos, retorna uma lista vazia 
 *
 *  $EP Parâmetros
 *     pGrafo - ponteiro para o grafo aonde deve ser inserida a aresta
-*     pVertice - ponteiro para o vértice        
 *     pListaVertice - ponteiro para a lista de vértices a ser preenchida com os vizinhos de pVertice
 *   quantidade - ponteiro para a quantidade de vizinhos achados
 *
@@ -214,7 +213,7 @@ typedef struct LIS_tagLista * LIS_tppLista ;
 *
 ***********************************************************************/
 
-GRA_tpCondRet GRA_ObterVizinhos ( GRA_tppGrafo pGrafo, GRA_tppVertice pVertice, LIS_tppLista * pLista );
+GRA_tpCondRet GRA_ObterVizinhos ( GRA_tppGrafo pGrafo, LIS_tppLista * pLista);
 
 /***********************************************************************
 *

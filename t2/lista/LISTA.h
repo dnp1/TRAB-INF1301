@@ -335,6 +335,10 @@ typedef struct LIS_tagLista * LIS_tppLista ;
    LIS_tpCondRet LIS_ProcurarValor( LIS_tppLista pLista ,
                                     void * pValor        ) ;
 
+
+/*PRECISA SER DOCUMENTADO CORRETAMENTE */
+   LIS_tpCondRet LIS_NumeroDeElementos( LIS_tppLista pLista, int* numElem);
+ /*PRECISA SER DOCUMENTADO CORRETAMENTE */
 #undef LISTA_EXT
 
 /********** Fim do módulo de definição: LIS  Lista duplamente encadeada **********/

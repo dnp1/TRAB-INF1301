@@ -275,22 +275,5 @@ GRA_tpCondRet GRA_IrParaVizinho ( GRA_tppGrafo pGrafo, GRA_tppVertice pVertice )
 
 GRA_tpCondRet GRA_AcessarCorrente ( GRA_tppGrafo pGrafo , void * pDado );
 
-/***********************************************************************
-*
-*  $FC Função: GRA  &ExcluirVerticeCorrente
-*
-*  $ED Descrição da função
-*     Exclui o vértice corrente, assim como todas as arestas conectadas a ele
-*
-*  $EP Parâmetros
-*     pGrafo - ponteiro para o grafo
-*
-*  $FV Valor retornado
-*     GRA_CondRetOK  - vértice corrente foi excluido com sucesso
-*     GRA_CondRetGrafoVazio- o grafo está vazio; não há vértice corrente
-*
-***********************************************************************/
-
-GRA_tpCondRet GRA_ExcluirVerticeCorrente( GRA_tppGrafo pGrafo);
-
 #endif
+

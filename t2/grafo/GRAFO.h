@@ -56,6 +56,9 @@ typedef struct LIS_tagLista * LIS_tppLista ;
     GRA_CondRetOK ,
     /* Concluiu corretamente */
 
+    GRA_CondRetGrafoVazio ,
+    /* O grafo está vazio(não possui vertices) */
+
     GRA_CondRetNaoEhVertice ,
    /* Não encontrou o vértice procurado */
 
@@ -137,25 +140,6 @@ typedef struct LIS_tagLista * LIS_tppLista ;
 
    GRA_tpCondRet GRA_InserirVertice( GRA_tppGrafo pGrafo , GRA_tppVertice* pVertice ) ;
    
-/***********************************************************************
-*
-*  $FC Função: GRA  &Inserir valor
-*
-*  $ED Descrição da função
-*     Insere um valor no vértice explicitado.
-*
-*  $EP Parâmetros
-*     pGrafo - ponteiro para o grafo
-*     pVertice - ponteiro para o vértice
-*     pDado - ponteiro para o dado a ser inserido
-*
-*  $FV Valor retornado
-*     GRA_CondRetOK	- O vértice teve o valor alterado com sucesso
-*     GRA_CondRetNaoEhVertice - pVertice não é vértice do grafo
-*
-***********************************************************************/
-
-   GRA_tpCondRet GRA_InserirValor( GRA_tppGrafo pGrafo , GRA_tppVertice * pVertice, void * pDado ) ;   
 
    
 /***********************************************************************
@@ -170,7 +154,7 @@ typedef struct LIS_tagLista * LIS_tppLista ;
 *  $EP Parâmetros
 *     pGrafo - ponteiro para o grafo aonde deve ser inserida a aresta
 *     pVertice1 - ponteiro para um dos vértices
-*	  pVertice2 - ponteiro para o outro vértice
+*   pVertice2 - ponteiro para o outro vértice
 *
 *
 *  $FV Valor retornado
@@ -215,13 +199,13 @@ typedef struct LIS_tagLista * LIS_tppLista ;
 *  $ED Descrição da função
 *     Obtem os vizinhos de um vértice pVertice
 *     Se pVertice não existir, erro de inexistencia
-*	  Se pVertice não possuir vizinhos, retorna uma lista vazia 
+*   Se pVertice não possuir vizinhos, retorna uma lista vazia 
 *
 *  $EP Parâmetros
 *     pGrafo - ponteiro para o grafo aonde deve ser inserida a aresta
 *     pVertice - ponteiro para o vértice        
 *     pListaVertice - ponteiro para a lista de vértices a ser preenchida com os vizinhos de pVertice
-*	  quantidade - ponteiro para a quantidade de vizinhos achados
+*   quantidade - ponteiro para a quantidade de vizinhos achados
 *
 *  $FV Valor retornado
 *     GRA_CondRetOK  - Retornou a lista
@@ -232,9 +216,6 @@ typedef struct LIS_tagLista * LIS_tppLista ;
 
 GRA_tpCondRet GRA_ObterVizinhos ( GRA_tppGrafo pGrafo, GRA_tppVertice pVertice, LIS_tppLista * pLista, int * quantidade);
 
-
-
-
 /***********************************************************************
 *
 *  $FC Função: GRA  &IrParaVizinho
@@ -242,7 +223,7 @@ GRA_tpCondRet GRA_ObterVizinhos ( GRA_tppGrafo pGrafo, GRA_tppVertice pVertice, 
 *  $ED Descrição da função
 *     Muda o vértice corrente para o vizinho explicitado na chamada da função
 *     Se pVertice não existir, erro de inexistencia
-*	  Se o vértice corrente não possuir pVertice como vizinho, erro de inexistencia 
+*   Se o vértice corrente não possuir pVertice como vizinho, erro de inexistencia 
 *
 *  $EP Parâmetros
 *     pGrafo - ponteiro para o grafo aonde deve ser inserida a aresta
@@ -255,7 +236,26 @@ GRA_tpCondRet GRA_ObterVizinhos ( GRA_tppGrafo pGrafo, GRA_tppVertice pVertice, 
 *
 ***********************************************************************/
 
-GRA_tpCondRet GRA_IrParaVizinho ( GRA_tppGrafo pGrafo, GRA_tppVertice * pVertice );
+GRA_tpCondRet GRA_IrParaVizinho ( GRA_tppGrafo pGrafo, GRA_tppVertice pVertice );
+
+/***********************************************************************
+*
+*  $FC Função: GRA  &Alterar valor corrente
+*
+*  $ED Descrição da função
+*     Insere um valor no vértice corrente.
+*
+*  $EP Parâmetros
+*     pGrafo - ponteiro para o grafo
+*     pDado - ponteiro para o dado a ser inserido
+*
+*  $FV Valor retornado
+*     GRA_CondRetOK	- O vértice teve o valor alterado com sucesso
+*     GRA_CondRetGrafoVazio - o grafo está vazio; não há vértice corrente
+*
+***********************************************************************/
+
+   GRA_tpCondRet GRA_AlterarValorCorrente( GRA_tppGrafo pGrafo , void * pDado ) ;   
 
 /***********************************************************************
 *
@@ -270,7 +270,7 @@ GRA_tpCondRet GRA_IrParaVizinho ( GRA_tppGrafo pGrafo, GRA_tppVertice * pVertice
 *
 *  $FV Valor retornado
 *     GRA_CondRetOK  - vértice corrente foi acessado com sucesso
-*     GRA_CondRetNaoEhVertice - o grafo está vazio; não há vértice corrente
+*     GRA_CondRetGrafoVazio - o grafo está vazio; não há vértice corrente
 *
 ***********************************************************************/
 
@@ -288,7 +288,7 @@ GRA_tpCondRet GRA_AcessarCorrente ( GRA_tppGrafo pGrafo , void * pDado );
 *
 *  $FV Valor retornado
 *     GRA_CondRetOK  - vértice corrente foi excluido com sucesso
-*     GRA_CondRetNaoEhVertice - o grafo está vazio; não há vértice corrente
+*     GRA_CondRetGrafoVazio- o grafo está vazio; não há vértice corrente
 *
 ***********************************************************************/
 

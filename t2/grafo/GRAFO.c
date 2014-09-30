@@ -86,6 +86,7 @@
 	 
 		void ( * ExcluirValor ) ( void * pValor ) ;
 				 /* Ponteiro para a função de destruição do valor contido em um elemento */
+        GRA_tpVertice corrente;
 	 } GRA_tpGrafo;
 
 /***** Protótipos das funções encapsuladas no módulo *****/
@@ -337,7 +338,8 @@ void GRA_RemoverVertice (GRA_tpGrafo* g, GRA_tpVertice* v) {
 }
 
 GRA_tpCondRet GRA_InserirAresta( GRA_tppGrafo pGrafo, GRA_tppVertice pVertice1, GRA_tppVertice pVertice2 ) {
-	GRA_tpVertice* origem1= NULL, origem2 = NULL;
+	GRA_tpVertice* origem1= NULL;
+	GRA_tpVertice* origem2= NULL;
 	/* Verifica se vertice pertence ao grafo; */
  	if (LIS_ProcurarValor(pGrafo->vertices, pVertice1) != LIS_CondRetOK) {
 		return GRA_CondRetNaoEhVertice;
@@ -348,9 +350,12 @@ GRA_tpCondRet GRA_InserirAresta( GRA_tppGrafo pGrafo, GRA_tppVertice pVertice1, 
 		return GRA_CondRetNaoEhVertice;
 	}
 
-	if (pVertice1)
+	if (pVertice1 == pVertice2) {
+		return GRA_CondRetEhVizinho;
+	}
 
-	if (LIS_ProcurarValor(pVertice1->pNode>arestas, pVertice2) != LIS_CondRetOK && LIS_ProcurarValor(pVertice2->pNode>arestas, pVertice1) != LIS_CondRetO ) {
+	if (LIS_ProcurarValor(pVertice1->pNode>arestas, pVertice2) != LIS_CondRetOK && 
+		LIS_ProcurarValor(pVertice2->pNode>arestas, pVertice1) != LIS_CondRetOk ) {
 
 		origem1 = ObterOrigem(pVertice1);
 		origem2 = ObterOrigem(pVertice2);
@@ -388,4 +393,20 @@ GRA_tpCondRet GRA_ExcluirAresta( GRA_tppGrafo pGrafo , GRA_tppVertice * pVertice
 
 
 	return GRA_CondRetOK;
+}
+
+GRA_tpCondRet GRA_AcessarCorrente ( GRA_tppGrafo pGrafo , void * pDado ){
+    if(pGrafo->corrente == NULL) 
+        return GRA_CondRetGrafoVazio;
+    pDado = pGrafo->corrente->pNode->pValor;
+	return GRA_CondRetOK;
+}
+
+GRA_tpCondRet GRA_IrParaVizinho ( GRA_tppGrafo pGrafo, GRA_tppVertice * pVertice ){
+   if(pVertice == NULL ) 
+       return GRA_CondRetNaoEhVertice; 
+   if(LIS_ProcurarValor(pGrafo->corrente->pNode->vizinhos,pVertice) != LIS_CondRetOK)
+       return GRA_CondRetNaoEhVertice; 
+   pGrafo->corrente = pVertice;
+   return GRA_CondRetOK;
 }

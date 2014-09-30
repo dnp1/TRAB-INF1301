@@ -337,7 +337,7 @@ typedef struct LIS_tagLista * LIS_tppLista ;
 
 
 /*PRECISA SER DOCUMENTADO CORRETAMENTE */
-   LIS_tpCondRet LIS_NumeroDeElementos( LIS_tppLista pLista, int* numElem);
+   int LIS_NumeroDeElementos(LIS_tppLista pLista);
  /*PRECISA SER DOCUMENTADO CORRETAMENTE */
 #undef LISTA_EXT
 

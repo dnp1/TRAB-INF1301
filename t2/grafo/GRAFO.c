@@ -51,7 +51,7 @@
 *
 ***********************************************************************/
 
-	 typedef struct tpVertice_ {
+	 typedef struct GRA_tpVertice_ {
 	 	tpNode* pNode ;
 							 /* Ponteiro para a cabeça de nó */      
 	 } GRA_tpVertice ;
@@ -96,7 +96,6 @@
 
 static void RemoverAresta(GRA_tpVertice* u, GRA_tpVertice* v) {
 	LIS_tppLista vizinhos;
-	GRA_tpVertice* vizinho;
 	vizinhos = u->pNode->arestas;
 	LIS_ProcurarValor(vizinhos, v);
 	LIS_ExcluirElemento(vizinhos);
@@ -136,12 +135,66 @@ GRA_tpVertice* CriarVertice(GRA_tppGrafo grafo) {
 			return NULL;
 		}
 
-		no->arestas = arestas;
+		no->arestas = NULL;
 		no->pValor = NULL; //Really?
 		v->pNode = no;
 
 		return v;
 }
+
+static void ExcluirAresta (GRA_tpGrafo* grafo, GRA_tpVertice* u, GRA_tpVertice* v) {
+	LIS_tppLista V = NULL;
+	LIS_tppLista Q = NULL;
+	LIS_tppLista arestas = NULL;
+ 	GRA_tpVertice* t = NULL;
+ 	GRA_tpVertice* s = NULL;
+ 	int achou = 0;
+
+	RemoverAresta(u, v);
+	RemoverAresta(v, u);
+
+	//BFS pra detectar se é necessário gerar nova componente.
+
+	
+	V = LIS_CriarLista(NULL);
+	Q = LIS_CriarLista(NULL);
+
+	LIS_InserirElementoApos(V, v);
+	LIS_InserirElementoApos(Q, v); //Usado como uma Fila.
+
+	while (LIS_NumeroDeElementos(Q) > 0) {
+
+		LIS_IrInicioLista(Q);
+		t = LIS_ObterValor(Q);
+		LIS_ExcluirElemento(Q);
+
+		if (t == u) {
+			achou = 1; 
+			break;
+		}
+
+		arestas = t->pNode->arestas;
+		LIS_IrInicioLista(arestas);
+		do {
+			s = LIS_ObterValor(arestas);
+			if (LIS_ProcurarValor(V, s) == LIS_CondRetNaoAchou) {
+				LIS_InserirElementoApos(V, s);
+				LIS_InserirElementoApos(Q, s);
+			}
+		} while(LIS_AvancarElementoCorrente(arestas, 1) != LIS_CondRetFimLista);
+	}
+
+	LIS_DestruirLista(V);
+	LIS_DestruirLista(Q);
+
+	if (achou == 0) { //Estão em componentes distintes
+		LIS_InserirElementoApos(grafo->componentes, u);
+	}
+
+	
+}
+
+
 
 /*****  Código das funções exportadas pelo módulo  *****/
 
@@ -239,7 +292,7 @@ GRA_tpVertice* CriarVertice(GRA_tppGrafo grafo) {
 void GRA_RemoverVertice (GRA_tpGrafo* g, GRA_tpVertice* v) {
 	GRA_tpVertice* vizinho = NULL;
 	tpNode* no = NULL;
-	tpNode* noVizinho = NULL;
+
 	if (g->vertices == NULL) {
 		return;
 	}
@@ -254,7 +307,7 @@ void GRA_RemoverVertice (GRA_tpGrafo* g, GRA_tpVertice* v) {
 
 	do {
 		vizinho = LIS_ObterValor(no->arestas);
-		RemoverAresta(vizinho, v);
+		ExcluirAresta(g, v, vizinho); //Caro!
 	} 
 	while (LIS_AvancarElementoCorrente(no->arestas, 1) != LIS_CondRetFimLista);
 
@@ -264,7 +317,25 @@ void GRA_RemoverVertice (GRA_tpGrafo* g, GRA_tpVertice* v) {
 	LIS_ExcluirElemento(g->vertices);
 }
 
-void GRA_RemoverAresta (GRA_tpVertice* u, GRA_tpVertice* v) {
-	RemoverAresta(u,v);
-	RemoverAresta(v,u);
+
+
+GRA_tpCondRet GRA_ExcluirAresta( GRA_tppGrafo pGrafo , GRA_tppVertice * pVertice1, GRA_tppVertice * pVertice2 ) {
+
+ 	/* Verifica se vertice pertence ao grafo; */
+ 	if (LIS_ProcurarValor(pGrafo->vertices, (*pVertice1)) != LIS_CondRetOK) {
+		return GRA_CondRetNaoEhVertice;
+	}
+
+	/* Verifica se vertice pertence ao grafo; */
+	if (LIS_ProcurarValor(pGrafo->vertices, (*pVertice2)) != LIS_CondRetOK) {
+		return GRA_CondRetNaoEhVertice;
+	}
+
+	ExcluirAresta(pGrafo, *pVertice1, *pVertice2);
+
+	(*pVertice1) = NULL;
+	(*pVertice2) = NULL;
+
+
+	return GRA_CondRetOK;
 }

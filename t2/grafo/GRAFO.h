@@ -37,8 +37,8 @@
 
 /* Tipo referência para uma grafo */
 
-typedef struct GRA_tagGrafo * GRA_tppGrafo ;
-typedef struct GRA_tpVertice* GRA_tppVertice ;
+typedef struct GRA_tagGrafo* GRA_tppGrafo ;
+typedef struct GRA_tpVertice_* GRA_tppVertice ;
 typedef struct LIS_tagLista * LIS_tppLista ;
 
 /***********************************************************************
@@ -51,22 +51,22 @@ typedef struct LIS_tagLista * LIS_tppLista ;
 *
 ***********************************************************************/
 
-   typedef enum {
+  typedef enum {
 
-     GRA_CondRetOK ,
-         /* Concluiu corretamente */
+    GRA_CondRetOK ,
+    /* Concluiu corretamente */
 
-     GRA_CondRetNaoEhVertice ,
-         /* Não encontrou o vértice procurado */
+    GRA_CondRetNaoEhVertice ,
+   /* Não encontrou o vértice procurado */
 
-	 GRA_CondRetEhVizinho ,
-         /* Os vértices explicitados são vizinhos*/
+    GRA_CondRetEhVizinho ,
+    /* Os vértices explicitados são vizinhos*/
 		
-	 GRA_CondRetNaoEhVizinho ,
-	 /* Os vértices explicitados não são vizinhos*/
+    GRA_CondRetNaoEhVizinho ,
+	  /* Os vértices explicitados não são vizinhos*/
 				
-	 GRA_CondRetFaltouMemoria
-         /* Faltou memória ao tentar criar um elemento de Grafo */
+	  GRA_CondRetFaltouMemoria
+    /* Faltou memória ao tentar criar um elemento de Grafo */
 
    } GRA_tpCondRet ;
 

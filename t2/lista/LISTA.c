@@ -442,6 +442,9 @@
 
    } /* Fim função: LIS  &Avançar elemento */
 
+
+
+
 /***************************************************************************
 *
 *  Função: LIS  &Procurar elemento contendo valor
@@ -477,6 +480,21 @@
 
    } /* Fim função: LIS  &Procurar elemento contendo valor */
 
+
+/***************************************************************************
+*
+*  Função: LIS  &Obter tamanho(número de elementos) da lista
+*  ****/
+
+   int LIS_NumeroDeElementos(LIS_tppLista pLista) {
+   
+
+      #ifdef _DEBUG
+         assert( pLista  != NULL ) ;
+      #endif
+
+      return pLista->numElem;
+   }
 
 /*****  Código das funções encapsuladas no módulo  *****/
 

@@ -131,14 +131,14 @@ typedef struct LIS_tagLista * LIS_tppLista ;
 *  $EP Parâmetros
 *     pGrafo - ponteiro para o grafo onde deve ser inserido o vertice
 *     pVertice - ponteiro para o novo vertice
-*
+*     pValor - ponteiro para o valor armazenado no No
 *  $FV Valor retornado
 *     GRA_CondRetOK	- O vértice foi inserido com sucesso
 *     GRA_CondRetFaltouMemoria - Não foi possível alocar memória para o vértice
 *
 ***********************************************************************/
 
-   GRA_tpCondRet GRA_InserirVertice( GRA_tppGrafo pGrafo , GRA_tppVertice* pVertice ) ;
+   GRA_tpCondRet GRA_InserirVertice( GRA_tppGrafo pGrafo , GRA_tppVertice* pVertice, void* pValor ) ;
    
 
    

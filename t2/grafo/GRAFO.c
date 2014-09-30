@@ -41,7 +41,8 @@
 				/* Ponteiro para o valor contido no elemento */
 
 				LIS_tppLista arestas ;
-				/* Ponteiro para a cabeça de aresta */
+				//Lista de tppVertice
+                /* Ponteiro para a cabeça de aresta */
 	 } tpNode ;
 
 /***********************************************************************
@@ -210,7 +211,7 @@ static GRA_tpVertice* ObterOrigem (GRA_tppGrafo grafo, GRA_tpVertice* v) {
 			return u;
 		}
 	} while(LIS_AvancarElementoCorrente(origens, 1) != LIS_CondRetFimLista);
-	return NULL;//Deve ter algo errado;
+	return NULL;//Deve ter acontecido algum erro, todo vertice faz parte de uma componente
 }
 
 
@@ -245,35 +246,33 @@ static GRA_tpVertice* ObterOrigem (GRA_tppGrafo grafo, GRA_tpVertice* v) {
 
 	 } /* Fim função: GRA  &Criar grafo */
 
-
-
 /***************************************************************************
 *
 *  Função: GRA  &Destruir grafo
 *  ****/
 
-	 GRA_tpCondRet GRA_DestruirGrafo( GRA_tppGrafo g )
+	 GRA_tpCondRet GRA_DestruirGrafo( GRA_tppGrafo pGrafo )
 	 {
 	 		tpNode* no;
 			#ifdef _DEBUG
 				 assert( pGrafo != NULL ) ;
 			#endif
 
-			LIS_DestruirLista(g->componentes);
+			LIS_DestruirLista(pGrafo->componentes);
 
-			LIS_IrInicioLista(g->vertices);
+			LIS_IrInicioLista(pGrafo->vertices);
 			do {
-				no = LIS_ObterValor(g->vertices);
+				no = LIS_ObterValor(pGrafo->vertices);
 				if (no->pValor != NULL) {
-					g->ExcluirValor(no->pValor);
+					pGrafo->ExcluirValor(no->pValor);
 				}
 				LIS_DestruirLista(no->arestas);
 				free(no);
-			} while(LIS_AvancarElementoCorrente(g->vertices, 1) != LIS_CondRetFimLista);
+			} while(LIS_AvancarElementoCorrente(pGrafo->vertices, 1) != LIS_CondRetFimLista);
 
-			LIS_DestruirLista(g->vertices);
+			LIS_DestruirLista(pGrafo->vertices);
 
-			free( g ) ;
+			free( pGrafo ) ;
 			
 			return GRA_CondRetOK;
 	 } /* Fim função: GRA  &Destruir grafo */
@@ -411,3 +410,18 @@ GRA_tpCondRet GRA_IrParaVizinho ( GRA_tppGrafo pGrafo, GRA_tppVertice pVertice )
    return GRA_CondRetOK;
 }
 
+GRA_tpCondRet GRA_ObterVizinhos ( GRA_tppGrafo pGrafo, GRA_tppVertice pVertice, LIS_tppLista * pLista){
+    if (pVertice == NULL) 
+        return GRA_CondRetNaoEhVertice; 
+    LIS_tppLista Ret_vizinhos = LIS_CriarLista(NULL);
+    if (vizinhos == NULL)
+        return GRA_CondRetFaltouMemoria;
+    LIS_tppLista vizinhos = pGrafo->corrente->pNode->arestas;
+	LIS_IrInicioLista(vizinhos);
+	do {
+				GRA_tppVertice no = LIS_ObterValor(vizinhos);
+                LIS_InserirElementoApos(Ret_vizinhos,no);
+			} while(LIS_AvancarElementoCorrente(vizinhos, 1) != LIS_CondRetFimLista);
+    *pLista = Ret_vizinhos;
+    return GRA_CondRetOK;
+}

@@ -286,22 +286,24 @@ static GRA_tpVertice* ObterOrigem (GRA_tpGrafo* grafo, GRA_tpVertice* v) {
 	 GRA_tpCondRet GRA_InserirVertice (GRA_tppGrafo g, GRA_tppVertice* pVertice )
 	 {
 
-		GRA_tppVertice pElem ;
-		#ifdef _DEBUG
+		#ifdef _DEBUGa
 			 assert( g != NULL ) ;
 		#endif
 
 		/* Criar o Vertice antes */
 
-		pElem = (GRA_tppVertice) CriarVertice( g ) ;
-		if ( pElem == NULL )
-		{
+		GRA_tppVertice pElem = (GRA_tppVertice) CriarVertice( g ) ;
+		
+        if ( pElem == NULL )
 			return GRA_CondRetFaltouMemoria ;
-		} /* if */
 
-	 	LIS_InserirElementoApos (g->componentes, (void*)pElem);
+	 	if( LIS_InserirElementoApos (g->componentes, pElem) != tpCondOK)
+			return GRA_CondRetFaltouMemoria ;
 		 
-		(*pVertice) = pElem;
+		*pVertice = pElem;
+        
+        if(g->corrente == NULL) 
+            g->corrente = pElem;
 
 		return GRA_CondRetOK ;
 
@@ -406,3 +408,4 @@ GRA_tpCondRet GRA_IrParaVizinho ( GRA_tppGrafo pGrafo, GRA_tppVertice * pVertice
    pGrafo->corrente = pVertice;
    return GRA_CondRetOK;
 }
+

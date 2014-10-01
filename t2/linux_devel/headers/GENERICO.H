@@ -151,7 +151,7 @@
 
 /***** Declarações exportadas pelo módulo *****/
 
-#include    "TST_Espc.h"
+#include    "TST_ESPC.H"
 
 
 /***********************************************************************

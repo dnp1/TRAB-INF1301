@@ -22,10 +22,10 @@
 #include    <stdio.h>
 #include    <malloc.h>
 
-#include    "TST_Espc.h"
+#include    "../headers/TST_ESPC.h"
 
-#include    "Generico.h"
-#include    "LerParm.h"
+#include    "../headers/GENERICO.H"
+#include    "../headers/LERPARM.H"
 
 #include    "GRAFO.h"
 #include    "LISTA.h"

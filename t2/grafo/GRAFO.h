@@ -284,9 +284,9 @@ GRA_tpCondRet GRA_ObterOrigens ( GRA_tppGrafo pGrafo, LIS_tppLista * pLista);
 *     A função não libera memória do valor anterior. É necessário obtê-lo e limpar manulamente
 *
 *  $EP Parâmetros
-*     pGrafo   - ponteiro para o grafo
-*     id       - id do vértice
-*     pDado    - ponteiro para o dado a ser alterado
+*     pGrafo    - ponteiro para o grafo
+*     idVertice - id do vértice
+*     pDado     - ponteiro para o dado a ser alterado
 *
 *  $FV Valor retornado
 *     GRA_CondRetOK	- O vértice teve o valor alterado com sucesso
@@ -294,7 +294,7 @@ GRA_tpCondRet GRA_ObterOrigens ( GRA_tppGrafo pGrafo, LIS_tppLista * pLista);
 *
 ***********************************************************************/
 
-  GRA_tpCondRet GRA_AlterarValor( GRA_tppGrafo pGrafo , int id , void* pDado ) ;   
+  GRA_tpCondRet GRA_AlterarValor( GRA_tppGrafo pGrafo , int idVertice , void* pDado ) ;   
 
 /***********************************************************************
 *

@@ -2,6 +2,6 @@
 
 cp -f ./Makefile_Grafo ../grafo/Makefile
 cp -f ./Makefile_Lista ../lista/Makefile
-
+cp -R ./headers/ ../headers
 mkdir -p ../bin
 mkdir -p ../obj

@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-I. -I../linux_devel -I../obj -std=c99 -Wall -O0 -fdiagnostics-color=auto
+CFLAGS=-I. -I../linux_devel -I../obj -I../headers -L../lib -std=c99 -Wall -O0
 +CFLAGS=-Wall
 
 all:

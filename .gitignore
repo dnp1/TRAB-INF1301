@@ -21,3 +21,11 @@
 *.i*86
 *.x86_64
 *.hex
+
+Makefile
+lib
+bin
+obj
+headers
+src
+

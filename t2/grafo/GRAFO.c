@@ -30,6 +30,20 @@
 
 /***********************************************************************
 *
+*  $TC Tipo de dados: GRA Elemento de Aresta
+*
+*
+***********************************************************************/
+
+	 typedef struct tpAresta_ {
+
+				GRA_tppVertice pVizinho ;
+				/* Ponteiro para o valor contido no elemento */
+                int id;
+	 } tpAresta ;
+
+/***********************************************************************
+*
 *  $TC Tipo de dados: GRA Elemento de nó
 *
 *
@@ -42,7 +56,7 @@
 
 				LIS_tppLista arestas ;
 				//Lista de tppVertice
-                /* Ponteiro para a cabeça de aresta */
+                /* Ponteiro para lista de aresta */
 	 } tpNode ;
 
 /***********************************************************************
@@ -54,6 +68,7 @@
 
 	 typedef struct GRA_tpVertice_ {
 	 	tpNode* pNode ;
+        int id;
 							 /* Ponteiro para a cabeça de nó */      
 	 } GRA_tpVertice ;
 
@@ -82,7 +97,9 @@
 
 	typedef struct GRA_tagGrafo {
 		LIS_tppLista vertices;
-	 
+	    
+        tppVertice corrente;
+
 		LIS_tppLista componentes;
 	 
 		void ( * ExcluirValor ) ( void * pValor ) ;
@@ -93,7 +110,7 @@
 
 static void RemoverAresta(GRA_tpVertice* u, GRA_tpVertice* v);
 
-static GRA_tpVertice* CriarVertice(GRA_tppGrafo grafo, void* pValor);
+static GRA_tpVertice* CriarVertice(GRA_tppGrafo grafo, void* pValor, int id);
 
 static int BFS(GRA_tpVertice* v, GRA_tpVertice* u);
 
@@ -169,7 +186,7 @@ static GRA_tpVertice* ObterOrigem (GRA_tppGrafo grafo, GRA_tpVertice* v);
 *  Função: GRA  &Inserir vertice 
 *  ****/
 
-	 GRA_tpCondRet GRA_InserirVertice (GRA_tppGrafo pGrafo, GRA_tppVertice* pVertice, void* pValor)
+	 GRA_tpCondRet GRA_InserirVertice (GRA_tppGrafo pGrafo, GRA_tppVertice* pVertice, void* pValor, int id)
 	 {
 
 		#ifdef _DEBUG
@@ -178,7 +195,7 @@ static GRA_tpVertice* ObterOrigem (GRA_tppGrafo grafo, GRA_tpVertice* v);
 
 		/* Criar o Vertice antes */
 
-		GRA_tppVertice pElem = CriarVertice( pGrafo, pValor ) ;
+		GRA_tppVertice pElem = CriarVertice( pGrafo, pValor, id ) ;
 		
         if ( pElem == NULL )
 			return GRA_CondRetFaltouMemoria ;
@@ -199,7 +216,7 @@ static GRA_tpVertice* ObterOrigem (GRA_tppGrafo grafo, GRA_tpVertice* v);
 *  Função: GRA  &Excluir vertice 
 *  ****/
      
-    GRA_tpCondRet GRA_ExcluirVertice (GRA_tppGrafo pGrafo, GRA_tppVertice pVertice) {
+    GRA_tpCondRet GRA_ExcluirVertice (GRA_tppGrafo pGrafo, GRA_tppVertice pVertice, int id) {
         GRA_tpVertice* vizinho = NULL;
         tpNode* no = NULL;
 
@@ -236,7 +253,7 @@ static GRA_tpVertice* ObterOrigem (GRA_tppGrafo grafo, GRA_tpVertice* v);
 *  Função: GRA  &Inserir Aresta
 *  ****/
   
-    GRA_tpCondRet GRA_InserirAresta( GRA_tppGrafo pGrafo, GRA_tppVertice pVertice1, GRA_tppVertice pVertice2 ) {
+    GRA_tpCondRet GRA_InserirAresta( GRA_tppGrafo pGrafo, GRA_tppVertice pVertice1, GRA_tppVertice pVertice2 , int id_aresta) {
         GRA_tpVertice* origem1= NULL;
         GRA_tpVertice* origem2= NULL;
         /* Verifica se vertice pertence ao grafo; */
@@ -263,10 +280,18 @@ static GRA_tpVertice* ObterOrigem (GRA_tppGrafo grafo, GRA_tpVertice* v);
                 LIS_ProcurarValor(pGrafo->componentes, origem1);
                 LIS_ExcluirElemento(pGrafo->componentes);
             }
-
-            LIS_InserirElementoApos(pVertice1->pNode->arestas, pVertice2);
-            LIS_InserirElementoApos(pVertice2->pNode->arestas, pVertice1);
-
+			tpAresta * aresta1 = ( tpAresta * ) malloc( sizeof( tpAresta )) ;
+			tpAresta * aresta2 = ( tpAresta * ) malloc( sizeof( tpAresta )) ;
+            aresta1->id = id;
+            aresta2->id = id;
+            aresta1->pVizinho = pVertice1;
+            aresta2->pVizinho = pVertice2;
+            if (aresta1 == NULL || aresta2 == NULL ){
+                return GRA_CondRetFaltouMemoria;
+            }
+            LIS_InserirElementoApos(pVertice1->pNode->arestas, aresta1);
+            LIS_InserirElementoApos(pVertice2->pNode->arestas, aresta2);
+            
             return GRA_CondRetOK;
         } 
         else {
@@ -404,7 +429,7 @@ static GRA_tpVertice* ObterOrigem (GRA_tppGrafo grafo, GRA_tpVertice* v);
 ***********************************************************************/
 
     //cria um vertice e sua estrutura interna
-    static GRA_tpVertice* CriarVertice(GRA_tppGrafo grafo, void* pValor) {
+    static GRA_tpVertice* CriarVertice(GRA_tppGrafo grafo, void* pValor, int id) {
             GRA_tpVertice* v = NULL;    
             tpNode* no = NULL;
             LIS_tppLista arestas = NULL;
@@ -430,7 +455,7 @@ static GRA_tpVertice* ObterOrigem (GRA_tppGrafo grafo, GRA_tpVertice* v);
             no->arestas = NULL;
             no->pValor = pValor; //Really?
             v->pNode = no;
-
+            v->id = id;
             return v;
     }
 

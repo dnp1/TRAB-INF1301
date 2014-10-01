@@ -23,3 +23,9 @@
 *.hex
 
 Makefile
+lib
+bin
+obj
+headers
+src
+

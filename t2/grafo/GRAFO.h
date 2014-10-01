@@ -238,7 +238,7 @@ GRA_tpCondRet GRA_ObterVizinhos (GRA_tppGrafo pGrafo, GRA_tppVertice pVertice, L
 *
 *  $ED Descrição da função
 *     Obtem uma origem arbitrária para cada uma das componentes conexas do grafo.
-*     Se o grafo não possuir vértices, retorna uma lista de tamanho 0
+*     Se o grafo não possuir vértices, não aloca a Lista, evitando a necessidade de desalocar
 *
 *  $EP Parâmetros
 *     pGrafo - ponteiro para o grafo aonde deve ser inserida a aresta
@@ -272,7 +272,7 @@ GRA_tpCondRet GRA_ObterOrigens ( GRA_tppGrafo pGrafo, LIS_tppLista * pLista);
 *
 ***********************************************************************/
 
-    GRA_tpCondRet GRA_ObterValor( GRA_tppGrafo pGrafo ,  GRA_tppVertice pVertice , void * pDado ) ;   
+    GRA_tpCondRet GRA_ObterValor( GRA_tppGrafo pGrafo ,  GRA_tppVertice pVertice , void** pDado ) ;   
 
 /***********************************************************************
 *
@@ -296,7 +296,7 @@ GRA_tpCondRet GRA_ObterOrigens ( GRA_tppGrafo pGrafo, LIS_tppLista * pLista);
   GRA_tpCondRet GRA_AlterarValor( GRA_tppGrafo pGrafo , GRA_tppVertice pVertice , void * pDado ) ;   
 
 
-
+#endif
 
 
 

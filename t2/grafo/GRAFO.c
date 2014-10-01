@@ -93,7 +93,7 @@
 
 static void RemoverAresta(GRA_tpVertice* u, GRA_tpVertice* v);
 
-GRA_tpVertice* CriarVertice(GRA_tppGrafo grafo, void* pValor);
+static GRA_tpVertice* CriarVertice(GRA_tppGrafo grafo, void* pValor);
 
 static int BFS(GRA_tpVertice* v, GRA_tpVertice* u);
 
@@ -199,26 +199,25 @@ static GRA_tpVertice* ObterOrigem (GRA_tppGrafo grafo, GRA_tpVertice* v);
 *  Função: GRA  &Excluir vertice 
 *  ****/
      
-    void GRA_ExcluirVertice (GRA_tpGrafo* g, GRA_tpVertice* v) {
+    GRA_tpCondRet GRA_ExcluirVertice (GRA_tppGrafo pGrafo, GRA_tppVertice pVertice) {
         GRA_tpVertice* vizinho = NULL;
         tpNode* no = NULL;
 
-        if (g->vertices == NULL) {
-            return;
+        if (pGrafo->vertices == NULL) {
+            return GRA_CondRetNaoEhVertice;
         }
-        if (LIS_ProcurarValor(g->vertices, v) != LIS_CondRetOK) { //Verifica se vertice pertence ao grafo.
-            return;
+        if (LIS_ProcurarValor(pGrafo->vertices, pVertice) != LIS_CondRetOK) { //Verifica se vertice pertence ao grafo.
+            return GRA_CondRetNaoEhVertice;
         }
         
-        no = LIS_ObterValor(g->vertices);
-        g->ExcluirValor(no->pValor);
+        no = LIS_ObterValor(pGrafo->vertices);
+        pGrafo->ExcluirValor(no->pValor);
 
         // arestas
         LIS_IrInicioLista(no->arestas);
-
         do {
             vizinho = LIS_ObterValor(no->arestas);
-            ExcluirAresta(g, v, vizinho); 
+            ExcluirAresta(pGrafo, pVertice, vizinho); 
         } 
         while (LIS_AvancarElementoCorrente(no->arestas, 1) != LIS_CondRetFimLista);
 
@@ -226,7 +225,9 @@ static GRA_tpVertice* ObterOrigem (GRA_tppGrafo grafo, GRA_tpVertice* v);
         LIS_DestruirLista(no->arestas);
         free(no);
 
-        LIS_ExcluirElemento(g->vertices);
+        LIS_ExcluirElemento(pGrafo->vertices);
+
+        return GRA_CondRetOK;
     } 
     /* Fim função: GRA  &Excluir vertice */
   
@@ -307,16 +308,47 @@ static GRA_tpVertice* ObterOrigem (GRA_tppGrafo grafo, GRA_tpVertice* v);
         
         if (pVertice == NULL) 
             return GRA_CondRetNaoEhVertice; 
+        if (LIS_ProcurarValor(pGrafo->vertices, pVertice) != LIS_CondRetOK) {
+        	return GRA_CondRetNaoEhVertice; 
+        }
+
         LIS_tppLista Ret_vizinhos = LIS_CriarLista(NULL);
         if (Ret_vizinhos == NULL)
             return GRA_CondRetFaltouMemoria;
-        LIS_tppLista vizinhos = pGrafo->corrente->pNode->arestas;
+        LIS_tppLista vizinhos = pVertice->pNode->arestas;
         LIS_IrInicioLista(vizinhos);
         do {
                     GRA_tppVertice no = LIS_ObterValor(vizinhos);
                     LIS_InserirElementoApos(Ret_vizinhos,no);
                 } while(LIS_AvancarElementoCorrente(vizinhos, 1) != LIS_CondRetFimLista);
         *pLista = Ret_vizinhos;
+
+        return GRA_CondRetOK;
+    }
+    /* Fim função: GRA  &Obter Vizinhos */
+
+/***************************************************************************
+*
+*  Função: GRA  &Obter Vizinhos
+*  ****/
+     
+    GRA_tpCondRet GRA_ObterOrigens( GRA_tppGrafo pGrafo, LIS_tppLista * pLista) {
+        LIS_tppLista Ret_origens = LIS_CriarLista(NULL);
+        
+        if (Ret_origens == NULL) {
+            return GRA_CondRetFaltouMemoria;
+        }
+
+        LIS_tppLista origens = pGrafo->componentes;
+
+        LIS_IrInicioLista(origens);
+        do {
+            GRA_tppVertice no = LIS_ObterValor(origens);
+            LIS_InserirElementoApos(Ret_origens,no);
+        } 
+        while(LIS_AvancarElementoCorrente(origens, 1) != LIS_CondRetFimLista);
+        
+        *pLista = Ret_origens;
 
         return GRA_CondRetOK;
     }
@@ -328,10 +360,10 @@ static GRA_tpVertice* ObterOrigem (GRA_tppGrafo grafo, GRA_tpVertice* v);
 *  Função: GRA  &Obter Valor
 *  ****/    
     
-    GRA_tpCondRet GRA_ObterValor( GRA_tppGrafo pGrafo , GRA_tppVertice* pVertice , void* pDado ) {
+    GRA_tpCondRet GRA_ObterValor( GRA_tppGrafo pGrafo , GRA_tppVertice pVertice , void** pDado ) {
 
         /* Verifica se vertice pertence ao grafo; */
-        if (LIS_ProcurarValor(pGrafo->vertices, pVertice1) != LIS_CondRetOK) {
+        if (LIS_ProcurarValor(pGrafo->vertices, pVertice) != LIS_CondRetOK) {
             return GRA_CondRetNaoEhVertice;
         }
         
@@ -347,10 +379,10 @@ static GRA_tpVertice* ObterOrigem (GRA_tppGrafo grafo, GRA_tpVertice* v);
 *  Função: GRA  &Alterar Valor
 *  ****/    
     
-    GRA_tpCondRet GRA_AlterarValor( GRA_tppGrafo pGrafo , GRA_tppVertice* pVertice , void* pDado ) {
+    GRA_tpCondRet GRA_AlterarValor( GRA_tppGrafo pGrafo , GRA_tppVertice pVertice , void* pDado ) {
 
         /* Verifica se vertice pertence ao grafo; */
-        if (LIS_ProcurarValor(pGrafo->vertices, pVertice1) != LIS_CondRetOK) {
+        if (LIS_ProcurarValor(pGrafo->vertices, pVertice) != LIS_CondRetOK) {
             return GRA_CondRetNaoEhVertice;
         }
         

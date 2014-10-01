@@ -31,7 +31,7 @@
    #define GRAFO_EXT extern
 #endif
 
-#include "../lista/LISTA.h"
+#include "LISTA.h"
 
 /***** Declarações exportadas pelo módulo *****/
 

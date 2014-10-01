@@ -130,9 +130,9 @@ typedef struct LIS_tagLista* LIS_tppLista ;
 *     Caso o grafo esteja vazio, insere o primeiro vértice do grafo.
 *
 *  $EP Parâmetros
-*     pGrafo - ponteiro para o grafo onde deve ser inserido o vertice
-*     pValor - ponteiro para o valor a ser armazenado no Nó(deve-se respeitar a homogeneidade do grafo para ter comportamento garantido)
-*     id - identificador do vertice
+*     pGrafo     - ponteiro para o grafo onde deve ser inserido o vertice
+*     pValor     - ponteiro para o valor a ser armazenado no Nó(deve-se respeitar a homogeneidade do grafo para ter comportamento garantido)
+*     idVertice  - identificador do vertice
 *
 *  $FV Valor retornado
 *     GRA_CondRetOK	- O vértice foi inserido com sucesso
@@ -140,7 +140,7 @@ typedef struct LIS_tagLista* LIS_tppLista ;
 *
 ***********************************************************************/
 
-   GRA_tpCondRet GRA_InserirVertice( GRA_tppGrafo pGrafo , void* pValor , int id) ;
+   GRA_tpCondRet GRA_InserirVertice( GRA_tppGrafo pGrafo , void* pValor , int idVertice) ;
    
 /***********************************************************************
 *
@@ -149,16 +149,20 @@ typedef struct LIS_tagLista* LIS_tppLista ;
 *  $ED Descrição da função
 *     Exclui o vértice explicitado do grafo.
 *     Caso o grafo esteja vazio, apenas retorna.
-*     Caso o vértice explicitado não pertença ao grafom apenas retorna.
+*     Caso o vértice explicitado não pertença ao grafo apenas retorna.
 *     Percorre a lista de vizinhos do vértice excluindo as respectivas arestas antes de liberar o vértice.
 *
 *  $EP Parâmetros
-*     pGrafo - ponteiro para o grafo onde deve ser inserido o vertice
-*     id - id do vértice a ser excluido
+*     pGrafo     - ponteiro para o grafo onde deve ser excluido o vértice
+*     idVertice  - id do vértice a ser excluido
+*
+*   $FV Valor retornado
+*     GRA_CondRetOK  - Exclusão feita com sucesso
+*     GRA_CondRetNaoEhVertice - Não há um vértice com essa id no grafo
 *
 ***********************************************************************/
 
-   GRA_tpCondRet GRA_ExcluirVertice( GRA_tppGrafo pGrafo , int id ) ;
+   GRA_tpCondRet GRA_ExcluirVertice( GRA_tppGrafo pGrafo , int idVertice ) ;
  
 /***********************************************************************
 *
@@ -166,24 +170,24 @@ typedef struct LIS_tagLista* LIS_tppLista ;
 *
 *  $ED Descrição da função
 *     Insere uma aresta entre 2 vértices.
-*     Se já existir uma aresta entre pVertice1 e pVertice2, erro de duplicata
+*     Se já existir uma aresta entre idVertice1 e idVertice2, erro de duplicata
 *     Se idVertice1 ou idVertice2 não existirem, erro de inexistencia 
 *
 *  $EP Parâmetros
-*     pGrafo - ponteiro para o grafo aonde deve ser inserida a aresta
+*     pGrafo     - ponteiro para o grafo aonde deve ser inserida a aresta
 *     idVertice1 - id de um dos vértices
 *     idVertice2 - id para o outro vértice
-*     id - identificador para a aresta
+*     idAresta   - identificador para a aresta
 *
 *  $FV Valor retornado
-*     GRA_CondRetOK  - Ambos u e v existiam e não hávia aresta entre eles
-*     GRA_CondRetEhVizinho - Já existe aresta entre u e v
-*     GRA_CondRetNaoEhVertice - u (ou v) não é um vértice do grafo
+*     GRA_CondRetOK  - Ambos os vértices existiam e não hávia aresta entre eles
+*     GRA_CondRetEhVizinho - Já existe aresta entre os vértices
+*     GRA_CondRetNaoEhVertice - idVertice1 (ou idVertice2) não são id's de um vértice do grafo
 *     GRA_CondRetFaltouMemoria - Não foi possível alocar memória para a aresta
 *
 ***********************************************************************/
 
-   GRA_tpCondRet GRA_InserirAresta( GRA_tppGrafo pGrafo , int idVertice1,int idVertice2, int id ) ;
+   GRA_tpCondRet GRA_InserirAresta( GRA_tppGrafo pGrafo , int idVertice1,int idVertice2, int idAresta ) ;
 
 /***********************************************************************
 *
@@ -191,22 +195,21 @@ typedef struct LIS_tagLista* LIS_tppLista ;
 *
 *  $ED Descrição da função
 *     Exclui uma aresta entre 2 vértices.
-*     Se não existir uma aresta entre pVertice1 e pVertice2, erro de inexistência
-*     Se pVertice1 ou pVertice2 não existirem, erro de inexistencia 
+*     Se não existir uma aresta entre idVertice1 e idVertice2, erro de inexistência
+*     Se idVertice1 ou idVertice2 não existirem, erro de inexistencia 
 *
 *  $EP Parâmetros
-*     pGrafo - ponteiro para o grafo aonde deve ser inserida a aresta
-*     id - id da aresta
+*     pGrafo    - ponteiro para o grafo aonde deve ser inserida a aresta
+*     idAresta  - id da aresta
 *
 *  $FV Valor retornado
-*     GRA_CondRetOK  - Ambos pVertice1 e pVertice2 existem e não há aresta entre eles
-*     GRA_CondRetNaoEhVertice - pVertice1 (ou pVertice2) não é um vértice do grafo
-*     GRA_CondRetNaoEhVizinho - Não existe aresta entre pVertice1 e pVertice2
-*     GRA_CondRetFaltouMemoria - Não foi possível alocar memória para a aresta
+*     GRA_CondRetOK  - Ambos os vértices existem e havia uma aresta entre eles
+*     GRA_CondRetNaoEhVertice - idVertice1 (ou idVertice2) não são id's de um vértice do grafo
+*     GRA_CondRetNaoEhVizinho - Não existe aresta entre os dois vértices
 *
 ***********************************************************************/
 
-   GRA_tpCondRet GRA_ExcluirAresta( GRA_tppGrafo pGrafo , int id ) ;
+   GRA_tpCondRet GRA_ExcluirAresta( GRA_tppGrafo pGrafo , int idAresta ) ;
 
 
 /***********************************************************************
@@ -214,23 +217,23 @@ typedef struct LIS_tagLista* LIS_tppLista ;
 *  $FC Função: GRA  &ObterVizinhos
 *
 *  $ED Descrição da função
-*     Obtem os vizinhos do vértice corrente
-*     Se pVertice não existir, erro de inexistencia
-*     Se pVertice não possuir vizinhos, retorna uma lista de tamanho 0
+*     Obtem os vizinhos do idVertice
+*     Se idVertice não existir, erro de inexistencia
+*     Se idVertice não possuir vizinhos, retorna uma lista de tamanho 0
 *
 *  $EP Parâmetros
-*     pGrafo - ponteiro para o grafo aonde deve ser inserida a aresta
-*     pListaVertice - ponteiro para a lista de vértices a ser preenchida com os vizinhos de pVertice
-*     id - id para o vertice
+*     pGrafo        - ponteiro para o grafo aonde deve ser buscada os vizinhos do idVertice
+*     pListaVertice - ponteiro para a lista de vértices a ser preenchida com os vizinhos do idVertice
+*     idVertice     - id para o vertice
 *
 *  $FV Valor retornado
 *     GRA_CondRetOK  - Retornou a lista
-*     GRA_CondRetNaoEhVertice - pVertice não é um vértice do grafo
-*     GRA_CondRetFaltouMemoria - Não foi possível alocar memória para a lista de vértices
+*     GRA_CondRetNaoEhVertice - idVertice não é um vértice do grafo
+*     GRA_CondRetFaltouMemoria - Não foi possível alocar memória para a lista de vértices vizinhos
 *
 ***********************************************************************/
 
-GRA_tpCondRet GRA_ObterVizinhos (GRA_tppGrafo pGrafo, int id, LIS_tppLista* pLista);
+GRA_tpCondRet GRA_ObterVizinhos (GRA_tppGrafo pGrafo, int idVertice, LIS_tppLista* pLista);
 
 /***********************************************************************
 *
@@ -241,9 +244,8 @@ GRA_tpCondRet GRA_ObterVizinhos (GRA_tppGrafo pGrafo, int id, LIS_tppLista* pLis
 *     Se o grafo não possuir vértices, não aloca a Lista, evitando a necessidade de desalocar
 *
 *  $EP Parâmetros
-*     pGrafo - ponteiro para o grafo aonde deve ser inserida a aresta
-*     pListaVertice - ponteiro para a lista de vértices a ser preenchida com os vizinhos de pVertice
-*   quantidade - ponteiro para a quantidade de vizinhos achados
+*     pGrafo        - ponteiro para o grafo aonde devem ser buscadas as origens
+*     pListaVertice - ponteiro para a lista de vértices a ser preenchida com as origens do grafo
 *
 *  $FV Valor retornado
 *     GRA_CondRetOK  - Retornou a lista
@@ -253,59 +255,38 @@ GRA_tpCondRet GRA_ObterVizinhos (GRA_tppGrafo pGrafo, int id, LIS_tppLista* pLis
 
 GRA_tpCondRet GRA_ObterOrigens ( GRA_tppGrafo pGrafo, LIS_tppLista * pLista);
 
-
-
-/***********************************************************************
-*
-*  $FC Função: GRA  &Obter Corrente
-*
-*  $ED Descrição da função
-*     Obtem o valor - referência para um valor - do vértice corrente.
-*
-*  $EP Parâmetros
-*     pGrafo - ponteiro para o grafo
-*     pDado - ponteiro para o dado a ser obtido
-*
-*  $FV Valor retornado
-*     GRA_CondRetOK	- O vértice teve o valor alterado com sucesso
-*     GRA_CondRetGrafoVazio - o grafo está vazio, não há corrente
-*
-***********************************************************************/
-
-    GRA_tpCondRet GRA_ObterValorCorrente( GRA_tppGrafo pGrafo , void** pDado ) ;   
-
 /***********************************************************************
 *
 *  $FC Função: GRA  &Obter valor
 *
 *  $ED Descrição da função
-*     Obtem o valor - referência para um valor - do vértice explicitado.
+*     Obtem o valor - referência para um valor - do idVertice.
 *
 *  $EP Parâmetros
-*     pGrafo - ponteiro para o grafo
-*     pVertice - ponteiro para o vértice explicitado
-*     pDado - ponteiro para o dado a ser obtido
+*     pGrafo    - ponteiro para o grafo
+*     idVertice - id do vértice
+*     pDado     - ponteiro para o dado a ser obtido
 *
 *  $FV Valor retornado
-*     GRA_CondRetOK	- O vértice teve o valor alterado com sucesso
-*     GRA_CondRetNaoEhVertice - o vértice explicitado não pertence ao grafo
+*     GRA_CondRetOK	- idVertice teve o valor alterado com sucesso
+*     GRA_CondRetNaoEhVertice - idVertice explicitado não pertence ao grafo
 *
 ***********************************************************************/
 
-    GRA_tpCondRet GRA_ObterValor( GRA_tppGrafo pGrafo ,  int id , void** pDado ) ;   
+    GRA_tpCondRet GRA_ObterValor( GRA_tppGrafo pGrafo , int idVertice , void** pDado ) ;   
 
 /***********************************************************************
 *
 *  $FC Função: GRA  &Alterar valor
 *
 *  $ED Descrição da função
-*     Altera o valor - referência pra um valor -  no vértice explicitado.
+*     Altera o valor - referência para um valor -  do idVertice.
 *     A função não libera memória do valor anterior. É necessário obtê-lo e limpar manulamente
 *
 *  $EP Parâmetros
-*     pGrafo - ponteiro para o grafo
-*     id - id o vértice explicitado
-*     pDado - ponteiro para o dado a ser inserido
+*     pGrafo   - ponteiro para o grafo
+*     id       - id do vértice
+*     pDado    - ponteiro para o dado a ser alterado
 *
 *  $FV Valor retornado
 *     GRA_CondRetOK	- O vértice teve o valor alterado com sucesso
@@ -313,23 +294,20 @@ GRA_tpCondRet GRA_ObterOrigens ( GRA_tppGrafo pGrafo, LIS_tppLista * pLista);
 *
 ***********************************************************************/
 
-  GRA_tpCondRet GRA_AlterarValor( GRA_tppGrafo pGrafo , int id , void * pDado ) ;   
-
-
+  GRA_tpCondRet GRA_AlterarValor( GRA_tppGrafo pGrafo , int id , void* pDado ) ;   
 
 /***********************************************************************
 *
 *  $FC Função: GRA  &Buscar caminho
 *
 *  $ED Descrição da função
-*     Altera o valor - referência pra um valor -  no vértice explicitado.
-*     A função não libera memória do valor anterior. É necessário obtê-lo e limpar manulamente
+*     Retorna um caminho - lista de idVertice - traçando um caminho do vértice origem até o vértice destino.
 *
 *  $EP Parâmetros
-*     pGrafo - ponteiro para o grafo
-*     idVerticeOrigem - id do vértice origem
-*     idVerticeDestino - id do vértice destino
-*     pLista - ponteiro para a lista de ids que armazenara o caminho
+*     pGrafo            - ponteiro para o grafo
+*     idVerticeOrigem   - id do vértice origem
+*     idVerticeDestino  - id do vértice destino
+*     pLista            - ponteiro para a lista de ids que armazenara o caminho
 *
 *  $FV Valor retornado
 *     GRA_CondRetOK	- O caminho foi preenchido com sucesso

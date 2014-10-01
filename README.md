@@ -8,3 +8,7 @@ Membros do Grupo:
 * Danilo Pereira
 * Eduardo Verdeja
 * Leonardo Kaplan
+
+Hipóteses:
+Os identificadores são únicos.
+O grafo sempre existe.

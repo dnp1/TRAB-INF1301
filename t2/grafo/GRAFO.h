@@ -341,6 +341,202 @@ GRA_tpCondRet GRA_ObterOrigens ( GRA_tppGrafo pGrafo, LIS_tppLista * pLista);
   GRA_tpCondRet GRA_BuscarCaminho( GRA_tppGrafo pGrafo , int idVerticeOrigem , int idVerticeDestino,   LIS_tppLista * pLista ) ;   
 
 
+/***********************************************************************
+*
+*  $FC Função: GRA  &Inserir vizinho
+*
+*  $ED Descrição da função
+*     Insere um novo vizinho com o id passado para o corrente.
+*
+*  $EP Parâmetros
+*     pGrafo - ponteiro para o grafo onde deve ser inserido o vertice
+*     pValor - ponteiro para o valor a ser armazenado no Nó(deve-se respeitar a homogeneidade do grafo para ter comportamento garantido)
+*     idVertice - identificador do vertice
+*
+*  $FV Valor retornado
+*     GRA_CondRetOK	- O vértice foi inserido com sucesso
+*     GRA_CondRetFaltouMemoria - Não foi possível alocar memória para o vértice
+*     GRA_CondRetGrafoVazio - O grafo esta vazio, não há corrente
+*
+***********************************************************************/
+
+   GRA_tpCondRet GRA_InserirVizinhoCorrente( GRA_tppGrafo pGrafo , void* pValor , int idVertice) ;
+   
+
+/***********************************************************************
+*
+*  $FC Função: GRA  &Excluir Vizinho Corrente
+*
+*  $ED Descrição da função
+*     Exclui o vizinho do corrente com id passado.
+*
+*  $EP Parâmetros
+*     pGrafo - ponteiro para o grafo aonde deve ser inserida a aresta
+*     id - identificador do vertice
+*
+*  $FV Valor retornado
+*     GRA_CondRetOK  - Operação efetuada com sucesso
+*     GRA_CondRetNaoEhVertice - idVertice não é um vértice do grafo
+*     GRA_CondRetNaoEhVizinho - Não existe aresta entre o corrente e idVertice
+*     GRA_CondRetFaltouMemoria - Não foi possível alocar memória para a aresta
+*     GRA_CondRetGrafoVazio - O grafo esta vazio, não há corrente
+*
+***********************************************************************/
+
+   GRA_tpCondRet GRA_ExcluirVizinhoCorrente( GRA_tppGrafo pGrafo , int idVertice ) ;
+
+
+/***********************************************************************
+*
+*  $FC Função: GRA  &ObterVizinhosCorrente
+*
+*  $ED Descrição da função
+*     Obtem os vizinhos do vértice corrente
+*     Se o corrente não possuir vizinhos, retorna uma lista de tamanho 0
+*
+*  $EP Parâmetros
+*     pGrafo - ponteiro para o grafo aonde deve ser inserida a aresta
+*     pListaVertice - ponteiro para a lista de vértices a ser preenchida com os vizinhos de pVertice
+*
+*  $FV Valor retornado
+*     GRA_CondRetOK  - Retornou a lista
+*     GRA_CondRetGrafoVazio - O grafo esta vazio, não há corrente
+*     GRA_CondRetFaltouMemoria - Não foi possível alocar memória para a lista de vértices
+*
+***********************************************************************/
+
+GRA_tpCondRet GRA_ObterVizinhosCorrente(GRA_tppGrafo pGrafo, LIS_tppLista* pLista);
+
+
+
+/***********************************************************************
+*
+*  $FC Função: GRA  &Obter Corrente
+*
+*  $ED Descrição da função
+*     Obtem o valor - referência para um valor - do vértice corrente.
+*
+*  $EP Parâmetros
+*     pGrafo - ponteiro para o grafo
+*     pDado - ponteiro para o dado a ser obtido
+*
+*  $FV Valor retornado
+*     GRA_CondRetOK	- O vértice teve o valor alterado com sucesso
+*     GRA_CondRetGrafoVazio - o grafo está vazio, não há corrente
+*
+***********************************************************************/
+
+    GRA_tpCondRet GRA_ObterValorCorrente( GRA_tppGrafo pGrafo , void** pDado ) ;   
+
+/***********************************************************************
+*
+*  $FC Função: GRA  &Alterar valor Corrente
+*
+*  $ED Descrição da função
+*     Altera o valor - referência pra um valor -  no vértice corrente.
+*     A função não libera memória do valor anterior. É necessário obtê-lo e limpar manulamente
+*
+*  $EP Parâmetros
+*     pGrafo - ponteiro para o grafo
+*     pDado - ponteiro para o dado a ser inserido
+*
+*  $FV Valor retornado
+*     GRA_CondRetOK	- O vértice corrente teve o valor alterado com sucesso
+*     GRA_CondRetGrafoVazio - o grafo está vazio, não há corrente
+*
+***********************************************************************/
+
+  GRA_tpCondRet GRA_AlterarValorCorrente( GRA_tppGrafo pGrafo , void * pDado ) ;   
+
+
+
+
+/***********************************************************************
+*
+*  $FC Função: GRA  &Buscar caminho corrente
+*
+*  $ED Descrição da função
+*     Retorna um caminho - lista de int idVertice - traçando um caminho do corrente ao vertice dado
+*   
+*  $EP Parâmetros
+*     pGrafo - ponteiro para o grafo
+*     idVerticeDestino - id do vértice destino
+*     pLista - ponteiro para a lista de ids que armazenara o caminho
+*
+*  $FV Valor retornado
+*     GRA_CondRetOK	- O caminho foi preenchido com sucesso
+*     GRA_CondRetNaoEhVertice - ao menos um dos vértices explicitados não pertencem ao grafo
+*     GRA_CondRetNaoEhConexo - não ha caminho entre os dois vertices dados
+*     GRA_CondRetFaltouMemoria - não há espaço para preencher a lista
+*     GRA_CondRetGrafoVazio - o grafo está vazio, não há corrente
+***********************************************************************/
+
+  GRA_tpCondRet GRA_BuscarCaminhoCorrente( GRA_tppGrafo pGrafo ,  int idVerticeDestino,   LIS_tppLista * pLista ) ;   
+
+/***********************************************************************
+*
+*  $FC Função: GRA  &Buscar caminho corrente
+*
+*  $ED Descrição da função
+*     Retorna um caminho - lista de int idVertice - traçando um caminho do vertice dado ao corrente
+*   
+*  $EP Parâmetros
+*     pGrafo - ponteiro para o grafo
+*     idVerticeOrigem - id do vértice origem
+*     pLista - ponteiro para a lista de ids que armazenara o caminho
+*
+*  $FV Valor retornado
+*     GRA_CondRetOK	- O caminho foi preenchido com sucesso
+*     GRA_CondRetNaoEhVertice - ao menos um dos vértices explicitados não pertencem ao grafo
+*     GRA_CondRetNaoEhConexo - não ha caminho entre os dois vertices dados
+*     GRA_CondRetFaltouMemoria - não há espaço para preencher a lista
+*     GRA_CondRetGrafoVazio - o grafo está vazio, não há corrente
+***********************************************************************/
+
+  GRA_tpCondRet GRA_BuscarCaminhoAteCorrente( GRA_tppGrafo pGrafo , int idVerticeOrigem,   LIS_tppLista * pLista ) ;   
+
+/***********************************************************************
+*
+*  $FC Função: GRA  &Ir vizinho corrente
+*
+*  $ED Descrição da função
+*     muda o corrente para o vizinho dado
+*   
+*  $EP Parâmetros
+*     pGrafo - ponteiro para o grafo
+*     idVertice - id do vértice vizinho ao corrente que será o novo corrente
+*
+*  $FV Valor retornado
+*     GRA_CondRetOK	- O caminho foi preenchido com sucesso
+*     GRA_CondRetNaoEhVertice - ao menos um dos vértices explicitados não pertencem ao grafo
+*     GRA_CondRetNaoEhvizinho - idVertice nao eh vizinho do corrente
+*     GRA_CondRetGrafoVazio - o grafo está vazio, não há corrente
+***********************************************************************/
+
+  GRA_tpCondRet GRA_IrVizinhoCorrente( GRA_tppGrafo pGrafo , int idVertice ) ;   
+
+/***********************************************************************
+*
+*  $FC Função: GRA  &Ir corrente
+*
+*  $ED Descrição da função
+*     muda o corrente para o vertice dado.
+*     esta é a única maneira de mudar de componente conexa. 
+*   
+*  $EP Parâmetros
+*     pGrafo - ponteiro para o grafo
+*     idVertice - id do vértice que será o novo corrente
+*
+*  $FV Valor retornado
+*     GRA_CondRetOK	- O caminho foi preenchido com sucesso
+*     GRA_CondRetNaoEhVertice - o vértice explicitado não pertence ao grafo
+*     GRA_CondRetGrafoVazio - o grafo está vazio, não há corrente
+***********************************************************************/
+
+  GRA_tpCondRet GRA_IrCorrente( GRA_tppGrafo pGrafo , int idVertice ) ;   
+
+
+
 #endif
 
 

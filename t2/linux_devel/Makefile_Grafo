@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-I. -I../lib -I../headers -std=c99 -Wall -O0 -fdiagnostics-color=auto -fpermissive
+CFLAGS=-I. -I../headers -L../lib -O0 -fpermissive
 +CFLAGS=-Wall
 
 all: teste-grafo

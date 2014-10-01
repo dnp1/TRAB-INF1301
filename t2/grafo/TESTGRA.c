@@ -39,10 +39,9 @@ static const char EXC_VERT_CMD            [ ] = "=excvert"        ;
 static const char INS_ARESTA_CMD          [ ] = "=insaresta"      ;
 static const char EXC_ARESTA_CMD          [ ] = "=excaresta"      ;
 static const char OBTER_VIZ_CMD           [ ] = "=obterviz"       ;
-
-static const char ACESS_VERT_CMD          [ ] = "=acessvert"      ;
-static const char ACESS_CORR_CMD          [ ] = "=acesscorr"      ;
-static const char EXC_VERT_CORR_CMD       [ ] = "=excvertcorr"    ;
+static const char OBTER_ORIG_CMD          [ ] = "=obterorig"      ;
+static const char OBTER_VAL_CMD           [ ] = "=obterval"       ;
+static const char ALT_VAL_CMD             [ ] = "=altval"         ;
 
 int estaInicializado = 0 ;
 
@@ -78,10 +77,9 @@ GRA_tppGrafo vtRefGrafos[ DIM_VT_GRAFO ] ;
 *     =insaresta              inxGrafo  v1  v2  CondRetEsp
 *     =excaresta              inxGrafo  v1  v2  CondRetEsp
 *     =obterviz               inxGrafo  v1  CondRetEsp
-
-*     =acessvert              inxGrafo  v1  string  CondRetPonteiro
-*     =acesscorr              inxGrafo  string  CondRetPonteiro
-*     =excvertcorr            inxGrafo  CondRetEsp
+*     =obterorig              inxGrafo  CondRetEsp
+*     =obterval               inxGrafo  v1  CondRetPonteiro
+*     =altval                 inxGrafo  v1  string  CondRetPonteiro
 *
 ***********************************************************************/
 #define TAMANHO 256
@@ -95,14 +93,13 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
           memset(vertices,0,TAMANHO*sizeof(GRA_TppVertice));      
           sujo = 0;
       }
-      GRA_tpCondRet CondRetObtido   = GRA_CondRetOK ;
+      GRA_tpCondRet CondRetObtida   = GRA_CondRetOK ;
       GRA_tpCondRet CondRetEsperada = GRA_CondRetFaltouMemoria ;
                                       /* inicializa para qualquer coisa */
+      GRA_tpCondRet CondRetTemp = GRA_CondRetFaltouMemoria ;
+                                      /* inicializa para qualquer coisa */
 
-      char ValorEsperado = '?'  ;
-      char ValorObtido   = '!'  ;
-      char ValorDado     = '\0' ;
-      char StringDado[  DIM_VALOR ] ;
+      char stringDado[  DIM_VALOR ] ;
       char * pDado ;
 
       int  NumLidos      = -1 ;
@@ -110,8 +107,6 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
 
       int i ;
       int id, _id;
-
-      TST_tpCondRet Ret ;
 
       #ifdef _DEBUG
          int  IntEsperado   = -1 ;
@@ -183,16 +178,16 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
 
          else if ( strcmp( ComandoTeste , INS_VERT_CMD ) == 0 )
          {
-            NumLidos = LER_LerParametros( "iisi" , &inxGrafo , &id, &stringDado, &CondRetEsperada ) ;
+            NumLidos = LER_LerParametros( "iisi" , &inxGrafo , &id, stringDado, &CondRetEsperada ) ;
             if ( ( NumLidos != 4 ) || !VerificarInx( inxGrafo ) || !VerificarId(id))
             {
                return TST_CondRetParm ;
             } /* if */
             
             vertices[id] = (GRA_tppVertice *)malloc(sizeof(GRA_tppVertice)); 
-            CondRetObtido = GRA_InserirVertice( vtRefGrafo[ inxGrafo ] , (vertices+id), stringDado);
+            CondRetObtida = GRA_InserirVertice( vtRefGrafo[ inxGrafo ] , (vertices+id), stringDado);
             
-            return TST_CompararInt( CondRetEsperada , CondRetObtido ,
+            return TST_CompararInt( CondRetEsperada , CondRetObtida ,
                                     "Retorno errado ao inserir vértice." );
             
          } /* fim ativa: Testar GRA Inserir vértice */
@@ -207,10 +202,10 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
                return TST_CondRetParm ;
             } /* if */
              
-            CondRetObtido = GRA_ExcluirVertice( vtRefGrafo[ inxGrafo ] , (vertices+id) );
+            CondRetObtida = GRA_ExcluirVertice( vtRefGrafo[ inxGrafo ] , (vertices+id) );
             vertice[id] = 0;
             
-            return TST_CompararInt( CondRetEsperada , CondRetObtido ,
+            return TST_CompararInt( CondRetEsperada , CondRetObtida ,
                                     "Retorno errado ao excluir vértice." );
             
          } /* fim ativa: Testar GRA Excluir vértice */
@@ -225,9 +220,9 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
                return TST_CondRetParm ;
             } /* if */
              
-            CondRetObtido = GRA_InserirAresta( vtRefGrafo[ inxGrafo ] , (vertices+id), (vertices+_id) );
+            CondRetObtida = GRA_InserirAresta( vtRefGrafo[ inxGrafo ] , (vertices+id), (vertices+_id) );
             
-            return TST_CompararInt( CondRetEsperada , CondRetObtido ,
+            return TST_CompararInt( CondRetEsperada , CondRetObtida ,
                                     "Retorno errado ao inserir aresta." );
             
          } /* fim ativa: Testar GRA Inserir Aresta */
@@ -242,9 +237,9 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
                return TST_CondRetParm ;
             } /* if */
              
-            CondRetObtido = GRA_ExcluirAresta( vtRefGrafo[ inxGrafo ] , (vertices+id), (vertices+_id) );
+            CondRetObtida = GRA_ExcluirAresta( vtRefGrafo[ inxGrafo ] , (vertices+id), (vertices+_id) );
             
-            return TST_CompararInt( CondRetEsperada , CondRetObtido ,
+            return TST_CompararInt( CondRetEsperada , CondRetObtida ,
                                     "Retorno errado ao excluir aresta." );
             
          } /* fim ativa: Testar GRA Excluir Aresta */
@@ -261,10 +256,10 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
             
             LIS_tppLista vizinhos = LIS_CriarLista(NULL); 
             
-            CondRetObtido = GRA_ObterVizinhos( vtRefGrafo[ inxGrafo ] , (vertices+id), &vizinhos);
+            CondRetObtida = GRA_ObterVizinhos( vtRefGrafo[ inxGrafo ] , (vertices+id), &vizinhos);
             LIS_DestruirLista(vizinhos);
             
-            return TST_CompararInt( CondRetEsperada , CondRetObtido ,
+            return TST_CompararInt( CondRetEsperada , CondRetObtida ,
                                     "Retorno errado ao obter vizinhos." );
             
          } /* fim ativa: Testar GRA Obter vizinhos */
@@ -281,17 +276,17 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
             
             LIS_tppLista origens = LIS_CriarLista(NULL); 
             
-            CondRetObtido = GRA_ObterOrigens( vtRefGrafo[ inxGrafo ] , &origens);
+            CondRetObtida = GRA_ObterOrigens( vtRefGrafo[ inxGrafo ] , &origens);
             LIS_DestruirLista(origens);
             
-            return TST_CompararInt( CondRetEsperada , CondRetObtido ,
+            return TST_CompararInt( CondRetEsperada , CondRetObtida ,
                                     "Retorno errado ao obter origens." );
             
          } /* fim ativa: Testar GRA Obter origens */
          
          /* Testar GRA Obter valor */
          
-         else if ( strcmp( ComandoTeste , OBTER_VALOR_CMD ) == 0 )
+         else if ( strcmp( ComandoTeste , OBTER_VAL_CMD ) == 0 )
          {
             NumLidos = LER_LerParametros( "iii" , &inxGrafo , &id, &CondRetEsperada ) ;
             if ( ( NumLidos != 3 ) || !VerificarInx( inxGrafo ) || !VerificarId(id))
@@ -299,12 +294,52 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
                return TST_CondRetParm ;
             } /* if */
             
-            CondRetObtido = GRA_ObterValor( vtRefGrafo[ inxGrafo ], (vertices+id), &stringDado);
+            CondRetObtida = GRA_ObterValor( vtRefGrafo[ inxGrafo ], (vertices+id), &stringDado);
             
-            return TST_CompararInt( CondRetEsperada , CondRetObtido ,
+            return TST_CompararInt( CondRetEsperada , CondRetObtida ,
                                     "Retorno errado ao obter valor." );
             
-         } /* fim ativa: Testar GRA Obter valor */
+         } /* fim ativa: Testar GRA Obter valor */    
+         
+         /* Testar GRA Alterar valor */
+         
+         else if ( strcmp( ComandoTeste , ALT_VAL_CMD ) == 0 )
+         {
+            NumLidos = LER_LerParametros( "iisi" , &inxGrafo , &id, stringDado,  &CondRetEsperada ) ;
+            if ( ( NumLidos != 4 ) || !VerificarInx( inxGrafo ) || !VerificarId(id))
+            {
+               return TST_CondRetParm ;
+            } /* if */
+     
+            pDado = ( char * ) malloc( strlen( stringDado ) + 1 ) ;
+            if ( pDado == NULL )
+            {
+               return TST_CondRetMemoria ;
+            } /* if */
+
+            strcpy( pDado , stringDado ) ;
+            
+            CondRetObtida = GRA_AlterarValor( vtRefGrafo[ inxGrafo ], (vertices+id), &pDado ) ;
+            
+            if ( CondRetObtida != LIS_CondRetOK )
+            {
+               free( pDado ) ;
+            } /* if */
+            
+            CondRetTemp = GRA_ObterValor ( vtRefGrafo[ inxGrafo ], (vertices+id), stringDado ) ;
+            
+            if ( strcmp ( pDado, stringDado) != 0 )
+            {
+                free ( pDado ) ;
+                
+                return TST_CompararPonteiro ( pDado , stringDado , 
+                                           "O valor obtido é diferente do alterado" ) ;
+            } /* if */                               
+            
+            return TST_CompararInt( CondRetEsperada , CondRetObtida ,
+                                    "Retorno errado ao alterar valor." );
+            
+         } /* fim ativa: Testar GRA Alterar valor */
          
 /*****  Código das funções encapsuladas no módulo  *****/
 

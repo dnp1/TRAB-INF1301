@@ -24,12 +24,12 @@
 #include    <stdio.h>
 #include    <malloc.h>
 
-#include    "TST_Espc.h"
+#include    "TST_ESPC.H"
 
-#include    "Generico.h"
-#include    "LerParm.h"
+#include    "GENERICO.H"
+#include    "LERPARM.H"
 
-#include    "Lista.h"
+#include    "LISTA.h"
 
 
 static const char RESET_LISTA_CMD         [ ] = "=resetteste"     ;
@@ -98,9 +98,6 @@ LIS_tppLista   vtListas[ DIM_VT_LISTA ] ;
           numElem    = -1 ;
 
       LIS_tpCondRet CondRetObtida , CondRetEsperada;
-
-      char   CharDado = '\0' ;
-
       char   StringDado[  DIM_VALOR ] ;
       char * pDado ;
 
@@ -206,14 +203,14 @@ LIS_tppLista   vtListas[ DIM_VT_LISTA ] ;
             strcpy( pDado , StringDado ) ;
 
 
-            CondRet = LIS_InserirElementoAntes( vtListas[ inxLista ] , pDado ) ;
+            CondRetObtida = LIS_InserirElementoAntes( vtListas[ inxLista ] , pDado ) ;
 
-            if ( CondRet != LIS_CondRetOK )
+            if ( CondRetObtida != LIS_CondRetOK )
             {
                free( pDado ) ;
             } /* if */
 
-            return TST_CompararInt( CondRetEsperada  , CondRet ,
+            return TST_CompararInt( CondRetEsperada  , CondRetObtida ,
                      "Condicao de retorno errada ao inserir antes."                   ) ;
 
          } /* fim ativa: Testar inserir elemento antes */
@@ -288,11 +285,6 @@ LIS_tppLista   vtListas[ DIM_VT_LISTA ] ;
 
             pDado = ( char * ) LIS_ObterValor( vtListas[ inxLista ] ) ;
 
-            if ( ValEsp == 0 )
-            {
-               return TST_CompararPonteiroNulo( 0 , pDado ,
-                         "Valor não deveria existir." ) ;
-            } /* if */
 
             if ( pDado == NULL )
             {
@@ -318,7 +310,7 @@ LIS_tppLista   vtListas[ DIM_VT_LISTA ] ;
                return TST_CondRetParm ;
             } /* if */
 
-            IrInicioLista( vtListas[ inxLista ] ) ;
+            LIS_IrInicioLista( vtListas[ inxLista ] ) ;
 
             return TST_CondRetOK ;
 
@@ -337,7 +329,7 @@ LIS_tppLista   vtListas[ DIM_VT_LISTA ] ;
                return TST_CondRetParm ;
             } /* if */
 
-            IrFinalLista( vtListas[ inxLista ] ) ;
+            LIS_IrFinalLista( vtListas[ inxLista ] ) ;
 
             return TST_CondRetOK ;
 

@@ -22,13 +22,13 @@
 #include    <stdio.h>
 #include    <malloc.h>
 
-#include    "../headers/TST_ESPC.H"
+#include    "TST_ESPC.H"
 
-#include    "../headers/GENERICO.H"
-#include    "../headers/LERPARM.H"
+#include    "GENERICO.H"
+#include    "LERPARM.H"
 
 #include    "GRAFO.h"
-#include    "../lista/LISTA.h"
+#include    "LISTA.h"
 
 
 static const char RESET_GRAFO_CMD         [ ] = "=resetteste"     ;

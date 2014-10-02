@@ -441,6 +441,24 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
 
     }
     /* Fim função: GRA  &Obter Valor */   
+
+
+/***************************************************************************
+*
+*  Função: GRA  &Obter Valor Corrente
+*  ****/    
+    
+    GRA_tpCondRet GRA_ObterValorCorrente( GRA_tppGrafo pGrafo, void* pDado ) {
+
+        /* Verifica se vertice pertence ao grafo; */
+        if (pGrafo->corrente == -1) {
+            return GRA_CondRetGrafoVazio;
+        }
+      
+        return GRA_ObterValor(pGrafo, pGrafo->corrente, pDado);
+
+    }
+    /* Fim função: GRA  &Obter Valor Corrente */
     
     
 /***************************************************************************
@@ -479,7 +497,50 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         return GRA_AlterarValor(pGrafo, pGrafo->corrente, pDado);
 
     }
-    /* Fim função: GRA  &Alterar Valor */
+    /* Fim função: GRA  &Alterar Valor Corrente*/
+
+
+/***************************************************************************
+*
+*  Função: GRA  &Excluir Vizinho Corrente
+*  ****/
+     
+    GRA_tpCondRet GRA_ExcluirVizinhoCorrente (GRA_tppGrafo pGrafo, int idVertice) {
+        
+        tpAresta* vizinho = NULL;
+        tpNode* no = NULL;
+        tpVertice * pVertice = get_by_id(idVertice);
+        int achou = 0;
+        
+        if(pVertice == NULL)
+            return GRA_CondRetNaoEhVertice;
+        
+        achou = EhVizinho( pVertice , get_by_id( pGrafo->corrente ) );
+        
+        if(!achou) 
+            return GRA_CondRetNaoEhVizinho ;
+        else{     
+            no = pVertice->pNode;
+            pGrafo->ExcluirValor(no->pValor);
+
+            // arestas
+            LIS_IrInicioLista(no->arestas);
+            do {
+                vizinho = (tpAresta *)LIS_ObterValor(no->arestas);
+                GRA_ExcluirAresta(pGrafo, vizinho->id); 
+            } 
+            while (LIS_AvancarElementoCorrente(no->arestas, 1) != LIS_CondRetFimLista);
+
+
+            LIS_DestruirLista(no->arestas);
+            free(no);
+
+            LIS_ExcluirElemento(pGrafo->vertices);
+
+            return GRA_CondRetOK;
+        }
+    } 
+    /* Fim função: GRA  &Excluir vizinho corrente */
 
 
 /***************************************************************************
@@ -504,12 +565,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         return GRA_CondRetOK;
 
     }
-    /* Fim função: GRA  &Alterar Valor */
-
-    
-
-    
-
+    /* Fim função: GRA  &Ir Vizinho Corrente */
 
     
 /*****  Código das funções encapsuladas no módulo  *****/

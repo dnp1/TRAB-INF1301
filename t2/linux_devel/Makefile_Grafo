@@ -9,7 +9,7 @@ grafo:
 	$(CC) $(CFLAGS) -c -x c++ GRAFO.c -o ../obj/GRAFO.o
 teste-grafo: lista grafo
 	$(CC) $(CFLAGS) -c -x c++ TESTGRA.c -o ../obj/TESTGRA.o
-	$(CC) -o ../bin/teste_grafo.exe -lArcaboucoTeste LISTA.o GRAFO.o TESTGRA.o
+	$(CC) $(CFLAGS) -o ../bin/teste_grafo.exe -lArcaboucoTeste LISTA.o GRAFO.o TESTGRA.o
 clean:
 	rm *.o
 	rm *.exe

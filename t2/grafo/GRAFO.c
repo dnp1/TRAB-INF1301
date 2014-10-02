@@ -594,15 +594,15 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
     /* Fim função: GRA  &Mudar Corrente */
 
 
-
 /***************************************************************************
 *
 *  Função: GRA  &Buscar caminho corrente
 *  ****/    
-    
+
       GRA_tpCondRet GRA_BuscarCaminhoCorrente( GRA_tppGrafo pGrafo , int idVerticeDestino, LIS_tppLista * pLista ) {
 
         /* Verifica se vertice pertence ao grafo; */
+       
         if (pGrafo->corrente == -1) {
             return GRA_CondRetGrafoVazio;
         }
@@ -623,8 +623,8 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         if (caminho == NULL)
             return GRA_CondRetFaltouMemoria;
         
-        tpVertice * v = get_by_id(idVerticeOrigem);
-        tpVertice * u = get_by_id(idVerticeDestino);
+        tpVertice * v = get_by_id(pGrafo,idVerticeOrigem);
+        tpVertice * u = get_by_id(pGrafo,idVerticeDestino);
         if(v == NULL || u == NULL)
             return GRA_CondRetNaoEhVertice; 
         
@@ -677,7 +677,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         return achou;
     }
     /* Fim função: GRA  &Buscar caminho */
-    
+   
     
 /*****  Código das funções encapsuladas no módulo  *****/
 

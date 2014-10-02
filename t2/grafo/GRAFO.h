@@ -303,6 +303,7 @@ GRA_tpCondRet GRA_ObterOrigens ( GRA_tppGrafo pGrafo, LIS_tppLista * pLista);
 *
 *  $ED Descrição da função
 *     Retorna um caminho - lista de idVertice - traçando um caminho do vértice origem até o vértice destino.
+*     O caminho retornado é invertido - para a visualização correta deve-se ler a lista de trás pra frente.
 *
 *  $EP Parâmetros
 *     pGrafo            - ponteiro para o grafo
@@ -433,7 +434,8 @@ GRA_tpCondRet GRA_ObterVizinhosCorrente(GRA_tppGrafo pGrafo, LIS_tppLista* pList
 *
 *  $ED Descrição da função
 *     Retorna um caminho - lista de int idVertice - traçando um caminho do corrente ao vertice dado
-*   
+*     O caminho retornado é invertido - para a visualização correta deve-se ler a lista de trás pra frente.
+
 *  $EP Parâmetros
 *     pGrafo - ponteiro para o grafo
 *     idVerticeDestino - id do vértice destino

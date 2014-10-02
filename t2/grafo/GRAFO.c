@@ -121,7 +121,13 @@ static tpVertice * ObterOrigem (GRA_tppGrafo grafo, tpVertice* v);
 
 static tpVertice * get_by_id(int idVertice);
 
-static tpVertice * get_by_id(int idVertice);
+int Ehvizinho(tpVertice * v, tpVertice * u);
+
+void get_pair_by_id(int idAresta, tpVertice * u, tpVertice * v);
+
+tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
+
+int Ehvizinho(tpVertice * v, tpVertice * u);
 /*****  Código das funções exportadas pelo módulo  *****/
 
 /***************************************************************************
@@ -384,7 +390,7 @@ static tpVertice * get_by_id(int idVertice);
         if (pGrafo->corrente == -1 ) 
             return GRA_CondRetGrafoVazio; 
         
-        return ObterVizinhos(pGrafo, pGrafo->corrente, pLista);
+        return GRA_ObterVizinhos(pGrafo, pGrafo->corrente, pLista);
     }
     /* Fim função: GRA  &Obter Vizinhos Corrente*/
 
@@ -615,7 +621,7 @@ tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v){
     static void RemoverAresta(tpVertice* u, tpVertice* v) {
         LIS_tppLista vizinhos;
         vizinhos = u->pNode->arestas;
-        tpAresta * aresta_v = get_edge_by_vertex(vizinhos,v) 
+        tpAresta * aresta_v = get_edge_by_vertex(vizinhos,v); 
         LIS_ProcurarValor(vizinhos, aresta_v );
         LIS_ExcluirElemento(vizinhos);
     }
@@ -662,7 +668,7 @@ tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v){
         while (LIS_NumeroDeElementos(Q) > 0) {
 
             LIS_IrInicioLista(Q);
-            t = LIS_ObterValor(Q);
+            t = (tpVertice *)LIS_ObterValor(Q);
             LIS_ExcluirElemento(Q);
 
             if (t == u) {
@@ -673,7 +679,7 @@ tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v){
             arestas = t->pNode->arestas;
             LIS_IrInicioLista(arestas);
             do {
-                s = LIS_ObterValor(arestas);
+                s = (tpVertice *)LIS_ObterValor(arestas);
                 if (LIS_ProcurarValor(V, s) == LIS_CondRetNaoAchou) {
                     LIS_InserirElementoApos(V, s);
                     LIS_InserirElementoApos(Q, s);
@@ -706,7 +712,7 @@ tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v){
         LIS_IrInicioLista(origens);
 
         do {
-            u = LIS_ObterValor(origens);
+            u = (tpVertice *)LIS_ObterValor(origens);
             if (BFS(u,v) != 0) {
                 return u;
             }

@@ -1,0 +1,82 @@
+// Script:    TesteLista.script
+// Autor:     eav - Eduardo Alberto Verdeja
+// Data:      30/set/2014
+// Propósito: Testar superficialmente o módulo grafo genérica duplamente encadeada
+//
+
+//Lispa teste
+=resetteste
+
+== Inicializar valores
+=declararparm   grafo0  int 0
+=declararparm   grafo1  int 1
+=declararparm   grafo2  int 2
+
+=declararparm   str0    string  "abcdefg"
+=declararparm   str1    string  "qwerty"
+=declararparm   str2    string  "xxx"
+=declararparm   str3    string  "xpto"
+=declararparm   str4    string  "???"
+
+=declararparm   OK             int  0
+=declararparm   GrafoVazio     int  1
+=declararparm   NaoEhVertice   int  2
+=declararparm   EhVizinho      int  3
+=declararparm   NaoEhVizinho   int  4
+=declararparm   FaltouMemoria  int  5
+=declararparm   NaoEhConexo  int  6
+
+=declararparm   pNULL          int  0
+=declararparm   pNaoNULL       int  1
+
+
+
+== Sequencia Criar-destruir no Grafo
+=criargrafo 1
+=destruirgrafo 1
+=criargrafo 3
+=destruirgrafo 3
+=destruirgrafo 6 // Não conta, deve ser excluido
+
+
+== Criando e populando grafo 0
+criargrafo 0
+insvert 0 1 Ok
+insvert 0 2 Ok
+insvert 0 3 Ok
+insvert 0 4 Ok
+insvert 0 5 Ok
+insvert 0 6 Ok
+insaresta 0 1 2 1 Ok
+insaresta 0 1 3 3 Ok
+insaresta 0 3 5 4 Ok
+insaresta 0 4 5 5 Ok
+insaresta 0 4 3 6 Ok
+insaresta 0 5 2 9 Ok
+insaresta 0 6 5 7 Ok
+
+
+== Criando e populando grafo 5
+criargrafo 5
+insvert 5  32    Ok
+insvert 5  64    Ok
+insvert 5  128   Ok
+insvert 5  255   Ok
+insaresta 5  32 64    1   Ok
+insaresta 5  128 255  3   Ok
+insaresta 5  255 64   1   Ok
+insaresta 5  128 32   1   Ok
+
+
+== Inserindo Arestas Inválidas no Grafo 0
+insaresta 0 1 1 2    EhVizinho
+insaresta 0 2 1 2    EhVizinho
+insaresta 0 1 10 2   NaoEhVertice
+insaresta 0 2 1 20   NaoEhVertice
+
+== Inserindo Arestas Inválidas no Grafo 5
+insaresta  5  1   1    2   NaoEhVertice
+insaresta  5  2   1    2   NaoEhVertice
+insaresta  5  32  32   2   EhVizinho
+insaresta  5  255 128  2   NaoEhVertice
+

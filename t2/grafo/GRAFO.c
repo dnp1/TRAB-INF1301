@@ -121,13 +121,12 @@ static tpVertice * ObterOrigem (GRA_tppGrafo grafo, tpVertice* v);
 
 static tpVertice * get_by_id(int idVertice);
 
-int Ehvizinho(tpVertice * v, tpVertice * u);
+static int EhVizinho(tpVertice * v, tpVertice * u);
 
-void get_pair_by_id(int idAresta, tpVertice * u, tpVertice * v);
+static void get_pair_by_id(int idAresta, tpVertice * u, tpVertice * v);
 
-tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
+static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
 
-int Ehvizinho(tpVertice * v, tpVertice * u);
 /*****  Código das funções exportadas pelo módulo  *****/
 
 /***************************************************************************
@@ -498,7 +497,7 @@ int Ehvizinho(tpVertice * v, tpVertice * u);
         if(vizinho == NULL)
             return GRA_CondRetNaoEhVertice;
         
-        if(!EhVizinho(pGrafo->corrente,vizinho))
+        if(!EhVizinho(get_by_id(pGrafo->corrente),vizinho))
             return GRA_CondRetNaoEhVizinho;  
 
         pGrafo->corrente = id;
@@ -527,10 +526,10 @@ int Ehvizinho(tpVertice * v, tpVertice * u);
 *
 ***********************************************************************/
 
-static int Ehvizinho( tpVertice * v, tpVertice * u ){
+static int EhVizinho( tpVertice * v, tpVertice * u ){
     
     LIS_tppLista vizinhos = LIS_CriarLista(NULL);
-    GRA_tppVertice no;
+    tpVertice * no;
     int vizinho = 0;
     
     vizinhos = u->pNode->arestas;
@@ -538,7 +537,8 @@ static int Ehvizinho( tpVertice * v, tpVertice * u ){
     LIS_IrInicioLista( vizinhos );
     
     do {
-        if ( vizinhos->pVizinho == v ) vizinho = 1 ;  
+        tpAresta * viz = (tpAresta *)LIS_ObterValor(vizinhos);
+        if ( viz->pVizinho == v ) vizinho = 1 ;  
     } while( LIS_AvancarElementoCorrente( vizinhos , 1) != LIS_CondRetFimLista ) ;
     
     return vizinho;
@@ -556,12 +556,12 @@ static int Ehvizinho( tpVertice * v, tpVertice * u ){
 *
 ***********************************************************************/
 
-static tpVertice * get_by_id(int idVertice){
-    
+static tpVertice * get_by_id(GRA_tppGrafo pGrafo , int idVertice){
+        
         if (pGrafo->vertices == NULL) {
             return NULL;
         }
-        if (LIS_ProcurarValor(pGrafo->vertices, pVertice) != LIS_CondRetOK) { //Verifica se vertice pertence ao grafo.
+        if (LIS_ProcurarValor(pGrafo->vertices, get_by_id(idVertice)) != LIS_CondRetOK) { //Verifica se vertice pertence ao grafo.
             return NULL;
         }        
 }
@@ -577,16 +577,19 @@ static tpVertice * get_by_id(int idVertice){
 ***********************************************************************/
 
 
-void get_pair_by_id(int idAresta, tpVertice * u, tpVertice * v){
+void get_pair_by_id(GRA_tppGrafo pGrafo, int idAresta, tpVertice * u, tpVertice * v){
     do{
-        if ( pGrafo->vertices->pNode->arestas->id == idAresta ){
-            u = (tpVertice*)LIS_ObterValor( pGrafo->vertices ) ;
-            v = pGrafo->vertices->pNode->arestas->pVizinho;
-            return;
+        tpVertice * vertice = (tpVertice*)LIS_ObterValor( pGrafo->vertices ) ;
+        LIS_IrInicioLista( vertice->pNode->arestas ) ;
+        
+        tpAresta * aresta = (tpAresta*)LIS_ObterValor( vertice->pNode->arestas ) ;
+        
+        if ( aresta->id == idAresta ){
+            u = vertice ;
+            v = aresta->pVizinho ;
+            break;
         }
-    }while ( LIS_AvancarElementoCorrente( pGrafo->vertices , 1) != LIS_CondRetFimLista )
-    
-    return;
+    }while ( LIS_AvancarElementoCorrente( pGrafo->vertices , 1) != LIS_CondRetFimLista ) ;
 }
 
 /*
@@ -691,7 +694,7 @@ tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v){
         LIS_tppLista Q = NULL; //FILA
         LIS_tppLista arestas = NULL;
         tpVertice* t = NULL;
-        tpAresta* s = NULL;
+        tpVertice* s = NULL;
         int achou = 0;
 
         V = LIS_CriarLista(NULL); // dados são referenciados por outros, não devem ser apagados
@@ -714,7 +717,8 @@ tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v){
             arestas = t->pNode->arestas;
             LIS_IrInicioLista(arestas);
             do {
-                s = (tpVertice *)LIS_ObterValor(arestas);
+                tpAresta * a = (tpAresta *)LIS_ObterValor(arestas);
+                s = a->pVizinho;
                 if (LIS_ProcurarValor(V, s) == LIS_CondRetNaoAchou) {
                     LIS_InserirElementoApos(V, s);
                     LIS_InserirElementoApos(Q, s);

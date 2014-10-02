@@ -37,8 +37,6 @@
 =destruirgrafo 1
 =criargrafo 3
 =destruirgrafo 3
-=destruirgrafo 6 // Não conta, deve ser excluido
-
 
 == Criando grafo 0
 criargrafo 0

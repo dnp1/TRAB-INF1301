@@ -193,7 +193,9 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
 			LIS_IrInicioLista(pGrafo->vertices);
 			do {
 				pVertice = (tpVertice *)LIS_ObterValor(pGrafo->vertices);
-				if (pVertice->pNode->pValor != NULL) {
+				if(pVertice == NULL) return GRA_CondRetOK;
+
+                if (pVertice->pNode->pValor != NULL) {
 					pGrafo->ExcluirValor(pVertice->pNode->pValor);
 				}
 				LIS_DestruirLista(pVertice->pNode->arestas);
@@ -456,7 +458,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
             return GRA_CondRetGrafoVazio;
         }
       
-        return GRA_ObterValor(pGrafo, pGrafo->corrente, &pDado);
+        return GRA_ObterValor(pGrafo, pGrafo->corrente, pDado);
 
     }
     /* Fim função: GRA  &Obter Valor Corrente */

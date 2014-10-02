@@ -133,7 +133,8 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
             {
                for( i = 0 ; i < DIM_VT_GRAFOS ; i++ )
                {
-                  GRA_DestruirGrafo( vtRefGrafos[ i ] ) ;
+                  if(vtRefGrafos[i] != NULL)
+                      GRA_DestruirGrafo( vtRefGrafos[ i ] ) ;
                } /* for */
             } /* if */
 

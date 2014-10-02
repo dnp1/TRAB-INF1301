@@ -540,9 +540,6 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         }
     } 
     /* Fim função: GRA  &Excluir vizinho corrente */
-=======
-    /* Fim função: GRA  &Alterar Valor Corrente */
->>>>>>> c791a1a2ce975219944ac561cf0c1fcbd84444ca
 
 
 /***************************************************************************
@@ -629,7 +626,6 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
     }
     /* Fim função: GRA  &Buscar caminho */
 
->>>>>>> c791a1a2ce975219944ac561cf0c1fcbd84444ca
 
     
 /*****  Código das funções encapsuladas no módulo  *****/

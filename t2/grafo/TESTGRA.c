@@ -45,26 +45,12 @@ static const char ALT_VAL_CMD             [ ] = "=altval"         ;
 static const char BUSCA_CAM_CMD           [ ] = "=buscacam"       ;
 static const char INS_VIZ_CORR_CMD        [ ] = "=insvizcorr"     ;
 static const char EXC_VIZ_CORR_CMD        [ ] = "=excvizcorr"     ;
+static const char OBTER_VIZ_CORR_CMD      [ ] = "=obtervizcorr"   ;
 static const char OBTER_VAL_CORR_CMD      [ ] = "=obtervalorcorr" ;
 static const char ALT_VAL_CORR_CMD        [ ] = "=altvalcorr"     ;
 static const char BUSCA_CAM_CORR_CMD      [ ] = "=buscacam"       ;
 static const char IR_VIZ_CORR_CMD         [ ] = "=irvizcorr"      ;
 static const char MUDAR_CORR_CMD          [ ] = "=mudarcorr"      ;
-
-*     =obterviz               inxGrafo  v1  CondRetEsp
-*     =obterorig              inxGrafo  CondRetEsp
-*     =obterval               inxGrafo  v1  CondRetPonteiro
-*     =altval                 inxGrafo  v1  string  CondRetPonteiro
-*     =buscacam               inxGrafo  v1  v2  CondRetEsp
-*     =insvizcorr             inxGrafo  string v1 CondRetEsp
-*     =excvizcorr             inxGrafo  v1  CondRetEsp
-*     =obtervizcorr           inxGrafo  CondRetEsp
-*     =obtervalcorr           inxGrafo  CondRetEsp
-*     =altvalcorr             inxGrafo  string  CondRetEsp
-*     =buscacamcorr           inxGrafo  v1  CondRetEsp
-*     =irvizcorr              inxGrafo  v1  CondRetEsp
-*     =mudarcorr              inxGrafo  v1  CondRetEsp
-
 
 int estaInicializado = 0 ;
 
@@ -114,18 +100,11 @@ GRA_tppGrafo vtRefGrafos[ DIM_VT_GRAFOS ] ;
 ***********************************************************************/
 #define TAMANHO 256
 
-int sujo = 1;
-
 static int VerificarInx( int inxGrafo );
 static int VerificarId (int id); 
 
 TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
    {
-      if (sujo){
-          memset(vertices,0,TAMANHO*sizeof(GRA_tppVertice));      
-          sujo = 0;
-      }
-
       GRA_tpCondRet CondRetObtida   = GRA_CondRetOK ;
       GRA_tpCondRet CondRetEsperada = GRA_CondRetFaltouMemoria ;
                                       /* inicializa para qualquer coisa */
@@ -139,7 +118,7 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
       int  inxGrafo     = -1 ;
 
       int i ;
-      int id, _id ;
+      int id, _id , idAresta;
 
       #ifdef _DEBUG
          int  IntEsperado   = -1 ;
@@ -245,13 +224,13 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
          
          else if ( strcmp( ComandoTeste , INS_ARESTA_CMD ) == 0 )
          {
-            NumLidos = LER_LerParametros( "iiii" , &inxGrafo , &id, &_id, &CondRetEsperada ) ;
-            if ( ( NumLidos != 4 ) || !VerificarInx( inxGrafo ) || !VerificarId(id) || !VerificarId(_id) )
+            NumLidos = LER_LerParametros( "iiiii" , &inxGrafo , &id, &_id, &idAresta, &CondRetEsperada ) ;
+            if ( ( NumLidos != 5 ) || !VerificarInx( inxGrafo ) || !VerificarId(id) || !VerificarId(_id) )
             {
                return TST_CondRetParm ;
             } /* if */
              
-            CondRetObtida = GRA_InserirAresta( vtRefGrafos[ inxGrafo ] , id , _id );
+            CondRetObtida = GRA_InserirAresta( vtRefGrafos[ inxGrafo ] , id , _id , idAresta);
             
             return TST_CompararInt( CondRetEsperada , CondRetObtida ,
                                     "Retorno errado ao inserir aresta." );
@@ -262,13 +241,13 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
          
          else if ( strcmp( ComandoTeste , EXC_ARESTA_CMD ) == 0 )
          {
-            NumLidos = LER_LerParametros( "iiii" , &inxGrafo , &id, &_id, &CondRetEsperada ) ;
-            if ( ( NumLidos != 4 ) || !VerificarInx( inxGrafo ) || !VerificarId(id) || !VerificarId(_id) )
+            NumLidos = LER_LerParametros( "iii" , &inxGrafo , &idAresta, &CondRetEsperada ) ;
+            if ( ( NumLidos != 3 ) || !VerificarInx( inxGrafo ) )
             {
                return TST_CondRetParm ;
             } /* if */
              
-            CondRetObtida = GRA_ExcluirAresta( vtRefGrafos[ inxGrafo ] , id , _id );
+            CondRetObtida = GRA_ExcluirAresta( vtRefGrafos[ inxGrafo ] , idAresta );
             
             return TST_CompararInt( CondRetEsperada , CondRetObtida ,
                                     "Retorno errado ao excluir aresta." );
@@ -602,7 +581,7 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
 *
 ***********************************************************************/
     int VerificarId(int id) {
-        if (vertices[id] == 0 ) return 1;
+        if (id == -1 ) return 1;
         else return 0;
     }
 

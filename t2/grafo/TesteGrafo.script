@@ -43,6 +43,8 @@
 == Criando grafo 0
 criargrafo 0
 
+
+
 == Inserindo Vertices no Grafo 0
 insvert  0 str0  1  Ok
 insvert  0 str1  2  Ok
@@ -50,6 +52,9 @@ insvert  0 str2  3  Ok
 insvert  0 str3  4  Ok
 insvert  0 str4  5  Ok
 insvert  0 str5  6  Ok
+
+== Testa Obtem Origens Grafo 0
+obterorig  0  Ok
 
 == Inserindo Arestas no Grafo 0
 insaresta 0  1  2  1  Ok
@@ -73,7 +78,6 @@ excaresta  0  3  Ok
 excaresta  0  6  Ok
 excaresta  0  2  NaoEhVertice // Verificar
 excaresta  0  20 NaoEhVertice // Verificar
-
 
 == Criando grafo 5
 criargrafo 5
@@ -99,15 +103,53 @@ insaresta  5  32   32   2   EhVizinho
 insaresta  5  255  128  2   EhVizinho
 insaresta  5  128  255  13  EhVizinho
 
-== Caminhar no Grafo 5
 
-
-== Testar Excluir Todas Arestas, seguida de grafo 5
+== Excluir Todas Arestas
 excaresta  5  10  Ok 
 excaresta  5  20  Ok 
 excaresta  5  30  Ok 
 excaresta  5  40  Ok 
 excaresta  5  50  Ok 
 excaresta  5  60  Ok 
+
+== Re-inserindo Arestas Inválidas no Grafo 5 (Verifica se Exclusão de Aresta deixa o grafo num estado válido)
+insaresta  5  1    1    2   NaoEhVertice
+insaresta  5  2    1    2   NaoEhVertice
+insaresta  5  32   32   2   EhVizinho
+insaresta  5  255  128  2   EhVizinho
+insaresta  5  128  255  13  EhVizinho
+
+== Excluir Todos Vertices
+excvert 5  18    NaoEhVertice
+excvert 5  32    Ok
+excvert 5  64    Ok
+excvert 5  128   Ok
+excvert 5  255   Ok
+excvert 5  8     NaoEhVertice
+
+
+== Re-inserindo Vertices no Grafo 5 (Verifica se Exclusão de Vertice deixa o grafo num estado válido)
+insvert 5  str4  32    Ok
+insvert 5  str2  64    Ok
+insvert 5  str1  128   Ok
+insvert 5  str5  255   Ok
+
+
+== Testa Obtem Vizinhos Grafo 5
+obterviz  5  21   NaoEhVertice
+obterviz  5  32   Ok
+obterviz  5  64   Ok
+obterviz  5  128  Ok
+obterviz  5  255  Ok
+obterviz  5  23   NaoEhVertice
+
+== Testa Obtem Origens Grafo 5
+obterorig  5  Ok
+
+== Obter Valor
+
+== Caminha No Grafo 5 
+
+
 
 

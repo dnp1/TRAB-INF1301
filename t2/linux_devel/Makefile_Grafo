@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-I. -I../headers -I../lista -L../lib -O0 -fpermissive
+CFLAGS=-I. -I../headers -I../lista -L../lib -O0 -fpermissive -g
 +CFLAGS=-Wall
 
 all: teste-grafo

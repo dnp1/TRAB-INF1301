@@ -565,19 +565,22 @@ static tpVertice * get_by_id(int idVertice){
 *  $FC Função: GRA -Get Pair by ID
 *
 *  $ED Descrição da função
-*      
+*      Busca as arestas do grafo pela idAresta passada.
+*      Se achar, bota as refêrencias do par de vértices em u e v.
 *
 ***********************************************************************/
 
-/*
-
-poe em u e em v 
-as referencias dos vertices que compoem a aresta de id dado
-
-*/
 
 void get_pair_by_id(int idAresta, tpVertice * u, tpVertice * v){
+    do{
+        if ( pGrafo->vertices->pNode->arestas->id == idAresta ){
+            u = (tpVertice*)LIS_ObterValor( pGrafo->vertices ) ;
+            v = pGrafo->vertices->pNode->arestas->pVizinho;
+            return;
+        }
+    }while ( LIS_AvancarElementoCorrente( pGrafo->vertices , 1) != LIS_CondRetFimLista )
     
+    return;
 }
 
 /*

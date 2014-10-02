@@ -321,7 +321,7 @@ GRA_tpCondRet GRA_ObterOrigens ( GRA_tppGrafo pGrafo, LIS_tppLista * pLista);
 
 /***********************************************************************
 *
-*  $FC Função: GRA  &Inserir vizinho
+*  $FC Função: GRA  &Inserir Vizinho Corrente
 *
 *  $ED Descrição da função
 *     Insere um novo vizinho com o id passado para o corrente.
@@ -349,14 +349,13 @@ GRA_tpCondRet GRA_ObterOrigens ( GRA_tppGrafo pGrafo, LIS_tppLista * pLista);
 *     Exclui o vizinho do corrente com id passado.
 *
 *  $EP Parâmetros
-*     pGrafo - ponteiro para o grafo aonde deve ser inserida a aresta
-*     id - identificador do vertice
+*     pGrafo - ponteiro para o grafo de onde deve ser excluido o vértide
+*     idVertice - identificador do vertice
 *
 *  $FV Valor retornado
 *     GRA_CondRetOK  - Operação efetuada com sucesso
 *     GRA_CondRetNaoEhVertice - idVertice não é um vértice do grafo
 *     GRA_CondRetNaoEhVizinho - Não existe aresta entre o corrente e idVertice
-*     GRA_CondRetFaltouMemoria - Não foi possível alocar memória para a aresta
 *     GRA_CondRetGrafoVazio - O grafo esta vazio, não há corrente
 *
 ***********************************************************************/
@@ -366,7 +365,7 @@ GRA_tpCondRet GRA_ObterOrigens ( GRA_tppGrafo pGrafo, LIS_tppLista * pLista);
 
 /***********************************************************************
 *
-*  $FC Função: GRA  &ObterVizinhosCorrente
+*  $FC Função: GRA  &Obter Vizinhos Corrente
 *
 *  $ED Descrição da função
 *     Obtem os vizinhos do vértice corrente
@@ -386,10 +385,9 @@ GRA_tpCondRet GRA_ObterOrigens ( GRA_tppGrafo pGrafo, LIS_tppLista * pLista);
 GRA_tpCondRet GRA_ObterVizinhosCorrente(GRA_tppGrafo pGrafo, LIS_tppLista* pLista);
 
 
-
 /***********************************************************************
 *
-*  $FC Função: GRA  &Obter Corrente
+*  $FC Função: GRA  &Obter Valor Corrente
 *
 *  $ED Descrição da função
 *     Obtem o valor - referência para um valor - do vértice corrente.
@@ -427,8 +425,6 @@ GRA_tpCondRet GRA_ObterVizinhosCorrente(GRA_tppGrafo pGrafo, LIS_tppLista* pList
   GRA_tpCondRet GRA_AlterarValorCorrente( GRA_tppGrafo pGrafo , void * pDado ) ;   
 
 
-
-
 /***********************************************************************
 *
 *  $FC Função: GRA  &Buscar caminho corrente
@@ -449,29 +445,7 @@ GRA_tpCondRet GRA_ObterVizinhosCorrente(GRA_tppGrafo pGrafo, LIS_tppLista* pList
 *     GRA_CondRetGrafoVazio - o grafo está vazio, não há corrente
 ***********************************************************************/
 
-  GRA_tpCondRet GRA_BuscarCaminhoCorrente( GRA_tppGrafo pGrafo ,  int idVerticeDestino,   LIS_tppLista * pLista ) ;   
-
-/***********************************************************************
-*
-*  $FC Função: GRA  &Buscar caminho corrente
-*
-*  $ED Descrição da função
-*     Retorna um caminho - lista de int idVertice - traçando um caminho do vertice dado ao corrente
-*   
-*  $EP Parâmetros
-*     pGrafo - ponteiro para o grafo
-*     idVerticeOrigem - id do vértice origem
-*     pLista - ponteiro para a lista de ids que armazenara o caminho
-*
-*  $FV Valor retornado
-*     GRA_CondRetOK	- O caminho foi preenchido com sucesso
-*     GRA_CondRetNaoEhVertice - ao menos um dos vértices explicitados não pertencem ao grafo
-*     GRA_CondRetNaoEhConexo - não ha caminho entre os dois vertices dados
-*     GRA_CondRetFaltouMemoria - não há espaço para preencher a lista
-*     GRA_CondRetGrafoVazio - o grafo está vazio, não há corrente
-***********************************************************************/
-
-  GRA_tpCondRet GRA_BuscarCaminhoAteCorrente( GRA_tppGrafo pGrafo , int idVerticeOrigem,   LIS_tppLista * pLista ) ;   
+  GRA_tpCondRet GRA_BuscarCaminhoCorrente( GRA_tppGrafo pGrafo ,  int idVerticeDestino,   LIS_tppLista * pLista ) ;    
 
 /***********************************************************************
 *
@@ -495,7 +469,7 @@ GRA_tpCondRet GRA_ObterVizinhosCorrente(GRA_tppGrafo pGrafo, LIS_tppLista* pList
 
 /***********************************************************************
 *
-*  $FC Função: GRA  &Ir corrente
+*  $FC Função: GRA  &Mudar corrente
 *
 *  $ED Descrição da função
 *     muda o corrente para o vertice dado.
@@ -511,7 +485,7 @@ GRA_tpCondRet GRA_ObterVizinhosCorrente(GRA_tppGrafo pGrafo, LIS_tppLista* pList
 *     GRA_CondRetGrafoVazio - o grafo está vazio, não há corrente
 ***********************************************************************/
 
-  GRA_tpCondRet GRA_IrCorrente( GRA_tppGrafo pGrafo , int idVertice ) ;   
+  GRA_tpCondRet GRA_MudarCorrente( GRA_tppGrafo pGrafo , int idVertice ) ;   
 
 
 

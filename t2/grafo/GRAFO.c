@@ -814,6 +814,7 @@ static tpVertice * get_by_id(GRA_tppGrafo pGrafo , int idVertice){
         
         do{
             vertice = (tpVertice*)LIS_ObterValor( pGrafo->vertices ) ;      
+            if(vertice == NULL) return NULL;
             if(vertice->id == idVertice) return vertice;    
         }while ( LIS_AvancarElementoCorrente( pGrafo->vertices , 1) != LIS_CondRetFimLista ) ;
         

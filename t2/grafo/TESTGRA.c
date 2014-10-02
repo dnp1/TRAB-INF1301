@@ -192,7 +192,7 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
          else if ( strcmp( ComandoTeste , INS_VERT_CMD ) == 0 )
          {
             NumLidos = LER_LerParametros( "isii" , &inxGrafo , stringDado , &id , &CondRetEsperada ) ;
-            if ( ( NumLidos != 4 ) || !VerificarInx( inxGrafo ) || !VerificarId(id))
+            if ( ( NumLidos != 4 ) || !VerificarInx( inxGrafo ) )
             {
                return TST_CondRetParm ;
             } /* if */           
@@ -209,7 +209,7 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
          else if ( strcmp( ComandoTeste , EXC_VERT_CMD ) == 0 )
          {
             NumLidos = LER_LerParametros( "iii" , &inxGrafo , &id, &CondRetEsperada ) ;
-            if ( ( NumLidos != 3 ) || !VerificarInx( inxGrafo ) || !VerificarId(id))
+            if ( ( NumLidos != 3 ) || !VerificarInx( inxGrafo ) )
             {
                return TST_CondRetParm ;
             } /* if */
@@ -226,7 +226,7 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
          else if ( strcmp( ComandoTeste , INS_ARESTA_CMD ) == 0 )
          {
             NumLidos = LER_LerParametros( "iiiii" , &inxGrafo , &id, &_id, &idAresta, &CondRetEsperada ) ;
-            if ( ( NumLidos != 5 ) || !VerificarInx( inxGrafo ) || !VerificarId(id) || !VerificarId(_id) )
+            if ( ( NumLidos != 5 ) || !VerificarInx( inxGrafo ) )
             {
                return TST_CondRetParm ;
             } /* if */
@@ -260,7 +260,7 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
          else if ( strcmp( ComandoTeste , OBTER_VIZ_CMD ) == 0 )
          {
             NumLidos = LER_LerParametros( "iii" , &inxGrafo , &id, &CondRetEsperada ) ;
-            if ( ( NumLidos != 3 ) || !VerificarInx( inxGrafo ) || !VerificarId(id) )
+            if ( ( NumLidos != 3 ) || !VerificarInx( inxGrafo ) )
             {
                return TST_CondRetParm ;
             } /* if */
@@ -280,7 +280,7 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
          else if ( strcmp( ComandoTeste , OBTER_ORIG_CMD ) == 0 )
          {
             NumLidos = LER_LerParametros( "ii" , &inxGrafo , &CondRetEsperada ) ;
-            if ( ( NumLidos != 2 ) || !VerificarInx( inxGrafo ) || !VerificarId(id))
+            if ( ( NumLidos != 2 ) || !VerificarInx( inxGrafo ) )
             {
                return TST_CondRetParm ;
             } /* if */
@@ -300,7 +300,7 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
          else if ( strcmp( ComandoTeste , OBTER_VAL_CMD ) == 0 )
          {
             NumLidos = LER_LerParametros( "iii" , &inxGrafo , &id, &CondRetEsperada ) ;
-            if ( ( NumLidos != 3 ) || !VerificarInx( inxGrafo ) || !VerificarId(id))
+            if ( ( NumLidos != 3 ) || !VerificarInx( inxGrafo ) )
             {
                return TST_CondRetParm ;
             } /* if */
@@ -317,7 +317,7 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
          else if ( strcmp( ComandoTeste , ALT_VAL_CMD ) == 0 )
          {
             NumLidos = LER_LerParametros( "iisi" , &inxGrafo , &id, stringDado,  &CondRetEsperada ) ;
-            if ( ( NumLidos != 4 ) || !VerificarInx( inxGrafo ) || !VerificarId(id))
+            if ( ( NumLidos != 4 ) || !VerificarInx( inxGrafo ) )
             {
                return TST_CondRetParm ;
             } /* if */
@@ -360,7 +360,7 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
          else if ( strcmp( ComandoTeste , BUSCA_CAM_CMD ) == 0 )
          {
             NumLidos = LER_LerParametros( "iiii" , &inxGrafo , &id , &_id , &CondRetEsperada ) ;
-            if ( ( NumLidos != 4 ) || !VerificarInx( inxGrafo ) || !VerificarId(id) || !VerificarId(_id) )
+            if ( ( NumLidos != 4 ) || !VerificarInx( inxGrafo )  )
             {
                return TST_CondRetParm ;
             } /* if */
@@ -380,7 +380,7 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
          else if ( strcmp( ComandoTeste , INS_VIZ_CORR_CMD ) == 0 )
          {
             NumLidos = LER_LerParametros( "isii" , &inxGrafo , stringDado , &id , &CondRetEsperada ) ;
-            if ( ( NumLidos != 4 ) || !VerificarInx( inxGrafo ) || !VerificarId(id))
+            if ( ( NumLidos != 4 ) || !VerificarInx( inxGrafo ) )
             {
                return TST_CondRetParm ;
             } /* if */           
@@ -397,7 +397,7 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
          else if ( strcmp( ComandoTeste , EXC_VIZ_CORR_CMD ) == 0 )
          {
             NumLidos = LER_LerParametros( "iii" , &inxGrafo , &id , &CondRetEsperada ) ;
-            if ( ( NumLidos != 3 ) || !VerificarInx( inxGrafo ) || !VerificarId(id))
+            if ( ( NumLidos != 3 ) || !VerificarInx( inxGrafo ) )
             {
                return TST_CondRetParm ;
             } /* if */           
@@ -494,7 +494,7 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
          else if ( strcmp( ComandoTeste , BUSCA_CAM_CORR_CMD ) == 0 )
          {
             NumLidos = LER_LerParametros( "iii" , &inxGrafo , &id , &CondRetEsperada ) ;
-            if ( ( NumLidos != 3 ) || !VerificarInx( inxGrafo ) || !VerificarId(id) )
+            if ( ( NumLidos != 3 ) || !VerificarInx( inxGrafo )  )
             {
                return TST_CondRetParm ;
             } /* if */
@@ -514,7 +514,7 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
          else if ( strcmp( ComandoTeste , IR_VIZ_CORR_CMD ) == 0 )
          {
             NumLidos = LER_LerParametros( "iii" , &inxGrafo , &id , &CondRetEsperada ) ;
-            if ( ( NumLidos != 3 ) || !VerificarInx( inxGrafo ) || !VerificarId(id))
+            if ( ( NumLidos != 3 ) || !VerificarInx( inxGrafo ) )
             {
                return TST_CondRetParm ;
             } /* if */           
@@ -531,7 +531,7 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
          else if ( strcmp( ComandoTeste , MUDAR_CORR_CMD ) == 0 )
          {
             NumLidos = LER_LerParametros( "iii" , &inxGrafo , &id , &CondRetEsperada ) ;
-            if ( ( NumLidos != 3 ) || !VerificarInx( inxGrafo ) || !VerificarId(id))
+            if ( ( NumLidos != 3 ) || !VerificarInx( inxGrafo ) )
             {
                return TST_CondRetParm ;
             } /* if */           
@@ -582,8 +582,8 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
 *
 ***********************************************************************/
     int VerificarId(int id) {
-        if (id == -1 ) return 1;
-        else return 0;
+        if (id = -1 ) return 0;
+        else return 1;
     }
 
 

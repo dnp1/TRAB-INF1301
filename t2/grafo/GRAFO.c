@@ -115,7 +115,7 @@ static tpVertice* CriarVertice(GRA_tppGrafo grafo, void* pValor, int id);
 
 static int BFS(tpVertice* v, tpVertice* u);
 
-static void ExcluirAresta (GRA_tppGrafo grafo, tpVertice* v, tpVertice* u);
+static GRA_tpCondRet ExcluirAresta (GRA_tppGrafo grafo, tpVertice* v, tpVertice* u);
 
 static tpVertice * ObterOrigem (GRA_tppGrafo grafo, tpVertice* v);
 
@@ -456,7 +456,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
             return GRA_CondRetGrafoVazio;
         }
       
-        return GRA_ObterValor(pGrafo, pGrafo->corrente, pDado);
+        return GRA_ObterValor(pGrafo, pGrafo->corrente, &pDado);
 
     }
     /* Fim função: GRA  &Obter Valor Corrente */
@@ -509,13 +509,13 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         
         tpAresta* vizinho = NULL;
         tpNode* no = NULL;
-        tpVertice * pVertice = get_by_id(idVertice);
+        tpVertice * pVertice = get_by_id(pGrafo,idVertice);
         int achou = 0;
         
         if(pVertice == NULL)
             return GRA_CondRetNaoEhVertice;
         
-        achou = EhVizinho( pVertice , get_by_id( pGrafo->corrente ) );
+        achou = EhVizinho( pGrafo, pVertice , get_by_id( pGrafo, pGrafo->corrente ) );
         
         if(!achou) 
             return GRA_CondRetNaoEhVizinho ;
@@ -527,7 +527,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
             LIS_IrInicioLista(no->arestas);
             do {
                 vizinho = (tpAresta *)LIS_ObterValor(no->arestas);
-                tpCondRet r = GRA_ExcluirAresta(pGrafo, vizinho->id); 
+                GRA_tpCondRet r = GRA_ExcluirAresta(pGrafo, vizinho->id); 
                 if(r!=GRA_CondRetOK) return r;
             } 
             while (LIS_AvancarElementoCorrente(no->arestas, 1) != LIS_CondRetFimLista);
@@ -593,14 +593,14 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
     }
     /* Fim função: GRA  &Mudar Corrente */
 
-    
+
 
 /***************************************************************************
 *
 *  Função: GRA  &Buscar caminho corrente
 *  ****/    
     
-    GRA_tpCondRet GRA_BuscarCaminhoCorrente( GRA_tppGrafo pGrafo , int idVerticeDestino, LIS_tppLista * pLista ) {
+      GRA_tpCondRet GRA_BuscarCaminhoCorrente( GRA_tppGrafo pGrafo , int idVerticeDestino, LIS_tppLista * pLista ) {
 
         /* Verifica se vertice pertence ao grafo; */
         if (pGrafo->corrente == -1) {
@@ -677,7 +677,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         return achou;
     }
     /* Fim função: GRA  &Buscar caminho */
-
+    
     
 /*****  Código das funções encapsuladas no módulo  *****/
 
@@ -866,7 +866,7 @@ tpAresta* get_edge_by_vertex(LIS_tppLista  vizinhos, tpVertice * v){
 *
 ***********************************************************************/
 
-    static tpCondRet ExcluirAresta (GRA_tppGrafo grafo, tpVertice* v, tpVertice* u) {
+    static GRA_tpCondRet ExcluirAresta (GRA_tppGrafo grafo, tpVertice* v, tpVertice* u) {
         RemoverAresta(u, v);
         RemoverAresta(v, u);
         //BFS pra detectar se é necessário gerar nova componente.

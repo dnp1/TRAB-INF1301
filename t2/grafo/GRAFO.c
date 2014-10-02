@@ -338,6 +338,8 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         if(pVertice1 == NULL || pVertice2 == NULL)
             return GRA_CondRetNaoEhVertice;
 
+        if(!EhVizinho(pGrafo,pVertice1,pVertice2)) return GRA_CondRetNaoEhVizinho;
+
         ExcluirAresta(pGrafo, pVertice1, pVertice2);
 
         return GRA_CondRetOK;
@@ -677,9 +679,15 @@ static tpVertice * get_by_id(GRA_tppGrafo pGrafo , int idVertice){
         if (pGrafo->vertices == NULL) {
             return NULL;
         }
-        if (LIS_ProcurarValor(pGrafo->vertices, get_by_id(pGrafo,idVertice)) != LIS_CondRetOK) { //Verifica se vertice pertence ao grafo.
-            return NULL;
-        }        
+        
+        tpVertice * vertice;
+        
+        do{
+            vertice = (tpVertice*)LIS_ObterValor( pGrafo->vertices ) ;      
+            if(vertice->id == idVertice) return vertice;    
+        }while ( LIS_AvancarElementoCorrente( pGrafo->vertices , 1) != LIS_CondRetFimLista ) ;
+        
+        return NULL;       
 }
 
 /***********************************************************************
@@ -708,6 +716,19 @@ void get_pair_by_id(GRA_tppGrafo pGrafo, int idAresta, tpVertice * u, tpVertice 
     }while ( LIS_AvancarElementoCorrente( pGrafo->vertices , 1) != LIS_CondRetFimLista ) ;
 }
 
+
+/***********************************************************************
+*
+*  $FC Função: GRA -Get edge by Vertex
+*
+*  $ED Descrição da função
+*      Sendo a lista passada a lista de vizinhos de u,
+       busca nos vizinhos a aresta (u,v)
+*      Se achar, retorna uma referência para a aresta (u,v).
+*      Se não achar, retorna NULL.
+*
+***********************************************************************/
+
 /*
 sendo l a lista de vizinhos de u
 e v sendo o vertice passado
@@ -715,8 +736,16 @@ retorna uma referencia para a aresta u,v
 
 */
 
-tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v){
-
+tpAresta* get_edge_by_vertex(LIS_tppLista  vizinhos, tpVertice * v){
+            
+        if (vizinhos == NULL) return NULL;
+        
+        do{ 
+            tpAresta * aresta = (tpAresta*)LIS_ObterValor(vizinhos); 
+            if(aresta->pVizinho == v) return aresta ;    
+        }while ( LIS_AvancarElementoCorrente( vizinhos , 1) != LIS_CondRetFimLista ) ;
+        
+        return NULL;   
 }
 
 

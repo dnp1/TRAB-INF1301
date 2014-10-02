@@ -206,6 +206,7 @@ typedef struct LIS_tagLista* LIS_tppLista ;
 *     GRA_CondRetOK  - Ambos os vértices existem e havia uma aresta entre eles
 *     GRA_CondRetNaoEhVertice - idVertice1 (ou idVertice2) não são id's de um vértice do grafo
 *     GRA_CondRetNaoEhVizinho - Não existe aresta entre os dois vértices
+*     GRA_CondRetFaltouMemoria - faltou memoria para criar nova componente
 *
 ***********************************************************************/
 
@@ -357,6 +358,7 @@ GRA_tpCondRet GRA_ObterOrigens ( GRA_tppGrafo pGrafo, LIS_tppLista * pLista);
 *     GRA_CondRetNaoEhVertice - idVertice não é um vértice do grafo
 *     GRA_CondRetNaoEhVizinho - Não existe aresta entre o corrente e idVertice
 *     GRA_CondRetGrafoVazio - O grafo esta vazio, não há corrente
+*     GRA_CondRetFaltouMemoria - faltou memoria para criar nova componente
 *
 ***********************************************************************/
 

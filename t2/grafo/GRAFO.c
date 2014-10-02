@@ -505,23 +505,47 @@ static tpVertice * get_by_id(int idVertice);
     
 /*****  Código das funções encapsuladas no módulo  *****/
 
-/*
-verifica se v é vizinho de u
-por hipotese v e u existem
-0 se nao for 
-1 caso contrario
 
-*/
-int Ehvizinho(tpVertice * v, tpVertice * u){
+/***********************************************************************
+*
+*  $FC Função: GRA -Eh Vizinho
+*
+*  $ED Descrição da função
+*      Procura o vértice v na lista de vizinhos de u
+*      Se v for vizinho de u, retorna 1.
+*      Se não, retorna 0.
+*
+***********************************************************************/
+
+static int Ehvizinho( tpVertice * v, tpVertice * u ){
     
+    LIS_tppLista vizinhos = LIS_CriarLista(NULL);
+    GRA_tppVertice no;
+    int vizinho = 0;
+    
+    vizinhos = u->pNode->arestas;
+    
+    LIS_IrInicioLista( vizinhos );
+    
+    do {
+        if ( vizinhos->pVizinho == v ) vizinho = 1 ;  
+    } while( LIS_AvancarElementoCorrente( vizinhos , 1) != LIS_CondRetFimLista ) ;
+    
+    return vizinho;
 }
 
-/*
-retorna uma referencia para um vertice baseado no id
 
-retorna NULL se o vertice com esse id nao existe
+/***********************************************************************
+*
+*  $FC Função: GRA -Get by ID
+*
+*  $ED Descrição da função
+*      Dado um idVertice, retorna a refêrencia para o vértice correspondente.
+*      Caso não exista um vértice com a id passada, retorna NULL.
+*      Caso o grafo esteja vazio, retorna NULL.
+*
+***********************************************************************/
 
-*/
 static tpVertice * get_by_id(int idVertice){
     
         if (pGrafo->vertices == NULL) {
@@ -529,9 +553,17 @@ static tpVertice * get_by_id(int idVertice){
         }
         if (LIS_ProcurarValor(pGrafo->vertices, pVertice) != LIS_CondRetOK) { //Verifica se vertice pertence ao grafo.
             return NULL;
-        }
-        
+        }        
 }
+
+/***********************************************************************
+*
+*  $FC Função: GRA -Get Pair by ID
+*
+*  $ED Descrição da função
+*      
+*
+***********************************************************************/
 
 /*
 

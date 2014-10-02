@@ -622,10 +622,6 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         LIS_tppLista caminho = LIS_CriarLista(free);
         if (caminho == NULL)
             return GRA_CondRetFaltouMemoria;
-        
-
-        tpVertice * v = get_by_id(pGrafo,idVerticeOrigem);
-        tpVertice * u = get_by_id(pGrafo,idVerticeDestino);
 
         LIS_tppLista retorno = LIS_CriarLista(free);
         if (retorno == NULL)

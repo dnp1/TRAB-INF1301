@@ -120,6 +120,8 @@ static void ExcluirAresta (GRA_tppGrafo grafo, tpVertice* v, tpVertice* u);
 static tpVertice * ObterOrigem (GRA_tppGrafo grafo, tpVertice* v);
 
 static tpVertice * get_by_id(int idVertice);
+
+static tpVertice * get_by_id(int idVertice);
 /*****  Código das funções exportadas pelo módulo  *****/
 
 /***************************************************************************
@@ -323,7 +325,7 @@ static tpVertice * get_by_id(int idVertice);
 *  ****/
           
     GRA_tpCondRet GRA_ExcluirAresta( GRA_tppGrafo pGrafo , int idAresta ) {
-        tpVertice * pVertice1, 
+        tpVertice * pVertice1; 
         tpVertice * pVertice2;
         
         get_pair_by_id(idAresta, pVertice1, pVertice2);
@@ -346,7 +348,7 @@ static tpVertice * get_by_id(int idVertice);
      
     GRA_tpCondRet GRA_ObterVizinhos ( GRA_tppGrafo pGrafo, int idVertice, LIS_tppLista * pLista) {
         
-        tpVertice * pVertice = get_by_id(idvertice);
+        tpVertice * pVertice = get_by_id(idVertice);
 
         if (pVertice == NULL) 
             return GRA_CondRetNaoEhVertice; 
@@ -360,9 +362,10 @@ static tpVertice * get_by_id(int idVertice);
         LIS_IrInicioLista(vizinhos);
 
         do {
-                    GRA_tppVertice no = LIS_ObterValor(vizinhos);
-                    LIS_InserirElementoApos(Ret_vizinhos,no->pVizinho->id);
-                } while(LIS_AvancarElementoCorrente(vizinhos, 1) != LIS_CondRetFimLista);
+            tpAresta * aresta = (tpAresta *)LIS_ObterValor(vizinhos);
+            if(LIS_InserirElementoApos(Ret_vizinhos,&(aresta->pVizinho->id)) != LIS_CondRetOK )
+                return GRA_CondRetFaltouMemoria;
+        } while(LIS_AvancarElementoCorrente(vizinhos, 1) != LIS_CondRetFimLista);
 
         *pLista = Ret_vizinhos;
 
@@ -379,9 +382,9 @@ static tpVertice * get_by_id(int idVertice);
         
         
         if (pGrafo->corrente == -1 ) 
-            return GRA_CondGrafoVazio; 
+            return GRA_CondRetGrafoVazio; 
         
-        return ObterVizinhos(pGrafo, pGrafo->corrente, pLista)
+        return ObterVizinhos(pGrafo, pGrafo->corrente, pLista);
     }
     /* Fim função: GRA  &Obter Vizinhos Corrente*/
 
@@ -401,8 +404,9 @@ static tpVertice * get_by_id(int idVertice);
 
         LIS_IrInicioLista(origens);
         do {
-            GRA_tppVertice no = LIS_ObterValor(origens);
-            LIS_InserirElementoApos(Ret_origens,no);
+            tpVertice * no = (tpVertice *)LIS_ObterValor(origens);
+            if(LIS_InserirElementoApos(Ret_origens,no) != LIS_CondRetOK)
+                return GRA_CondRetFaltouMemoria;
         } 
         while(LIS_AvancarElementoCorrente(origens, 1) != LIS_CondRetFimLista);
         
@@ -420,7 +424,7 @@ static tpVertice * get_by_id(int idVertice);
     
     GRA_tpCondRet GRA_ObterValor( GRA_tppGrafo pGrafo , int idVertice , void** pDado ) {
 
-        pVertice * pVertice = get_by_id(idVertice);
+        tpVertice * pVertice = get_by_id(idVertice);
         /* Verifica se vertice pertence ao grafo; */
         if (pVertice == NULL) {
             return GRA_CondRetNaoEhVertice;
@@ -441,7 +445,7 @@ static tpVertice * get_by_id(int idVertice);
     
     GRA_tpCondRet GRA_AlterarValor( GRA_tppGrafo pGrafo , int idVertice , void* pDado ) {
 
-        pVertice * pVertice = get_by_id(idVertice);
+        tpVertice * pVertice = get_by_id(idVertice);
         /* Verifica se vertice pertence ao grafo; */
         if (pVertice == NULL) {
             return GRA_CondRetNaoEhVertice;
@@ -491,7 +495,7 @@ static tpVertice * get_by_id(int idVertice);
         if(!EhVizinho(pGrafo->corrente,vizinho))
             return GRA_CondRetNaoEhVizinho;  
 
-        pGrafo->corrente = vizinho;
+        pGrafo->corrente = id;
         return GRA_CondRetOK;
 
     }

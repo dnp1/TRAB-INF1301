@@ -495,7 +495,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
       
         return GRA_AlterarValor(pGrafo, pGrafo->corrente, pDado);
     }
-<<<<<<< HEAD
+
     /* Fim função: GRA  &Alterar Valor Corrente*/
 
 
@@ -568,8 +568,8 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
 
     }
     /* Fim função: GRA  &Ir Vizinho Corrente */
-<<<<<<< HEAD
-=======
+
+
 
     
 

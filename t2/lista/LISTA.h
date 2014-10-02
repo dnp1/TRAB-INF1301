@@ -321,13 +321,8 @@ typedef struct LIS_tagLista * LIS_tppLista ;
 *               Pode ser NULL
 *
 *  $FV Valor retornado
-*     LIS_CondRetOK  - se encontrou.
-*                      O elemento corrente é o primeiro elemento do
-*                      elemento corrente inclusive para o fim da lista
-*                      e que contém o ponteiro procurado
-*
-*     LIS_CondRetNaoEncontrou - se o ponteiro não foi encontrado
-*                      O elemento corrente continua o mesmo
+*     LIS_CondRetOK           - se encontrou o valor procurado passa a ser o corrente da pLista.
+*     LIS_CondRetNaoEncontrou - se o ponteiro não foi encontrado, o elemento corrente da pLista continua o mesmo.
 *     LIS_CondRetListaVazia   - se a lista estiver vazia
 *
 ***********************************************************************/

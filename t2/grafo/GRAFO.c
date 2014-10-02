@@ -486,16 +486,14 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
 *  Função: GRA  &Alterar Valor Corrente
 *  ****/    
     
-    GRA_tpCondRet GRA_AlterarCorrente( GRA_tppGrafo pGrafo , void* pDado ) {
+    GRA_tpCondRet GRA_AlterarValorCorrente( GRA_tppGrafo pGrafo , void* pDado ) {
 
         /* Verifica se vertice pertence ao grafo; */
         if (pGrafo->corrente == -1) {
             return GRA_CondRetGrafoVazio;
         }
       
-          
-        return GRA_AlterarValor(pGrafo, pGrafo->corrente, pDado);
-
+        return GRA_AlterarValor( pGrafo, pGrafo->corrente, pDado ) ;
     }
     /* Fim função: GRA  &Alterar Valor Corrente*/
 

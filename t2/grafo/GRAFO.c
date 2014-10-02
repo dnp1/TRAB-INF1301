@@ -570,6 +570,31 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
 
 
 
+
+/***************************************************************************
+*
+*  Função: GRA  &Inserir Vizinho Corrente
+*  ****/    
+    
+    GRA_tpCondRet GRA_InserirVizinhoCorrente( GRA_tppGrafo pGrafo , void* pValor, int id ) {
+
+        /* Verifica se vertice pertence ao grafo; */
+        if (pGrafo->corrente == -1) {
+            return GRA_CondRetGrafoVazio;
+        }
+        tpVertice * vizinho = get_by_id(pGrafo,id);
+        if(vizinho == NULL)
+            return GRA_CondRetNaoEhVertice;
+        
+        if(!EhVizinho(pGrafo,get_by_id(pGrafo,pGrafo->corrente),vizinho))
+            return GRA_CondRetNaoEhVizinho;  
+
+        return GRA_InserirVertice(pGrafo, pValor, id);
+        
+
+    }
+    /* Fim função: GRA  &Ir Vizinho Corrente */
+
     
 
 /***************************************************************************

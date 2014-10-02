@@ -119,11 +119,11 @@ static void ExcluirAresta (GRA_tppGrafo grafo, tpVertice* v, tpVertice* u);
 
 static tpVertice * ObterOrigem (GRA_tppGrafo grafo, tpVertice* v);
 
-static tpVertice * get_by_id(int idVertice);
+static tpVertice * get_by_id(GRA_tppGrafo grafo,int idVertice);
 
-static int EhVizinho(tpVertice * v, tpVertice * u);
+static int EhVizinho(GRA_tppGrafo grafo,tpVertice * v, tpVertice * u);
 
-static void get_pair_by_id(int idAresta, tpVertice * u, tpVertice * v);
+static void get_pair_by_id(GRA_tppGrafo grafo, int idAresta, tpVertice * u, tpVertice * v);
 
 static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
 
@@ -140,7 +140,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         if ( pGrafo->corrente == -1 ) {
             return GRA_CondRetGrafoVazio;
         }
-        tpVertice * tpVertice = get_by_id(pGrafo->corrente);
+        tpVertice * tpVertice = get_by_id(pGrafo,pGrafo->corrente);
         *pDado = tpVertice->pNode->pValor;
         
         return GRA_CondRetOK;
@@ -250,7 +250,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         
         tpAresta* vizinho = NULL;
         tpNode* no = NULL;
-        tpVertice * pVertice = get_by_id(idVertice);
+        tpVertice * pVertice = get_by_id(pGrafo,idVertice);
         if(pVertice == NULL)
             return GRA_CondRetNaoEhVertice;
              
@@ -283,8 +283,8 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
     GRA_tpCondRet GRA_InserirAresta( GRA_tppGrafo pGrafo, int idVertice1, int idVertice2 , int idAresta) {
         tpVertice* origem1 = NULL;
         tpVertice* origem2 = NULL;
-        tpVertice* pVertice1 = get_by_id(idVertice1);
-        tpVertice* pVertice2 = get_by_id(idVertice2);
+        tpVertice* pVertice1 = get_by_id(pGrafo,idVertice1);
+        tpVertice* pVertice2 = get_by_id(pGrafo,idVertice2);
         /* Verifica se vertice pertence ao grafo; */
         if (pVertice1 == NULL || pVertice2 == NULL) {
             return GRA_CondRetNaoEhVertice;
@@ -333,7 +333,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         tpVertice * pVertice1; 
         tpVertice * pVertice2;
         
-        get_pair_by_id(idAresta, pVertice1, pVertice2);
+        get_pair_by_id(pGrafo,idAresta, pVertice1, pVertice2);
         
         if(pVertice1 == NULL || pVertice2 == NULL)
             return GRA_CondRetNaoEhVertice;
@@ -353,7 +353,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
      
     GRA_tpCondRet GRA_ObterVizinhos ( GRA_tppGrafo pGrafo, int idVertice, LIS_tppLista * pLista) {
         
-        tpVertice * pVertice = get_by_id(idVertice);
+        tpVertice * pVertice = get_by_id(pGrafo,idVertice);
 
         if (pVertice == NULL) 
             return GRA_CondRetNaoEhVertice; 
@@ -429,7 +429,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
     
     GRA_tpCondRet GRA_ObterValor( GRA_tppGrafo pGrafo , int idVertice , void** pDado ) {
 
-        tpVertice * pVertice = get_by_id(idVertice);
+        tpVertice * pVertice = get_by_id(pGrafo,idVertice);
         /* Verifica se vertice pertence ao grafo; */
         if (pVertice == NULL) {
             return GRA_CondRetNaoEhVertice;
@@ -468,7 +468,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
     
     GRA_tpCondRet GRA_AlterarValor( GRA_tppGrafo pGrafo , int idVertice , void* pDado ) {
 
-        tpVertice * pVertice = get_by_id(idVertice);
+        tpVertice * pVertice = get_by_id(pGrafo,idVertice);
         /* Verifica se vertice pertence ao grafo; */
         if (pVertice == NULL) {
             return GRA_CondRetNaoEhVertice;
@@ -493,8 +493,9 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
             return GRA_CondRetGrafoVazio;
         }
       
-        return GRA_AlterarValor( pGrafo, pGrafo->corrente, pDado ) ;
+        return GRA_AlterarValor(pGrafo, pGrafo->corrente, pDado);
     }
+<<<<<<< HEAD
     /* Fim função: GRA  &Alterar Valor Corrente*/
 
 
@@ -539,6 +540,9 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         }
     } 
     /* Fim função: GRA  &Excluir vizinho corrente */
+=======
+    /* Fim função: GRA  &Alterar Valor Corrente */
+>>>>>>> c791a1a2ce975219944ac561cf0c1fcbd84444ca
 
 
 /***************************************************************************
@@ -552,11 +556,11 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         if (pGrafo->corrente == -1) {
             return GRA_CondRetGrafoVazio;
         }
-        tpVertice * vizinho = get_by_id(id);
+        tpVertice * vizinho = get_by_id(pGrafo,id);
         if(vizinho == NULL)
             return GRA_CondRetNaoEhVertice;
         
-        if(!EhVizinho(get_by_id(pGrafo->corrente),vizinho))
+        if(!EhVizinho(pGrafo,get_by_id(pGrafo,pGrafo->corrente),vizinho))
             return GRA_CondRetNaoEhVizinho;  
 
         pGrafo->corrente = id;
@@ -564,6 +568,68 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
 
     }
     /* Fim função: GRA  &Ir Vizinho Corrente */
+<<<<<<< HEAD
+=======
+
+    
+
+/***************************************************************************
+*
+*  Função: GRA  &Mudar Corrente
+*  ****/    
+    
+    GRA_tpCondRet GRA_MudarCorrente( GRA_tppGrafo pGrafo , int id ) {
+
+        /* Verifica se vertice pertence ao grafo; */
+        if (pGrafo->corrente == -1) {
+            return GRA_CondRetGrafoVazio;
+        }
+        tpVertice * vizinho = get_by_id(pGrafo,id);
+        if(vizinho == NULL)
+            return GRA_CondRetNaoEhVertice;
+        
+        pGrafo->corrente = id;
+        return GRA_CondRetOK;
+
+    }
+    /* Fim função: GRA  &Mudar Corrente */
+
+    
+
+/***************************************************************************
+*
+*  Função: GRA  &Buscar caminho corrente
+*  ****/    
+    
+    GRA_tpCondRet GRA_BuscarCaminhoCorrente( GRA_tppGrafo pGrafo , int idVerticeDestino, LIS_tppLista * pLista ) {
+
+        /* Verifica se vertice pertence ao grafo; */
+        if (pGrafo->corrente == -1) {
+            return GRA_CondRetGrafoVazio;
+        }
+        
+        return GRA_BuscarCaminho(pGrafo, pGrafo->corrente,idVerticeDestino,pLista);
+    }
+    /* Fim função: GRA  &Buscar caminho corrente */
+
+
+/***************************************************************************
+*
+*  Função: GRA  &Buscar caminho 
+*  ****/    
+    
+    GRA_tpCondRet GRA_BuscarCaminhoCorrente( GRA_tppGrafo pGrafo , int idVerticeOrigem, int idVerticeDestino, LIS_tppLista * pLista ) {
+
+        /* Verifica se vertice pertence ao grafo; */
+        if (pGrafo->corrente == -1) {
+            return GRA_CondRetGrafoVazio;
+        }
+        
+        return GRA_BuscarCaminho(pGrafo, pGrafo->corrente,idVerticeDestino,pLista);
+    }
+    /* Fim função: GRA  &Buscar caminho */
+
+>>>>>>> c791a1a2ce975219944ac561cf0c1fcbd84444ca
 
     
 /*****  Código das funções encapsuladas no módulo  *****/
@@ -580,7 +646,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
 *
 ***********************************************************************/
 
-static int EhVizinho( tpVertice * v, tpVertice * u ){
+static int EhVizinho( GRA_tppGrafo pGrafo, tpVertice * v, tpVertice * u ){
     
     LIS_tppLista vizinhos = LIS_CriarLista(NULL);
     tpVertice * no;
@@ -615,7 +681,7 @@ static tpVertice * get_by_id(GRA_tppGrafo pGrafo , int idVertice){
         if (pGrafo->vertices == NULL) {
             return NULL;
         }
-        if (LIS_ProcurarValor(pGrafo->vertices, get_by_id(idVertice)) != LIS_CondRetOK) { //Verifica se vertice pertence ao grafo.
+        if (LIS_ProcurarValor(pGrafo->vertices, get_by_id(pGrafo,idVertice)) != LIS_CondRetOK) { //Verifica se vertice pertence ao grafo.
             return NULL;
         }        
 }

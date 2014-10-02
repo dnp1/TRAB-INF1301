@@ -513,7 +513,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
 *  Função: GRA  &Mudar Corrente
 *  ****/    
     
-    GRA_tpCondRet GRA_IrVizinhoCorrente( GRA_tppGrafo pGrafo , int id ) {
+    GRA_tpCondRet GRA_MudarCorrente( GRA_tppGrafo pGrafo , int id ) {
 
         /* Verifica se vertice pertence ao grafo; */
         if (pGrafo->corrente == -1) {
@@ -527,7 +527,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         return GRA_CondRetOK;
 
     }
-    /* Fim função: GRA  &Mudar Valor */
+    /* Fim função: GRA  &Mudar Corrente */
 
     
 
@@ -545,8 +545,24 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         
         return GRA_BuscarCaminho(pGrafo, pGrafo->corrente,idVerticeDestino,pLista);
     }
-    /* Fim função: GRA  &Mudar Valor */
+    /* Fim função: GRA  &Buscar caminho corrente */
 
+
+/***************************************************************************
+*
+*  Função: GRA  &Buscar caminho 
+*  ****/    
+    
+    GRA_tpCondRet GRA_BuscarCaminhoCorrente( GRA_tppGrafo pGrafo , int idVerticeOrigem, int idVerticeDestino, LIS_tppLista * pLista ) {
+
+        /* Verifica se vertice pertence ao grafo; */
+        if (pGrafo->corrente == -1) {
+            return GRA_CondRetGrafoVazio;
+        }
+        
+        return GRA_BuscarCaminho(pGrafo, pGrafo->corrente,idVerticeDestino,pLista);
+    }
+    /* Fim função: GRA  &Buscar caminho */
 
 
     

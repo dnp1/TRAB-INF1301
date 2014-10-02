@@ -6,3 +6,5 @@
 27/09 - Eduardo, Leonardo & Danilo - 15h - 21h - Especificação, projeção e codificação do módulo Grafo;
 29/09 - Eduardo, Leonardo & Danilo - 18:30h - 21h - Codificação do módulo Grafo;
 30/09 - Eduardo, Leonardo & Danilo - 15:00h - 21h - Codificação dos moódulos Grafo e testaGrafo;
+01/10 - Eduardo, Leonardo & Danilo - 19:00h - 24h - Codificação dos moódulos Grafo e testaGrafo;
+02/10 - Eduardo, Leonardo & Danilo - 00:00h - 5h - Codificação dos moódulos Grafo e testaGrafo;

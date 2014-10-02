@@ -10,5 +10,5 @@ Membros do Grupo:
 * Leonardo Kaplan
 
 Hipóteses:
-Os identificadores são únicos.
+Os identificadores são únicos e são inteiros maiores ou iguais a zero.
 O grafo sempre existe.

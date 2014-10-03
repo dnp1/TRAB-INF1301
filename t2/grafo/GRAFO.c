@@ -306,8 +306,9 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
             return GRA_CondRetEhVizinho;
         }
 
-        if (LIS_ProcurarValor(pVertice1->pNode->arestas, pVertice2) != LIS_CondRetOK && 
-            LIS_ProcurarValor(pVertice2->pNode->arestas, pVertice1) != LIS_CondRetOK ) {
+        if (!EhVizinho(pGrafo, pVertice1, pVertice2)  && 
+            !EhVizinho(pGrafo, pVertice2, pVertice1) ) {
+
 			tpAresta * aresta1 = NULL;
 			tpAresta * aresta2 = NULL;
 
@@ -321,13 +322,13 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
 			
 			aresta1 = ( tpAresta * ) malloc( sizeof( tpAresta )) ;
 			aresta2 = ( tpAresta * ) malloc( sizeof( tpAresta )) ;
-            aresta1->id = idAresta;
-            aresta2->id = idAresta;
-            aresta1->pVizinho = pVertice1;
-            aresta2->pVizinho = pVertice2;
             if (aresta1 == NULL || aresta2 == NULL ){
                 return GRA_CondRetFaltouMemoria;
             }
+            aresta1->id = idAresta;
+            aresta2->id = idAresta;
+            aresta1->pVizinho = pVertice2;
+            aresta2->pVizinho = pVertice1;
             LIS_InserirElementoApos(pVertice1->pNode->arestas, aresta1);
             LIS_InserirElementoApos(pVertice2->pNode->arestas, aresta2);
             
@@ -1026,11 +1027,9 @@ tpAresta* get_edge_by_vertex(LIS_tppLista  vizinhos, tpVertice * v){
         LIS_InserirElementoApos(Q, v); //Usado como uma Fila.
 
         while (LIS_NumeroDeElementos(Q) > 0) {
-
             LIS_IrInicioLista(Q);
             t = (tpVertice *)LIS_ObterValor(Q);
             LIS_ExcluirElemento(Q);
-
             if (t == u) {
                 achou = 1; 
                 break;
@@ -1038,6 +1037,7 @@ tpAresta* get_edge_by_vertex(LIS_tppLista  vizinhos, tpVertice * v){
 
             arestas = t->pNode->arestas;
             LIS_IrInicioLista(arestas);
+
             do {
                 tpAresta * a = (tpAresta *)LIS_ObterValor(arestas);
                 if(a == NULL) break;

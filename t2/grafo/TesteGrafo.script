@@ -39,8 +39,6 @@
 == Inserir vizinho do Corrente em Grafo vazio
 =insvizcorr 0 "aaa" 12 GrafoVazio
 
-== Excluir vizinho do Corrente em Grafo vazio
-=excvizcorr 0 1 GrafoVazio
 
 == Obter Vizinhos do Corrente em Grafo Vazio
 =obtervizcorr 0 GrafoVazio
@@ -64,10 +62,14 @@
 =insvert  0 str3  4  OK
 =insvert  0 str4  5  OK
 =insvert  0 str5  6  OK
-=insvert  0 str5  8  OK
+=insvert  0 str5  9  OK
 
 == Testa Obtem Origens Grafo 0
 =obterorig  0  OK
+
+== Obter Valor do Corrente Grafo 0 
+=obtervalcorr 0 pNaoNULL
+
 
 == Inserindo Arestas no Grafo 0
 =insaresta 0  1  2  1  OK
@@ -78,7 +80,7 @@
 =insaresta 0  5  2  9  OK
 =insaresta 0  6  5  7  OK
 
-== Inserindo Arestas Inválidas no Grafo 0
+== Inserindo Arestas InvÃ¡lidas no Grafo 0
 =insaresta  0   1   2   23   EhVizinho
 =insaresta  0   1   1   2    EhVizinho
 =insaresta  0   2   1   2    EhVizinho
@@ -93,12 +95,12 @@
 =excaresta  0  20 NaoEhVertice // Verificar
 
 
-== Inserção sobre o corrente Grafo 0 
+== InserÃ§Ã£o sobre o corrente Grafo 0 
 =insvizcorr  0 "oioi"  15 Ok 
 =insvizcorr  0 "ola"   16 Ok
 =insvizcorr  0 "hello" 17 Ok
 
-== Exclusão sobre o corrente Grafo 0
+== ExclusÃ£o sobre o corrente Grafo 0
 =excvizcorr  0 16 Ok
 =excvizcorr  0 16 NaoEhVertice
 =excvizcorr  0 18 NaoEhVertice
@@ -148,7 +150,7 @@
 =insaresta  5  255  64    50   Ok
 =insaresta  5  128  32    60  Ok
 
-== Inserindo Arestas Inválidas no Grafo 5
+== Inserindo Arestas InvÃ¡lidas no Grafo 5
 =insaresta  5  1    1    2   NaoEhVertice
 =insaresta  5  2    1    2   NaoEhVertice
 =insaresta  5  32   32   2   EhVizinho
@@ -164,7 +166,7 @@
 =excaresta  5  50  Ok 
 =excaresta  5  60  Ok
 
-== Re-inserindo Arestas no Grafo 5 (Verifica se Exclusão de Aresta deixa o grafo num estado válido)
+== Re-inserindo Arestas no Grafo 5 (Verifica se ExclusÃ£o de Aresta deixa o grafo num estado vÃ¡lido)
 =insaresta  5  32   64    10   Ok
 =insaresta  5  32   128   20  Ok
 =insaresta  5  32   255   30   Ok
@@ -181,14 +183,14 @@
 =excvert 5  8     NaoEhVertice
 
 
-== Re-inserindo Vertices no Grafo 5 (Verifica se Exclusão de Vertice deixa o grafo num estado válido)
+== Re-inserindo Vertices no Grafo 5 (Verifica se ExclusÃ£o de Vertice deixa o grafo num estado vÃ¡lido)
 =insvert 5  str4  32    Ok
 =insvert 5  str2  64    Ok
 =insvert 5  str1  128   Ok
 =insvert 5  str5  255   Ok
 =insvert 5  str5  300   Ok
 
-== Re-inserindo Arestas no Grafo 5 (Verifica se Exclusão de Vertice deixa o grafo num estado válido)
+== Re-inserindo Arestas no Grafo 5 (Verifica se ExclusÃ£o de Vertice deixa o grafo num estado vÃ¡lido)
 =insaresta  5  32   64    10   Ok
 =insaresta  5  32   128   20  Ok
 =insaresta  5  32   255   30   Ok

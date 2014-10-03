@@ -289,7 +289,8 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
             } /* if */
             
             CondRetObtida = GRA_ObterVizinhos( vtRefGrafos[ inxGrafo ] , id , &vizinhos );
-            LIS_DestruirLista(vizinhos);
+            if(vizinhos != NULL)
+                LIS_DestruirLista(vizinhos);
             
             return TST_CompararInt( CondRetEsperada , CondRetObtida ,
                                     "Retorno errado ao obter vizinhos." );

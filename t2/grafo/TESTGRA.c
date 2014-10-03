@@ -58,6 +58,7 @@ int estaInicializado = 0 ;
 #define DIM_VALOR     1000
 
 GRA_tppGrafo vtRefGrafos[ DIM_VT_GRAFOS ] ;
+char * stringDado[ DIM_VALOR ] ;
 
 /***********************************************************************
 *
@@ -123,16 +124,17 @@ GRA_tppGrafo vtRefGrafos[ DIM_VT_GRAFOS ] ;
 
 static int VerificarInx( int inxGrafo );
 static int VerificarId (int id); 
+int sujo = 1;
 
 TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
-   {
+   {   
       GRA_tpCondRet CondRetObtida   = GRA_CondRetOK ;
       GRA_tpCondRet CondRetEsperada = GRA_CondRetFaltouMemoria ;
                                       /* inicializa para qualquer coisa */
       GRA_tpCondRet CondRetTemp = GRA_CondRetFaltouMemoria ;
                                       /* inicializa para qualquer coisa */
 
-      char stringDado[  DIM_VALOR ] ;
+      char stringTemp[  DIM_VALOR ] ;
       char * pDado ;
 
       int  NumLidos      = -1 ;
@@ -140,6 +142,14 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
 
       int i ;
       int id, _id , idAresta;
+      
+      if(sujo){
+         int i;
+         for(i = 0 ; i <= DIM_VALOR ; i++) {
+              stringDado[i] = NULL;
+         }
+         sujo = 0;
+      }
 
       #ifdef _DEBUG
          int  IntEsperado   = -1 ;
@@ -212,14 +222,22 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
 
          else if ( strcmp( ComandoTeste , INS_VERT_CMD ) == 0 )
          {
-            NumLidos = LER_LerParametros( "isii" , &inxGrafo , stringDado , &id , &CondRetEsperada ) ;
+            NumLidos = LER_LerParametros( "isii" , &inxGrafo , stringTemp , &id , &CondRetEsperada ) ;
             if ( ( NumLidos != 4 ) || !VerificarInx( inxGrafo ) )
             {
                return TST_CondRetParm ;
-            } /* if */           
+            } /* if */      
 
-            CondRetObtida = GRA_InserirVertice( vtRefGrafos[ inxGrafo ] , stringDado , id );           
-            
+            stringDado[id] = (char*)malloc(strlen(stringTemp)+1);
+            if ( stringDado[id] == NULL )
+            {
+               return TST_CondRetMemoria ;
+            } /* if */  
+
+            strcpy(stringDado[id],stringTemp);
+            CondRetObtida = GRA_InserirVertice( vtRefGrafos[ inxGrafo ] , stringDado[id] , id );           
+            if(CondRetObtida != GRA_CondRetOK) free(stringDado[id]);
+
             return TST_CompararInt( CondRetEsperada , CondRetObtida ,
                                     "Retorno errado ao inserir vértice." );
             
@@ -347,7 +365,7 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
          
          else if ( strcmp( ComandoTeste , ALT_VAL_CMD ) == 0 )
          {
-            NumLidos = LER_LerParametros( "iisi" , &inxGrafo , &id, stringDado,  &CondRetEsperada ) ;
+            NumLidos = LER_LerParametros( "iisi" , &inxGrafo , &id, stringTemp,  &CondRetEsperada ) ;
             if ( ( NumLidos != 4 ) || !VerificarInx( inxGrafo ) )
             {
                return TST_CondRetParm ;
@@ -358,15 +376,15 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
             CondRetTemp = GRA_ObterValor ( vtRefGrafos[ inxGrafo ], id , (void**)&pDado ) ;
             free ( pDado ) ;
      
-            pDado = ( char * ) malloc( strlen( stringDado ) + 1 ) ;
-            if ( pDado == NULL )
+            stringDado[id] = ( char * ) malloc( strlen( stringTemp ) + 1 ) ;
+            if ( stringDado[id] == NULL )
             {
                return TST_CondRetMemoria ;
             } /* if */  
 
-            strcpy( pDado , stringDado ) ;
+            strcpy( stringDado[id] , stringTemp ) ;
             
-            CondRetObtida = GRA_AlterarValor( vtRefGrafos[ inxGrafo ], id , pDado ) ;
+            CondRetObtida = GRA_AlterarValor( vtRefGrafos[ inxGrafo ], id , stringDado[id] ) ;
             
             if ( CondRetObtida != GRA_CondRetOK )
             {
@@ -375,9 +393,9 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
             
             CondRetTemp = GRA_ObterValor ( vtRefGrafos[ inxGrafo ], id , (void**)&pDado ) ;
             
-            if ( CondRetTemp != GRA_CondRetOK || strcmp ( pDado, stringDado) != 0 )
+            if ( CondRetTemp != GRA_CondRetOK || strcmp ( pDado, stringDado[id]) != 0 )
             {
-                return TST_CompararPonteiro ( pDado , stringDado , 
+                return TST_CompararPonteiro ( pDado , stringDado[id] , 
                                            "O valor obtido e diferente do alterado" ) ;
             } /* if */                               
             

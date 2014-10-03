@@ -224,6 +224,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
 	 GRA_tpCondRet GRA_InserirVertice (GRA_tppGrafo pGrafo, void* pValor, int id)
 	 {
         tpVertice * pElem = NULL ;
+        tpVertice * v = NULL ;
 		#ifdef _DEBUG
 			 assert( pGrafo != NULL ) ;
 		#endif
@@ -240,7 +241,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
 	 	
         if( LIS_InserirElementoApos (pGrafo->vertices, pElem) != LIS_CondRetOK)
 			return GRA_CondRetFaltouMemoria ;	
-        
+       
 		if(pGrafo->corrente == -1) 
             pGrafo->corrente = id;
 
@@ -296,6 +297,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         tpVertice* origem2 = NULL;
         tpVertice* pVertice1 = get_by_id(pGrafo,idVertice1);
         tpVertice* pVertice2 = get_by_id(pGrafo,idVertice2);
+        tpAresta* vizinho = NULL;   
 
         /* Verifica se vertice pertence ao grafo; */
         if (pVertice1 == NULL || pVertice2 == NULL) {
@@ -332,6 +334,23 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
             LIS_InserirElementoApos(pVertice1->pNode->arestas, aresta1);
             LIS_InserirElementoApos(pVertice2->pNode->arestas, aresta2);
             
+            /*
+            printf("\n-------------------------------\nInserir\n---------------------------------------\n");         
+            printf("\nv1 = %d\n%s\n",pVertice1->id,pVertice1->pNode->pValor);
+            LIS_IrInicioLista(pVertice1->pNode->arestas);
+            do{
+                vizinho = (tpAresta*)LIS_ObterValor(pVertice1->pNode->arestas);
+                printf("\na1 = %d\n",vizinho->id);
+            }while(LIS_AvancarElementoCorrente(pVertice1->pNode->arestas, 1) != LIS_CondRetFimLista);
+
+            printf("\nv2 = %d\n%s\n",pVertice2->id,pVertice2->pNode->pValor);
+            LIS_IrInicioLista(pVertice2->pNode->arestas);
+            do{
+                vizinho = (tpAresta*)LIS_ObterValor(pVertice2->pNode->arestas);
+                printf("\na2 = %d\n",vizinho->id);
+            }while(LIS_AvancarElementoCorrente(pVertice2->pNode->arestas, 1) != LIS_CondRetFimLista);
+            printf("\n-------------------------------\nFim Inserir\n---------------------------------------\n");         
+            */
             return GRA_CondRetOK;
         } 
         else {
@@ -355,7 +374,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
             return GRA_CondRetNaoEhVertice;
 
         if(!EhVizinho(pGrafo,pVertice1,pVertice2)) return GRA_CondRetNaoEhVizinho;
-
+        
         return ExcluirAresta(pGrafo, pVertice1, pVertice2);
 
     }
@@ -881,6 +900,7 @@ void get_pair_by_id(GRA_tppGrafo pGrafo, int idAresta, tpVertice * u, tpVertice 
         
         aresta = (tpAresta*)LIS_ObterValor( vertice->pNode->arestas ) ;
         if(aresta = NULL) break;
+        
         if ( aresta->id == idAresta ){
             u = vertice ;
             v = aresta->pVizinho ;
@@ -936,6 +956,7 @@ tpAresta* get_edge_by_vertex(LIS_tppLista  vizinhos, tpVertice * v){
             tpVertice* v = NULL;    
             tpNode* no = NULL;
             LIS_tppLista arestas = NULL;
+            tpVertice* t = NULL;
 
             v = (tpVertice*) malloc( sizeof(tpVertice) );
             if (v == NULL) {
@@ -959,6 +980,16 @@ tpAresta* get_edge_by_vertex(LIS_tppLista  vizinhos, tpVertice * v){
             no->pValor = pValor; 
             v->pNode = no;
             v->id = id;
+            
+            printf("\n-------------------------------\nCriar\n---------------------------------------\n");             
+            LIS_IrInicioLista(grafo->vertices);
+            do{
+                t = (tpVertice*)LIS_ObterValor(grafo->vertices);
+                if(t != NULL) printf("\nv = %d\n%s\n",t->id,t->pNode->pValor);
+            }while(LIS_AvancarElementoCorrente(grafo->vertices, 1) == LIS_CondRetOK);
+            printf("\n-------------------------------\nFim Criar\n---------------------------------------\n");         
+
+
             return v;
     }
 

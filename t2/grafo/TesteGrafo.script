@@ -4,9 +4,6 @@
 // Propósito: Testar superficialmente o módulo grafo genérica duplamente encadeada
 //
 
-//Lispa teste
-=resetteste
-
 == Inicializar valores
 =declararparm   grafo0  int 0
 =declararparm   grafo1  int 1
@@ -25,12 +22,10 @@
 =declararparm   EhVizinho      int  3
 =declararparm   NaoEhVizinho   int  4
 =declararparm   FaltouMemoria  int  5
-=declararparm   NaoEhConexo  int  6
+=declararparm   NaoEhConexo    int  6
 
 =declararparm   pNULL          int  0
 =declararparm   pNaoNULL       int  1
-
-
 
 == Sequencia Criar-destruir no Grafo
 =criargrafo 1
@@ -47,45 +42,41 @@
 == Excluir vizinho do Corrente em Grafo vazio
 =excvizcorr 0 1 GrafoVazio
 
-== Obter Vizinho do Corrente em Grafo Vazio
+== Obter Vizinhos do Corrente em Grafo Vazio
 =obtervizcorr 0 GrafoVazio
 
 == Obter Valor do Corrente em Grafo Vazio
 =obtervalcorr 0 GrafoVazio
 
-== Alterar Valor do Corrente em Grafo  Vazio
-=altvalcorr 0 GrafoVazio
+== Alterar Valor do Corrente em Grafo Vazio
+=altvalcorr 0 "aaa" GrafoVazio
 
-== Alterar Valor do Corrente em Grafo  Vazio
-=buscacamcorr 0 GrafoVazio
-
-== IrVizinho Valor do Corrente em Grafo  Vazio
+== IrVizinho Valor do Corrente em Grafo Vazio
 =irvizcorr 0 1 GrafoVazio
 
-== Mudar Corr Valor do Corrente em Grafo  Vazio
-=buscacamcorr 0 1 GrafoVazio
-
+== Mudar Corr Valor do Corrente em Grafo Vazio
+=mudarcorr 0 1 GrafoVazio
 
 == Inserindo Vertices no Grafo 0
-=insvert  0 str0  1  Ok
-=insvert  0 str1  2  Ok
-=insvert  0 str2  3  Ok
-=insvert  0 str3  4  Ok
-=insvert  0 str4  5  Ok
-=insvert  0 str5  6  Ok
-=insvert  0 str5  8  Ok
+=insvert  0 str0  1  OK
+=insvert  0 str1  2  OK
+=insvert  0 str2  3  OK
+=insvert  0 str3  4  OK
+=insvert  0 str4  5  OK
+=insvert  0 str5  6  OK
+=insvert  0 str5  8  OK
 
 == Testa Obtem Origens Grafo 0
-=obterorig  0  Ok
+=obterorig  0  OK
 
 == Inserindo Arestas no Grafo 0
-=insaresta 0  1  2  1  Ok
-=insaresta 0  1  3  3  Ok
-=insaresta 0  3  5  4  Ok
-=insaresta 0  4  5  5  Ok
-=insaresta 0  4  3  6  Ok
-=insaresta 0  5  2  9  Ok
-=insaresta 0  6  5  7  Ok
+=insaresta 0  1  2  1  OK
+=insaresta 0  1  3  3  OK
+=insaresta 0  3  5  4  OK
+=insaresta 0  4  5  5  OK
+=insaresta 0  4  3  6  OK
+=insaresta 0  5  2  9  OK
+=insaresta 0  6  5  7  OK
 
 == Inserindo Arestas Inválidas no Grafo 0
 =insaresta  0   1   2   23   EhVizinho
@@ -229,5 +220,6 @@
 == Busca Caminho No Grafo 5 
 =buscacam 5  64  128 Ok
 =buscacam 5  64  300 NaoEhConexo
+
 
 

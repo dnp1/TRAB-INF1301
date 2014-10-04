@@ -369,15 +369,27 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         tpVertice * pVertice2;
         tpVertice * t;
         tpAresta * vizinho;
-        
+        tpElemComp* comp;
+        int i;
+
         get_pair_by_id(pGrafo,idAresta, &pVertice1, &pVertice2);
         
         if(pVertice1 == NULL || pVertice2 == NULL)
             return GRA_CondRetNaoEhVertice;
 
         if(!EhVizinho(pGrafo,pVertice1,pVertice2)) return GRA_CondRetNaoEhVizinho;
-         
-        
+        /* 
+        printf("\n-------------------------------\nExcluir\n---------------------------------------\n"); 
+        LIS_IrInicioLista(pGrafo->componentes);
+        i = 0;
+        do{
+            comp = (tpElemComp*)LIS_ObterValor(pGrafo->componentes);
+            printf("\nid da origem %d = %d\n",i,comp->pVertice->id);
+            i++;
+        }while(LIS_AvancarElementoCorrente(pGrafo->componentes, 1) == LIS_CondRetOK);
+
+        printf("\n-------------------------------\nFim Excluir\n---------------------------------------\n");         
+        */    
         return ExcluirAresta(pGrafo, pVertice1, pVertice2);
 
     }

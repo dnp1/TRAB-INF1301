@@ -123,7 +123,7 @@ static tpVertice * get_by_id(GRA_tppGrafo grafo,int idVertice);
 
 static int EhVizinho(GRA_tppGrafo grafo,tpVertice * v, tpVertice * u);
 
-static void get_pair_by_id(GRA_tppGrafo grafo, int idAresta, tpVertice * u, tpVertice * v);
+static void get_pair_by_id(GRA_tppGrafo grafo, int idAresta, tpVertice ** u, tpVertice ** v);
 
 static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
 
@@ -367,13 +367,16 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
     GRA_tpCondRet GRA_ExcluirAresta( GRA_tppGrafo pGrafo , int idAresta ) {
         tpVertice * pVertice1; 
         tpVertice * pVertice2;
+        tpVertice * t;
+        tpAresta * vizinho;
         
-        get_pair_by_id(pGrafo,idAresta, pVertice1, pVertice2);
+        get_pair_by_id(pGrafo,idAresta, &pVertice1, &pVertice2);
         
         if(pVertice1 == NULL || pVertice2 == NULL)
             return GRA_CondRetNaoEhVertice;
 
         if(!EhVizinho(pGrafo,pVertice1,pVertice2)) return GRA_CondRetNaoEhVizinho;
+         
         
         return ExcluirAresta(pGrafo, pVertice1, pVertice2);
 
@@ -888,7 +891,7 @@ static tpVertice * get_by_id(GRA_tppGrafo pGrafo , int idVertice){
 ***********************************************************************/
 
 
-void get_pair_by_id(GRA_tppGrafo pGrafo, int idAresta, tpVertice * u, tpVertice * v){
+void get_pair_by_id(GRA_tppGrafo pGrafo, int idAresta, tpVertice ** u, tpVertice ** v){
 	tpAresta * aresta = NULL;
 	tpVertice * vertice = NULL;
 
@@ -897,16 +900,17 @@ void get_pair_by_id(GRA_tppGrafo pGrafo, int idAresta, tpVertice * u, tpVertice 
         vertice = (tpVertice*)LIS_ObterValor( pGrafo->vertices ) ;
         if(vertice == NULL) break;
         LIS_IrInicioLista( vertice->pNode->arestas ) ;
-        
         aresta = (tpAresta*)LIS_ObterValor( vertice->pNode->arestas ) ;
-        if(aresta = NULL) break;
-        
-        if ( aresta->id == idAresta ){
-            u = vertice ;
-            v = aresta->pVizinho ;
+        if(aresta == NULL){
             break;
         }
-    }while ( LIS_AvancarElementoCorrente( pGrafo->vertices , 1) != LIS_CondRetFimLista ) ;
+         
+        if ( aresta->id == idAresta ){
+            *u = vertice ;
+            *v = aresta->pVizinho ;
+            break;
+        }
+    }while ( LIS_AvancarElementoCorrente( pGrafo->vertices , 1) == LIS_CondRetOK ) ;
 }
 
 
@@ -980,16 +984,7 @@ tpAresta* get_edge_by_vertex(LIS_tppLista  vizinhos, tpVertice * v){
             no->pValor = pValor; 
             v->pNode = no;
             v->id = id;
-            
-            printf("\n-------------------------------\nCriar\n---------------------------------------\n");             
-            LIS_IrInicioLista(grafo->vertices);
-            do{
-                t = (tpVertice*)LIS_ObterValor(grafo->vertices);
-                if(t != NULL) printf("\nv = %d\n%s\n",t->id,t->pNode->pValor);
-            }while(LIS_AvancarElementoCorrente(grafo->vertices, 1) == LIS_CondRetOK);
-            printf("\n-------------------------------\nFim Criar\n---------------------------------------\n");         
-
-
+           
             return v;
     }
 

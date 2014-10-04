@@ -59,7 +59,8 @@ int estaInicializado = 0 ;
 
 GRA_tppGrafo vtRefGrafos[ DIM_VT_GRAFOS ] ;
 char * stringDado[ DIM_VALOR ] ;
-
+//-2 grafo nao existe -> -1 corrente = null -> 0+ id do corrente
+int corrente[ DIM_VT_GRAFOS ];
 /***********************************************************************
 *
 *  $TC Tipo de dados: TESTGRA Condições de retorno
@@ -171,11 +172,11 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
 
             for( i = 0 ; i < DIM_VT_GRAFOS ; i++ )
             {
-               vtRefGrafos[ i ] = 0 ;
+               vtRefGrafos[ i ] = NULL ;
+               corrente[i] = -2;
             } /* for */
 
             estaInicializado = 1 ;
-
          } /* fim ativa: Tratar: inicializar contexto */
       
         /* Testar GRA Criar grafo */
@@ -190,9 +191,9 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
             {
                return TST_CondRetParm ;
             } /* if */
-
+          
             vtRefGrafos[ inxGrafo ] = GRA_CriarGrafo( DestruirValor ) ;
-
+            corrente[ inxGrafo ] = -1;
             return TST_CompararPonteiroNulo( 1 , vtRefGrafos[ inxGrafo ] ,
                                     "Retorno errado ao criar grafo." );
 
@@ -213,7 +214,7 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
 
             GRA_DestruirGrafo( vtRefGrafos[ inxGrafo ] ) ;
             vtRefGrafos[ inxGrafo ] = NULL;
-            
+            corrente[ inxGrafo ] = -2;
             return TST_CondRetOK ;
             
          } /* fim ativa: Testar GRA Destruir grafo */
@@ -236,8 +237,12 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
 
             strcpy(stringDado[id],stringTemp);
             CondRetObtida = GRA_InserirVertice( vtRefGrafos[ inxGrafo ] , stringDado[id] , id );           
-            if(CondRetObtida != GRA_CondRetOK) free(stringDado[id]);
-
+            if(CondRetObtida != GRA_CondRetOK) {
+                free(stringDado[id]);
+            }
+            else if(corrente[ inxGrafo] == -1){
+                 corrente[inxGrafo] = id;
+            }
             return TST_CompararInt( CondRetEsperada , CondRetObtida ,
                                     "Retorno errado ao inserir vértice." );
             
@@ -254,7 +259,7 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
             } /* if */
             
             CondRetObtida = GRA_ExcluirVertice( vtRefGrafos[ inxGrafo ] , id );
-            
+            if(CondRetObtida == GRA_CondRetOK && id == corrente[inxGrafo]) corrente[inxGrafo] = -1;
             return TST_CompararInt( CondRetEsperada , CondRetObtida ,
                                     "Retorno errado ao excluir vértice." );
             
@@ -513,7 +518,7 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
          
          else if ( strcmp( ComandoTeste , ALT_VAL_CORR_CMD ) == 0 )
          {
-            NumLidos = LER_LerParametros( "isi" , &inxGrafo , stringDado, &CondRetEsperada ) ;
+            NumLidos = LER_LerParametros( "isi" , &inxGrafo , stringTemp, &CondRetEsperada ) ;
             if ( ( NumLidos != 3 ) || !VerificarInx( inxGrafo ) )
             {
                return TST_CondRetParm ;
@@ -527,16 +532,16 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
                                     "O grafo não possui vértice corrente, está vazio." );
 
 			free ( pDado ) ;
-     
-            pDado = ( char * ) malloc( strlen( stringDado ) + 1 ) ;
-            if ( pDado == NULL )
+            free(stringDado[corrente[ inxGrafo ]]);
+            stringDado[corrente[ inxGrafo ]] = ( char * ) malloc( strlen( stringTemp ) + 1 ) ;
+            if ( stringDado[corrente[ inxGrafo ]] == NULL )
             {
                return TST_CondRetMemoria ;
             } /* if */  
 
-            strcpy( pDado , stringDado ) ;
+            strcpy( stringDado[corrente[ inxGrafo ]],stringTemp ) ;
             
-            CondRetObtida = GRA_AlterarValorCorrente ( vtRefGrafos[ inxGrafo ] , pDado ) ;
+            CondRetObtida = GRA_AlterarValorCorrente ( vtRefGrafos[ inxGrafo ] , stringDado[corrente[ inxGrafo ]] ) ;
             
             if ( CondRetObtida != GRA_CondRetOK )
             {
@@ -545,7 +550,7 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
             
             CondRetTemp = GRA_ObterValorCorrente ( vtRefGrafos[ inxGrafo ] , (void**)&pDado ) ;
             
-            if ( CondRetTemp != GRA_CondRetOK || strcmp ( pDado, stringDado) != 0 )
+            if ( CondRetTemp != GRA_CondRetOK || strcmp ( pDado, stringDado[corrente[ inxGrafo ]]) != 0 )
             {
                 return TST_CompararPonteiro ( pDado , stringDado , 
                                            "O valor obtido e diferente do alterado (do corrente)" ) ;
@@ -588,7 +593,7 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
             } /* if */           
 
             CondRetObtida = GRA_IrVizinhoCorrente( vtRefGrafos[ inxGrafo ] , id ) ;           
-            
+            if(CondRetObtida == GRA_CondRetOK) corrente[ inxGrafo] = id; 
             return TST_CompararInt( CondRetEsperada , CondRetObtida ,
                                     "Retorno errado ao ir pro vizinho do corrente." );
             
@@ -605,7 +610,7 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
             } /* if */           
 
             CondRetObtida = GRA_MudarCorrente( vtRefGrafos[ inxGrafo ] , id ) ;           
-            
+            if(CondRetObtida == GRA_CondRetOK) corrente[ inxGrafo] = id; 
             return TST_CompararInt( CondRetEsperada , CondRetObtida ,
                                     "Retorno errado ao mudar de vértice." );
             

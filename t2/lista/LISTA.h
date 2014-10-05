@@ -322,7 +322,7 @@ typedef struct LIS_tagLista * LIS_tppLista ;
 *
 *  $FV Valor retornado
 *     LIS_CondRetOK           - se encontrou o valor procurado passa a ser o corrente da pLista.
-*     LIS_CondRetNaoEncontrou - se o ponteiro não foi encontrado, o elemento corrente da pLista continua o mesmo.
+*     LIS_CondRetNaoAchou - se o ponteiro não foi encontrado, o elemento corrente da pLista continua o mesmo.
 *     LIS_CondRetListaVazia   - se a lista estiver vazia
 *
 ***********************************************************************/

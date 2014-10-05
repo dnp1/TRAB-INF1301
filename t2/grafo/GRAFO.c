@@ -991,7 +991,7 @@ tpAresta* get_edge_by_vertex(LIS_tppLista  vizinhos, tpVertice * v){
         RemoverAresta(v, u);       
 
         //BFS pra detectar se é necessário gerar nova componente.
-        if (BFS(v,u) == 0) { //Estão em componentes distintas
+        if (BFS(v,u) != 1) { //Estão em componentes distintas
             if(LIS_InserirElementoApos(grafo->componentes, u) != LIS_CondRetOK)
                 return GRA_CondRetFaltouMemoria;
         }
@@ -1004,6 +1004,9 @@ tpAresta* get_edge_by_vertex(LIS_tppLista  vizinhos, tpVertice * v){
 *
 *  $ED Descrição da função
 *
+*   0 nao achou
+*   1 achou
+*  -1 erro
 ***********************************************************************/
 
     static int BFS(tpVertice* v, tpVertice* u) {
@@ -1012,14 +1015,15 @@ tpAresta* get_edge_by_vertex(LIS_tppLista  vizinhos, tpVertice * v){
         LIS_tppLista arestas = NULL;
         tpVertice* t = NULL;
         tpVertice* s = NULL;
+        tpAresta* a = NULL;
         int achou = 0;
+        int achou_V = 0;
 
         V = LIS_CriarLista(NULL); // dados são referenciados por outros, não devem ser apagados
         Q = LIS_CriarLista(NULL); // dados são referenciados por outros, não devem ser apagados
 
         LIS_InserirElementoApos(V, v);
         LIS_InserirElementoApos(Q, v); //Usado como uma Fila.
-
         while (LIS_NumeroDeElementos(Q) > 0) {
             LIS_IrInicioLista(Q);
             t = (tpVertice *)LIS_ObterValor(Q);
@@ -1028,19 +1032,26 @@ tpAresta* get_edge_by_vertex(LIS_tppLista  vizinhos, tpVertice * v){
                 achou = 1; 
                 break;
             }
-
             arestas = t->pNode->arestas;
             LIS_IrInicioLista(arestas);
 
             do {
-                tpAresta * a = (tpAresta *)LIS_ObterValor(arestas);
+                a = (tpAresta *)LIS_ObterValor(arestas);
                 if(a == NULL) break;
                 s = a->pVizinho;
-                if (LIS_ProcurarValor(V, s) == LIS_CondRetNaoAchou) {
-                    LIS_InserirElementoApos(V, s);
-                    LIS_InserirElementoApos(Q, s);
+                
+                LIS_IrInicioLista(V);
+                achou_V = 0;
+                do {
+                    tpVertice * re = (tpVertice *)LIS_ObterValor(V);
+                    if(re == s) achou_V = 1;
+                } while(LIS_AvancarElementoCorrente(V, 1) == LIS_CondRetOK);
+            
+                if (!achou_V) {
+                    if(LIS_InserirElementoApos(V, s)!= LIS_CondRetOK){ achou = -1;break;}
+                    if(LIS_InserirElementoApos(Q, s)!= LIS_CondRetOK){ achou = -1;break;}
                 }
-            } while(LIS_AvancarElementoCorrente(arestas, 1) != LIS_CondRetFimLista);
+            } while(LIS_AvancarElementoCorrente(arestas, 1) == LIS_CondRetOK);
         }
 
         LIS_DestruirLista(V);
@@ -1070,7 +1081,7 @@ tpAresta* get_edge_by_vertex(LIS_tppLista  vizinhos, tpVertice * v){
         do {
             u = (tpVertice *)LIS_ObterValor(origens);
             if(u == NULL) return NULL;
-            if (BFS(u,v) != 0) {
+            if (BFS(u,v) == 1) {
                 return u;
             }
         } while(LIS_AvancarElementoCorrente(origens, 1) != LIS_CondRetFimLista);

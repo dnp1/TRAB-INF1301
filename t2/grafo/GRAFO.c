@@ -673,7 +673,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
 		tpAresta * a = NULL;
 
         int achou = 0;
-
+        int achou_V = 0;
         caminho = LIS_CriarLista(free);
         if (caminho == NULL)
             return GRA_CondRetFaltouMemoria;
@@ -724,7 +724,15 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
                 a = (tpAresta *)LIS_ObterValor(arestas);
                 if(a == NULL) break;
                 s = a->pVizinho;
-                if (LIS_ProcurarValor(V, s) == LIS_CondRetNaoAchou) {
+               
+                LIS_IrInicioLista(V);
+                achou_V = 0;
+                do {
+                    tpVertice * re = (tpVertice *)LIS_ObterValor(V);
+                    if(re == s) achou_V = 1;
+                } while(LIS_AvancarElementoCorrente(V, 1) == LIS_CondRetOK);
+               
+                if (!achou_V) {
                     if(LIS_InserirElementoApos(V, s) != LIS_CondRetOK)
                         return GRA_CondRetFaltouMemoria;
                     if(LIS_InserirElementoApos(Q, s) != LIS_CondRetOK)
@@ -738,7 +746,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
                         return GRA_CondRetFaltouMemoria;
                     
                 }
-            } while(LIS_AvancarElementoCorrente(arestas, 1) != LIS_CondRetFimLista);
+            } while(LIS_AvancarElementoCorrente(arestas, 1) = LIS_CondRetOK);
         }
         
         //backtrace

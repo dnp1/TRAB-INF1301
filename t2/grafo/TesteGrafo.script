@@ -148,14 +148,14 @@
 =insaresta  5  32   255   30   OK
 =insaresta  5  128  255   40  OK
 =insaresta  5  255  64    50   OK
-=insaresta  5  128  32    60  OK
 
 == Inserindo Arestas InvÃ¡lidas no Grafo 5
 =insaresta  5  1    1    2   NaoEhVertice
 =insaresta  5  2    1    2   NaoEhVertice
+=insaresta  5  128  32   60  EhVizinho
 =insaresta  5  32   32   2   EhVizinho
 =insaresta  5  255  128  2   EhVizinho
-=insaresta  5  128  255  13  EhVizinho=
+=insaresta  5  128  255  13  EhVizinho
 
 
 == Excluir Todas Arestas
@@ -164,7 +164,6 @@
 =excaresta  5  30  OK 
 =excaresta  5  40  OK 
 =excaresta  5  50  OK 
-=excaresta  5  60  OK
 
 == Re-inserindo Arestas no Grafo 5 (Verifica se ExclusÃ£o de Aresta deixa o grafo num estado vÃ¡lido)
 =insaresta  5  32   64    10   OK
@@ -172,7 +171,6 @@
 =insaresta  5  32   255   30   OK
 =insaresta  5  128  255   40  OK
 =insaresta  5  255  64    50   OK
-=insaresta  5  128  32    60  OK
 
 == Excluir Todos Vertices
 =excvert 5  18    NaoEhVertice
@@ -196,8 +194,6 @@
 =insaresta  5  32   255   30   OK
 =insaresta  5  128  255   40  OK
 =insaresta  5  255  64    50   OK
-=insaresta  5  128  32    60  OK
-
 
 == Testa Obtem Vizinhos Grafo 5
 =obterviz  5  21   NaoEhVertice

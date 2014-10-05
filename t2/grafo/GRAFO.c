@@ -339,11 +339,15 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         int i;
 
         get_pair_by_id(pGrafo,idAresta, &pVertice1, &pVertice2);
-        
+
         if(pVertice1 == NULL || pVertice2 == NULL)
             return GRA_CondRetNaoEhVertice;
 
         if(!EhVizinho(pGrafo,pVertice1,pVertice2)) return GRA_CondRetNaoEhVizinho;
+
+        LIS_IrInicioLista(pVertice1->pNode->arestas);
+        LIS_IrInicioLista(pVertice2->pNode->arestas);
+
         return ExcluirAresta(pGrafo, pVertice1, pVertice2);
 
     }
@@ -872,20 +876,26 @@ void get_pair_by_id(GRA_tppGrafo pGrafo, int idAresta, tpVertice ** u, tpVertice
 	tpVertice * vertice = NULL;
 
 	LIS_IrInicioLista( pGrafo->vertices );
+
+    // Para cada vértice
     do{
         vertice = (tpVertice*)LIS_ObterValor( pGrafo->vertices ) ;
         if(vertice == NULL) break;
         LIS_IrInicioLista( vertice->pNode->arestas ) ;
-        aresta = (tpAresta*)LIS_ObterValor( vertice->pNode->arestas ) ;
-        if(aresta == NULL){
-            break;
-        }
+        // Procura em todos os seus vizinhos
+        do{
+            aresta = (tpAresta*)LIS_ObterValor( vertice->pNode->arestas ) ;
+            
+            if(aresta == NULL){
+                continue;
+            }
          
-        if ( aresta->id == idAresta ){
-            *u = vertice ;
-            *v = aresta->pVizinho ;
-            break;
-        }
+            if ( aresta->id == idAresta ){
+                *u = vertice ;
+                *v = aresta->pVizinho ;
+                break;
+            }
+        }while(LIS_AvancarElementoCorrente( vertice->pNode->arestas , 1) == LIS_CondRetOK );
     }while ( LIS_AvancarElementoCorrente( pGrafo->vertices , 1) == LIS_CondRetOK ) ;
 }
 

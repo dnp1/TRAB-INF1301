@@ -80,7 +80,7 @@ typedef struct LIS_tagLista* LIS_tppLista ;
 *
 *  $ED Descrição da função
 *     Cria uma Grafo genérico implementado com listas duplamente encadeadas, também genéricas.
-*     
+*     O grafo é não direcionado e sem pesos nas arestas.  
 *     Os possíveis tipos são desconhecidos a priori.
 *     A tipagem é implicita.
 *     Não existe identificador de tipo associado à Grafo.
@@ -169,9 +169,7 @@ typedef struct LIS_tagLista* LIS_tppLista ;
 *  $FC Função: GRA  &Inserir Aresta
 *
 *  $ED Descrição da função
-*     Insere uma aresta entre 2 vértices.
-*     Se já existir uma aresta entre idVertice1 e idVertice2, erro de duplicata
-*     Se idVertice1 ou idVertice2 não existirem, erro de inexistencia 
+*     Insere uma aresta entre 2 vértices em ambas direções.
 *
 *  $EP Parâmetros
 *     pGrafo     - ponteiro para o grafo aonde deve ser inserida a aresta
@@ -326,12 +324,13 @@ GRA_tpCondRet GRA_ObterOrigens ( GRA_tppGrafo pGrafo, LIS_tppLista * pLista);
 *  $FC Função: GRA  &Inserir Vizinho Corrente
 *
 *  $ED Descrição da função
-*     Insere um novo vizinho com o id passado para o corrente.
+*     Insere um novo vizinho com o idVertice dado para o corrente. A aresta terá o id passado em idAresta
 *
 *  $EP Parâmetros
 *     pGrafo - ponteiro para o grafo onde deve ser inserido o vertice
 *     pValor - ponteiro para o valor a ser armazenado no Nó(deve-se respeitar a homogeneidade do grafo para ter comportamento garantido)
 *     idVertice - identificador do vertice
+*     idAresta - identificador da aresta
 *
 *  $FV Valor retornado
 *     GRA_CondRetOK	- O vértice foi inserido com sucesso
@@ -340,7 +339,7 @@ GRA_tpCondRet GRA_ObterOrigens ( GRA_tppGrafo pGrafo, LIS_tppLista * pLista);
 *
 ***********************************************************************/
 
-   GRA_tpCondRet GRA_InserirVizinhoCorrente( GRA_tppGrafo pGrafo , void* pValor , int idVertice) ;
+   GRA_tpCondRet GRA_InserirVizinhoCorrente( GRA_tppGrafo pGrafo , void* pValor , int idVertice, int idAresta) ;
    
 
 /***********************************************************************
@@ -348,7 +347,7 @@ GRA_tpCondRet GRA_ObterOrigens ( GRA_tppGrafo pGrafo, LIS_tppLista * pLista);
 *  $FC Função: GRA  &Excluir Vizinho Corrente
 *
 *  $ED Descrição da função
-*     Exclui o vizinho do corrente com id passado.
+*     Exclui o vizinho do corrente com idVertice e com idAresta passados.
 *
 *  $EP Parâmetros
 *     pGrafo - ponteiro para o grafo de onde deve ser excluido o vértide
@@ -363,7 +362,7 @@ GRA_tpCondRet GRA_ObterOrigens ( GRA_tppGrafo pGrafo, LIS_tppLista * pLista);
 *
 ***********************************************************************/
 
-   GRA_tpCondRet GRA_ExcluirVizinhoCorrente( GRA_tppGrafo pGrafo , int idVertice ) ;
+   GRA_tpCondRet GRA_ExcluirVizinhoCorrente( GRA_tppGrafo pGrafo , int idVertice) ;
 
 
 /***********************************************************************

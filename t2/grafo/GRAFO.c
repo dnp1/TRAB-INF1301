@@ -259,7 +259,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
             if(vizinho == NULL) break; 
             GRA_ExcluirAresta(pGrafo, vizinho->id); 
         } 
-        while (LIS_AvancarElementoCorrente(no->arestas, 1) != LIS_CondRetFimLista);
+        while (LIS_AvancarElementoCorrente(no->arestas, 1) == LIS_CondRetOK);
 
 
         LIS_DestruirLista(no->arestas);
@@ -530,7 +530,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
 		if (pGrafo->corrente == -1)
 			return GRA_CondRetGrafoVazio ;
 
-		else if(pVertice == NULL)
+		if(pVertice == NULL)
             return GRA_CondRetNaoEhVertice;
         
         achou = EhVizinho( pGrafo, pVertice , get_by_id( pGrafo, pGrafo->corrente ) );
@@ -539,7 +539,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
             return GRA_CondRetNaoEhVizinho ;
         else{     
             no = pVertice->pNode;
-            pGrafo->ExcluirValor(no->pValor);
+            pGrafo->ExcluirValor(&(no->pValor));
 
             // arestas
             LIS_IrInicioLista(no->arestas);
@@ -595,22 +595,27 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
 *  Função: GRA  &Inserir Vizinho Corrente
 *  ****/    
     
-    GRA_tpCondRet GRA_InserirVizinhoCorrente( GRA_tppGrafo pGrafo , void* pValor, int id ) {
+    GRA_tpCondRet GRA_InserirVizinhoCorrente( GRA_tppGrafo pGrafo , void* pValor, int idVertice, int idAresta ) {
 		tpVertice * vizinho = NULL;
-
+        tpVertice * u;
+        tpVertice * v;
         /* Verifica se vertice pertence ao grafo; */
         if (pGrafo->corrente == -1) {
             return GRA_CondRetGrafoVazio;
         }
-        vizinho = get_by_id(pGrafo,id);
-        if(vizinho == NULL)
-            return GRA_CondRetNaoEhVertice;
+       
+        vizinho = get_by_id(pGrafo,idVertice);
+        /*
+        por hipotese nao precisamos checar isso
+        if(vizinho != NULL)
+            return GRA_CondRetEhVertice;
         
-        if(!EhVizinho(pGrafo,get_by_id(pGrafo,pGrafo->corrente),vizinho))
-            return GRA_CondRetNaoEhVizinho;  
-
-        return GRA_InserirVertice(pGrafo, pValor, id);
-        
+        if(EhVizinho(pGrafo,get_by_id(pGrafo,pGrafo->corrente),vizinho))
+           return GRA_CondRetEhVizinho;  
+        */
+        GRA_tpCondRet r = GRA_InserirVertice(pGrafo, pValor, idVertice);
+        if(r != GRA_CondRetOK) return r;
+        return GRA_InserirAresta(pGrafo,idVertice,pGrafo->corrente,idAresta);
 
     }
     /* Fim função: GRA  &Ir Vizinho Corrente */
@@ -679,11 +684,15 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         int achou = 0;
         int achou_V = 0;
         caminho = LIS_CriarLista(free);
+        retorno = LIS_CriarLista(free);
+        V = LIS_CriarLista(NULL); // dados são referenciados por outros, não devem ser apagados
+        Q = LIS_CriarLista(NULL); // dados são referenciados por outros, não devem ser apagados
         if (caminho == NULL)
             return GRA_CondRetFaltouMemoria;
 
-        retorno = LIS_CriarLista(free);
         if (retorno == NULL)
+            return GRA_CondRetFaltouMemoria;
+        if(V == NULL || Q == NULL)
             return GRA_CondRetFaltouMemoria;
         
         v = get_by_id(pGrafo, idVerticeOrigem);
@@ -693,15 +702,11 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
             return GRA_CondRetNaoEhVertice; 
 
 
-        V = LIS_CriarLista(NULL); // dados são referenciados por outros, não devem ser apagados
-        Q = LIS_CriarLista(NULL); // dados são referenciados por outros, não devem ser apagados
-        if(V == NULL || Q == NULL)
-            return GRA_CondRetFaltouMemoria;
 
-        if(LIS_InserirElementoApos(V, v))
+        if(LIS_InserirElementoApos(V, v)!=LIS_CondRetOK)
             return GRA_CondRetFaltouMemoria;
             
-        if(LIS_InserirElementoApos(Q, v)) //Usado como uma Fila.
+        if(LIS_InserirElementoApos(Q, v)!=LIS_CondRetOK) //Usado como uma Fila.
             return GRA_CondRetFaltouMemoria;       
         
 		atemp = (tpAresta *) malloc(sizeof(tpAresta)); 
@@ -715,7 +720,6 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
 
             LIS_IrInicioLista(Q);
             t = (tpVertice *)LIS_ObterValor(Q);
-            LIS_ExcluirElemento(Q);
 
             if (t == u) {
                 achou = t->id;
@@ -751,10 +755,12 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
                     
                 }
             } while(LIS_AvancarElementoCorrente(arestas, 1) == LIS_CondRetOK);
+            LIS_ExcluirElemento(Q);
         }
         
-        //backtrace
-        
+        //backtrace:
+
+        //procura o destino no caminho, para buscar inversamente a partir dele 
         a = NULL;
         LIS_IrInicioLista( caminho ) ;
         do{
@@ -763,12 +769,12 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
             if ( a->id == achou ){
                 break;
             }
-        }while ( LIS_AvancarElementoCorrente( caminho , 1) != LIS_CondRetFimLista ) ;
+        }while ( LIS_AvancarElementoCorrente( caminho , 1) == LIS_CondRetOK ) ;
         
-        
+        //faz o backtrace
         while(a->pVizinho != NULL){
       
-            if(LIS_InserirElementoApos(retorno, &(a->id)) != LIS_CondRetOK)
+            if(LIS_InserirElementoApos(retorno, a->id) != LIS_CondRetOK)
                 return GRA_CondRetFaltouMemoria;
             LIS_IrInicioLista( caminho ) ;
             do{
@@ -777,7 +783,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
                 if ( get_by_id(pGrafo,a->id) == a->pVizinho ){
                     break;
                 }
-            }while ( LIS_AvancarElementoCorrente( caminho , 1) != LIS_CondRetFimLista ) ;
+            }while ( LIS_AvancarElementoCorrente( caminho , 1) == LIS_CondRetOK ) ;
             
         }
         
@@ -790,7 +796,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         if(V!=NULL)
             LIS_DestruirLista(V);
         if(Q!=NULL)
-            LIS_DestruirLista(Q);
+               LIS_DestruirLista(Q);
 
         return GRA_CondRetOK;
     }

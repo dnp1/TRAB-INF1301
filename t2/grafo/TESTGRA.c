@@ -143,7 +143,7 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
 
       int i ;
       int id, _id , idAresta;
-      
+      int id2;
       if(sujo){
          for(i = 0 ; i < DIM_VALOR ; i++) {
               stringDado[i] = NULL;
@@ -195,7 +195,7 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
                return TST_CondRetParm ;
             } /* if */
           
-            vtRefGrafos[ inxGrafo ] = GRA_CriarGrafo( DestruirValor ) ;
+            vtRefGrafos[ inxGrafo ] = GRA_CriarGrafo( free ) ;
             corrente[ inxGrafo ] = -1;
             return TST_CompararPonteiroNulo( 1 , vtRefGrafos[ inxGrafo ] ,
                                     "Retorno errado ao criar grafo." );
@@ -437,13 +437,13 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
 
          else if ( strcmp( ComandoTeste , INS_VIZ_CORR_CMD ) == 0 )
          {
-            NumLidos = LER_LerParametros( "isii" , &inxGrafo , stringDado , &id , &CondRetEsperada ) ;
-            if ( ( NumLidos != 4 ) || !VerificarInx( inxGrafo ) )
+            NumLidos = LER_LerParametros( "isiii" , &inxGrafo , stringDado , &id , &id2,&CondRetEsperada ) ;
+            if ( ( NumLidos != 5 ) || !VerificarInx( inxGrafo ) )
             {
                return TST_CondRetParm ;
             } /* if */           
 
-            CondRetObtida = GRA_InserirVizinhoCorrente( vtRefGrafos[ inxGrafo ] , stringDado , id ) ;           
+            CondRetObtida = GRA_InserirVizinhoCorrente( vtRefGrafos[ inxGrafo ] , stringDado , id , id2) ;           
             
             return TST_CompararInt( CondRetEsperada , CondRetObtida ,
                                     "Retorno errado ao inserir vizinho do corrente." );

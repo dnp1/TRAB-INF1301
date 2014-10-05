@@ -37,7 +37,7 @@
 =criargrafo 0
 
 == Inserir vizinho do Corrente em Grafo vazio
-=insvizcorr 0 "aaa" 12 GrafoVazio
+=insvizcorr 0 "aaa" 12 14 GrafoVazio
 
 
 == Obter Vizinhos do Corrente em Grafo Vazio
@@ -96,9 +96,9 @@
 
 
 == InserÃ§Ã£o sobre o corrente Grafo 0 
-=insvizcorr  0 "oioi"  15 OK 
-=insvizcorr  0 "ola"   16 OK
-=insvizcorr  0 "hello" 17 OK
+=insvizcorr  0 "oioi"  15 14 OK 
+=insvizcorr  0 "ola"   16 13 OK
+=insvizcorr  0 "hello" 17 12 OK
 
 == ExclusÃ£o sobre o corrente Grafo 0
 =excvizcorr  0 16 OK

@@ -223,6 +223,8 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
 
 	 GRA_tpCondRet GRA_InserirVertice (GRA_tppGrafo pGrafo, void* pValor, int id)
 	 {
+        int i;
+        tpElemComp * comp;
         tpVertice * pElem = NULL ;
         tpVertice * v = NULL ;
 		#ifdef _DEBUG
@@ -234,9 +236,6 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
 		pElem = CriarVertice( pGrafo, pValor, id ) ;
 		
         if ( pElem == NULL )
-			return GRA_CondRetFaltouMemoria ;
-        
-	 	if( LIS_InserirElementoApos (pGrafo->componentes, pElem) != LIS_CondRetOK)
 			return GRA_CondRetFaltouMemoria ;
 	 	
         if( LIS_InserirElementoApos (pGrafo->vertices, pElem) != LIS_CondRetOK)
@@ -332,25 +331,8 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
             aresta1->pVizinho = pVertice2;
             aresta2->pVizinho = pVertice1;
             LIS_InserirElementoApos(pVertice1->pNode->arestas, aresta1);
-            LIS_InserirElementoApos(pVertice2->pNode->arestas, aresta2);
-            
-            /*
-            printf("\n-------------------------------\nInserir\n---------------------------------------\n");         
-            printf("\nv1 = %d\n%s\n",pVertice1->id,pVertice1->pNode->pValor);
-            LIS_IrInicioLista(pVertice1->pNode->arestas);
-            do{
-                vizinho = (tpAresta*)LIS_ObterValor(pVertice1->pNode->arestas);
-                printf("\na1 = %d\n",vizinho->id);
-            }while(LIS_AvancarElementoCorrente(pVertice1->pNode->arestas, 1) != LIS_CondRetFimLista);
+            LIS_InserirElementoApos(pVertice2->pNode->arestas, aresta2);     
 
-            printf("\nv2 = %d\n%s\n",pVertice2->id,pVertice2->pNode->pValor);
-            LIS_IrInicioLista(pVertice2->pNode->arestas);
-            do{
-                vizinho = (tpAresta*)LIS_ObterValor(pVertice2->pNode->arestas);
-                printf("\na2 = %d\n",vizinho->id);
-            }while(LIS_AvancarElementoCorrente(pVertice2->pNode->arestas, 1) != LIS_CondRetFimLista);
-            printf("\n-------------------------------\nFim Inserir\n---------------------------------------\n");         
-            */
             return GRA_CondRetOK;
         } 
         else {
@@ -384,12 +366,12 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         i = 0;
         do{
             comp = (tpElemComp*)LIS_ObterValor(pGrafo->componentes);
-            printf("\nid da origem %d = %d\n",i,comp->pVertice->id);
+            printf("\nvalor da origem %d = %s\n",i,comp->pVertice->id);
             i++;
         }while(LIS_AvancarElementoCorrente(pGrafo->componentes, 1) == LIS_CondRetOK);
 
         printf("\n-------------------------------\nFim Excluir\n---------------------------------------\n");         
-        */    
+        */  
         return ExcluirAresta(pGrafo, pVertice1, pVertice2);
 
     }
@@ -973,6 +955,7 @@ tpAresta* get_edge_by_vertex(LIS_tppLista  vizinhos, tpVertice * v){
             tpNode* no = NULL;
             LIS_tppLista arestas = NULL;
             tpVertice* t = NULL;
+            tpElemComp * comp = NULL;
 
             v = (tpVertice*) malloc( sizeof(tpVertice) );
             if (v == NULL) {
@@ -992,11 +975,24 @@ tpAresta* get_edge_by_vertex(LIS_tppLista  vizinhos, tpVertice * v){
                 return NULL;
             }
 
+            comp = (tpElemComp*) malloc( sizeof(tpElemComp));
+            if(comp == NULL){
+                free(v);
+                free(no);
+                free(arestas);
+                return NULL;
+            }
+
             no->arestas = arestas;
             no->pValor = pValor; 
             v->pNode = no;
             v->id = id;
-           
+
+            comp->pVertice = v;
+            
+	 	    if( LIS_InserirElementoApos (grafo->componentes, comp) != LIS_CondRetOK)
+			      return NULL ;
+
             return v;
     }
 
@@ -1033,7 +1029,8 @@ tpAresta* get_edge_by_vertex(LIS_tppLista  vizinhos, tpVertice * v){
 
     static GRA_tpCondRet ExcluirAresta (GRA_tppGrafo grafo, tpVertice* v, tpVertice* u) {
         RemoverAresta(u, v);
-        RemoverAresta(v, u);
+        RemoverAresta(v, u);       
+
         //BFS pra detectar se é necessário gerar nova componente.
         if (BFS(v,u) == 0) { //Estão em componentes distintas
             if(LIS_InserirElementoApos(grafo->componentes, u) != LIS_CondRetOK)

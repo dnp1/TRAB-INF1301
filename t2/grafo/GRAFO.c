@@ -74,20 +74,6 @@
                 int id;
 	 } tpAresta ;
 
-/***********************************************************************
-*
-*  $TC Tipo de dados: GRA Elemento de componente
-*
-*
-***********************************************************************/
-
-	 typedef struct tagElemComp {
-
-		 tpVertice * pVertice;
-			 /* Ponteiro para o vértice origem do componente */
-
-	 } tpElemComp ;
-
 
 /***********************************************************************
 *
@@ -224,7 +210,6 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
 	 GRA_tpCondRet GRA_InserirVertice (GRA_tppGrafo pGrafo, void* pValor, int id)
 	 {
         int i;
-        tpElemComp * comp;
         tpVertice * pElem = NULL ;
         tpVertice * v = NULL ;
 		#ifdef _DEBUG
@@ -351,7 +336,6 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         tpVertice * pVertice2;
         tpVertice * t;
         tpAresta * vizinho;
-        tpElemComp* comp;
         int i;
 
         get_pair_by_id(pGrafo,idAresta, &pVertice1, &pVertice2);
@@ -360,18 +344,6 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
             return GRA_CondRetNaoEhVertice;
 
         if(!EhVizinho(pGrafo,pVertice1,pVertice2)) return GRA_CondRetNaoEhVizinho;
-        /* 
-        printf("\n-------------------------------\nExcluir\n---------------------------------------\n"); 
-        LIS_IrInicioLista(pGrafo->componentes);
-        i = 0;
-        do{
-            comp = (tpElemComp*)LIS_ObterValor(pGrafo->componentes);
-            printf("\nvalor da origem %d = %s\n",i,comp->pVertice->id);
-            i++;
-        }while(LIS_AvancarElementoCorrente(pGrafo->componentes, 1) == LIS_CondRetOK);
-
-        printf("\n-------------------------------\nFim Excluir\n---------------------------------------\n");         
-        */  
         return ExcluirAresta(pGrafo, pVertice1, pVertice2);
 
     }
@@ -955,7 +927,6 @@ tpAresta* get_edge_by_vertex(LIS_tppLista  vizinhos, tpVertice * v){
             tpNode* no = NULL;
             LIS_tppLista arestas = NULL;
             tpVertice* t = NULL;
-            tpElemComp * comp = NULL;
 
             v = (tpVertice*) malloc( sizeof(tpVertice) );
             if (v == NULL) {
@@ -974,25 +945,13 @@ tpAresta* get_edge_by_vertex(LIS_tppLista  vizinhos, tpVertice * v){
                 free(no);
                 return NULL;
             }
-
-            comp = (tpElemComp*) malloc( sizeof(tpElemComp));
-            if(comp == NULL){
-                free(v);
-                free(no);
-                free(arestas);
-                return NULL;
-            }
-
             no->arestas = arestas;
             no->pValor = pValor; 
             v->pNode = no;
             v->id = id;
 
-            comp->pVertice = v;
-            
-	 	    if( LIS_InserirElementoApos (grafo->componentes, comp) != LIS_CondRetOK)
+	 	    if( LIS_InserirElementoApos (grafo->componentes, v) != LIS_CondRetOK)
 			      return NULL ;
-
             return v;
     }
 

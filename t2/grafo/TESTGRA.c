@@ -145,9 +145,12 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
       int id, _id , idAresta;
       
       if(sujo){
-         int i;
-         for(i = 0 ; i <= DIM_VALOR ; i++) {
+         for(i = 0 ; i < DIM_VALOR ; i++) {
               stringDado[i] = NULL;
+         }
+         for(i=0;i<DIM_VT_GRAFOS;i++){
+             corrente[i] = -2;
+             vtRefGrafos[i] = NULL;
          }
          sujo = 0;
       }
@@ -532,7 +535,7 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
                                     "O grafo não possui vértice corrente, está vazio." );
 
 			free ( pDado ) ;
-            free(stringDado[corrente[ inxGrafo ]]);
+            //free(stringDado[corrente[ inxGrafo ]]);
             stringDado[corrente[ inxGrafo ]] = ( char * ) malloc( strlen( stringTemp ) + 1 ) ;
             if ( stringDado[corrente[ inxGrafo ]] == NULL )
             {
@@ -575,7 +578,7 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
 
             
             CondRetObtida = GRA_BuscarCaminhoCorrente( vtRefGrafos[ inxGrafo ] , id , &caminho) ;
-            LIS_DestruirLista(caminho);
+            if(caminho!=NULL) LIS_DestruirLista(caminho);
             
             return TST_CompararInt( CondRetEsperada , CondRetObtida ,
                                     "Retorno errado ao buscar o caminho desde o corrente." );

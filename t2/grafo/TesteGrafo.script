@@ -1,4 +1,4 @@
-// Script:    TesteLista.script
+// Script:    TesteGrafo.script
 // Autor:     eav - Eduardo Alberto Verdeja
 // Data:      30/set/2014
 // Propósito: Testar superficialmente o módulo grafo 
@@ -88,24 +88,24 @@
 =insaresta  0   2   1   20   NaoEhVertice
 
 == Excluindo Arestas Grafo 0
-=excaresta  0  1  Ok 
-=excaresta  0  3  Ok
-=excaresta  0  6  Ok
+=excaresta  0  1  OK 
+=excaresta  0  3  OK
+=excaresta  0  6  OK
 =excaresta  0  2  NaoEhVertice // Verificar
 =excaresta  0  20 NaoEhVertice // Verificar
 
 
 == InserÃ§Ã£o sobre o corrente Grafo 0 
-=insvizcorr  0 "oioi"  15 Ok 
-=insvizcorr  0 "ola"   16 Ok
-=insvizcorr  0 "hello" 17 Ok
+=insvizcorr  0 "oioi"  15 OK 
+=insvizcorr  0 "ola"   16 OK
+=insvizcorr  0 "hello" 17 OK
 
 == ExclusÃ£o sobre o corrente Grafo 0
-=excvizcorr  0 16 Ok
+=excvizcorr  0 16 OK
 =excvizcorr  0 16 NaoEhVertice
 =excvizcorr  0 18 NaoEhVertice
 =excvizcorr  0 8  NaoEhVizinho
-=excvizcorr  0 17 Ok
+=excvizcorr  0 17 OK
 
 == Obter Vizinhos do Corrente Grafo 0 
 =obtervizcorr 0 ok
@@ -116,39 +116,39 @@
 =recupera
 
 == Altera Valor do Corrente Grafo 0 
-=altvalcorr 0 "1112" Ok
+=altvalcorr 0 "1112" OK
 
 == Busca Caminho do Corrente Grafo 0
-=buscacamcorr 0 5  Ok
+=buscacamcorr 0 5  OK
 =buscacamcorr 0 56 NaoEhVertice
 =buscacamcorr 0 8 NaoEhConexo
 
 == Ir Vizinho do Corrente Grafo 0
 =irvizcorr 0 55 NaoEhVertice
 =irvizcorr 0 6  NaoEhVizinho
-=irvizcorr 0 2  Ok
-=irvizcorr 0 1  Ok
+=irvizcorr 0 2  OK
+=irvizcorr 0 1  OK
 
 == Mudar Corrente Grafo 0
-=mudarcorr 0 5 Ok
+=mudarcorr 0 5 OK
 =mudarcorr 0 55 NaoEhVertice
 
 == Criando grafo 5
 =criargrafo 5
 
 == Inserindo Vertices no Grafo 5
-=insvert 5  str4  32    Ok
-=insvert 5  str2  64    Ok
-=insvert 5  str1  128   Ok
-=insvert 5  str5  255   Ok
+=insvert 5  str4  32    OK
+=insvert 5  str2  64    OK
+=insvert 5  str1  128   OK
+=insvert 5  str5  255   OK
 
 == Inserindo Arestas no Grafo 5
-=insaresta  5  32   64    10   Ok
-=insaresta  5  32   128   20  Ok
-=insaresta  5  32   255   30   Ok
-=insaresta  5  128  255   40  Ok
-=insaresta  5  255  64    50   Ok
-=insaresta  5  128  32    60  Ok
+=insaresta  5  32   64    10   OK
+=insaresta  5  32   128   20  OK
+=insaresta  5  32   255   30   OK
+=insaresta  5  128  255   40  OK
+=insaresta  5  255  64    50   OK
+=insaresta  5  128  32    60  OK
 
 == Inserindo Arestas InvÃ¡lidas no Grafo 5
 =insaresta  5  1    1    2   NaoEhVertice
@@ -159,56 +159,56 @@
 
 
 == Excluir Todas Arestas
-=excaresta  5  10  Ok 
-=excaresta  5  20  Ok 
-=excaresta  5  30  Ok 
-=excaresta  5  40  Ok 
-=excaresta  5  50  Ok 
-=excaresta  5  60  Ok
+=excaresta  5  10  OK 
+=excaresta  5  20  OK 
+=excaresta  5  30  OK 
+=excaresta  5  40  OK 
+=excaresta  5  50  OK 
+=excaresta  5  60  OK
 
 == Re-inserindo Arestas no Grafo 5 (Verifica se ExclusÃ£o de Aresta deixa o grafo num estado vÃ¡lido)
-=insaresta  5  32   64    10   Ok
-=insaresta  5  32   128   20  Ok
-=insaresta  5  32   255   30   Ok
-=insaresta  5  128  255   40  Ok
-=insaresta  5  255  64    50   Ok
-=insaresta  5  128  32    60  Ok
+=insaresta  5  32   64    10   OK
+=insaresta  5  32   128   20  OK
+=insaresta  5  32   255   30   OK
+=insaresta  5  128  255   40  OK
+=insaresta  5  255  64    50   OK
+=insaresta  5  128  32    60  OK
 
 == Excluir Todos Vertices
 =excvert 5  18    NaoEhVertice
-=excvert 5  32    Ok
-=excvert 5  64    Ok
-=excvert 5  128   Ok
-=excvert 5  255   Ok
+=excvert 5  32    OK
+=excvert 5  64    OK
+=excvert 5  128   OK
+=excvert 5  255   OK
 =excvert 5  8     NaoEhVertice
 
 
 == Re-inserindo Vertices no Grafo 5 (Verifica se ExclusÃ£o de Vertice deixa o grafo num estado vÃ¡lido)
-=insvert 5  str4  32    Ok
-=insvert 5  str2  64    Ok
-=insvert 5  str1  128   Ok
-=insvert 5  str5  255   Ok
-=insvert 5  str5  300   Ok
+=insvert 5  str4  32    OK
+=insvert 5  str2  64    OK
+=insvert 5  str1  128   OK
+=insvert 5  str5  255   OK
+=insvert 5  str5  300   OK
 
 == Re-inserindo Arestas no Grafo 5 (Verifica se ExclusÃ£o de Vertice deixa o grafo num estado vÃ¡lido)
-=insaresta  5  32   64    10   Ok
-=insaresta  5  32   128   20  Ok
-=insaresta  5  32   255   30   Ok
-=insaresta  5  128  255   40  Ok
-=insaresta  5  255  64    50   Ok
-=insaresta  5  128  32    60  Ok
+=insaresta  5  32   64    10   OK
+=insaresta  5  32   128   20  OK
+=insaresta  5  32   255   30   OK
+=insaresta  5  128  255   40  OK
+=insaresta  5  255  64    50   OK
+=insaresta  5  128  32    60  OK
 
 
 == Testa Obtem Vizinhos Grafo 5
 =obterviz  5  21   NaoEhVertice
-=obterviz  5  32   Ok
-=obterviz  5  64   Ok
-=obterviz  5  128  Ok
-=obterviz  5  255  Ok
+=obterviz  5  32   OK
+=obterviz  5  64   OK
+=obterviz  5  128  OK
+=obterviz  5  255  OK
 =obterviz  5  23   NaoEhVertice
 
 == Testa Obtem Origens Grafo 5
-=obterorig  5  Ok
+=obterorig  5  OK
 
 == Obter Valor Grafo 5
 =obtervalor  5 32  pNaoNulo
@@ -216,11 +216,11 @@
 =recuperar
 
 == Alterar Valor Grafo 5
-=alterarvalor 5 "adsdsad" 32 Ok
+=alterarvalor 5 "adsdsad" 32 OK
 =alterarvalor 5 "adsdsadas" 61 NaoEhVertice
 
 == Busca Caminho No Grafo 5 
-=buscacam 5  64  128 Ok
+=buscacam 5  64  128 OK
 =buscacam 5  64  300 NaoEhConexo
 
 

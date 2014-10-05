@@ -703,7 +703,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
 		atemp = (tpAresta *) malloc(sizeof(tpAresta)); 
         if(atemp == NULL) 
             return GRA_CondRetFaltouMemoria;
-        atemp->id = s->id;
+        atemp->id = v->id;
         atemp->pVizinho = NULL;  
         if(LIS_InserirElementoApos(caminho, atemp) != LIS_CondRetOK)
             return GRA_CondRetFaltouMemoria;
@@ -746,7 +746,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
                         return GRA_CondRetFaltouMemoria;
                     
                 }
-            } while(LIS_AvancarElementoCorrente(arestas, 1) = LIS_CondRetOK);
+            } while(LIS_AvancarElementoCorrente(arestas, 1) == LIS_CondRetOK);
         }
         
         //backtrace
@@ -781,10 +781,12 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         *pLista = retorno;
         
 
-        LIS_DestruirLista(retorno);
-        LIS_DestruirLista(caminho);
-        LIS_DestruirLista(V);
-        LIS_DestruirLista(Q);
+        if(caminho!=NULL)
+            LIS_DestruirLista(caminho);
+        if(V!=NULL)
+            LIS_DestruirLista(V);
+        if(Q!=NULL)
+            LIS_DestruirLista(Q);
 
         return GRA_CondRetOK;
     }
@@ -812,7 +814,7 @@ static int EhVizinho( GRA_tppGrafo pGrafo, tpVertice * v, tpVertice * u ){
     int vizinho = 0;
     
     vizinhos = u->pNode->arestas;
-    
+    if(vizinhos == NULL) return vizinho; 
     LIS_IrInicioLista( vizinhos );
     
     do {

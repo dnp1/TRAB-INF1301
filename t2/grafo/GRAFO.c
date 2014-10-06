@@ -541,35 +541,6 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         else {     
             return ExcluirVertice(pGrafo, pVertice);
 
-            /*
-            //Primeiro 
-            no = pVertice->pNode;
-            if (no->pValor != NULL && pGrafo->ExcluirValor != NULL) {
-                pGrafo->ExcluirValor(no->pValor);
-            }
-
-            // arestas
-            LIS_IrInicioLista(no->arestas);
-            do {
-                vizinho = (tpAresta *)LIS_ObterValor(no->arestas);
-                if (vizinho == NULL) break;
-
-                r = GRA_ExcluirAresta(pGrafo, vizinho->id); 
-                if (r != GRA_CondRetOK) {
-                  //  return r;
-                  break;
-                }
-            }
-            while (LIS_AvancarElementoCorrente(no->arestas, 1) == LIS_CondRetOK);
-
-
-            LIS_DestruirLista(no->arestas);
-            free(no);
-
-            LIS_ProcurarValor(pGrafo->vertices, pVertice);
-            LIS_ExcluirElemento(pGrafo->vertices);
-
-            return GRA_CondRetOK;*/
         }
     } 
     /* Fim função: GRA  &Excluir vizinho corrente */
@@ -1061,7 +1032,7 @@ tpAresta* get_edge_by_vertex(LIS_tppLista  vizinhos, tpVertice * v){
 
         vizinhos = u->pNode->arestas;
         aresta_v = get_edge_by_vertex(vizinhos, v); 
-        
+
         LIS_IrInicioLista(vizinhos);
         if (aresta_v != NULL && LIS_ProcurarValor(vizinhos, aresta_v ) == LIS_CondRetOK) {
             LIS_ExcluirElemento(vizinhos);

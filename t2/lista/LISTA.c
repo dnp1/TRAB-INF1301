@@ -96,13 +96,12 @@
 
       LIS_tpLista * pLista = NULL ;
 
-      pLista = ( LIS_tpLista * ) malloc( sizeof( LIS_tpLista )) ;
+      pLista = ( LIS_tpLista * ) calloc(1, sizeof( LIS_tpLista )) ;
       if ( pLista == NULL )
       {
          return NULL ;
       } /* if */
 
-      LimparCabeca( pLista ) ;
 
       pLista->ExcluirValor = ExcluirValor ;
 
@@ -538,15 +537,13 @@
 
       tpElemLista * pElem ;
 
-      pElem = ( tpElemLista * ) malloc( sizeof( tpElemLista )) ;
+      pElem = ( tpElemLista * ) calloc(1, sizeof( tpElemLista )) ;
       if ( pElem == NULL )
       {
          return NULL ;
       } /* if */
 
       pElem->pValor = pValor ;
-      pElem->pAnt   = NULL  ;
-      pElem->pProx  = NULL  ;
 
       pLista->numElem ++ ;
 

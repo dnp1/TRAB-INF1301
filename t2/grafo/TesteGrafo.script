@@ -62,6 +62,7 @@
 =insvert  0 str3  4  OK
 =insvert  0 str4  5  OK
 =insvert  0 str5  6  OK
+=insvert  0 str5  8  OK
 =insvert  0 str5  9  OK
 
 == Testa Obtem Origens Grafo 0

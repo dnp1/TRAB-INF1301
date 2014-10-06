@@ -101,6 +101,8 @@ static tpVertice* CriarVertice(GRA_tppGrafo grafo, void* pValor, int id);
 
 static int BFS(tpVertice* v, tpVertice* u);
 
+static GRA_tpCondRet ExcluirVertice (GRA_tppGrafo pGrafo, tpVertice* pVertice);
+
 static GRA_tpCondRet ExcluirAresta (GRA_tppGrafo grafo, tpVertice* v, tpVertice* u);
 
 static tpVertice * ObterOrigem (GRA_tppGrafo grafo, tpVertice* v);
@@ -250,32 +252,13 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
 *  ****/
      
     GRA_tpCondRet GRA_ExcluirVertice (GRA_tppGrafo pGrafo, int idVertice) {
-        
-        tpAresta* vizinho = NULL;
-        tpNode* no = NULL;
         tpVertice * pVertice = get_by_id(pGrafo,idVertice);
-        if(pVertice == NULL)
+
+        if (pVertice == NULL) {
             return GRA_CondRetNaoEhVertice;
-             
-        no = pVertice->pNode;
-        pGrafo->ExcluirValor(no->pValor);
-
-        // arestas
-        LIS_IrInicioLista(no->arestas);
-        do {
-            vizinho = (tpAresta *)LIS_ObterValor(no->arestas);
-            if(vizinho == NULL) break; 
-            GRA_ExcluirAresta(pGrafo, vizinho->id); 
-        } 
-        while (LIS_AvancarElementoCorrente(no->arestas, 1) == LIS_CondRetOK);
-
-
-        LIS_DestruirLista(no->arestas);
-        free(no);
-
-        LIS_ExcluirElemento(pGrafo->vertices);
-
-        return GRA_CondRetOK;
+        }
+        
+        return ExcluirVertice (pGrafo, pVertice);
     } 
     /* Fim função: GRA  &Excluir vertice */
   
@@ -310,6 +293,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
             origem2 = ObterOrigem(pGrafo, pVertice2);
 
             if (origem1 != origem2) { //Estavam em componentes distintas? Se sim, junta
+                LIS_IrInicioLista(pGrafo->componentes);
                 LIS_ProcurarValor(pGrafo->componentes, origem1);
                 LIS_ExcluirElemento(pGrafo->componentes);
             }
@@ -354,9 +338,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
 
         if(!EhVizinho(pGrafo,pVertice1,pVertice2)) return GRA_CondRetNaoEhVizinho;
 
-        //LIS_IrInicioLista(pVertice1->pNode->arestas);
-        //LIS_IrInicioLista(pVertice2->pNode->arestas);
-        //FUNções que iteram que cuidem de ir pro começo, não?
+
 
         return ExcluirAresta(pGrafo, pVertice1, pVertice2);
 
@@ -557,7 +539,9 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
             return GRA_CondRetNaoEhVizinho ;
         }
         else {     
+            return ExcluirVertice(pGrafo, pVertice);
 
+            /*
             //Primeiro 
             no = pVertice->pNode;
             if (no->pValor != NULL && pGrafo->ExcluirValor != NULL) {
@@ -585,7 +569,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
             LIS_ProcurarValor(pGrafo->vertices, pVertice);
             LIS_ExcluirElemento(pGrafo->vertices);
 
-            return GRA_CondRetOK;
+            return GRA_CondRetOK;*/
         }
     } 
     /* Fim função: GRA  &Excluir vizinho corrente */
@@ -1008,6 +992,10 @@ tpAresta* get_edge_by_vertex(LIS_tppLista  vizinhos, tpVertice * v){
 }
 
 
+
+
+
+
 /***********************************************************************
 *
 *  $FC Função: GRA -Criar Vértice
@@ -1034,7 +1022,7 @@ tpAresta* get_edge_by_vertex(LIS_tppLista  vizinhos, tpVertice * v){
                 return NULL;
             }
 
-            arestas = LIS_CriarLista(free);
+            arestas = LIS_CriarLista(free); //Ops
             if(arestas == NULL) {
                 free(v);
                 free(no);
@@ -1073,10 +1061,61 @@ tpAresta* get_edge_by_vertex(LIS_tppLista  vizinhos, tpVertice * v){
 
         vizinhos = u->pNode->arestas;
         aresta_v = get_edge_by_vertex(vizinhos, v); 
+        
+        LIS_IrInicioLista(vizinhos);
         if (aresta_v != NULL && LIS_ProcurarValor(vizinhos, aresta_v ) == LIS_CondRetOK) {
             LIS_ExcluirElemento(vizinhos);
         }
     }
+
+/***********************************************************************
+*
+*  $FC Função: GRA -Excluir Vertice
+*
+*  $ED Descrição da função
+*
+***********************************************************************/
+
+    static GRA_tpCondRet ExcluirVertice (GRA_tppGrafo pGrafo, tpVertice* pVertice) {
+        tpAresta* vizinho = NULL;
+        tpNode* no = NULL;
+        tpVertice * pVertice1 = NULL; 
+        tpVertice * pVertice2 = NULL;
+        
+
+        no = pVertice->pNode;
+        // arestas
+        LIS_IrInicioLista(no->arestas);
+        do {
+            vizinho = (tpAresta *)LIS_ObterValor(no->arestas);
+            get_pair_by_id(pGrafo, vizinho->id, &pVertice1, &pVertice2);
+            ExcluirAresta(pGrafo, pVertice1, pVertice2); 
+            vizinho->pVizinho = NULL;
+        } 
+        while (LIS_AvancarElementoCorrente(no->arestas, 1) == LIS_CondRetOK);
+
+        
+        if (pGrafo->ExcluirValor != NULL && no->pValor != NULL) {
+            pGrafo->ExcluirValor(no->pValor);
+            no->pValor = NULL;
+        }
+
+        LIS_DestruirLista(no->arestas);
+        no->arestas = NULL;
+
+        pVertice->pNode = NULL;
+        free(no);
+
+        LIS_IrInicioLista(pGrafo->vertices);
+        LIS_ProcurarValor(pGrafo->vertices, pVertice);
+        LIS_ExcluirElemento(pGrafo->vertices);
+        
+
+
+
+        return GRA_CondRetOK;
+    }
+
 
 /***********************************************************************
 *
@@ -1172,6 +1211,7 @@ tpAresta* get_edge_by_vertex(LIS_tppLista  vizinhos, tpVertice * v){
         tpVertice* u = NULL;
         LIS_tppLista origens = grafo->componentes;
         if(origens == NULL) return NULL;
+        LIS_IrInicioLista(origens);
         if (LIS_ProcurarValor(origens, v) == LIS_CondRetOK) {
             return v; //é a origem da própria componente
         }

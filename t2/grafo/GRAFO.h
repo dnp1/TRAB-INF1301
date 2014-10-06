@@ -347,7 +347,7 @@ GRA_tpCondRet GRA_ObterOrigens ( GRA_tppGrafo pGrafo, LIS_tppLista * pLista);
 *  $FC Função: GRA  &Excluir Vizinho Corrente
 *
 *  $ED Descrição da função
-*     Exclui o vizinho do corrente com idVertice e com idAresta passados.
+*     Exclui o vizinho do corrente com idVertice passados.
 *
 *  $EP Parâmetros
 *     pGrafo - ponteiro para o grafo de onde deve ser excluido o vértide

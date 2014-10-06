@@ -144,7 +144,7 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
       int i ;
       int id, _id , idAresta;
       int id2;
-      if(sujo){
+      if (sujo) {
          for(i = 0 ; i < DIM_VALOR ; i++) {
               stringDado[i] = NULL;
          }
@@ -437,13 +437,17 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
 
          else if ( strcmp( ComandoTeste , INS_VIZ_CORR_CMD ) == 0 )
          {
-            NumLidos = LER_LerParametros( "isiii" , &inxGrafo , stringDado , &id , &id2,&CondRetEsperada ) ;
+            NumLidos = LER_LerParametros( "isiii" , &inxGrafo , stringTemp , &id , &id2,&CondRetEsperada ) ;
             if ( ( NumLidos != 5 ) || !VerificarInx( inxGrafo ) )
             {
                return TST_CondRetParm ;
-            } /* if */           
+            } /* if */ 
 
-            CondRetObtida = GRA_InserirVizinhoCorrente( vtRefGrafos[ inxGrafo ] , stringDado , id , id2) ;           
+            stringDado[id] = calloc((strlen(stringTemp)+1),sizeof(char));
+
+            strcpy(stringDado[id], stringTemp);          
+
+            CondRetObtida = GRA_InserirVizinhoCorrente( vtRefGrafos[ inxGrafo ] , stringDado[id] , id , id2) ;           
             
             return TST_CompararInt( CondRetEsperada , CondRetObtida ,
                                     "Retorno errado ao inserir vizinho do corrente." );
@@ -534,7 +538,7 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
 				return TST_CompararInt( CondRetEsperada , CondRetTemp ,
                                     "O grafo não possui vértice corrente, está vazio." );
 
-			free ( pDado ) ;
+			     free ( pDado ) ;
             //free(stringDado[corrente[ inxGrafo ]]);
             stringDado[corrente[ inxGrafo ]] = ( char * ) malloc( strlen( stringTemp ) + 1 ) ;
             if ( stringDado[corrente[ inxGrafo ]] == NULL )

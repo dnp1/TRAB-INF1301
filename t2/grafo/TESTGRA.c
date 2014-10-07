@@ -381,7 +381,9 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
             /* Como alterar valor não libera a memória do valor armazenado, 
             é preciso obter o valor e liberar a memoria antes de alterar */
             CondRetTemp = GRA_ObterValor ( vtRefGrafos[ inxGrafo ], id , (void**)&pDado ) ;
-            free ( pDado ) ;
+            if(CondRetTemp == GRA_CondRetOK) {
+              free ( pDado ) ;
+            }
      
             stringDado = (char* ) calloc(1, strlen(stringTemp) + 1) ;
 

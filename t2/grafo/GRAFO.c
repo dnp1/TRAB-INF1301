@@ -361,8 +361,9 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
             return GRA_CondRetNaoEhVertice; 
 
         Ret_vizinhos = LIS_CriarLista(free);
-        if (Ret_vizinhos == NULL)
+        if (Ret_vizinhos == NULL) {
             return GRA_CondRetFaltouMemoria;
+        }
 
         vizinhos = pVertice->pNode->arestas;
 
@@ -1061,7 +1062,6 @@ tpAresta* get_edge_by_vertex(LIS_tppLista  vizinhos, tpVertice * v){
             vizinho = (tpAresta *)LIS_ObterValor(no->arestas);
             get_pair_by_id(pGrafo, vizinho->id, &pVertice1, &pVertice2);
             ExcluirAresta(pGrafo, pVertice1, pVertice2); 
-            vizinho->pVizinho = NULL;
         } 
         while (LIS_AvancarElementoCorrente(no->arestas, 1) == LIS_CondRetOK);
 

@@ -235,7 +235,7 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
                return TST_CondRetMemoria ;
             } /* if */  
 
-            strcpy(stringDado,stringTemp);
+            strcpy(stringDado, stringTemp);
 
             CondRetObtida = GRA_InserirVertice( vtRefGrafos[ inxGrafo ] , stringDado , id ); 
 

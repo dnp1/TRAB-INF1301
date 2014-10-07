@@ -535,18 +535,17 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         }
         
         pVertice = get_by_id(pGrafo,idVertice);
-        
 		if (pVertice == NULL) {
             return GRA_CondRetNaoEhVertice;
         }
         
         achou = EhVizinho( pGrafo, pVertice , pVerticeCorrente );
         
-        if(!achou) {
-            return GRA_CondRetNaoEhVizinho ;
+        if(achou) {
+            return ExcluirVertice(pGrafo, pVertice);
         }
         else {     
-            return ExcluirVertice(pGrafo, pVertice);
+            return GRA_CondRetNaoEhVizinho ;
         }
     } 
     /* Fim função: GRA  &Excluir vizinho corrente */
@@ -751,12 +750,10 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
             arestas = t->pNode->arestas;
             LIS_IrInicioLista(arestas);
             do {
-                printf("oi");
                 a = (tpAresta *)LIS_ObterValor(arestas);
                 if(a == NULL) break;
 
                 s = a->pVizinho;
-                //printf("%p, %d, %p", s, s->id, s->pNode);
 
                 LIS_IrInicioLista(V);
                 achou_V = 0;
@@ -1058,7 +1055,42 @@ tpAresta* get_edge_by_vertex(LIS_tppLista  vizinhos, tpVertice * v){
         
 
         no = pVertice->pNode;
+/*
+///////////////////////////////////        
+        tpVertice* a = NULL;
+printf("\nantes componentes\n");
+        LIS_IrInicioLista(pGrafo->componentes);
+        do {
+            a = (tpVertice *)LIS_ObterValor(pGrafo->componentes);
+            if(a!=NULL) printf("%d ",a->id);
+        } 
+        while (LIS_AvancarElementoCorrente(pGrafo->componentes,1) == LIS_CondRetOK);
 
+///////////////////////////////////        
+*/
+        LIS_IrInicioLista(pGrafo->componentes);
+//Se o vertice for a origem de sua componente
+        LIS_ProcurarValor(pGrafo->componentes, pVertice);
+//Se ele for o unico vertice da componente, simplesmente apaga a componente, caso contrario escolhe um vizinho para ser a nova origem
+/*
+        if(LIS_NumeroDeElementos(pVertice->pNode->arestas)>0){
+            if(LIS_InserirElementoApos(pGrafo->componentes,get_by_id(pGrafo,LIS_ObterValor(pVertice->pNode->arestas))) != LIS_CondRetOK) return GRA_CondRetFaltouMemoria;
+        }
+        LIS_ProcurarValor(pGrafo->componentes, pVertice);
+*/
+        LIS_ExcluirElemento(pGrafo->componentes);
+/*
+///////////////////////////////////        
+
+printf("\ndepois\n");    
+        LIS_IrInicioLista(pGrafo->componentes);
+        do {
+            a = (tpVertice *)LIS_ObterValor(pGrafo->componentes);
+            if(a!=NULL) printf("%d ",a->id);
+        } 
+        while (LIS_AvancarElementoCorrente(pGrafo->componentes,1) == LIS_CondRetOK);
+///////////////////////////////////        
+*/        
         // Excluir Arestas
         LIS_IrInicioLista(no->arestas);
         do {
@@ -1078,15 +1110,34 @@ tpAresta* get_edge_by_vertex(LIS_tppLista  vizinhos, tpVertice * v){
 
         pVertice->pNode = NULL;
         free(no);
+/*
+///////////////////////////////////        
+printf("\nantes vertice\n");
+        LIS_IrInicioLista(pGrafo->vertices);
+        do {
+            a = (tpVertice *)LIS_ObterValor(pGrafo->vertices);
+            printf("%d ",a->id);
+        } 
+        while (LIS_AvancarElementoCorrente(pGrafo->vertices,1) == LIS_CondRetOK);
 
+///////////////////////////////////        
+*/
         LIS_IrInicioLista(pGrafo->vertices);
         LIS_ProcurarValor(pGrafo->vertices, pVertice);
         LIS_ExcluirElemento(pGrafo->vertices);
-        
-        LIS_IrInicioLista(pGrafo->componentes);
-        LIS_ProcurarValor(pGrafo->componentes, pVertice);
-        LIS_ExcluirElemento(pGrafo->componentes);
+/*
+///////////////////////////////////        
+printf("\ndepois\n");    
+        LIS_IrInicioLista(pGrafo->vertices);
+        do {
+            a = (tpVertice *)LIS_ObterValor(pGrafo->vertices);
+            printf("%d ",a->id);
+        } 
+        while (LIS_AvancarElementoCorrente(pGrafo->vertices,1) == LIS_CondRetOK);
+       printf("\ndone"); 
 
+///////////////////////////////////        
+*/
         return GRA_CondRetOK;
     }
 

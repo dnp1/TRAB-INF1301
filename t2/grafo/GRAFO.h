@@ -19,10 +19,14 @@
 *		 1	   eav	 25/09/2014		//
 *
 *  $ED Descrição do módulo
-*     Implementa um grafo genêrico usando uma interface de
-*	  Grafos genéricas duplamente encadeadas.
+*     Implementa um grafo não direcionado sem peso nas arestas, não admitimos aresta para o próprio vertice(laços). 
+*     genérico usando uma interface de Listas genéricas duplamente encadeadas.
 *     O grafo possui uma cabeça encapsulando o seu estado.
-*
+*     O grafo é homogêneo quanto ao tipo.
+*     Por hipótese, as ids requeridos pela interface são únicos para cada grafo.
+*     Por hipótese, os ponteiros para grafo requeridos pela interface são válidos.
+*     Este ponteiro é provido pela função GRA_CriarGrafo
+*     Para o bom funcionamento do módulo, o usuário deve garantir estas hipóteses.
 ***************************************************************************/
 
 #if defined( GRAFO_OWN )
@@ -99,6 +103,15 @@ typedef struct LIS_tagLista* LIS_tppLista ;
 *     a função retornará NULL.
 *     Não será dada mais informação quanto ao problema ocorrido.
 *
+*  Assertivas de Entrada: 
+*       a função passada deve excluir o tipo de dado do grafo 
+*       de forma que não vaze memória ou crie ponteiros para o nada.    
+*
+*  Assertivas de Saida: 
+*       O ponteiro retornado deve ser do tipo GRA_tppGrafo, 
+*       terá corrente = -1 e 
+*       terá dois LIS_tppLista, componentes e vertices, 
+*       ambas com 0 elementos(vazias)
 ***********************************************************************/
 
    GRA_tppGrafo GRA_CriarGrafo ( void ( * ExcluirValor ) ( void * pDado ) ) ;
@@ -116,7 +129,12 @@ typedef struct LIS_tagLista* LIS_tppLista ;
 *
 *  $FV Valor retornado
 *     GRA_CondRetOK - destruiu sem problemas
+*  
+*  Assertivas de Entrada: 
+*      pGrafo != NULL
 *
+*  Assertivas de Saida: 
+*       pGrafo = NULL
 ***********************************************************************/
 
    GRA_tpCondRet GRA_DestruirGrafo( GRA_tppGrafo pGrafo ) ;
@@ -127,7 +145,8 @@ typedef struct LIS_tagLista* LIS_tppLista ;
 *
 *  $ED Descrição da função
 *     Insere um novo vértice no grafo.
-*     Caso o grafo esteja vazio, insere o primeiro vértice do grafo.
+*     Caso o grafo esteja vazio, insere o primeiro vértice do grafo. 
+*     Neste caso (grafo vazio) o vértice inserido vira o corrente.
 *
 *  $EP Parâmetros
 *     pGrafo     - ponteiro para o grafo onde deve ser inserido o vertice
@@ -138,6 +157,12 @@ typedef struct LIS_tagLista* LIS_tppLista ;
 *     GRA_CondRetOK	- O vértice foi inserido com sucesso
 *     GRA_CondRetFaltouMemoria - Não foi possível alocar memória para o vértice
 *
+*  Assertivas de Entrada: 
+*      pGrafo != NULL
+*      não existe vertice com id=idVertice e este é único para os vértices de pGrafo
+*      pValor tem o mesmo tipo que a função ExcluirValor passada na Criar grafo espera para remover.
+*  Assertivas de Saida: 
+*      tamanho da lista de vertices de pGrafo incrementa em 1
 ***********************************************************************/
 
    GRA_tpCondRet GRA_InserirVertice( GRA_tppGrafo pGrafo , void* pValor , int idVertice) ;
@@ -160,6 +185,11 @@ typedef struct LIS_tagLista* LIS_tppLista ;
 *     GRA_CondRetOK  - Exclusão feita com sucesso
 *     GRA_CondRetNaoEhVertice - Não há um vértice com essa id no grafo
 *
+*  Assertivas de Entrada: 
+*      pGrafo != NULL
+*      existe um único vertice em pGrafo com id = idVertice 
+*  Assertivas de Saida: 
+*      tamanho da lista de vertices de pGrafo diminui em 1
 ***********************************************************************/
 
    GRA_tpCondRet GRA_ExcluirVertice( GRA_tppGrafo pGrafo , int idVertice ) ;
@@ -169,7 +199,7 @@ typedef struct LIS_tagLista* LIS_tppLista ;
 *  $FC Função: GRA  &Inserir Aresta
 *
 *  $ED Descrição da função
-*     Insere uma aresta entre 2 vértices em ambas direções.
+*     Insere uma aresta entre 2 vértices diferentes em ambas direções.
 *
 *  $EP Parâmetros
 *     pGrafo     - ponteiro para o grafo aonde deve ser inserida a aresta
@@ -183,6 +213,15 @@ typedef struct LIS_tagLista* LIS_tppLista ;
 *     GRA_CondRetNaoEhVertice - idVertice1 (ou idVertice2) não são id's de um vértice do grafo
 *     GRA_CondRetFaltouMemoria - Não foi possível alocar memória para a aresta
 *
+*  Assertivas de Entrada: 
+*      pGrafo != NULL
+*      existe um único vertice em pGrafo com id = idVertice1 
+*      existe um único vertice em pGrafo com id = idVertice2 
+*      idVertice1 != idVertice2 
+*      não existe aresta com id = idAresta e este é único para os ids de aresta de pGrafo
+*  Assertivas de Saida: 
+*      Existe caminho de idVertice1 para idVertice2 e vice-versa. 
+*      Este caminho tem tamanho 2.
 ***********************************************************************/
 
    GRA_tpCondRet GRA_InserirAresta( GRA_tppGrafo pGrafo , int idVertice1,int idVertice2, int idAresta ) ;
@@ -206,6 +245,10 @@ typedef struct LIS_tagLista* LIS_tppLista ;
 *     GRA_CondRetNaoEhVizinho - Não existe aresta entre os dois vértices
 *     GRA_CondRetFaltouMemoria - faltou memoria para criar nova componente
 *
+*  Assertivas de Entrada: 
+*      pGrafo != NULL
+*      existe uma única aresta em pGrafo com id = idAresta 
+*  Assertivas de Saida: 
 ***********************************************************************/
 
    GRA_tpCondRet GRA_ExcluirAresta( GRA_tppGrafo pGrafo , int idAresta ) ;
@@ -216,9 +259,7 @@ typedef struct LIS_tagLista* LIS_tppLista ;
 *  $FC Função: GRA  &ObterVizinhos
 *
 *  $ED Descrição da função
-*     Obtem os vizinhos do idVertice
-*     Se idVertice não existir, erro de inexistencia
-*     Se idVertice não possuir vizinhos, retorna uma lista de tamanho 0
+*     Obtem os vizinhos de idVertice, cria e preenche uma lista de int id coms os vizinhos de idVertice e aponta pLista para a lista criada.
 *
 *  $EP Parâmetros
 *     pGrafo        - ponteiro para o grafo aonde deve ser buscada os vizinhos do idVertice
@@ -230,6 +271,12 @@ typedef struct LIS_tagLista* LIS_tppLista ;
 *     GRA_CondRetNaoEhVertice - idVertice não é um vértice do grafo
 *     GRA_CondRetFaltouMemoria - Não foi possível alocar memória para a lista de vértices vizinhos
 *
+*  Assertivas de Entrada: 
+*      pGrafo != NULL
+*      existe um único vertice em pGrafo com id = idVertice 
+*      pLista = NULL //recomendação para evitar memoryleak
+*  Assertivas de Saida:
+*      pLista != NULL 
 ***********************************************************************/
 
 GRA_tpCondRet GRA_ObterVizinhos (GRA_tppGrafo pGrafo, int idVertice, LIS_tppLista* pLista);
@@ -239,7 +286,7 @@ GRA_tpCondRet GRA_ObterVizinhos (GRA_tppGrafo pGrafo, int idVertice, LIS_tppList
 *  $FC Função: GRA  &ObterOrigens
 *
 *  $ED Descrição da função
-*     Obtem uma origem arbitrária para cada uma das componentes conexas do grafo.
+*     Aponta pLista para uma lista criada contendo as int id de origens arbitrárias para cada uma das componentes conexas do grafo.
 *     Se o grafo não possuir vértices, não aloca a Lista, evitando a necessidade de desalocar
 *
 *  $EP Parâmetros
@@ -250,6 +297,10 @@ GRA_tpCondRet GRA_ObterVizinhos (GRA_tppGrafo pGrafo, int idVertice, LIS_tppList
 *     GRA_CondRetOK  - Retornou a lista
 *     GRA_CondRetFaltouMemoria - Não foi possível alocar memória para a lista de vértices de origem
 *
+*  Assertivas de Entrada: 
+*      pGrafo != NULL
+*      pLista = NULL //recomendação para evitar memoryleak
+*  Assertivas de Saida: 
 ***********************************************************************/
 
 GRA_tpCondRet GRA_ObterOrigens ( GRA_tppGrafo pGrafo, LIS_tppLista * pLista);
@@ -270,6 +321,11 @@ GRA_tpCondRet GRA_ObterOrigens ( GRA_tppGrafo pGrafo, LIS_tppLista * pLista);
 *     GRA_CondRetOK	- idVertice teve o valor alterado com sucesso
 *     GRA_CondRetNaoEhVertice - idVertice explicitado não pertence ao grafo
 *
+*  Assertivas de Entrada: 
+*      pGrafo != NULL
+*      existe um único vertice em pGrafo com id = idVertice 
+*      pDado = NULL //recomendação para evitar memoryleak
+*  Assertivas de Saida: 
 ***********************************************************************/
 
     GRA_tpCondRet GRA_ObterValor( GRA_tppGrafo pGrafo , int idVertice , void** pDado ) ;   
@@ -291,6 +347,11 @@ GRA_tpCondRet GRA_ObterOrigens ( GRA_tppGrafo pGrafo, LIS_tppLista * pLista);
 *     GRA_CondRetOK	- O vértice teve o valor alterado com sucesso
 *     GRA_CondRetNaoEhVertice - o vértice explicitado não pertence ao grafo
 *
+*  Assertivas de Entrada: 
+*      pGrafo != NULL
+*      existe um única vertice em pGrafo com id = idVertice 
+*  Assertivas de Saida: 
+*      apos GRA_ObterValor(pGrafo,idVertice,a) -> *a = pDado
 ***********************************************************************/
 
   GRA_tpCondRet GRA_AlterarValor( GRA_tppGrafo pGrafo , int idVertice , void* pDado ) ;   
@@ -301,7 +362,7 @@ GRA_tpCondRet GRA_ObterOrigens ( GRA_tppGrafo pGrafo, LIS_tppLista * pLista);
 *
 *  $ED Descrição da função
 *     Retorna um caminho - lista de idVertice - traçando um caminho do vértice origem até o vértice destino.
-*     O caminho retornado é invertido - para a visualização correta deve-se ler a lista de trás pra frente.
+*     O caminho retornado é invertido - para a visualização correta deve-se ler a lista de trás pra frente, dado que a lista é duplamente encadeada, isto não deve ser um problema.
 *
 *  $EP Parâmetros
 *     pGrafo            - ponteiro para o grafo
@@ -314,6 +375,14 @@ GRA_tpCondRet GRA_ObterOrigens ( GRA_tppGrafo pGrafo, LIS_tppLista * pLista);
 *     GRA_CondRetNaoEhVertice - ao menos um dos vértices explicitados não pertencem ao grafo
 *     GRA_CondRetNaoEhConexo - não ha caminho entre os dois vertices dados
 *     GRA_CondRetFaltouMemoria - não há espaço para preencher a lista
+*
+*  Assertivas de Entrada: 
+*      pGrafo != NULL
+*      existe um único vertice em pGrafo com id = idVerticeOrigem 
+*      existe um único vertice em pGrafo com id = idVerticeDestino
+*      pLista = NULL //recomendação para evitar memoryleak
+*  Assertivas de Saida: 
+*      pLista != NULL
 ***********************************************************************/
 
   GRA_tpCondRet GRA_BuscarCaminho( GRA_tppGrafo pGrafo , int idVerticeOrigem , int idVerticeDestino,   LIS_tppLista * pLista ) ;   
@@ -324,7 +393,7 @@ GRA_tpCondRet GRA_ObterOrigens ( GRA_tppGrafo pGrafo, LIS_tppLista * pLista);
 *  $FC Função: GRA  &Inserir Vizinho Corrente
 *
 *  $ED Descrição da função
-*     Insere um novo vizinho com o idVertice dado para o corrente. A aresta terá o id passado em idAresta
+*     Insere um novo vizinho para o corrente com o idVertice dado. A aresta terá o id passado em idAresta
 *
 *  $EP Parâmetros
 *     pGrafo - ponteiro para o grafo onde deve ser inserido o vertice
@@ -337,6 +406,14 @@ GRA_tpCondRet GRA_ObterOrigens ( GRA_tppGrafo pGrafo, LIS_tppLista * pLista);
 *     GRA_CondRetFaltouMemoria - Não foi possível alocar memória para o vértice
 *     GRA_CondRetGrafoVazio - O grafo esta vazio, não há corrente
 *
+*  Assertivas de Entrada: 
+*      pGrafo != NULL
+*      não existe vertice com id = idVertice e este é único para os ids de vertice de pGrafo
+*      não existe aresta com id = idAresta e este é único para os ids de aresta de pGrafo
+*       pGrafo->corrente != -1
+*  Assertivas de Saida:
+*      Existe caminho de tamanho 2 entre o corrente e o idVertice
+*      tamanho da lista de vertices de pGrafo incrementa em 1
 ***********************************************************************/
 
    GRA_tpCondRet GRA_InserirVizinhoCorrente( GRA_tppGrafo pGrafo , void* pValor , int idVertice, int idAresta) ;
@@ -347,7 +424,7 @@ GRA_tpCondRet GRA_ObterOrigens ( GRA_tppGrafo pGrafo, LIS_tppLista * pLista);
 *  $FC Função: GRA  &Excluir Vizinho Corrente
 *
 *  $ED Descrição da função
-*     Exclui o vizinho do corrente com idVertice passados.
+*     Exclui o vizinho do corrente com idVertice passado.
 *
 *  $EP Parâmetros
 *     pGrafo - ponteiro para o grafo de onde deve ser excluido o vértide
@@ -360,6 +437,13 @@ GRA_tpCondRet GRA_ObterOrigens ( GRA_tppGrafo pGrafo, LIS_tppLista * pLista);
 *     GRA_CondRetGrafoVazio - O grafo esta vazio, não há corrente
 *     GRA_CondRetFaltouMemoria - faltou memoria para criar nova componente
 *
+*  Assertivas de Entrada: 
+*      pGrafo != NULL
+*      existe um único vertice em pGrafo com id = idVertice
+*      pGrafo->corrente != -1
+*      existe aresta entre o corrente e idVertice
+*  Assertivas de Saida: 
+*      tamanho da lista de vertices de pGrafo diminui em 1
 ***********************************************************************/
 
    GRA_tpCondRet GRA_ExcluirVizinhoCorrente( GRA_tppGrafo pGrafo , int idVertice) ;
@@ -382,6 +466,12 @@ GRA_tpCondRet GRA_ObterOrigens ( GRA_tppGrafo pGrafo, LIS_tppLista * pLista);
 *     GRA_CondRetGrafoVazio - O grafo esta vazio, não há corrente
 *     GRA_CondRetFaltouMemoria - Não foi possível alocar memória para a lista de vértices
 *
+*  Assertivas de Entrada: 
+*      pGrafo != NULL
+*      pGrafo->corrente != -1
+*      pLista = NULL //recomendação para evitar memoryleak
+*  Assertivas de Saida: 
+*      pLista != NULL
 ***********************************************************************/
 
 GRA_tpCondRet GRA_ObterVizinhosCorrente(GRA_tppGrafo pGrafo, LIS_tppLista* pLista);
@@ -402,6 +492,11 @@ GRA_tpCondRet GRA_ObterVizinhosCorrente(GRA_tppGrafo pGrafo, LIS_tppLista* pList
 *     GRA_CondRetOK	- O vértice teve o valor alterado com sucesso
 *     GRA_CondRetGrafoVazio - o grafo está vazio, não há corrente
 *
+*  Assertivas de Entrada: 
+*      pGrafo != NULL
+*      pGrafo->corrente != -1
+*      pDado = NULL //recomendação para evitar memoryleak
+*  Assertivas de Saida: 
 ***********************************************************************/
 
     GRA_tpCondRet GRA_ObterValorCorrente( GRA_tppGrafo pGrafo , void** pDado ) ;   
@@ -422,6 +517,11 @@ GRA_tpCondRet GRA_ObterVizinhosCorrente(GRA_tppGrafo pGrafo, LIS_tppLista* pList
 *     GRA_CondRetOK	- O vértice corrente teve o valor alterado com sucesso
 *     GRA_CondRetGrafoVazio - o grafo está vazio, não há corrente
 *
+*  Assertivas de Entrada: 
+*      pGrafo != NULL
+*      pGrafo->corrente != -1
+*  Assertivas de Saida: 
+*      apos GRA_ObterValorCorrente(pGrafo,a) -> *a = pDado
 ***********************************************************************/
 
   GRA_tpCondRet GRA_AlterarValorCorrente( GRA_tppGrafo pGrafo , void * pDado ) ;   
@@ -446,6 +546,14 @@ GRA_tpCondRet GRA_ObterVizinhosCorrente(GRA_tppGrafo pGrafo, LIS_tppLista* pList
 *     GRA_CondRetNaoEhConexo - não ha caminho entre os dois vertices dados
 *     GRA_CondRetFaltouMemoria - não há espaço para preencher a lista
 *     GRA_CondRetGrafoVazio - o grafo está vazio, não há corrente
+*
+*  Assertivas de Entrada: 
+*      pGrafo != NULL
+*      pGrafo->corrente != -1
+*      existe um único vertice em pGrafo com id = idVerticeDestino
+*      pLista = NULL //recomendação para evitar memoryleak
+*  Assertivas de Saida:
+*      pLista != NULL
 ***********************************************************************/
 
   GRA_tpCondRet GRA_BuscarCaminhoCorrente( GRA_tppGrafo pGrafo ,  int idVerticeDestino,   LIS_tppLista * pLista ) ;    
@@ -466,6 +574,14 @@ GRA_tpCondRet GRA_ObterVizinhosCorrente(GRA_tppGrafo pGrafo, LIS_tppLista* pList
 *     GRA_CondRetNaoEhVertice - ao menos um dos vértices explicitados não pertencem ao grafo
 *     GRA_CondRetNaoEhvizinho - idVertice nao eh vizinho do corrente
 *     GRA_CondRetGrafoVazio - o grafo está vazio, não há corrente
+*
+*  Assertivas de Entrada: 
+*      pGrafo != NULL
+*      pGrafo->corrente != -1
+*      existe um único vertice em pGrafo com id = idVertice 
+*      existe aresta entre o corrente e idVertice
+*  Assertivas de Saida: 
+*      pGrafo->corrente = idVertice
 ***********************************************************************/
 
   GRA_tpCondRet GRA_IrVizinhoCorrente( GRA_tppGrafo pGrafo , int idVertice ) ;   
@@ -486,6 +602,13 @@ GRA_tpCondRet GRA_ObterVizinhosCorrente(GRA_tppGrafo pGrafo, LIS_tppLista* pList
 *     GRA_CondRetOK	- O caminho foi preenchido com sucesso
 *     GRA_CondRetNaoEhVertice - o vértice explicitado não pertence ao grafo
 *     GRA_CondRetGrafoVazio - o grafo está vazio, não há corrente
+*
+*  Assertivas de Entrada: 
+*      pGrafo != NULL
+*      pGrafo->corrente != -1
+*      existe um único vertice em pGrafo com id = idVertice 
+*  Assertivas de Saida: 
+*      pGrafo->corrente = idVertice
 ***********************************************************************/
 
   GRA_tpCondRet GRA_MudarCorrente( GRA_tppGrafo pGrafo , int idVertice ) ;   

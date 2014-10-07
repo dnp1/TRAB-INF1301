@@ -1079,7 +1079,6 @@ tpAresta* get_edge_by_vertex(LIS_tppLista  vizinhos, tpVertice * v){
                 pGrafo->ExcluirValor(no->pValor);
                 no->pValor = NULL;
             }
-
             free(vizinhos);
         }
 
@@ -1157,6 +1156,7 @@ tpAresta* get_edge_by_vertex(LIS_tppLista  vizinhos, tpVertice * v){
                 achou = 1; 
                 break;
             }
+            printf("\nvertice: %p\n", t);
             arestas = t->pNode->arestas;
             LIS_IrInicioLista(arestas);
             do {
@@ -1196,28 +1196,61 @@ tpAresta* get_edge_by_vertex(LIS_tppLista  vizinhos, tpVertice * v){
 ***********************************************************************/
         
     static tpVertice* ObterOrigem (GRA_tppGrafo grafo, tpVertice* v) {
-        tpVertice** u = NULL; //Vetor com componentes a iterar;
-        LIS_tppLista origens = grafo->componentes;
-        printf("\nLen(Origens): %d\n", LIS_NumeroDeElementos(grafo->componentes));
-        printf("Len(Vertices): %d\n", LIS_NumeroDeElementos(grafo->componentes));
+        //DUMP dos vertices:
+        tpVertice* v_ = NULL;
+        printf("\n VERTICES  ----");
+        for (    LIS_IrInicioLista(grafo->vertices), v_ = (tpVertice*)LIS_ObterValor(grafo->vertices);
+                LIS_AvancarElementoCorrente(grafo->vertices,1) == LIS_CondRetOK;
+                v_ = (tpVertice*)LIS_ObterValor(grafo->vertices)
+            ) 
+        {
+            printf("\tvertice: %p  *\n", v_);
+        }
+        printf("\n ----");
 
-        //Vat
+
+        printf("\n ORIGENS  ----");
+        for (    LIS_IrInicioLista(grafo->componentes), v_ = (tpVertice*)LIS_ObterValor(grafo->componentes);
+                LIS_AvancarElementoCorrente(grafo->componentes,1) == LIS_CondRetOK;
+                v_ = (tpVertice*)LIS_ObterValor(grafo->componentes)
+            ) 
+        {
+            printf("\tOrigem: %p  *\n", v_);
+        }
+        printf("\n ----");
+
+        LIS_IrInicioLista(grafo->vertices);
+
+
+        tpVertice** us = NULL; //Vetor com componentes a iterar;
+        tpVertice* u = NULL;
+        LIS_tppLista origens = grafo->componentes;
+        int i = 0;
         LIS_IrInicioLista(origens);
         if (LIS_ProcurarValor(origens, v) == LIS_CondRetOK) {
             return v; //é a origem da própria componente
         }
+        if(LIS_NumeroDeElementos(origens) > 0) {
+            us = (tpVertice**) calloc(LIS_NumeroDeElementos(origens), sizeof(tpVertice*));
 
-        LIS_IrInicioLista(origens);
-        do {
-            u = (tpVertice *)LIS_ObterValor(origens);
-            if(u == NULL) {
-                continue;
+            LIS_IrInicioLista(origens);
+            do {
+                u = (tpVertice *)LIS_ObterValor(origens);
+                if(u == NULL) break;
+                us[i] = u;
+                i++;
+            } while(LIS_AvancarElementoCorrente(origens, 1) == LIS_CondRetOK);
+
+
+            for ( i;i; i--) {
+                if (BFS(us[i-1],v) == 1) {
+                    u =  us[i-1];
+                }
             }
-            if (BFS(u,v) == 1) {
-                return u;
-            }
-        } while(LIS_AvancarElementoCorrente(origens, 1) == LIS_CondRetOK);
-        return NULL;
+            free(us);
+        }
+
+        return u;
     }
 
 /********** Fim do módulo de implementação: GRA  Grafo **********/

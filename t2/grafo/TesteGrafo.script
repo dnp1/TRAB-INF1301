@@ -100,6 +100,7 @@
 =insvizcorr  0 "oioi"  15 14 OK 
 =insvizcorr  0 "ola"   16 13 OK
 =insvizcorr  0 "hello" 17 12 OK
+=insvizcorr  0 "e ai?" 50 14 OK
 
 == ExclusÃ£o sobre o corrente Grafo 0
 =excvizcorr  0 16 OK
@@ -112,23 +113,24 @@
 =obtervizcorr 0 OK
 
 == Obter Valor do Corrente Grafo 0 
-=obtervalcorr 0 pNaoNulo
-=obtervalcorr 0 pNulo
-=recupera
+=obtervalcorr 0 pNaoNULL
+=obtervalcorr 0 pNULL
+=recuperar
 
 == Altera Valor do Corrente Grafo 0 
 =altvalcorr 0 "1112" OK
 
-== Busca Caminho do Corrente Grafo 0
-=buscacamcorr 0 5  OK
-=buscacamcorr 0 56 NaoEhVertice
-=buscacamcorr 0 8 NaoEhConexo
+//== Busca Caminho do Corrente Grafo 0
+//=buscacamcorr 0 5  OK
+//=buscacamcorr 0 56 NaoEhVertice
+//=buscacamcorr 0 8 NaoEhConexo
 
 == Ir Vizinho do Corrente Grafo 0
 =irvizcorr 0 55 NaoEhVertice
 =irvizcorr 0 6  NaoEhVizinho
-=irvizcorr 0 2  OK
+=irvizcorr 0 15  OK
 =irvizcorr 0 1  OK
+=irvizcorr 0 50  OK
 
 == Mudar Corrente Grafo 0
 =mudarcorr 0 5 OK
@@ -208,17 +210,17 @@
 =obterorig  5  OK
 
 == Obter Valor Grafo 5
-=obtervalor  5 32  pNaoNulo
-=obtervalor  5 64  pNulo
+=obterval  5 32  pNaoNULL
+=obterval  5 64  pNULL
 =recuperar
 
 == Alterar Valor Grafo 5
-=alterarvalor 5 "adsdsad" 32 OK
-=alterarvalor 5 "adsdsadas" 61 NaoEhVertice
+=altval 5 32 "adsdsad"  OK
+=altval 5 61 "adsdsadas"  NaoEhVertice
 
-== Busca Caminho No Grafo 5 
-=buscacam 5  64  128 OK
-=buscacam 5  64  300 NaoEhConexo
+//== Busca Caminho No Grafo 5 
+//=buscacam 5  64  128 OK
+//=buscacam 5  64  300 NaoEhConexo
 
 
 

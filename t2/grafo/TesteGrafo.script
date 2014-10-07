@@ -109,7 +109,7 @@
 =excvizcorr  0 17 OK
 
 == Obter Vizinhos do Corrente Grafo 0 
-=obtervizcorr 0 ok
+=obtervizcorr 0 OK
 
 == Obter Valor do Corrente Grafo 0 
 =obtervalcorr 0 pNaoNulo

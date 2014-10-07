@@ -1000,7 +1000,7 @@ tpAresta* get_edge_by_vertex(LIS_tppLista  vizinhos, tpVertice * v){
                 return NULL;
             }
 
-            arestas = LIS_CriarLista(free); //Ops
+            arestas = LIS_CriarLista(free);
             if(arestas == NULL) {
                 free(v);
                 free(no);
@@ -1034,7 +1034,7 @@ tpAresta* get_edge_by_vertex(LIS_tppLista  vizinhos, tpVertice * v){
 //essa tambem sera exportada
 
     static void RemoverAresta(tpVertice* u, tpVertice* v) {
-        LIS_tppLista vizinhos;
+        LIS_tppLista vizinhos = NULL;
 		tpAresta * aresta_v = NULL;
 
         vizinhos = u->pNode->arestas;
@@ -1066,7 +1066,6 @@ tpAresta* get_edge_by_vertex(LIS_tppLista  vizinhos, tpVertice * v){
         LIS_IrInicioLista(no->arestas);
         do {
             vizinho = (tpAresta *)LIS_ObterValor(no->arestas);
-            //pVerticeVizinho = get_by_id(pGrafo, vizinho->id);
             ExcluirAresta(pGrafo, pVertice, vizinho->pVizinho); 
         } 
         while (LIS_AvancarElementoCorrente(no->arestas, 1) == LIS_CondRetOK);
@@ -1104,8 +1103,8 @@ tpAresta* get_edge_by_vertex(LIS_tppLista  vizinhos, tpVertice * v){
 ***********************************************************************/
 
     static GRA_tpCondRet ExcluirAresta (GRA_tppGrafo grafo, tpVertice* v, tpVertice* u) {
+        RemoverAresta(v, u);//mexe só em v, ou deveria       
         RemoverAresta(u, v);
-        RemoverAresta(v, u);       
 
         //BFS pra detectar se é necessário gerar nova componente.
         if (BFS(v,u) != 1) { //Estão em componentes distintas

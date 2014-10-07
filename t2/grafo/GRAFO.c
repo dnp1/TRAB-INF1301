@@ -1031,10 +1031,7 @@ tpAresta* get_edge_by_vertex(LIS_tppLista  vizinhos, tpVertice * v){
 *
 ***********************************************************************/
 
-//as funcoes de exclusao de vertice e arestas sao chamadas internamente e externamente
 
-//apaga aresta(u,v) e a aresta(v,u)
-//essa tambem sera exportada
 
     static void RemoverAresta(tpVertice* u, tpVertice* v) {
         LIS_tppLista vizinhos = NULL;

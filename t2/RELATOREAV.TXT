@@ -1,0 +1,16 @@
+Tabela de Horários - Modular 2014.2 - T2
+
+18/09 - Eduardo  - 18h - 20h - Estudo da arquitetura da aplicação, especificação dos módulos Lista e Grafo;
+24/09 - Eduardo - 19h - 21h - Estudo da arquitetura da aplicação, especificação dos módulos Lista e Grafo;
+25/09 - Eduardo- 19h - 22h - Especificação, projeção e codificação do módulo Grafo;
+27/09 - Eduardo- 15h - 21h - Especificação, projeção e codificação do módulo Grafo;
+29/09 - Eduardo- 18:30h - 21h - Codificação do módulo Grafo;
+30/09 - Eduardo  - 15:00h - 21h - Codificação dos moódulos Grafo e testaGrafo;
+01/10 - Eduardo  - 19:00h - 24h - Codificação dos moódulos Grafo e testaGrafo;
+02/10 - Eduardo  - 00:00h - 5h - Codificação dos moódulos Grafo e testaGrafo;
+03/10 - Eduardo  - 
+04/10 - Eduardo 
+05/10 - Eduardo 
+07/10 - Eduardo  -00:00
+
+

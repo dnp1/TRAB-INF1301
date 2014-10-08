@@ -688,7 +688,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
             return GRA_CondRetFaltouMemoria;
         }
 
-        retorno = LIS_CriarLista(free);
+        retorno = LIS_CriarLista(NULL);
         if (retorno == NULL) {
             LIS_DestruirLista(caminho);
             return GRA_CondRetFaltouMemoria;

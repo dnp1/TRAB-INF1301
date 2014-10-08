@@ -673,16 +673,21 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         tpVertice* s = NULL;
 		tpAresta * atemp = NULL;
 		tpAresta * a = NULL;
+		tpVertice * origem1 = NULL;
+		tpVertice * origem2 = NULL;
 
         int achou = 0;
         int achou_V = 0;
-
+        
         v = get_by_id(pGrafo, idVerticeOrigem);
         u = get_by_id(pGrafo, idVerticeDestino);
         if(v == NULL || u == NULL) {
             return GRA_CondRetNaoEhVertice; 
         }
-
+        origem1 = ObterOrigem(pGrafo, v);
+        origem2 = ObterOrigem(pGrafo, u);
+        if(origem1 != origem2)
+            return GRA_CondRetNaoEhConexo;
         caminho = LIS_CriarLista(free);
         if (caminho == NULL) {
             return GRA_CondRetFaltouMemoria;

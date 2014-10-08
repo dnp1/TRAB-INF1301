@@ -757,10 +757,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
                 if(a == NULL) break;
 
                 s = a->pVizinho;
-<<<<<<< HEAD
-=======
                 
->>>>>>> 9918e080b7319f5f5c3bc290eafc18f78b953dd5
 
                 LIS_IrInicioLista(V);
                 achou_V = 0;
@@ -805,13 +802,13 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         
         //faz o backtrace
         while(a->pVizinho != NULL){
-      
             if(LIS_InserirElementoApos(retorno, a->id) != LIS_CondRetOK)
                 return GRA_CondRetFaltouMemoria;
             LIS_IrInicioLista( caminho ) ;
             do{
                 a = (tpAresta*)LIS_ObterValor( caminho ) ;
-                if(a == NULL) break; 
+                if(a == NULL) break;
+                if(a->pVizinho == NULL) break; 
                 if ( get_by_id(pGrafo,a->id) == a->pVizinho ){
                     break;
                 }
@@ -1063,7 +1060,6 @@ tpAresta* get_edge_by_vertex(LIS_tppLista  vizinhos, tpVertice * v){
         int i = 0;
         
         no = pVertice->pNode;
-<<<<<<< HEAD
 /*
 ///////////////////////////////////        
         tpVertice* a = NULL;
@@ -1101,17 +1097,16 @@ printf("\ndepois\n");
 ///////////////////////////////////        
 */        
         // Excluir Arestas
-        LIS_IrInicioLista(no->arestas);
+/*        LIS_IrInicioLista(no->arestas);
         do {
             vizinho = (tpAresta *)LIS_ObterValor(no->arestas);
             ExcluirAresta(pGrafo, pVertice, vizinho->pVizinho); 
         } 
         while (LIS_AvancarElementoCorrente(no->arestas, 1) == LIS_CondRetOK);
-=======
+*/
         if (LIS_NumeroDeElementos(no->arestas) > 0) {
 
             vizinhos = calloc(LIS_NumeroDeElementos(no->arestas), sizeof(tpAresta*));
->>>>>>> 9918e080b7319f5f5c3bc290eafc18f78b953dd5
 
             LIS_IrInicioLista(no->arestas);
             do {
@@ -1150,7 +1145,6 @@ printf("\nantes vertice\n");
         LIS_IrInicioLista(pGrafo->vertices);
         LIS_ProcurarValor(pGrafo->vertices, pVertice);
         LIS_ExcluirElemento(pGrafo->vertices);
-<<<<<<< HEAD
 /*
 ///////////////////////////////////        
 printf("\ndepois\n");    
@@ -1230,7 +1224,7 @@ printf("\ndepois\n");
                 achou = 1; 
                 break;
             }
-            printf("\nvertice: %p\n", t);
+            //printf("\nvertice: %p\n", t);
             arestas = t->pNode->arestas;
             LIS_IrInicioLista(arestas);
             do {
@@ -1271,14 +1265,14 @@ printf("\ndepois\n");
         
     static tpVertice* ObterOrigem (GRA_tppGrafo grafo, tpVertice* v) {
         //DUMP dos vertices:
-        tpVertice* v_ = NULL;
+/*        tpVertice* v_ = NULL;
         printf("\n VERTICES  ----");
         for (    LIS_IrInicioLista(grafo->vertices), v_ = (tpVertice*)LIS_ObterValor(grafo->vertices);
                 LIS_AvancarElementoCorrente(grafo->vertices,1) == LIS_CondRetOK;
                 v_ = (tpVertice*)LIS_ObterValor(grafo->vertices)
             ) 
         {
-            printf("\tvertice: %p  *\n", v_);
+            printf("\tvertice: %d  *\n", v_->id);
         }
         printf("\n ----");
 
@@ -1289,10 +1283,10 @@ printf("\ndepois\n");
                 v_ = (tpVertice*)LIS_ObterValor(grafo->componentes)
             ) 
         {
-            printf("\tOrigem: %p  *\n", v_);
+            printf("\tOrigem: %d  *\n", v_->id);
         }
         printf("\n ----");
-
+*/
         LIS_IrInicioLista(grafo->vertices);
 
 

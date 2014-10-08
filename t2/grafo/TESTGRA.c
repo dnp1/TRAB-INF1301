@@ -314,9 +314,9 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
             } /* if */
             
             CondRetObtida = GRA_ObterVizinhos( vtRefGrafos[ inxGrafo ] , id , &vizinhos );
-            if(vizinhos != NULL)
+            if(vizinhos != NULL){
                 LIS_DestruirLista(vizinhos);
-            
+            }
             return TST_CompararInt( CondRetEsperada , CondRetObtida ,
                                     "Retorno errado ao obter vizinhos." );
             
@@ -335,8 +335,9 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
             } /* if */
 
             CondRetObtida = GRA_ObterOrigens( vtRefGrafos[ inxGrafo ] , &origens );
-            if(origens!=NULL) LIS_DestruirLista(origens);
-            
+            if(origens!=NULL){
+                 LIS_DestruirLista(origens);
+            }
             return TST_CompararInt( CondRetEsperada , CondRetObtida ,
                                     "Retorno errado ao obter origens." );
             
@@ -428,8 +429,9 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
 
             
             CondRetObtida = GRA_BuscarCaminho( vtRefGrafos[ inxGrafo ] , id , _id , &caminho ) ;
-            if(caminho!=NULL) LIS_DestruirLista(caminho);
-            
+            if(caminho!=NULL) {
+                LIS_DestruirLista(caminho);
+            }
             return TST_CompararInt( CondRetEsperada , CondRetObtida ,
                                     "Retorno errado ao buscar o caminho." );
             
@@ -594,8 +596,9 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
 
             
             CondRetObtida = GRA_BuscarCaminhoCorrente( vtRefGrafos[ inxGrafo ] , id , &caminho) ;
-            if(caminho!=NULL) LIS_DestruirLista(caminho);
-            
+            if(caminho!=NULL){
+                 LIS_DestruirLista(caminho);
+            }
             return TST_CompararInt( CondRetEsperada , CondRetObtida ,
                                     "Retorno errado ao buscar o caminho desde o corrente." );
             

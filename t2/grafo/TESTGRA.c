@@ -335,7 +335,7 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
             } /* if */
 
             CondRetObtida = GRA_ObterOrigens( vtRefGrafos[ inxGrafo ] , &origens );
-            LIS_DestruirLista(origens);
+            if(origens!=NULL) LIS_DestruirLista(origens);
             
             return TST_CompararInt( CondRetEsperada , CondRetObtida ,
                                     "Retorno errado ao obter origens." );
@@ -428,7 +428,7 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
 
             
             CondRetObtida = GRA_BuscarCaminho( vtRefGrafos[ inxGrafo ] , id , _id , &caminho ) ;
-            LIS_DestruirLista(caminho);
+            if(caminho!=NULL) LIS_DestruirLista(caminho);
             
             return TST_CompararInt( CondRetEsperada , CondRetObtida ,
                                     "Retorno errado ao buscar o caminho." );

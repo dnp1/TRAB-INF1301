@@ -12,5 +12,5 @@ Tabela de Horários - Modular 2014.2 - T2
 04/10 - Eduardo - 17:00h - 21h - Codificação dos módulos Grafo e testeGrafo, testar, revisar teste;
 05/10 - Eduardo - 15h-20h / 22h - 1h - Codificação dos módulos Grafo e testeGrafo, testar, revisar teste;
 06/10 - Eduardo  -23h-1h - Codificação dos módulos Grafo e testeGrafo, testar, revisar teste;
-
+07/10 - Eduardo  -1h-3h - Testar, revisar teste;
 

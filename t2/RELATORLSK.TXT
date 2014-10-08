@@ -9,14 +9,11 @@
 01/10 - Leonardo - 19:00h - 24h - Codificação dos moódulos Grafo e testaGrafo;
 02/10 - Leonardo - 00:00h - 5h - Codificação dos moódulos Grafo e testaGrafo;
 02/10 - Leonardo - 15:00h - 19h - Codificação dos moódulos Grafo e testaGrafo;
-
 03/10 - Leonardo - 11:00h - 13h - Codificação dos moódulos Grafo e testaGrafo;
- 
 04/10 - Leonardo - 15:00h - 20h - Codificação dos moódulos Grafo e testaGrafo;
-
 05/10 - Leonardo - 19:00h - 21h - Codificação dos moódulos Grafo e testaGrafo;
-
-06/10 - Leonardo - 21:00h - 2h - Codificação dos moódulos Grafo e testaGrafo;
-
+06/10 - Leonardo - 21:00h - 0h - Codificação dos moódulos Grafo e testaGrafo;
 07/10 - Leonardo - 00:00 - 3h - Codificação dos moódulos Grafo e testaGrafo;
+07/10 - Leonardo - 20:00 - 0h - Codificação dos moódulos Grafo e testaGrafo;
+08/10 - Leonardo - 00:00 - 3h - Codificação dos moódulos Grafo e testaGrafo;
 

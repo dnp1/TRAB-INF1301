@@ -7,7 +7,7 @@ Tabela de Horários - Modular 2014.2 - T2
 30/09 - Danilo - 15:00h - 21h - Codificação dos moódulos Grafo e testaGrafo;
 01/10 - Danilo - 19:00h - 24h - Codificação dos moódulos Grafo e testaGrafo;
 02/10 - Danilo - 00:00h - 5h - Codificação dos moódulos Grafo e testaGrafo;
-06/10 - Danilo 
-07/10 - Danilo -00:00
+07/10 - Danilo - 00:00 - 04:00 - Identificação e correção de problemas(bugs) no trabalho
+08/10 - Danilo - 00:00 - 03:00 - Depuração e organização do trabalho
 
 

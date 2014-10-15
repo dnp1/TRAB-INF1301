@@ -22,12 +22,19 @@
         LEI - LEITOR.h     
             função Le() 
                 Le um caracter numerico(id da opção)  e executa a funcao associada ao mesmo em opção. 
+            função Joga()
+                
         APR - APRESENTADOR.h
-            função Apresenta()
+            função ApresentaMenu()
                 Apresenta uma tela contendo o nome do menu atual, suas opções com seus ids.
+                Se estiver na tela de jogo ou edição de mapa, desenha o mapa.
+            função ApresentaEditor()
+                Apresenta uma tela com os comandos validos e o estado atual do mapa sendo editado.
+            função ApresentaJogo()
+                A diferença esta nos comandos validos, pois neste momento o jogador nao pode mudar a configuracao do mapa.
         TAB - TABULEIRO.h
-            contem as funções de validação dos movimentos no tabuleiro, utilizado para construir as callbacks passadas ao leitor.
-
+            contem as funções de validação dos movimentos no tabuleiro, utilizado para construir as callbacks passadas ao leitor. Tambem possui as funcoes de salvar e carregar o tabuleiro.
+            
 */          
 void vaiMenu(int n){
     MenuAtual = n;
@@ -54,7 +61,12 @@ int main(){
     //MenuAtual = 0 acaba o jogo.
     while(MenuAtual != 0){
         LEI_Le();
-        APR_Apresenta();
+        if(MenuAtual == EDITOR)
+            APR_ApresentaEditor();
+        if(MenuAtual == JOGO)
+            APR_ApresentaJogo();
+        else
+            APR_ApresentaMenu();
     }
     clean()
     */
@@ -66,9 +78,10 @@ int main(){
 
 este exemplo apresenta algo como
 
-################
-#tabuleiro     #
-################
+###############
+# labiririnto #
+###############
+
 inicio
 ------
 
@@ -80,3 +93,4 @@ Aperte
 #############################
 
 */
+

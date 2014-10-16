@@ -37,18 +37,25 @@
             
 */          
 void vaiMenu(int n){
-    MenuAtual = n;
+    GRA_IrVizinho();
+    //MenuAtual = n;
 }
-static int MenuAtual;
 
-PRI_CondRet CriarMenu(int id, char* nome);
-PRI_CondRet CriarOpcao(int idMenu,char cmd, char* nome,callback);
+
+
+PRI_CondRet MEN_CriarMenu(tppGrafo menu, int id, char* nome){
+    
+};
+PRI_CondRet MEN_CriarOpcao(tppGrafo menu, int idMenu,char cmd, char* nome,callback);
+
 
 int main(){
-    APR_Erro(CriarMenu(1,"inicio"));
+    
+    GRA_tppGrafo Menus;
+    APR_Erro(MEN_CriarMenu(Menus,1,"inicio"));
       
-    APR_Erro(CriarOpcao(1,'1',"Criar Mapa",vaiMenu(2)) ;
-    APR_Erro(CriarOpcao(1,'2',"Jogar",vaiMenu(3));
+    APR_Erro(MEN_CriarOpcao(Menus,1,'1',"Criar Mapa",vaiMenu(2)) ;
+    APR_Erro(MEN_CriarOpcao(Menus,1,'2',"Jogar",vaiMenu(3));
 
     /*
     menu->nome = "inicio";
@@ -66,14 +73,11 @@ int main(){
     Inserir(menu->opcoes,b);
     */ 
     //Inicializa os menus(exemplo)
-    MenuAtual = 1;
-    //MenuAtual = 0 acaba o jogo.
-    while(MenuAtual != 0){
+    while(){//Se o corrente for ...
         LEI_Le();
-        APR_ApresentaMenu();
+        APR_ApresentaMenu(Menus);
         if(MenuAtual == EDITOR||JOGO)
-            APR_ApresentaTabuleiro();
-        else
+            APR_ApresentaTabuleiro(Tabuleiro);
     }
     //clean(); //housekeeping
     return 0;

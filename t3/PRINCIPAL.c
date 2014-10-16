@@ -15,23 +15,23 @@
             sempre existe a opcao de id 0, que volta ao menu anterior
       Opcao
         char* nome da opcao
-        int id
+        char id/cmd
         void callback*(void)
         
     Este módulo utiliza outros 3 módulos:
         LEI - LEITOR.h     
             função Le() 
-                Le um caracter numerico(id da opção)  e executa a funcao associada ao mesmo em opção. 
+                Le um caracter(id/cmd da opção)  e executa a funcao associada ao mesmo em opção. 
             função Joga()
                 
         APR - APRESENTADOR.h
             função ApresentaMenu()
                 Apresenta uma tela contendo o nome do menu atual, suas opções com seus ids.
                 Se estiver na tela de jogo ou edição de mapa, desenha o mapa.
-            função ApresentaEditor()
-                Apresenta uma tela com os comandos validos e o estado atual do mapa sendo editado.
-            função ApresentaJogo()
-                A diferença esta nos comandos validos, pois neste momento o jogador nao pode mudar a configuracao do mapa.
+            função ApresentaTabuleiro()
+                Imprime o tabuleiro
+            função Erro(int CondRet)
+                Imprime o erro(ou sucesso) para o usuario.
         TAB - TABULEIRO.h
             contem as funções de validação dos movimentos no tabuleiro, utilizado para construir as callbacks passadas ao leitor. Tambem possui as funcoes de salvar e carregar o tabuleiro.
             
@@ -39,8 +39,18 @@
 void vaiMenu(int n){
     MenuAtual = n;
 }
- static int MenuAtual;
+static int MenuAtual;
+
+PRI_CondRet CriarMenu(int id, char* nome);
+PRI_CondRet CriarOpcao(int idMenu,char cmd, char* nome,callback);
+
 int main(){
+    APR_Erro(CriarMenu(1,"inicio"));
+      
+    APR_Erro(CriarOpcao(1,'1',"Criar Mapa",vaiMenu(2)) ;
+    APR_Erro(CriarOpcao(1,'2',"Jogar",vaiMenu(3));
+
+    /*
     menu->nome = "inicio";
     menu->id = 1;
     menu->opcoes = CriarLista();
@@ -54,22 +64,18 @@ int main(){
     b->nome = "Jogar";
     Inserir(menu->opcoes,a);    
     Inserir(menu->opcoes,b);
-    //acho legal uma CriarMenu e uma CriarOpcao    
-    /*
-    Inicializa os menus(exemplo)
+    */ 
+    //Inicializa os menus(exemplo)
     MenuAtual = 1;
     //MenuAtual = 0 acaba o jogo.
     while(MenuAtual != 0){
         LEI_Le();
-        if(MenuAtual == EDITOR)
-            APR_ApresentaEditor();
-        if(MenuAtual == JOGO)
-            APR_ApresentaJogo();
+        APR_ApresentaMenu();
+        if(MenuAtual == EDITOR||JOGO)
+            APR_ApresentaTabuleiro();
         else
-            APR_ApresentaMenu();
     }
-    clean()
-    */
+    //clean(); //housekeeping
     return 0;
 }
 
@@ -77,6 +83,12 @@ int main(){
 /*
 
 este exemplo apresenta algo como
+---------
+
+Menu criado com sucesso!
+Opcao criada com sucesso!
+Opcao criada com sucesso!
+
 
 ###############
 # labiririnto #

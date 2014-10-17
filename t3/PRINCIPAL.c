@@ -11,7 +11,6 @@
         char* nome do menu
         int id
         LIS de opcoes 
-            não pode haver mais de 9 opcoes
             sempre existe a opcao de id 0, que volta ao menu anterior
       Opcao
         char* nome da opcao
@@ -37,76 +36,53 @@
             
 */          
 void vaiMenu(int n){
-    GRA_IrVizinho();
-    //MenuAtual = n;
+    GRA_IrVizinho(menus,n);
+    MenuAtual = n;
 }
-
-
-
-PRI_CondRet MEN_CriarMenu(tppGrafo menu, int id, char* nome){
-    
-};
-PRI_CondRet MEN_CriarOpcao(tppGrafo menu, int idMenu,char cmd, char* nome,callback);
-
-
-int main(){
-    
+//struct interna para manter o estado do jogo. 
+//Ela é passada para as callbacks para ser modificada e lida.
+//Ela é UNICA.
+typedef struct estado_{
     GRA_tppGrafo Menus;
-    APR_Erro(MEN_CriarMenu(Menus,1,"inicio"));
+    GRA_tppGrafo tabuleiro;
+    //id do ultimo menu, do menu pai/acima
+    //variavel utilizada para implementar a opcao 0 dos menus
+    int UltimoMenu;
+} estado;
+typedef estado* tppEstado;
+
+
+tppEstado CriaEstado(){
+    malloc(sizeof(estado));
+    GRA_tppGrafo Menus = GRA_CriarGrafo(MEN_DestruirMenu);
+    //GRA_tppGrafo Tabuleiro = GRA_CriarGrafo(MEN_DestruirMenu);
+    
+    if(e == NULL||Menus==NULL){
+        APR_Erro(CondRetFaltouMemoria);
+        return 0;
+    }
+}
+void volta(tppEstado e){
+    GRA_IrVizinhoCorrente(e->Menu,e->UltimoMenu);
+}
+int main(){
+    tppEstado e = CriaEstado();
+    
+    APR_Erro(MEN_CriarMenu(Menus,1,"inicio",volta));
       
     APR_Erro(MEN_CriarOpcao(Menus,1,'1',"Criar Mapa",vaiMenu(2)) ;
     APR_Erro(MEN_CriarOpcao(Menus,1,'2',"Jogar",vaiMenu(3));
-
-    /*
-    menu->nome = "inicio";
-    menu->id = 1;
-    menu->opcoes = CriarLista();
-    opcao* a = malloc
-    a->id = 1
-    a->callback() = vaiMenu(2);//isso nao eh valido, mas eh essa ideia, com macros talvez role
-    a->nome = "Criar mapa";
-    opcao* b = malloc
-    b->id = 2
-    b->callback() = vaiMenu(3);//isso nao eh valido, mas eh essa ideia, com macros talvez role
-    b->nome = "Jogar";
-    Inserir(menu->opcoes,a);    
-    Inserir(menu->opcoes,b);
-    */ 
-    //Inicializa os menus(exemplo)
-    while(){//Se o corrente for ...
-        LEI_Le();
+    //inicia a navegacao em 1
+    GRA_MudarCorrente(Menus,1);
+    //só sera 0 quando o ultimo corrente for 1 e o usuario digitar 0
+    while(GRA_ObterIdCorrente(Menus)!=0){
         APR_ApresentaMenu(Menus);
         if(MenuAtual == EDITOR||JOGO)
             APR_ApresentaTabuleiro(Tabuleiro);
+        LEI_Le();
     }
     //clean(); //housekeeping
     return 0;
 }
 
-
-/*
-
-este exemplo apresenta algo como
----------
-
-Menu criado com sucesso!
-Opcao criada com sucesso!
-Opcao criada com sucesso!
-
-
-###############
-# labiririnto #
-###############
-
-inicio
-------
-
-Aperte 
-0 para Voltar(se estiver em inicio, fecha o jogo)
-1 para Criar Mapa
-2 para Jogar 
-
-#############################
-
-*/
 

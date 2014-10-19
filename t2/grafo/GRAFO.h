@@ -503,6 +503,30 @@ GRA_tpCondRet GRA_ObterVizinhosCorrente(GRA_tppGrafo pGrafo, LIS_tppLista* pList
 
 /***********************************************************************
 *
+*  $FC Função: GRA  &Obter ID Corrente
+*
+*  $ED Descrição da função
+*     Obtem o ID do vértice corrente.
+*
+*  $EP Parâmetros
+*     pGrafo - ponteiro para o grafo
+*     id - ponteiro para o inteiro a ser preenchido com a id
+*
+*  $FV Valor retornado
+*     GRA_CondRetOK	- ID obtida com sucesso
+*     GRA_CondRetGrafoVazio - o grafo está vazio, não há corrente
+*
+*  Assertivas de Entrada: 
+*      pGrafo != NULL
+*      pGrafo->corrente != -1
+*      pDado = NULL //recomendação para evitar memoryleak
+*  Assertivas de Saida: 
+***********************************************************************/
+
+    GRA_tpCondRet GRA_ObterIDCorrente( GRA_tppGrafo pGrafo , int* id ) ;  
+
+/***********************************************************************
+*
 *  $FC Função: GRA  &Alterar valor Corrente
 *
 *  $ED Descrição da função

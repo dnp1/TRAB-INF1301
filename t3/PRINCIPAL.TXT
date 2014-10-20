@@ -59,7 +59,7 @@ Editor
     
     5 salva(chama ValidaMapa, se for ok, ai chama salva. senao, indica o erro.) 
     
-    .#.#...#.
+    x#.#...#.
     .##.#.##.
     .........
 

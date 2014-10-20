@@ -29,10 +29,13 @@ void Erro(int CondRet){
         break;
         case PRI_FaltouMemoria:
             printf("Operacao mal sucedida. Faltou Memoria.");
-        break;    
+        break;   
+        printf("Comando invalido"); 
     }
 }
 
 void APR_ApresentaTabuleiro(tppGrafo Tabuleiro){
 
 }
+
+void APR_ApresentaSolucao(LIS_tppLista solucao){}

@@ -43,6 +43,7 @@ void vaiMenu(int n){
 //Ela é passada para as callbacks para ser modificada e lida.
 //Ela é UNICA.
 typedef struct estado_{
+    //o id do corrente de Menus eh o o id do menu atual
     GRA_tppGrafo Menus;
     GRA_tppGrafo tabuleiro;
     //id do ultimo menu, do menu pai/acima
@@ -68,10 +69,10 @@ void volta(tppEstado e){
 int main(){
     tppEstado e = CriaEstado();
     
-    APR_Erro(MEN_CriarMenu(Menus,1,"inicio",volta));
+    APR_Erro(MEN_CriarMenu(e->Menus,1,"inicio",volta));
       
-    APR_Erro(MEN_CriarOpcao(Menus,1,'1',"Criar Mapa",vaiMenu(2)) ;
-    APR_Erro(MEN_CriarOpcao(Menus,1,'2',"Jogar",vaiMenu(3));
+    APR_Erro(MEN_CriarOpcao(e->Menus,1,'1',"Criar Mapa",vaiMenu(2)) ;
+    APR_Erro(MEN_CriarOpcao(e->Menus,1,'2',"Jogar",vaiMenu(3));
     //inicia a navegacao em 1
     GRA_MudarCorrente(Menus,1);
     //só sera 0 quando o ultimo corrente for 1 e o usuario digitar 0

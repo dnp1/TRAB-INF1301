@@ -39,12 +39,16 @@
 == Inserir vizinho do Corrente em Grafo vazio
 =insvizcorr 0 "aaa" 12 14 GrafoVazio
 
-
 == Obter Vizinhos do Corrente em Grafo Vazio
 =obtervizcorr 0 GrafoVazio
 
 == Obter Valor do Corrente em Grafo Vazio
 =obtervalcorr 0 GrafoVazio
+
+== Obter ID do Corrente em Grafo Vazio
+=obteridcorr 0 -1 GrafoVazio
+=obteridcorr 0  1 OK
+=recuperar
 
 == Alterar Valor do Corrente em Grafo Vazio
 =altvalcorr 0 "aaa" GrafoVazio
@@ -71,6 +75,12 @@
 == Obter Valor do Corrente Grafo 0 
 =obtervalcorr 0 pNaoNULL
 
+== Obter ID do Corrente Grafo 0
+=obteridcorr 0 1 OK
+=obteridcorr 0 2 OK
+=recuperar
+=obteridcorr 0 1 GrafoVazio
+=recuperar
 
 == Inserindo Arestas no Grafo 0
 =insaresta 0  1  2  1  OK
@@ -121,7 +131,7 @@
 =altvalcorr 0 "1112" OK
 
 == Busca Caminho do Corrente Grafo 0
-=buscacamcorr 0 5  OK
+=buscacamcorr 0 5 OK
 =buscacamcorr 0 56 NaoEhVertice
 =buscacamcorr 0 8 NaoEhConexo
 
@@ -218,9 +228,8 @@
 =altval 5 32 "adsdsad"  OK
 =altval 5 61 "adsdsadas"  NaoEhVertice
 
-== Busca Caminho No Grafo 5 
-=buscacam 5  64  128 OK
-=buscacam 5  64  300 NaoEhConexo
-
+== Busca Caminho No Grafo 5
+=buscacam 5 64 128 OK
+=buscacam 5 64 300 NaoEhConexo
 
 

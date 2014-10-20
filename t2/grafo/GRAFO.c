@@ -474,6 +474,26 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
 
     }
     /* Fim função: GRA  &Obter Valor Corrente */
+ 
+
+/***************************************************************************
+*
+*  Função: GRA  &Obter ID Corrente
+*  ****/    
+    
+    GRA_tpCondRet GRA_ObterIDCorrente( GRA_tppGrafo pGrafo, int* id ) {
+
+        /* Verifica se vertice pertence ao grafo; */
+        if (pGrafo->corrente == -1) {
+            *id = -1 ;
+            return GRA_CondRetGrafoVazio;
+        }
+        else {
+            *id = pGrafo->corrente;
+            return GRA_CondRetOK;
+        }
+    }
+    /* Fim função: GRA  &Obter ID Corrente */
     
     
 /***************************************************************************
@@ -592,6 +612,8 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
 		tpVertice * vizinho = NULL;
         tpVertice * u;
         tpVertice * v;
+        GRA_tpCondRet r;
+
         /* Verifica se vertice pertence ao grafo; */
         if (pGrafo->corrente == -1) {
             return GRA_CondRetGrafoVazio;
@@ -606,7 +628,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         if(EhVizinho(pGrafo,get_by_id(pGrafo,pGrafo->corrente),vizinho))
            return GRA_CondRetEhVizinho;  
         */
-        GRA_tpCondRet r = GRA_InserirVertice(pGrafo, pValor, idVertice);
+        r = GRA_InserirVertice(pGrafo, pValor, idVertice);
         if(r != GRA_CondRetOK) return r;
         return GRA_InserirAresta(pGrafo,idVertice,pGrafo->corrente,idAresta);
 
@@ -1196,13 +1218,12 @@ tpAresta* get_edge_by_vertex(LIS_tppLista  vizinhos, tpVertice * v){
 ***********************************************************************/
         
     static tpVertice* ObterOrigem (GRA_tppGrafo grafo, tpVertice* v) {
-        LIS_IrInicioLista(grafo->vertices);
-
-
         tpVertice** us = NULL; //Vetor com componentes a iterar;
         tpVertice* u = NULL;
         LIS_tppLista origens = grafo->componentes;
         int i = 0;
+        
+        LIS_IrInicioLista(grafo->vertices);
         LIS_IrInicioLista(origens);
         if (LIS_ProcurarValor(origens, v) == LIS_CondRetOK) {
             return v; //é a origem da própria componente

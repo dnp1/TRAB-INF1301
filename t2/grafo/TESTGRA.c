@@ -47,8 +47,9 @@ static const char INS_VIZ_CORR_CMD        [ ] = "=insvizcorr"     ;
 static const char EXC_VIZ_CORR_CMD        [ ] = "=excvizcorr"     ;
 static const char OBTER_VIZ_CORR_CMD      [ ] = "=obtervizcorr"   ;
 static const char OBTER_VAL_CORR_CMD      [ ] = "=obtervalcorr"   ;
+static const char OBTER_ID_CORR_CMD       [ ] = "=obteridcorr"    ;
 static const char ALT_VAL_CORR_CMD        [ ] = "=altvalcorr"     ;
-static const char BUSCA_CAM_CORR_CMD      [ ] = "=buscacamcorr"       ;
+static const char BUSCA_CAM_CORR_CMD      [ ] = "=buscacamcorr"   ;
 static const char IR_VIZ_CORR_CMD         [ ] = "=irvizcorr"      ;
 static const char MUDAR_CORR_CMD          [ ] = "=mudarcorr"      ;
 
@@ -115,6 +116,7 @@ int corrente[ DIM_VT_GRAFOS ];
 *     =excvizcorr             inxGrafo  v1  CondRetEsp
 *     =obtervizcorr           inxGrafo  CondRetEsp
 *     =obtervalcorr           inxGrafo  CondRetEsp
+*     =obteridcorr            inxGrafo  idEsp  CondRetEsp
 *     =altvalcorr             inxGrafo  string  CondRetEsp
 *     =buscacamcorr           inxGrafo  v1  CondRetEsp
 *     =irvizcorr              inxGrafo  v1  CondRetEsp
@@ -142,7 +144,7 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
       int  inxGrafo     = -1 ;
 
       int i ;
-      int id, _id , idAresta;
+      int id, _id , idEsp , idAresta;
       int id2;
       if (sujo) {
          for(i=0;i<DIM_VT_GRAFOS;i++){
@@ -529,6 +531,27 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
                                     "Retorno errado ao obter valor do corrente." );
             
          } /* fim ativa: Testar GRA Obter Valor Corrente */           
+                          
+         /* Testar GRA Obter ID Corrente */
+         
+         else if ( strcmp( ComandoTeste , OBTER_ID_CORR_CMD ) == 0 )
+         {
+            NumLidos = LER_LerParametros( "iii" , &inxGrafo , &idEsp , &CondRetEsperada ) ;
+            if ( ( NumLidos != 3 ) || !VerificarInx( inxGrafo ) )
+            {
+               return TST_CondRetParm ;
+            } /* if */
+            
+            CondRetObtida = GRA_ObterIDCorrente( vtRefGrafos[ inxGrafo ] , &id) ;
+
+            if ( idEsp == id )
+                return TST_CompararInt( CondRetEsperada , CondRetObtida ,
+                                        "Retorno errado ao obter id do corrente." );
+            else 
+                return TST_CompararInt( idEsp , id ,
+                                        "id esperada do corrente é diferente da id obtida." );                           
+            
+         } /* fim ativa: Testar GRA Obter ID Corrente */           
          
          /* Testar GRA Alterar Valor Corrente */
          

@@ -35,11 +35,17 @@
             contem as funções de validação dos movimentos no tabuleiro, utilizado para construir as callbacks passadas ao leitor. Tambem possui as funcoes de salvar e carregar o tabuleiro.
             
 */          
-void vaiMenu(int n){
-    GRA_IrVizinho(menus,n);
-    MenuAtual = n;
-}
-//struct interna para manter o estado do jogo. 
+
+#define vaimenu(_x) void vaiMenu##_x(tppEstado e){ \
+                        UltimoMenu = _x; \
+                        GRA_IrVizinho(e->Menus,_x); \
+                    }
+vaimenu(1)
+vaimenu(2)
+vaimenu(3)
+vaimenu(4)
+
+//struct para manter o estado do jogo. 
 //Ela é passada para as callbacks para ser modificada e lida.
 //Ela é UNICA.
 typedef struct estado_{
@@ -50,6 +56,8 @@ typedef struct estado_{
     //variavel utilizada para implementar a opcao 0 dos menus
     int UltimoMenu;
 } estado;
+//tipo exportado
+//usado por LEI 
 typedef estado* tppEstado;
 
 
@@ -71,15 +79,15 @@ int main(){
     
     APR_Erro(MEN_CriarMenu(e->Menus,1,"inicio",volta));
       
-    APR_Erro(MEN_CriarOpcao(e->Menus,1,'1',"Criar Mapa",vaiMenu(2)) ;
-    APR_Erro(MEN_CriarOpcao(e->Menus,1,'2',"Jogar",vaiMenu(3));
+    APR_Erro(MEN_CriarOpcao(e->Menus,1,'1',"Criar Mapa",vaiMenu2) ;
+    APR_Erro(MEN_CriarOpcao(e->Menus,1,'2',"Jogar",vaiMenu3);
     //inicia a navegacao em 1
-    GRA_MudarCorrente(Menus,1);
+    GRA_MudarCorrente(e->Menus,1);
     //só sera 0 quando o ultimo corrente for 1 e o usuario digitar 0
-    while(GRA_ObterIdCorrente(Menus)!=0){
-        APR_ApresentaMenu(Menus);
+    while(GRA_ObterIdCorrente(e->Menus)!=0){
+        APR_ApresentaMenu(e->Menus);
         if(MenuAtual == EDITOR||JOGO)
-            APR_ApresentaTabuleiro(Tabuleiro);
+            APR_ApresentaTabuleiro(e->Tabuleiro);
         LEI_Le();
     }
     //clean(); //housekeeping

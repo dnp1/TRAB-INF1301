@@ -22,7 +22,8 @@ void APR_ApresentaMenu(tppGrafo Menus){
 
 //solidificar os CondRet, e/ou passar o modulo alvo como parametro
 
-void Erro(int CondRet){
+void APR_Erro(char* comm, int CondRet){
+    printf("executando %s",comm);
     switch(CondRet){
         case PRI_CondRetOK: 
             printf("Sucesso");

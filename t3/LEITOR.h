@@ -1,5 +1,5 @@
 /* 
-
+mudar de lis->gra
 */
 LEI_CondRet LEI_LeCmd(tppEstado e){
     char c; 

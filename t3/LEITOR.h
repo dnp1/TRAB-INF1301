@@ -18,11 +18,30 @@ LEI_CondRet LEI_LeCmd(tppEstado e){
   
     return LEI_CondRetSemOpcao;         
 }
-LEI_CondRet LEI_LeString(char* dst){
-    scanf(" %s ",dst);    
+
+/*
+valida retorna apenas LEI_CondRetOK ou LEI_CondRetInvalido
+
+*/
+
+/*
+trunca em 50
+*/
+LEI_CondRet LEI_LeString(char* dst, valida){
+    char temp[50];
+    scanf(" %s ",temp);
+    LEI_CondRet cr = valida(temp);
+    if(cr == LEI_CondRetOK){
+        strcpy(dst,temp);
+    }
+    return cr;    
 }
-LEI_CondREt LEI_LeInt(int* dst, int min, int max){
-    scanf(" %d ",dst);
-    if(*dst < min||*dst > max) return LEI_CondRetForaLimite;
-    else return LEI_CondRetOK;
+LEI_CondREt LEI_LeInt(int* dst, valida){
+    int temp;
+    scanf(" %d ",&temp);
+    LEI_CondRet cr = valida(temp);
+    if(cr == LEI_CondRetOK){
+        *dst = temp;
+    }
+    return cr;    
 }

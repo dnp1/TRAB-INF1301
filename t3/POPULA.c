@@ -39,9 +39,9 @@ void novo_tab(){
     int lar = 0;
     while(!strcmp(nome,""))
         Erro("Digite o nome (menos de 10 caracteres)",LEI_LeString(nome,validastring));
-    while(alt != 0)
+    while(alt == 0)
         Erro("Digite a altura (1..10)",LEI_LeInt(&alt,validaint));
-    while(lar != 0)
+    while(lar == 0)
         Erro("Digite a largura (1.10)",LEI_LeInt(&lar,validaint));
     tpptab a;
     Erro("Criando tabuleiro",TAB_CriaTab(a,nome, alt,lar));

@@ -1,11 +1,11 @@
 struct Casa{
-    int valor;//1 vazio, 2 parede, 3 inicio, 4 final
+    int valor;//1 vazio, 2 inicio, 3 final
     int norte;//ids
     int leste;
     int sul;
     int oeste;
-    int x;
-    int y;
+    int x; //indexado em 0
+    int y; //indexado em 0
 }
 /*
 Um tabuleiro é a conjunção de 
@@ -40,74 +40,8 @@ TAB_CondRet TAB_SalvaTabuleiro(tpTabuleiro pTab){
                 idAresta++
             exclui vertice
 }
-/*
-TRES OPCOES:
-mudar para ter x y
-======
-mapa1
-10 10
-1 7
-1 2
-1 2 1
-1 3 2
-2 0
 
-3 1
-3 4 3
-4 0
-
-5 0
-
-6 1
-6 7 4
-7 0
-
-=====
-mapa1
-10 10
-1 7
-1 2
-1 2 1
-1 3 2
-2 1
-2 1 1
-3 2
-3 1 2
-3 4 3
-4 1
-4 3 3
-5 0
-
-6 1
-6 7 4
-7 1
-7 6 4
-
-=====
-mapa1
-10 10
-1 7
-1 2
-1 2 1
-1 3 2
-2 1
-2 1 3
-3 2
-3 1 4
-3 4 5
-4 1
-4 3 6
-5 0 
-
-6 1
-6 7 7
-7 1
-7 6 8
-
-
-*/
-
-TAB_CondRet TAB_CarregaTabuleiro(tpTabuleiro pTab){}
+TAB_CondRet TAB_CarregaTabuleiro(tpTabuleiro* pTab,char* nome){}
 
 //Antes de salvar valida as regras do tabuleiro
 //ve se existe inicial, final e se existe apenas 1 destes

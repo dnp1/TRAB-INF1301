@@ -18,6 +18,7 @@ Jogar
     1 Carregar
         (ao selecionar manda para Jogo)
 Novo
+
     Digite o nome
        -> string<enter>
             (se nao passar na validação(?), repete a pergunta)

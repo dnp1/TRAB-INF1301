@@ -20,20 +20,6 @@ void APR_ApresentaMenu(tppGrafo Menus){
     
 }
 
-//solidificar os CondRet, e/ou passar o modulo alvo como parametro
-
-void APR_Erro(char* comm, int CondRet){
-    printf("executando %s",comm);
-    switch(CondRet){
-        case PRI_CondRetOK: 
-            printf("Sucesso");
-        break;
-        case PRI_FaltouMemoria:
-            printf("Operacao mal sucedida. Faltou Memoria.");
-        break;   
-        printf("Comando invalido"); 
-    }
-}
 
 void APR_ApresentaTabuleiro(tppGrafo Tabuleiro){
 

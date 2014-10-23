@@ -61,15 +61,15 @@ typedef struct TAB_tppTabuleiro_* TAB_tppTabuleiro ;
         /* Alteração do valor ( vazio/parede/inicio/fim ) inválida */
 
     } TAB_tpCondRet ;
-
+    
 /***********************************************************************
 *
 *  $FC Função: GRA  &Criar Tabuleiro
 *
 *  $ED Descrição da função
 *     Cria um Tabuleiro para labirinto, implementado com um grafo genérico.
-*     
-*     O tabuleiro implementa um grafo de casas.
+*     O Tabuleiro é implementado com um grafo de tipo homogêneo 
+*     genérico não direcionado sem peso nas arestas. 
 *
 *  $EP Parâmetros
 *     Altura - inteiro que representa o tamanho vertical do tabuleiro.
@@ -89,19 +89,70 @@ typedef struct TAB_tppTabuleiro_* TAB_tppTabuleiro ;
 *
 *  $ED Descrição da função
 *     Valida a possibilidade de um movimento. 
-*     Caso a id passada seja igual a uma das ids correspondentes as direções (N,S,L,O) do vértice corrente,
-*     o movimento é válido.
 *
 *  $EP Parâmetros
 *     pTab - ponteiro para o tabuleiro
-*     idProximo - inteiro que representa o id do vértice de destino
 *
 *  $FV Valor retornado
-*     GRA_CondRetOK - O movimento era válido; o vértice de destino é vizinho do corrente
-*     GRA_CondRetMovimentoInvalido - O movimento era inválido; os vértices não são vizinhos ou o vértice de destino não existe;
+*     GRA_CondRetOK - O movimento é válido; 
+*     GRA_CondRetMovimentoInvalido - O movimento é inválido; 
 *
 ***********************************************************************/
 
-    TAB_tpCondRet TAB_ValidaMovimento ( TAB_tppTabuleiro pTab , int idProximo ) ;
+    TAB_tpCondRet TAB_ValidaMovimentoNorte ( TAB_tppTabuleiro pTab );
+
+/***********************************************************************
+*
+*  $FC Função: GRA  &Valida Movimento
+*
+*  $ED Descrição da função
+*     Valida a possibilidade de um movimento. 
+*
+*  $EP Parâmetros
+*     pTab - ponteiro para o tabuleiro
+*
+*  $FV Valor retornado
+*     GRA_CondRetOK - O movimento é válido; 
+*     GRA_CondRetMovimentoInvalido - O movimento é inválido; 
+*
+***********************************************************************/
+
+    TAB_tpCondRet TAB_ValidaMovimentoOeste ( TAB_tppTabuleiro pTab );
+
+/***********************************************************************
+*
+*  $FC Função: GRA  &Valida Movimento
+*
+*  $ED Descrição da função
+*     Valida a possibilidade de um movimento. 
+*
+*  $EP Parâmetros
+*     pTab - ponteiro para o tabuleiro
+*
+*  $FV Valor retornado
+*     GRA_CondRetOK - O movimento é válido; 
+*     GRA_CondRetMovimentoInvalido - O movimento é inválido; 
+*
+***********************************************************************/
+
+    TAB_tpCondRet TAB_ValidaMovimentoSul ( TAB_tppTabuleiro pTab );
+
+/***********************************************************************
+*
+*  $FC Função: GRA  &Valida Movimento
+*
+*  $ED Descrição da função
+*     Valida a possibilidade de um movimento. 
+*
+*  $EP Parâmetros
+*     pTab - ponteiro para o tabuleiro
+*
+*  $FV Valor retornado
+*     GRA_CondRetOK - O movimento é válido; 
+*     GRA_CondRetMovimentoInvalido - O movimento é inválido; 
+*
+***********************************************************************/
+
+    TAB_tpCondRet TAB_ValidaMovimentoLeste ( TAB_tppTabuleiro pTab );
 
 #endif

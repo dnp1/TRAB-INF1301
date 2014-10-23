@@ -51,8 +51,14 @@ typedef struct TAB_tppTabuleiro_* TAB_tppTabuleiro ;
         TAB_CondRetOK ,
         /* Concluiu corretamente */
 				
-        TAB_CondRetFaltouMemoria
+        TAB_CondRetFaltouMemoria ,
         /* Faltou memória */
+
+        TAB_CondRetMovimentoInvalido ,
+        /* Movimento inválido */
+
+        TAB_CondRetAlteracaoInvalida 
+        /* Alteração do valor ( vazio/parede/inicio/fim ) inválida */
 
     } TAB_tpCondRet ;
 
@@ -70,15 +76,32 @@ typedef struct TAB_tppTabuleiro_* TAB_tppTabuleiro ;
 *     Largura - inteiro que representa o tamanho horizontal do tabuleiro.
 *
 *  $FV Valor retornado
-*     Se executou corretamente retorna o ponteiro para o Tabuleiro.
-*     Este ponteiro será utilizado pelas funções que manipulem este Tabuleiro.
-*
-*     Se ocorreu algum erro, por exemplo falta de memória ou dados errados,
-*     a função retornará NULL.
-*     Não será dada mais informação quanto ao problema ocorrido.
+*     GRA_CondRetOK - criou o tabuleiro sem problemas
+*     GRA_CondRetFaltouMemoria - faltou memoria ao criar o tabuleiro
 *
 ***********************************************************************/
 
-    TAB_tppTabuleiro TAB_CriarTabuleiro( int altura, int largura, char* nome ) ;
+    TAB_tpCondRet TAB_CriarTabuleiro ( TAB_tppTabuleiro pTab , int altura , int largura , char* nome ) ;
+
+/***********************************************************************
+*
+*  $FC Função: GRA  &Valida Movimento
+*
+*  $ED Descrição da função
+*     Valida a possibilidade de um movimento. 
+*     Caso a id passada seja igual a uma das ids correspondentes as direções (N,S,L,O) do vértice corrente,
+*     o movimento é válido.
+*
+*  $EP Parâmetros
+*     pTab - ponteiro para o tabuleiro
+*     idProximo - inteiro que representa o id do vértice de destino
+*
+*  $FV Valor retornado
+*     GRA_CondRetOK - O movimento era válido; o vértice de destino é vizinho do corrente
+*     GRA_CondRetMovimentoInvalido - O movimento era inválido; os vértices não são vizinhos ou o vértice de destino não existe;
+*
+***********************************************************************/
+
+    TAB_tpCondRet TAB_ValidaMovimento ( TAB_tppTabuleiro pTab , int idProximo ) ;
 
 #endif

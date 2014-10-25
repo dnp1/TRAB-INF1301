@@ -318,7 +318,7 @@ GRA_tpCondRet GRA_ObterOrigens ( GRA_tppGrafo pGrafo, LIS_tppLista * pLista);
 *     pDado     - ponteiro para o dado a ser obtido
 *
 *  $FV Valor retornado
-*     GRA_CondRetOK	- idVertice teve o valor alterado com sucesso
+*     GRA_CondRetOK	- o valor foi obtido com sucesso
 *     GRA_CondRetNaoEhVertice - idVertice explicitado não pertence ao grafo
 *
 *  Assertivas de Entrada: 
@@ -550,6 +550,32 @@ GRA_tpCondRet GRA_ObterVizinhosCorrente(GRA_tppGrafo pGrafo, LIS_tppLista* pList
 
   GRA_tpCondRet GRA_AlterarValorCorrente( GRA_tppGrafo pGrafo , void * pDado ) ;   
 
+
+/***********************************************************************
+*
+*  $FC Função: GRA  &Buscar vertice
+*
+*  $ED Descrição da função
+*     Implementa uma busca genêrica no grafo
+*     Retorna o id do vertice que satisfaz o predicado
+*     O predicado é uma função de callback com a validação específica
+
+*  $EP Parâmetros
+*     pGrafo - ponteiro para o grafo
+*     idVertice - ponteiro do id do vertice a ser buscado
+*     predicado - ponteiro para o metodo a ser avaliado
+*
+*  $FV Valor retornado
+*     GRA_CondRetOK	- O vertice foi achado
+*     GRA_CondRetNaoEhVertice - O vertice nao foi achado
+*
+*  Assertivas de Entrada: 
+*      pGrafo != NULL
+*  Assertivas de Saida:
+*
+***********************************************************************/
+
+  GRA_tpCondRet GRA_BuscarVertice( GRA_tppGrafo pGrafo , int* idVertice , void predicado(void* pDado) ) ;  
 
 /***********************************************************************
 *

@@ -4,6 +4,10 @@
    A navegação sempre começa no Menu de id 1, ao menos este deve existir.
    
 */
+typedef enum{
+    MEN_CondRetFaltouMemoria,
+    MEN_CondRetOK
+}
 typedef Menu* MEN_tppMenu;
 typedef Opcao* MEN_tppOpcao; 
 

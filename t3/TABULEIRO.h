@@ -137,6 +137,8 @@ typedef struct TAB_tppTabuleiro_* TAB_tppTabuleiro ;
 *
 *  $EP Parâmetros
 *     pTab - ponteiro para o tabuleiro
+*     x - x da casa corrente
+*     y - y da casa corrente
 *
 *  $FV Valor retornado
 *     TAB_CondRetOK - O movimento é válido; 
@@ -144,7 +146,7 @@ typedef struct TAB_tppTabuleiro_* TAB_tppTabuleiro ;
 *
 ***********************************************************************/
 
-    TAB_tpCondRet TAB_PodeIrPraCima ( TAB_tppTabuleiro pTab );
+    TAB_tpCondRet TAB_PodeIrPraCima ( TAB_tppTabuleiro pTab , int x , int y );
 
 /***********************************************************************
 *
@@ -155,6 +157,8 @@ typedef struct TAB_tppTabuleiro_* TAB_tppTabuleiro ;
 *
 *  $EP Parâmetros
 *     pTab - ponteiro para o tabuleiro
+*     x - x da casa corrente
+*     y - y da casa corrente
 *
 *  $FV Valor retornado
 *     TAB_CondRetOK - O movimento é válido; 
@@ -162,7 +166,7 @@ typedef struct TAB_tppTabuleiro_* TAB_tppTabuleiro ;
 *
 ***********************************************************************/
 
-    TAB_tpCondRet TAB_PodeIrPraEsquerda ( TAB_tppTabuleiro pTab );
+    TAB_tpCondRet TAB_PodeIrPraEsquerda ( TAB_tppTabuleiro pTab , int x , int y );
 
 /***********************************************************************
 *
@@ -173,6 +177,8 @@ typedef struct TAB_tppTabuleiro_* TAB_tppTabuleiro ;
 *
 *  $EP Parâmetros
 *     pTab - ponteiro para o tabuleiro
+*     x - x da casa corrente
+*     y - y da casa corrente
 *
 *  $FV Valor retornado
 *     TAB_CondRetOK - O movimento é válido; 
@@ -180,7 +186,7 @@ typedef struct TAB_tppTabuleiro_* TAB_tppTabuleiro ;
 *
 ***********************************************************************/
 
-    TAB_tpCondRet TAB_PodeIrPraBaixo ( TAB_tppTabuleiro pTab );
+    TAB_tpCondRet TAB_PodeIrPraBaixo ( TAB_tppTabuleiro pTab , int x , int y );
 
 /***********************************************************************
 *
@@ -191,6 +197,8 @@ typedef struct TAB_tppTabuleiro_* TAB_tppTabuleiro ;
 *
 *  $EP Parâmetros
 *     pTab - ponteiro para o tabuleiro
+*     x - x da casa corrente
+*     y - y da casa corrente
 *
 *  $FV Valor retornado
 *     TAB_CondRetOK - O movimento é válido; 
@@ -198,7 +206,7 @@ typedef struct TAB_tppTabuleiro_* TAB_tppTabuleiro ;
 *
 ***********************************************************************/
 
-    TAB_tpCondRet TAB_PodeIrPraDireita ( TAB_tppTabuleiro pTab );
+    TAB_tpCondRet TAB_PodeIrPraDireita ( TAB_tppTabuleiro pTab , int x , int y );
     
 /***********************************************************************
 *

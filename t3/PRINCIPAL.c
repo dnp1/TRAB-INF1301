@@ -62,12 +62,12 @@ void vaiMenu4(tppEstado e,MEN_tppOpcoes opc){
     GRA_IrVizinho(e->Menus,4); 
 }
 void carregar(tppEstado e,MEN_tppOpcoes opc){
-
+/*
     TAB le o dir
         p cada arquivo,i 
         char nome[10];
     TAB le o nome
-
+*/
         Erro("Lendo diretorio...", MEN_CriarOpcao(e->Menus,idCarrega,to_char(i),nome,carrega)) ;
     vaiMenuidCarrega(e);
 
@@ -89,6 +89,8 @@ void salva(tppEstado e,MEN_tppOpcao opc){
    no inicial, que termina o programa
    em um generico, volta para o menu acima
    os que exibem tabuleiro(jogo e editor), que precisam limpar o tabuleiro antes de voltar
+    Mudar para nao usar GRAxxx
+
  */
 void voltainicio(tppEstado e,MEN_tppOpcoes opc){
     e->UltimoMenu = 0;  
@@ -129,17 +131,41 @@ void novo_tab(){
     Erro("Criando tabuleiro",TAB_CriaTab(a,nome, alt,lar));
     Erro("Salvando tabuleiro",TAB_salvaTab(a));
 }
-void PopulaMenu1(tppEstado e){
-    Erro("criando menu inicio", MEN_CriarMenu(e->Menus,1,"inicio",voltainicio));
+void PopulaMenuInicio(tppEstado e){
+    int idMenu = 1;
+    Erro("criando menu Inicio", MEN_CriarMenu(e->Menus,idMenu,"Inicio",voltainicio));
 
-    Erro("criando opcao 1 de inicio", MEN_CriarOpcao(e->Menus,1,'1',"Criar Mapa",vaiMenu2)) ;
-    Erro("criando opcao 2 de inicio", MEN_CriarOpcao(e->Menus,1,'2',"Jogar",vaiMenu3));
+    Erro("criando opcao idMenu de Inicio", MEN_CriarOpcao(e->Menus,1,'1',"Editor",vaiMenu2)) ;
+    Erro("criando opcao 2 de Inicio", MEN_CriarOpcao(e->Menus,idMenu,'2',"Resolvedor",vaiMenu3));
+    Erro("criando opcao 3 de Inicio", MEN_CriarOpcao(e->Menus,idMenu,'3',"Jogar",vaiMenu4));
 }
 
-void PopulaMenus(tppEstado e){
-    PopulaMenu1(e);
-    //PopulaMenu2(e);
+void PopulaMenuEditor(tppEstado e){
+    int idMenu = 2;
+    Erro("criando menu Editor", MEN_CriarMenu(e->Menus,idMenu,"Editor",volta));
 
+    Erro("criando opcao 1 de Editor", MEN_CriarOpcao(e->Menus,idMenu,'1',"Carregar",carrega)) ;
+    Erro("criando opcao idMenu de Editor", MEN_CriarOpcao(e->Menus,2,'2',"Novo",novo_tab));
+    Erro("criando opcao 3 de Editor", MEN_CriarOpcao(e->Menus,idMenu,'3',"Deletar",deleta));
+}
+void PopulaMenuResolvedor(tppEstado e){
+    int idMenu = 3;
+    Erro("criando menu Resolvedor", MEN_CriarMenu(e->Menus,idMenu,"Resolvedor",volta));
+
+    Erro("criando opcao 1 de Resolvedor", MEN_CriarOpcao(e->Menus,idMenu,'1',"Carregar",carrega)) ;
+}
+void PopulaMenuJogar(tppEstado e){
+    int idMenu = 4;
+    Erro("criando menu Jogar", MEN_CriarMenu(e->Menus,idMenu,"Jogar",volta));
+
+    Erro("criando opcao 1 de Jogar", MEN_CriarOpcao(e->Menus,idMenu,'1',"Carregar",carrega)) ;
+}
+void PopulaMenus(tppEstado e){
+    PopulaMenuInicio(e);
+    PopulaMenuEditor(e);
+    PopulaMenuResolvedor(e);
+    PopulaMenuJogar(e);
+    
 }
 /*
  *   Apresenta Dados para o usuario

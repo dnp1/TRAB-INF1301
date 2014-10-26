@@ -34,7 +34,7 @@
 
 /* Tipo referência para um tabuleiro */
 
-typedef struct TAB_tppTabuleiro_* TAB_tppTabuleiro ;
+typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 
 /***********************************************************************
 *
@@ -405,7 +405,7 @@ typedef struct TAB_tppTabuleiro_* TAB_tppTabuleiro ;
 
 /***********************************************************************
 *
-*  $FC Função: TAB  &getTipoCasa
+*  $FC Função: TAB  &GetTipoCasa
 *
 *  $ED Descrição da função
 *     Da o tipo da casa referente as coordenadas (x,y)
@@ -423,4 +423,5 @@ typedef struct TAB_tppTabuleiro_* TAB_tppTabuleiro ;
 ***********************************************************************/
 
     TAB_tpCondRet TAB_GetTipoCasa ( TAB_tppTabuleiro pTab, int x , int y , TAB_TipoCasa* pTipo ) ;
+
 #endif

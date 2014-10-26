@@ -558,12 +558,16 @@ GRA_tpCondRet GRA_ObterVizinhosCorrente(GRA_tppGrafo pGrafo, LIS_tppLista* pList
 *  $ED Descrição da função
 *     Implementa uma busca genêrica no grafo
 *     Retorna o id do vertice que satisfaz o predicado
-*     O predicado é uma função de callback com a validação específica
-
+*     O predicado é uma função de callback com a validação específica.
+*     Ele recebe 2 parametros. O primeiro parametro representa o valor de cada vertice na busca. O segundo parametro representa o valor do vértice buscado. 
+*
 *  $EP Parâmetros
 *     pGrafo - ponteiro para o grafo
 *     idVertice - ponteiro do id do vertice a ser buscado
-*     predicado - ponteiro para o metodo a ser avaliado
+*     predicado - ponteiro para função que compara dois valores
+*       pDado - cada valor de vertice no grafo
+*       _parametro - valor comparado ao de cada vertice do grafo (valor procurado)
+*     parametro - valor procurado
 *
 *  $FV Valor retornado
 *     GRA_CondRetOK	- O vertice foi achado
@@ -575,7 +579,7 @@ GRA_tpCondRet GRA_ObterVizinhosCorrente(GRA_tppGrafo pGrafo, LIS_tppLista* pList
 *
 ***********************************************************************/
 
-  GRA_tpCondRet GRA_BuscarVertice( GRA_tppGrafo pGrafo , int* idVertice , void predicado(void* pDado) ) ;  
+  GRA_tpCondRet GRA_BuscarVertice( GRA_tppGrafo pGrafo , int* idVertice , int predicado(void* pDado, void* _parametro), void* parametro ) ;  
 
 /***********************************************************************
 *

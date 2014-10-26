@@ -857,6 +857,25 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         return GRA_CondRetOK;
     }
     /* Fim função: GRA  &Buscar caminho */
+
+    GRA_tpCondRet GRA_BuscarVertice( GRA_tppGrafo pGrafo , int* idVertice , int predicado(void* pDado, void* _parametro), void* parametro )
+    {
+        LIS_tppLista vertices;
+        tpVertice* vertice;
+        vertices = pGrafo->vertices;
+        LIS_IrInicioLista(vertices);
+        do
+        {
+            vertice = (tpVertice*)LIS_ObterValor(vertices);
+            
+            if (predicado(vertice, parametro))
+            {
+                *idVertice = vertice->id;
+                break;
+            }
+        }
+        while (LIS_AvancarElementoCorrente(vertices, 1) == LIS_CondRetOK);
+    }
    
     
 /*****  Código das funções encapsuladas no módulo  *****/

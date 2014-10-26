@@ -332,6 +332,27 @@ GRA_tpCondRet GRA_ObterOrigens ( GRA_tppGrafo pGrafo, LIS_tppLista * pLista);
 
 /***********************************************************************
 *
+*  $FC Função: GRA  &Obter valores
+*
+*  $ED Descrição da função
+*     Preenche uma lista passada por referencia com os valores de cada vertice do grafo.
+*
+*  $EP Parâmetros
+*     pGrafo    - ponteiro para o grafo
+*     pValores - lista a ser preenchida com os valores de cada vertice
+*
+*  $FV Valor retornado
+*     GRA_CondRetOK	- o valor foi obtido com sucesso
+*
+*  Assertivas de Entrada: 
+*      pGrafo != NULL
+*      pValores != NULL (Lista é criada pelo cliente; é passada uma lista vazia, não uma referencia nula)
+***********************************************************************/
+
+    GRA_tpCondRet GRA_ObterValores( GRA_tppGrafo pGrafo, LIS_tppLista pValores ) ;   
+
+/***********************************************************************
+*
 *  $FC Função: GRA  &Alterar valor
 *
 *  $ED Descrição da função
@@ -549,7 +570,28 @@ GRA_tpCondRet GRA_ObterVizinhosCorrente(GRA_tppGrafo pGrafo, LIS_tppLista* pList
 ***********************************************************************/
 
   GRA_tpCondRet GRA_AlterarValorCorrente( GRA_tppGrafo pGrafo , void * pDado ) ;   
+  
 
+/***********************************************************************
+*
+*  $FC Função: GRA  &Para cada vertice
+*
+*  $ED Descrição da função
+*
+*  $EP Parâmetros
+*     pGrafo - ponteiro para o grafo
+*
+*  $FV Valor retornado
+*     GRA_CondRetOK	- O vertice foi achado
+*     GRA_CondRetNaoEhVertice - O vertice nao foi achado
+*
+*  Assertivas de Entrada: 
+*      pGrafo != NULL
+*  Assertivas de Saida:
+*
+***********************************************************************/  
+  
+  GRA_tpCondRet GRA_ParaCadaVertice( GRA_tppGrafo pGrafo , void* acao(void* pDado) );  
 
 /***********************************************************************
 *

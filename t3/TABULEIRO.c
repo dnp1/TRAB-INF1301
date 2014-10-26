@@ -26,7 +26,6 @@
 #undef TABULEIRO_OWN
 
 typedef struct Casa_{
-    //1 vazio, 2 inicio, 3 final
     TAB_TipoCasa tipo;
     // (x,y) para referência gráfica
     int x, y;
@@ -198,10 +197,14 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y ) ;
         if(x < 0 || x > pTab->largura || y < 0 || y > pTab->altura )
             return TAB_CondRetNaoEhCasa;
 
-        GRA_ObterValor(pTab->pGrafo, GetIdByXY(pTab,x,y), (void**)&corrente);
-        *tipo = corrente->tipo;
-
-        return TAB_CondRetOK;
+        if(GRA_ObterValor(pTab->pGrafo, GetIdByXY(pTab,x,y), (void**)&corrente) == GRA_CondRetOK){
+            *tipo = corrente->tipo;
+            return TAB_CondRetOK;
+        }
+        else{
+            *tipo = TAB_TipoCasaParede;
+            return TAB_CondRetNaoEhCasa;
+        }
     }
  
 /***************************************************************************
@@ -210,7 +213,35 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y ) ;
 *  ****/
 
     TAB_tpCondRet TAB_VisualizaTabuleiro ( TAB_tppTabuleiro pTab , char*** pMatriz ){
+        int i, j;
+        LIS_tppLista casas;
+        Casa* valor;
+        GRA_ObterValores(pTab->pGrafo,casas);
+        LIS_IrInicioLista(casas);
+        if(pMatriz == NULL) pMatriz = (char***)malloc(pTab->altura * pTab->largura * sizeof(char));
         
+        // Inicializa a matriz com paredes (#)
+        for(i=0 ; i < pTab->largura ; i++){
+            for(j=0 ; j < pTab->altura ; j++){
+                *pMatriz[i][j] = '#';
+            }
+        }
+
+        do{
+            valor = (Casa*)LIS_ObterValor(casas);
+            switch(valor->tipo){
+                case TAB_TipoCasaInicio:
+                    *pMatriz[valor->x][valor->y] = '/0';
+                    break;
+                case TAB_TipoCasaFim:
+                    *pMatriz[valor->x][valor->y] = 'F';
+                    break;
+                case TAB_TipoCasaChao:
+                    *pMatriz[valor->x][valor->y] = 'I';
+                    break;
+                default: ;
+            }
+        }while(LIS_AvancarElementoCorrente(casas,1) == LIS_CondRetOK);
     }
 
 /*
@@ -386,7 +417,7 @@ mapa1
         return leste;
     }
 
-    static int Posicao(void* a, void* b)
+    static int MesmaPosicao(void* a, void* b)
     {
         Casa* _a = (Casa*)(a),* _b = (Casa*)b;
         return (_a->x == _b->x && _a->y == _b->y);
@@ -397,6 +428,6 @@ mapa1
         int id = -1;
         parametro.x = x;
         parametro.y = y;
-        GRA_BuscarVertice(pTab->pGrafo, &id, Posicao, (void*)&parametro);
+        GRA_BuscarVertice(pTab->pGrafo, &id, MesmaPosicao, (void*)&parametro);
         return id;
     }

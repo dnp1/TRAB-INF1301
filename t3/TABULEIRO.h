@@ -299,7 +299,11 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 *  $FC Função: TAB  &Visualizar Tabuleiro
 *
 *  $ED Descrição da função
-*     Visualiza tabuleiro. 
+*     Visualiza tabuleiro.
+*     '/0' representa o chao, que sao as casas por onde se pode andar.
+*     '#' representa as paredes, que sao as casas por onde nao se pode andar.
+*     'I' representa o inicio do labirinto.
+*     'F' representa o fim do labirinto.
 *
 *  $EP Parâmetros
 *     pTab - ponteiro para o tabuleiro

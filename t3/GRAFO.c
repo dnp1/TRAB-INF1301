@@ -474,7 +474,27 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
 
     }
     /* Fim função: GRA  &Obter Valor Corrente */
- 
+
+/***************************************************************************
+*
+*  Função: GRA  &Obter Valores
+*  ****/  
+
+    GRA_tpCondRet GRA_ObterValores( GRA_tppGrafo pGrafo, LIS_tppLista pValores ) {
+        LIS_tppLista vertices;
+        tpVertice* vertice;
+        void* valor;
+        vertices = pGrafo->vertices;
+        LIS_IrInicioLista(vertices);
+        do{
+            valor = LIS_ObterValor(vertices);
+
+            LIS_InserirElementoApos(pValores,valor);
+            LIS_AvancarElementoCorrente(pValores,1);
+        }while(LIS_AvancarElementoCorrente(vertices,1) == LIS_CondRetOK);
+    }
+    /* Fim função: GRA  &Obter Valores */
+
 
 /***************************************************************************
 *

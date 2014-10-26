@@ -389,8 +389,7 @@ mapa1
     static int Posicao(void* a, void* b)
     {
         Casa* _a = (Casa*)(a),* _b = (Casa*)b;
-        if (_a->x == _b->x && _a->y == _b->y) return true;
-        else return false;
+        return (_a->x == _b->x && _a->y == _b->y);
     }
 
     static int GetIdByXY(TAB_tppTabuleiro pTab, int x , int y ){

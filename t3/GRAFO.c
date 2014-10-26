@@ -871,10 +871,12 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
             if (predicado(vertice, parametro))
             {
                 *idVertice = vertice->id;
-                break;
+                return GRA_CondRetOK;
             }
         }
         while (LIS_AvancarElementoCorrente(vertices, 1) == LIS_CondRetOK);
+
+        return GRA_CondRetNaoEhVertice;
     }
    
     

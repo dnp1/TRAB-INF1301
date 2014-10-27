@@ -574,13 +574,15 @@ GRA_tpCondRet GRA_ObterVizinhosCorrente(GRA_tppGrafo pGrafo, LIS_tppLista* pList
 
 /***********************************************************************
 *
-*  $FC Função: GRA  &Para cada vertice
+*  $FC Função: GRA  &Fmap
 *
 *  $ED Descrição da função
-*
+*    Executa a função passada para cada vértice do grafo. 
+*    A função retorna falha caso a f retorne falha. 
+*    Se f retornar ok a funcao continua.
 *  $EP Parâmetros
 *     pGrafo - ponteiro para o grafo
-*
+*     f - ponteiro para a funcao
 *  $FV Valor retornado
 *     GRA_CondRetOK	- O vertice foi achado
 *     GRA_CondRetNaoEhVertice - O vertice nao foi achado
@@ -591,7 +593,7 @@ GRA_tpCondRet GRA_ObterVizinhosCorrente(GRA_tppGrafo pGrafo, LIS_tppLista* pList
 *
 ***********************************************************************/  
   
-  GRA_tpCondRet GRA_ParaCadaVertice( GRA_tppGrafo pGrafo , void* acao(void* pDado) );  
+  GRA_tpCondRet GRA_Fmap( GRA_tppGrafo pGrafo , GRA_tpCondRet f(void* pDado) );  
 
 /***********************************************************************
 *

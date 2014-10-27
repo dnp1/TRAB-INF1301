@@ -47,15 +47,17 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 
     typedef enum {
         
-        TAB_TipoCasaInicio ,
+        TAB_tpCasaInicio ,
 
-        TAB_TipoCasaFim ,
+        TAB_tpCasaFim ,
         
-        TAB_TipoCasaChao,
+        TAB_tpCasaChao,
         
-        TAB_TipoCasaParede
+        TAB_tpCasaParede,
+        
+	TAB_tpCasaJogador
     
-    } TAB_TipoCasa ;
+    } TAB_tpCasa ;
 
 /***********************************************************************
 *
@@ -134,7 +136,12 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 
     TAB_tpCondRet TAB_DestruirTabuleiro ( TAB_tppTabuleiro pTab ) ;
 
+    TAB_tpCondRet TAB_GetAltura(TAB_tppTabuleiro pTab,int* a ) ;
+    TAB_tpCondRet TAB_GetLargura(TAB_tppTabuleiro pTab,int*l ) ;
+    TAB_tpCondRet TAB_GetNome(TAB_tppTabuleiro pTab,char* nome ) ;
+
 /***********************************************************************
+*
 *
 *  $FC Função: TAB &Pode ir pra cima
 *
@@ -292,7 +299,7 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 *
 ***********************************************************************/
 
-    TAB_tpCondRet TAB_AlterarCasa ( TAB_tppTabuleiro pTab , int x , int y , TAB_TipoCasa tipo ) ;
+    TAB_tpCondRet TAB_AlterarCasa ( TAB_tppTabuleiro pTab , int x , int y , TAB_tpCasa tipo ) ;
     
 /***********************************************************************
 *
@@ -426,6 +433,6 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 *
 ***********************************************************************/
 
-    TAB_tpCondRet TAB_GetTipoCasa ( TAB_tppTabuleiro pTab, int x , int y , TAB_TipoCasa* pTipo ) ;
+    TAB_tpCondRet TAB_GettpCasa ( TAB_tppTabuleiro pTab, int x , int y , TAB_tpCasa* pTipo ) ;
 
 #endif

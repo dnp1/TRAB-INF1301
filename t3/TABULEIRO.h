@@ -47,17 +47,15 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 
     typedef enum {
         
-        TAB_tpCasaInicio ,
+        TAB_CasaInicio ,
 
-        TAB_tpCasaFim ,
+        TAB_CasaFim ,
         
-        TAB_tpCasaChao,
+        TAB_CasaChao,
         
-        TAB_tpCasaParede,
-        
-	TAB_tpCasaJogador
+        TAB_CasaParede
     
-    } TAB_tpCasa ;
+    } TAB_Casa ;
 
 /***********************************************************************
 *
@@ -136,12 +134,7 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 
     TAB_tpCondRet TAB_DestruirTabuleiro ( TAB_tppTabuleiro pTab ) ;
 
-    TAB_tpCondRet TAB_GetAltura(TAB_tppTabuleiro pTab,int* a ) ;
-    TAB_tpCondRet TAB_GetLargura(TAB_tppTabuleiro pTab,int*l ) ;
-    TAB_tpCondRet TAB_GetNome(TAB_tppTabuleiro pTab,char* nome ) ;
-
 /***********************************************************************
-*
 *
 *  $FC Função: TAB &Pode ir pra cima
 *
@@ -283,45 +276,136 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 
 /***********************************************************************
 *
-*  $FC Função: TAB  &Alterar Casa
+*  $FC Função: TAB  &Poe Chao
 *
 *  $ED Descrição da função
-*     Altera o tipo da casa. 
+*     Altera o tipo da casa para chao
+*
+*  $EP Parâmetros
+*     pTab - ponteiro para o tabuleiro
+*
+*  $FV Valor retornado
+*     TAB_CondRetOK - O tabuleiro é válido; 
+*     TAB_CondRetFaltouMemoria - ;
+*     TAB_CondRetAlteracaoInvalida - ;
+*
+***********************************************************************/
+
+    TAB_tpCondRet TAB_PoeChao ( TAB_tppTabuleiro ) ;
+ 
+/***********************************************************************
+*
+*  $FC Função: TAB  &Poe Parede
+*
+*  $ED Descrição da função
+*     Altera o tipo da casa para parede
+*
+*  $EP Parâmetros
+*     pTab - ponteiro para o tabuleiro
+*
+*  $FV Valor retornado
+*     TAB_CondRetOK - O tabuleiro é válido; 
+*     TAB_CondRetFaltouMemoria - ;
+*     TAB_CondRetAlteracaoInvalida - ;
+*
+***********************************************************************/
+
+    TAB_tpCondRet TAB_PoeParede ( TAB_tppTabuleiro ) ;
+ 
+/***********************************************************************
+*
+*  $FC Função: TAB  &Poe Inicio
+*
+*  $ED Descrição da função
+*     Altera o tipo da casa para inicio
+*
+*  $EP Parâmetros
+*     pTab - ponteiro para o tabuleiro
+*
+*  $FV Valor retornado
+*     TAB_CondRetOK - O tabuleiro é válido; 
+*     TAB_CondRetFaltouMemoria - ;
+*     TAB_CondRetAlteracaoInvalida - ;
+*
+***********************************************************************/
+
+    TAB_tpCondRet TAB_PoeInicio ( TAB_tppTabuleiro ) ;
+ 
+/***********************************************************************
+*
+*  $FC Função: TAB  &Poe Fim
+*
+*  $ED Descrição da função
+*     Altera o tipo da casa para fim
+*
+*  $EP Parâmetros
+*     pTab - ponteiro para o tabuleiro
+*
+*  $FV Valor retornado
+*     TAB_CondRetOK - O tabuleiro é válido; 
+*     TAB_CondRetFaltouMemoria - ;
+*     TAB_CondRetAlteracaoInvalida - ;
+*
+***********************************************************************/
+
+    TAB_tpCondRet TAB_PoeFim ( TAB_tppTabuleiro ) ;
+ 
+/***********************************************************************
+*
+*  $FC Função: TAB  &Get Tipo Casa
+*
+*  $ED Descrição da função
+*     Da o tipo (chão, parede, inicio ou fim) da casa representada por (x,y). 
 *
 *  $EP Parâmetros
 *     pTab - ponteiro para o tabuleiro
 *     x - x da casa a ser modificada
 *     y - y da casa a ser modificada
-*     tipo - novo tipo da casa
+*     tipo - ponteiro para o tipo da casa
 *
 *  $FV Valor retornado
-*     TAB_CondRetOK - O tabuleiro é válido; 
+*     TAB_CondRetOK - O tabuleiro é válido;
+*     TAB_CondRetNaoEhCasa - O tabuleiro não possuia uma casa representada por (x,y)
 *
-***********************************************************************/
+***********************************************************************/   
 
-    TAB_tpCondRet TAB_AlterarCasa ( TAB_tppTabuleiro pTab , int x , int y , TAB_tpCasa tipo ) ;
-    
+    TAB_tpCondRet TAB_GetTipoCasa ( TAB_tppTabuleiro pTab, int x , int y , TAB_Casa* tipo ) ;
+
 /***********************************************************************
 *
-*  $FC Função: TAB  &Visualizar Tabuleiro
+*  $FC Função: TAB  &Get Altura
 *
 *  $ED Descrição da função
-*     Visualiza tabuleiro.
-*     '/0' representa o chao, que sao as casas por onde se pode andar.
-*     '#' representa as paredes, que sao as casas por onde nao se pode andar.
-*     'I' representa o inicio do labirinto.
-*     'F' representa o fim do labirinto.
+*     Da a altura do tabuleiro.
 *
 *  $EP Parâmetros
 *     pTab - ponteiro para o tabuleiro
-*     pMatriz - ponteiro para a matriz de caracteres
+*     altura - ponteiro para a altura
 *
 *  $FV Valor retornado
-*     TAB_CondRetOK - O tabuleiro é válido; 
+*     TAB_CondRetOK - O tabuleiro é válido;
 *
-***********************************************************************/
+***********************************************************************/   
 
-    TAB_tpCondRet TAB_VisualizarTabuleiro ( TAB_tppTabuleiro pTab , char*** pMatriz ) ;
+    TAB_tpCondRet TAB_GetAltura ( TAB_tppTabuleiro pTab, int* altura ) ;
+
+/***********************************************************************
+*
+*  $FC Função: TAB  &Get Largura
+*
+*  $ED Descrição da função
+*     Da a largura do tabuleiro.
+*
+*  $EP Parâmetros
+*     pTab - ponteiro para o tabuleiro
+*     largura - ponteiro para a largura
+*
+*  $FV Valor retornado
+*     TAB_CondRetOK - O tabuleiro é válido;
+*
+***********************************************************************/   
+
+    TAB_tpCondRet TAB_GetLargura ( TAB_tppTabuleiro pTab, int* largura ) ;
 
 /***********************************************************************
 *
@@ -413,26 +497,5 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 ***********************************************************************/
 
     TAB_tpCondRet TAB_PosicaoJogador ( TAB_tppTabuleiro pTab , int* x , int* y ) ;        
-
-/***********************************************************************
-*
-*  $FC Função: TAB  &GetTipoCasa
-*
-*  $ED Descrição da função
-*     Da o tipo da casa referente as coordenadas (x,y)
-*
-*  $EP Parâmetros
-*     pTab - ponteiro para o tabuleiro
-*     x - inteiro que representa a coordenada x
-*     y - inteiro que representa a coordenada y
-*     pTipo - ponteiro para o tipo da casa
-*
-*  $FV Valor retornado
-*     TAB_CondRetOK - O tabuleiro é válido;
-*     TAB_CondRetNaoEhCasa - As coordenadas explicitadas não pertencem ao tabuleiro;
-*
-***********************************************************************/
-
-    TAB_tpCondRet TAB_GettpCasa ( TAB_tppTabuleiro pTab, int x , int y , TAB_tpCasa* pTipo ) ;
 
 #endif

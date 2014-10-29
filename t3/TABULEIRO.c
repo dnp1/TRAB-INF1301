@@ -26,7 +26,7 @@
 #undef TABULEIRO_OWN
 
 typedef struct Casa_{
-    TAB_TipoCasa tipo;
+    TAB_Casa tipo;
     // (x,y) para referência gráfica
     int x, y;
 }Casa ;
@@ -50,6 +50,10 @@ static int Norte ( TAB_tppTabuleiro pTab ) ;
 static int Oeste ( TAB_tppTabuleiro pTab ) ;
 static int Sul ( TAB_tppTabuleiro pTab ) ;
 static int Leste ( TAB_tppTabuleiro pTab ) ;
+static int MesmoTipo( void* a, void* b ) ;
+static int MesmaPosicao( void* a, void* b ) ;
+static int TemInicio( TAB_tppTabuleiro pTab );
+static int TemFim( TAB_tppTabuleiro pTab );
 static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y ) ;
 
 /*****  Código das funções exportadas pelo módulo  *****/
@@ -191,7 +195,7 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y ) ;
 *  Função: TAB  &Get Tipo Casa
 *  ****/
 
-    TAB_tpCondRet TAB_GetTipoCasa(TAB_tppTabuleiro pTab , int x , int y , TAB_TipoCasa* tipo){
+    TAB_tpCondRet TAB_GetTipoCasa(TAB_tppTabuleiro pTab , int x , int y , TAB_Casa* tipo){
         Casa* corrente;
 
         if(x < 0 || x > pTab->largura || y < 0 || y > pTab->altura )
@@ -202,46 +206,188 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y ) ;
             return TAB_CondRetOK;
         }
         else{
-            *tipo = TAB_TipoCasaParede;
+            *tipo = TAB_CasaParede;
             return TAB_CondRetNaoEhCasa;
         }
     }
- 
+
 /***************************************************************************
 *
-*  Função: TAB  &Visualiza Tabuleiro
+*  Função: TAB  &Get altura
 *  ****/
 
-    TAB_tpCondRet TAB_VisualizaTabuleiro ( TAB_tppTabuleiro pTab , char*** pMatriz ){
-        int i, j;
-        LIS_tppLista casas;
-        Casa* valor;
-        GRA_ObterValores(pTab->pGrafo,casas);
-        LIS_IrInicioLista(casas);
-        if(pMatriz == NULL) pMatriz = (char***)malloc(pTab->altura * pTab->largura * sizeof(char));
+    TAB_tpCondRet TAB_GetAltura (TAB_tppTabuleiro pTab, int* altura){
+        *altura = pTab->altura;
+        return TAB_CondRetOK;
+    }
+
+/***************************************************************************
+*
+*  Função: TAB  &Get largura
+*  ****/
+    
+    TAB_tpCondRet TAB_GetLargura (TAB_tppTabuleiro pTab, int* largura){
+        *largura = pTab->largura;
+        return TAB_CondRetOK;
+    }
+
+/***************************************************************************
+*
+*  Função: TAB  &Poe Chao
+*  ****/    
+    
+    TAB_tpCondRet TAB_PoeChao (TAB_tppTabuleiro pTab){
+        Casa* corrente,* chao;
+
+        GRA_ObterValorCorrente(pTab->pGrafo,(void**)&corrente);
         
-        // Inicializa a matriz com paredes (#)
-        for(i=0 ; i < pTab->largura ; i++){
-            for(j=0 ; j < pTab->altura ; j++){
-                *pMatriz[i][j] = '#';
+        chao = (Casa*)malloc(sizeof(TAB_Casa));
+        if (chao == NULL)
+            return TAB_CondRetFaltouMemoria;
+
+        chao->tipo = TAB_CasaChao;
+        chao->x = corrente->x;
+        chao->y = corrente->y;
+
+        if(corrente->tipo == TAB_CasaParede){
+            //todo
+            //criar vertice
+            //procurar vizinhos e criar arestas se necessario
+        }
+        else if (corrente->tipo == TAB_CasaInicio || corrente->tipo == TAB_CasaFim){
+            GRA_AlterarValorCorrente(pTab->pGrafo,chao);
+            return TAB_CondRetOK;
+        }
+        else if (corrente->tipo == TAB_CasaChao) return TAB_CondRetOK;
+        else{
+            free(chao);
+            return TAB_CondRetAlteracaoInvalida;
+        }
+    }
+
+/***************************************************************************
+*
+*  Função: TAB  &Poe Parede
+*  ****/    
+    
+    TAB_tpCondRet TAB_PoeParede (TAB_tppTabuleiro pTab){
+        Casa* corrente;
+
+        GRA_ObterValorCorrente(pTab->pGrafo,(void**)&corrente);
+
+        if (corrente->tipo == TAB_CasaInicio || corrente->tipo == TAB_CasaFim || corrente->tipo == TAB_CasaChao){
+            //todo
+            //procurar vizinhos e excluir arestas se necessario
+            //excluir vértice
+        }
+        
+        else if (corrente->tipo == TAB_CasaParede) return TAB_CondRetOK;
+
+        else return TAB_CondRetAlteracaoInvalida;
+    }
+
+/***************************************************************************
+*
+*  Função: TAB  &Poe Inicio
+*  ****/    
+    
+    TAB_tpCondRet TAB_PoeInicio (TAB_tppTabuleiro pTab){
+        Casa* corrente,* inicio,* chao;
+        int idInicio;
+
+        GRA_ObterValorCorrente(pTab->pGrafo,(void**)&corrente);
+        
+        inicio = (Casa*)malloc(sizeof(TAB_Casa));
+        if (inicio == NULL)
+            return TAB_CondRetFaltouMemoria;
+
+        inicio->tipo = TAB_CasaInicio;
+        inicio->x = corrente->x;
+        inicio->y = corrente->y;
+
+        chao = (Casa*)malloc(sizeof(TAB_Casa));
+        if (chao == NULL)
+            return TAB_CondRetFaltouMemoria;
+
+        chao->tipo = TAB_CasaChao;
+        chao->x = corrente->x;
+        chao->y = corrente->y;
+
+        if(corrente->tipo == TAB_CasaParede){
+            //todo
+            //criar vertice
+            //procurar vizinhos e criar arestas se necessario
+        }
+        else if (corrente->tipo == TAB_CasaChao || corrente->tipo == TAB_CasaFim){
+            idInicio = TemInicio(pTab);
+            if(idInicio != -1){
+                GRA_AlterarValor(pTab->pGrafo,idInicio,chao);
+                GRA_AlterarValorCorrente(pTab->pGrafo,inicio);
+                return TAB_CondRetOK;
+            }
+            else{
+                GRA_AlterarValorCorrente(pTab->pGrafo,inicio);
+                return TAB_CondRetOK;
             }
         }
+        else if (corrente->tipo == TAB_CasaChao) return TAB_CondRetOK;
+        else{
+            free(chao);
+            free(inicio);
+            return TAB_CondRetAlteracaoInvalida;
+        }
+    }
 
-        do{
-            valor = (Casa*)LIS_ObterValor(casas);
-            switch(valor->tipo){
-                case TAB_TipoCasaInicio:
-                    *pMatriz[valor->x][valor->y] = '/0';
-                    break;
-                case TAB_TipoCasaFim:
-                    *pMatriz[valor->x][valor->y] = 'F';
-                    break;
-                case TAB_TipoCasaChao:
-                    *pMatriz[valor->x][valor->y] = 'I';
-                    break;
-                default: ;
+/***************************************************************************
+*
+*  Função: TAB  &Poe Fim
+*  ****/    
+    
+    TAB_tpCondRet TAB_PoeFim (TAB_tppTabuleiro pTab){
+        Casa* corrente,* fim,* chao;
+        int idFim;
+
+        GRA_ObterValorCorrente(pTab->pGrafo,(void**)&corrente);
+        
+        fim = (Casa*)malloc(sizeof(TAB_Casa));
+        if (fim == NULL)
+            return TAB_CondRetFaltouMemoria;
+
+        fim->tipo = TAB_CasaFim;
+        fim->x = corrente->x;
+        fim->y = corrente->y;
+
+        chao = (Casa*)malloc(sizeof(TAB_Casa));
+        if (chao == NULL)
+            return TAB_CondRetFaltouMemoria;
+
+        chao->tipo = TAB_CasaChao;
+        chao->x = corrente->x;
+        chao->y = corrente->y;
+
+        if(corrente->tipo == TAB_CasaParede){
+            //todo
+            //criar vertice
+            //procurar vizinhos e criar arestas se necessario
+        }
+        else if (corrente->tipo == TAB_CasaChao || corrente->tipo == TAB_CasaFim){
+            idFim = TemFim(pTab);
+            if(idFim != -1){
+                GRA_AlterarValor(pTab->pGrafo,idFim,chao);
+                GRA_AlterarValorCorrente(pTab->pGrafo,fim);
+                return TAB_CondRetOK;
             }
-        }while(LIS_AvancarElementoCorrente(casas,1) == LIS_CondRetOK);
+            else{
+                GRA_AlterarValorCorrente(pTab->pGrafo,fim);
+                return TAB_CondRetOK;
+            }
+        }
+        else if (corrente->tipo == TAB_CasaChao) return TAB_CondRetOK;
+        else{
+            free(chao);
+            free(fim);
+            return TAB_CondRetAlteracaoInvalida;
+        }
     }
 
 /*
@@ -417,10 +563,30 @@ mapa1
         return leste;
     }
 
-    static int MesmaPosicao(void* a, void* b)
-    {
-        Casa* _a = (Casa*)(a),* _b = (Casa*)b;
+    static int MesmoTipo(void* a, void* b){
+        Casa* _a = (Casa*)a,* _b = (Casa*)b;
+        return (_a->tipo == _b->tipo);
+    }
+
+    static int MesmaPosicao(void* a, void* b){
+        Casa* _a = (Casa*)a,* _b = (Casa*)b;
         return (_a->x == _b->x && _a->y == _b->y);
+    }
+
+    static int TemInicio(TAB_tppTabuleiro pTab){
+        Casa parametro;
+        int id = -1;
+        parametro.tipo = TAB_CasaInicio;
+        GRA_BuscarVertice(pTab->pGrafo, &id, MesmoTipo, (void*)&parametro);
+        return id;
+    }
+
+    static int TemInicio(TAB_tppTabuleiro pTab){
+        Casa parametro;
+        int id = -1;
+        parametro.tipo = TAB_CasaFim;
+        GRA_BuscarVertice(pTab->pGrafo, &id, MesmoTipo, (void*)&parametro);
+        return id;
     }
 
     static int GetIdByXY(TAB_tppTabuleiro pTab, int x , int y ){

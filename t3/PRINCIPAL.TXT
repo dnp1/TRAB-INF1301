@@ -1,0 +1,79 @@
+telas e menus:
+
+Inicial
+    1 Editor
+    2 Resolvedor
+    3 Jogar
+
+Editor
+    1 Carregar
+        (ao selecionar manda para Editor)
+    2 Novo
+    3 Deletar
+
+Resolvedor
+    1 Carregar
+        (ao selecionar manda para Resolvido)
+Jogar
+    1 Carregar
+        (ao selecionar manda para Jogo)
+Novo
+
+    Digite o nome
+       -> string<enter>
+            (se nao passar na validação(?), repete a pergunta)
+    Digite a altura (1..10)
+       -> int<enter>
+            (se nao passar na validação, repete a pergunta)
+    Digite a largura (1..10)
+       -> int<enter>
+            (se nao passar na validação, repete a pergunta)
+    Novo mapa criado!
+        (Criou um mapa todo vazio)
+        (volta para Editor)
+
+Carregar
+    1 nome1 
+    2 nome2
+    3 nome3
+    n ...
+
+Deletar
+    1 nome1 
+    2 nome2
+    3 nome3
+    n ...
+
+Editor
+    w anda para o norte
+    a anda para o oeste
+    s anda para o sul
+    d anda para o leste
+    1 poe parede
+    2 tira parede
+    3 define o ponto inicial
+        (so pode ser em vazio e so pode haver e tem que haver 1)
+    4 define o ponto final
+        (so pode ser em vazio e so pode haver e tem que haver 1)
+    (final inicial parede nao sao vazio)
+    (o usuario pode passar por paredes neste modo)
+    
+    5 salva(chama ValidaMapa, se for ok, ai chama salva. senao, indica o erro.) 
+    
+    x#.#...#.
+    .##.#.##.
+    .........
+
+Jogo
+    w anda para o norte
+    a anda para o oeste
+    s anda para o sul
+    d anda para o leste
+    (o usuario nao pode passar por paredes neste modo)
+    
+    
+    .#.#...#.
+    .##.#.##.
+    .........
+
+    

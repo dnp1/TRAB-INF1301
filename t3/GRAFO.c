@@ -474,7 +474,27 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
 
     }
     /* Fim função: GRA  &Obter Valor Corrente */
- 
+
+/***************************************************************************
+*
+*  Função: GRA  &Obter Valores
+*  ****/  
+
+    GRA_tpCondRet GRA_ObterValores( GRA_tppGrafo pGrafo, LIS_tppLista pValores ) {
+        LIS_tppLista vertices;
+        tpVertice* vertice;
+        void* valor;
+        vertices = pGrafo->vertices;
+        LIS_IrInicioLista(vertices);
+        do{
+            valor = LIS_ObterValor(vertices);
+
+            LIS_InserirElementoApos(pValores,valor);
+            LIS_AvancarElementoCorrente(pValores,1);
+        }while(LIS_AvancarElementoCorrente(vertices,1) == LIS_CondRetOK);
+    }
+    /* Fim função: GRA  &Obter Valores */
+
 
 /***************************************************************************
 *
@@ -857,6 +877,27 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         return GRA_CondRetOK;
     }
     /* Fim função: GRA  &Buscar caminho */
+
+    GRA_tpCondRet GRA_BuscarVertice( GRA_tppGrafo pGrafo , int* idVertice , int predicado(void* pDado, void* _parametro), void* parametro )
+    {
+        LIS_tppLista vertices;
+        tpVertice* vertice;
+        vertices = pGrafo->vertices;
+        LIS_IrInicioLista(vertices);
+        do
+        {
+            vertice = (tpVertice*)LIS_ObterValor(vertices);
+            
+            if (predicado(vertice, parametro))
+            {
+                *idVertice = vertice->id;
+                return GRA_CondRetOK;
+            }
+        }
+        while (LIS_AvancarElementoCorrente(vertices, 1) == LIS_CondRetOK);
+
+        return GRA_CondRetNaoEhVertice;
+    }
    
     
 /*****  Código das funções encapsuladas no módulo  *****/

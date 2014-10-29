@@ -22,6 +22,12 @@
 *.x86_64
 *.hex
 
+# Swap files
+
+*~
+*.swp
+*.swo
+
 Makefile
 lib
 bin

@@ -192,19 +192,24 @@ void APR_ApresentaMenu(tppGrafo Menus){
 
 
 void ApresentaTabuleiro(TAB_tppTabuleiro Tabuleiro){
-	int a,l,i,j;
+	int a,l,i,j,jx,jy;
 	a = TAB_GetAltura(Tabuleiro);
 	l = TAB_GetLargura(Tabuleiro);
-	
+	TAB_PosicaoJogador(Tabuleiro,&i,&j);
 	for(i=0;i<a;i++){
 	    for(j=0;j<l;j++){
                TAB_tpCasa casa;
 	       TAB_GetTipoCasa(Tabuleiro,i,j,&casa);
-               if(casa==TAB_tpCasaInicio) printf("I"); 
-               else if(casa==TAB_tpCasaFim) printf("F"); 
-               else if(casa==TAB_tpCasaChao) printf(" "); 
-               else if(casa==TAB_tpCasaParede) printf("#"); 
-               else if(casa==TAB_tpCasaJogador) printf("O"); 
+               //posicao do jogador
+               if(i==jx && j==jy){
+                   printf("O");    
+               }
+               else{
+		       if(casa==TAB_tpCasaInicio) printf("I"); 
+		       else if(casa==TAB_tpCasaFim) printf("F"); 
+		       else if(casa==TAB_tpCasaChao) printf(" "); 
+		       else if(casa==TAB_tpCasaParede) printf("#"); 
+               }
             }	
             printf("\n");
 	}

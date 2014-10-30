@@ -114,7 +114,7 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 *
 ***********************************************************************/
 
-    TAB_tpCondRet TAB_CriarTabuleiro ( TAB_tppTabuleiro pTab , int altura , int largura , char* nome ) ;
+    TAB_tpCondRet TAB_CriarTabuleiro ( TAB_tppTabuleiro* pTab , int altura , int largura , char* nome ) ;
     
 /***********************************************************************
 *
@@ -136,7 +136,7 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 
 /***********************************************************************
 *
-*  $FC Função: TAB &Pode ir pra cima
+*  $FC Função: TAB &Pode andar pra cima
 *
 *  $ED Descrição da função
 *     Valida a possibilidade de um movimento para o norte.
@@ -150,11 +150,11 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 *
 ***********************************************************************/
 
-    TAB_tpCondRet TAB_PodeIrPraCima ( TAB_tppTabuleiro pTab );
+    TAB_tpCondRet TAB_PodeAndarPraCima ( TAB_tppTabuleiro pTab );
 
 /***********************************************************************
 *
-*  $FC Função: TAB  &Pode ir pra esquerda
+*  $FC Função: TAB  &Pode andar pra esquerda
 *
 *  $ED Descrição da função
 *     Valida a possibilidade de um movimento. 
@@ -168,11 +168,11 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 *
 ***********************************************************************/
 
-    TAB_tpCondRet TAB_PodeIrPraEsquerda ( TAB_tppTabuleiro pTab );
+    TAB_tpCondRet TAB_PodeAndarPraEsquerda ( TAB_tppTabuleiro pTab );
 
 /***********************************************************************
 *
-*  $FC Função: TAB  &Pode ir pra baixo
+*  $FC Função: TAB  &Pode andar pra baixo
 *
 *  $ED Descrição da função
 *     Valida a possibilidade de um movimento. 
@@ -186,11 +186,11 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 *
 ***********************************************************************/
 
-    TAB_tpCondRet TAB_PodeIrPraBaixo ( TAB_tppTabuleiro pTab );
+    TAB_tpCondRet TAB_PodeAndarPraBaixo ( TAB_tppTabuleiro pTab );
 
 /***********************************************************************
 *
-*  $FC Função: TAB  &Pode ir pra direita
+*  $FC Função: TAB  &Pode andar pra direita
 *
 *  $ED Descrição da função
 *     Valida a possibilidade de um movimento. 
@@ -204,7 +204,7 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 *
 ***********************************************************************/
 
-    TAB_tpCondRet TAB_PodeIrPraDireita ( TAB_tppTabuleiro pTab );
+    TAB_tpCondRet TAB_PodeAndarPraDireita ( TAB_tppTabuleiro pTab );
 
 /***********************************************************************
 *
@@ -291,7 +291,7 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 *
 ***********************************************************************/
 
-    TAB_tpCondRet TAB_PoeChao ( TAB_tppTabuleiro pTab ) ;
+    TAB_tpCondRet TAB_PoeChao ( TAB_tppTabuleiro pTab , int x , int y ) ;
  
 /***********************************************************************
 *
@@ -440,7 +440,7 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 *
 ***********************************************************************/
 
-    TAB_tpCondRet TAB_SalvarTabuleiro ( TAB_tppTabuleiro pTab , FILE* saida ) ;
+    TAB_tpCondRet TAB_SalvarTabuleiro ( TAB_tppTabuleiro pTab , char* saida ) ;
         
 /***********************************************************************
 *
@@ -458,7 +458,7 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 *
 ***********************************************************************/
 
-    TAB_tpCondRet TAB_CarregarTabuleiro ( TAB_tppTabuleiro pTab, FILE* entrada ) ;
+    TAB_tpCondRet TAB_CarregarTabuleiro ( TAB_tppTabuleiro pTab, char* entrada ) ;
         
 /***********************************************************************
 *

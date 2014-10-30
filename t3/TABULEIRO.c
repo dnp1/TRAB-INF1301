@@ -63,17 +63,21 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y ) ;
 *  Função: TAB  &Criar Tabuleiro
 *  ****/
 
-    TAB_tpCondRet TAB_CriarTabuleiro ( TAB_tppTabuleiro pTab, int alt, int lar, char* nome ){
+    TAB_tpCondRet TAB_CriarTabuleiro ( TAB_tppTabuleiro* pTab, int alt, int lar, char* nome ){
         GRA_tppGrafo grafo = NULL;
+
+        *pTab = (TAB_tppTabuleiro)malloc(sizeof(TAB_tpTabuleiro));
+        if(*pTab == NULL)
+            return TAB_CondRetFaltouMemoria ;
 
         grafo = GRA_CriarGrafo(free);
         if(grafo == NULL)
             return TAB_CondRetFaltouMemoria ;
 
-        pTab->altura = alt;
-        pTab->largura = lar;
-        pTab->nome = nome;
-        pTab->pGrafo = grafo;
+        (*pTab)->altura = alt;
+        (*pTab)->largura = lar;
+        (*pTab)->nome = nome;
+        (*pTab)->pGrafo = grafo;
     
         return TAB_CondRetOK ;
     }
@@ -236,33 +240,53 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y ) ;
 *  Função: TAB  &Poe Chao
 *  ****/    
     
-    TAB_tpCondRet TAB_PoeChao (TAB_tppTabuleiro pTab){
+    TAB_tpCondRet TAB_PoeChao (TAB_tppTabuleiro pTab, int x, int y){
+        static int lastNewVertexId = 0;
+        static int lastNewEdgeId = 0;
         Casa* corrente,* chao;
+        int idXY, norte;
+        idXY = GetIdByXY(pTab,x,y);
+        if(idXY == -1){
+            chao = (Casa*)malloc(sizeof(Casa));
+            if(chao == NULL)
+                return TAB_CondRetFaltouMemoria;
 
-        GRA_ObterValorCorrente(pTab->pGrafo,(void**)&corrente);
-        
-        chao = (Casa*)malloc(sizeof(TAB_Casa));
-        if (chao == NULL)
-            return TAB_CondRetFaltouMemoria;
+            chao->x = x;
+            chao->y = y;
+            chao->tipo = TAB_CasaChao;
 
-        chao->tipo = TAB_CasaChao;
-        chao->x = corrente->x;
-        chao->y = corrente->y;
-
-        if(corrente->tipo == TAB_CasaParede){
-            //todo
-            //criar vertice
-            //procurar vizinhos e criar arestas se necessario
+            GRA_InserirVertice(pTab->pGrafo,chao,lastNewVertexId);
+            //Vizinho ao norte
+            idXY = GetIdByXY(pTab,x,y+1);
+            
+            GRA_MudarCorrente(pTab->pGrafo, lastNewVertexId);
+            if(idXY != -1){
+                GRA_InserirAresta(pTab->pGrafo,lastNewVertexId,idXY,++lastNewEdgeId);
+                GRA_MudarCorrente(pTab->pGrafo, lastNewVertexId);
+                norte = Norte(pTab);
+            }
+            //Vizinho ao oeste
+            idXY = GetIdByXY(pTab,x-1,y);
+            if(idXY != -1){
+                GRA_InserirAresta(pTab->pGrafo,lastNewVertexId,idXY,++lastNewEdgeId);
+            }
+            //Vizinho ao sul
+            idXY = GetIdByXY(pTab,x,y-1);
+            if(idXY != -1){
+                GRA_InserirAresta(pTab->pGrafo,lastNewVertexId,idXY,++lastNewEdgeId);
+            }
+            //Vizinho ao leste
+            idXY = GetIdByXY(pTab,x,y-1);
+            if(idXY != -1){
+                GRA_InserirAresta(pTab->pGrafo,lastNewVertexId,idXY,++lastNewEdgeId);
+            }
         }
-        else if (corrente->tipo == TAB_CasaInicio || corrente->tipo == TAB_CasaFim){
-            GRA_AlterarValorCorrente(pTab->pGrafo,chao);
-            return TAB_CondRetOK;
-        }
-        else if (corrente->tipo == TAB_CasaChao) return TAB_CondRetOK;
         else{
-            free(chao);
-            return TAB_CondRetAlteracaoInvalida;
+            GRA_ObterValor(pTab->pGrafo, idXY, (void**)&corrente);
+            corrente->tipo = TAB_CasaChao;
         }
+        lastNewVertexId++;
+        return TAB_CondRetOK;
     }
 
 /***************************************************************************
@@ -489,20 +513,21 @@ mapa1
     static int Norte ( TAB_tppTabuleiro pTab ) {
         Casa* vizinho = NULL,* corrente;
         int vizinhoIndex, norte = -1;
-        LIS_tppLista vizinhos;
+        LIS_tppLista vizinhos = NULL;
 
         GRA_ObterValorCorrente(pTab->pGrafo, (void**)&corrente);
         GRA_ObterVizinhosCorrente(pTab->pGrafo,&vizinhos);
-        LIS_IrInicioLista(vizinhos);
-        do{
-            vizinhoIndex = (int)LIS_ObterValor(vizinhos);
-            GRA_ObterValor(pTab->pGrafo,vizinhoIndex,(void**)&vizinho);
-            if(vizinho->y - 1 == corrente->y){
-                norte = vizinhoIndex;
-                break;
-            }   
-        }while(LIS_AvancarElementoCorrente(vizinhos,1) == LIS_CondRetOK );
-
+        if( vizinhos != NULL && LIS_NumeroDeElementos(vizinhos) > 0 ){
+            LIS_IrInicioLista(vizinhos);
+            do{
+                vizinhoIndex = (int)LIS_ObterValor(vizinhos);
+                GRA_ObterValor(pTab->pGrafo,vizinhoIndex,(void**)&vizinho);
+                if(vizinho->y - 1 == corrente->y){
+                    norte = vizinhoIndex;
+                    break;
+                }   
+            }while(LIS_AvancarElementoCorrente(vizinhos,1) == LIS_CondRetOK );
+        }
         return norte;
     }
     static int Oeste ( TAB_tppTabuleiro pTab ) {
@@ -570,7 +595,10 @@ mapa1
 
     static int MesmaPosicao(void* a, void* b){
         Casa* _a = (Casa*)a,* _b = (Casa*)b;
-        return (_a->x == _b->x && _a->y == _b->y);
+        if (_a->x == _b->x && _a->y == _b->y)
+            return 1;
+        else 
+            return 0;
     }
 
     static int TemInicio(TAB_tppTabuleiro pTab){
@@ -581,7 +609,7 @@ mapa1
         return id;
     }
 
-    static int TemInicio(TAB_tppTabuleiro pTab){
+    static int TemFim(TAB_tppTabuleiro pTab){
         Casa parametro;
         int id = -1;
         parametro.tipo = TAB_CasaFim;

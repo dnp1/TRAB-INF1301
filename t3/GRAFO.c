@@ -375,16 +375,17 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
 
         LIS_IrInicioLista(vizinhos);
 
-        do {
-            idVerticeVizinho = (int*) calloc(1, sizeof(int));
-            aresta = (tpAresta *)LIS_ObterValor(vizinhos);
-            (*idVerticeVizinho) = aresta->pVizinho->id;
-            if (LIS_InserirElementoApos( Ret_vizinhos, idVerticeVizinho) != LIS_CondRetOK ) {
-                return GRA_CondRetFaltouMemoria;
+        if(LIS_NumeroDeElementos(vizinhos) > 0){
+            do {
+                idVerticeVizinho = (int*) calloc(1, sizeof(int));
+                aresta = (tpAresta *)LIS_ObterValor(vizinhos);           
+                (*idVerticeVizinho) = aresta->pVizinho->id;
+                if (LIS_InserirElementoApos( Ret_vizinhos, idVerticeVizinho) != LIS_CondRetOK ) {
+                    return GRA_CondRetFaltouMemoria;
+                }
             }
+            while(LIS_AvancarElementoCorrente(vizinhos, 1) == LIS_CondRetOK);
         }
-        while(LIS_AvancarElementoCorrente(vizinhos, 1) == LIS_CondRetOK);
-
         *pLista = Ret_vizinhos;
 
         return GRA_CondRetOK;
@@ -673,6 +674,8 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         if(vizinho == NULL)
             return GRA_CondRetNaoEhVertice;
         
+        LIS_ProcurarValor(pGrafo->vertices,vizinho);
+
         pGrafo->corrente = id;
         return GRA_CondRetOK;
 
@@ -883,12 +886,18 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         LIS_tppLista vertices;
         tpVertice* vertice;
         vertices = pGrafo->vertices;
+
+        if(LIS_NumeroDeElementos(vertices) == 0){
+            *idVertice = -1;
+            return GRA_CondRetGrafoVazio;
+        }
+
         LIS_IrInicioLista(vertices);
         do
         {
             vertice = (tpVertice*)LIS_ObterValor(vertices);
             
-            if (predicado(vertice, parametro))
+            if (predicado(vertice->pNode->pValor, parametro))
             {
                 *idVertice = vertice->id;
                 return GRA_CondRetOK;

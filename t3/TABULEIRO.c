@@ -311,13 +311,13 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y ) ;
 *  ****/
 
     TAB_tpCondRet TAB_GetTipoCasa(TAB_tppTabuleiro pTab , int x , int y , TAB_tpCasa* tipo){
-        Casa* corrente;
+        Casa* casaXY;
 
         if(x < 0 || x > pTab->largura || y < 0 || y > pTab->altura )
             return TAB_CondRetNaoEhCasa;
 
-        if(GRA_ObterValor(pTab->pGrafo, GetIdByXY(pTab,x,y), (void**)&corrente) == GRA_CondRetOK){
-            *tipo = corrente->tipo;
+        if(GRA_ObterValor(pTab->pGrafo, GetIdByXY(pTab,x,y), (void**)&casaXY) == GRA_CondRetOK){
+            *tipo = casaXY->tipo;
             return TAB_CondRetOK;
         }
         else{
@@ -352,10 +352,14 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y ) ;
     
     TAB_tpCondRet TAB_PoeChao (TAB_tppTabuleiro pTab, int x, int y){
         Casa* casaXY;
+        GRA_tpCondRet achouVertice = GRA_CondRetNaoEhVertice;
         int idXY, idVertice, idAresta;
         
         idVertice = getCasaID (pTab,x,y);
-        GRA_ObterValor(pTab->pGrafo,idVertice,(void**)&casaXY);
+        achouVertice = GRA_ObterValor(pTab->pGrafo,idVertice,(void**)&casaXY);
+        
+        if(achouVertice == GRA_CondRetNaoEhVertice)
+            return TAB_CondRetNaoEhCasa;
 
         if(casaXY->tipo == TAB_tpCasaParede){
 
@@ -422,10 +426,14 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y ) ;
     
     TAB_tpCondRet TAB_PoeParede (TAB_tppTabuleiro pTab, int x , int y ){
         Casa* casaXY ,* parede;
+        GRA_tpCondRet achouVertice = GRA_CondRetNaoEhVertice;
         int idXY, idVertice, idAresta, idInicio;
         
         idVertice = getCasaID (pTab,x,y);
-        GRA_ObterValor(pTab->pGrafo,idVertice,(void**)&casaXY);
+        achouVertice = GRA_ObterValor(pTab->pGrafo,idVertice,(void**)&casaXY);
+        
+        if(achouVertice == GRA_CondRetNaoEhVertice)
+            return TAB_CondRetNaoEhCasa;
 
         if(casaXY->tipo != TAB_tpCasaParede){
             
@@ -493,11 +501,15 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y ) ;
     
     TAB_tpCondRet TAB_PoeInicio (TAB_tppTabuleiro pTab, int x, int y){
         Casa* casaXY ,* casaInicio;
+        GRA_tpCondRet achouVertice = GRA_CondRetNaoEhVertice;
         int idXY, idVertice, idAresta, idInicio;
         
         idInicio = -1; 
         idVertice = getCasaID (pTab,x,y);
-        GRA_ObterValor(pTab->pGrafo,idVertice,(void**)&casaXY);
+        achouVertice = GRA_ObterValor(pTab->pGrafo,idVertice,(void**)&casaXY);
+        
+        if(achouVertice == GRA_CondRetNaoEhVertice)
+            return TAB_CondRetNaoEhCasa;
 
         if(casaXY->tipo == TAB_tpCasaParede){
 
@@ -574,11 +586,15 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y ) ;
     
     TAB_tpCondRet TAB_PoeFim (TAB_tppTabuleiro pTab, int x, int y){
         Casa* casaXY ,* casaFim;
+        GRA_tpCondRet achouVertice = GRA_CondRetNaoEhVertice;
         int idXY, idVertice, idAresta, idFim;
         
         idFim = -1;
         idVertice = getCasaID (pTab,x,y);
-        GRA_ObterValor(pTab->pGrafo,idVertice,(void**)&casaXY);
+        achouVertice = GRA_ObterValor(pTab->pGrafo,idVertice,(void**)&casaXY);
+        
+        if(achouVertice == GRA_CondRetNaoEhVertice)
+            return TAB_CondRetNaoEhCasa;
 
         if(casaXY->tipo == TAB_tpCasaParede){
 
@@ -646,6 +662,17 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y ) ;
         casaXY->tipo = TAB_tpCasaFim;
 
         return TAB_CondRetOK;
+    }
+
+    TAB_tpCondRet TAB_ValidarTabuleiro(TAB_tppTabuleiro pTab){
+        int idInicio = - 1, idFim = -1;
+        idInicio = TemInicio(pTab);
+        idFim = TemFim(pTab);
+        if(idInicio != -1 && idFim != -1){
+            return TAB_CondRetOK;
+        }
+        else
+            return TAB_CondRetTabuleiroInvalido;
     }
 
 /*
@@ -734,7 +761,7 @@ mapa1
     TAB_tpCondRet TAB_CarregaTabuleiro(TAB_tppTabuleiro pTab){}
 
     
-    TAB_tpCondRet TAB_ValidaTabuleiro(tpTabuleiro pTab){}
+
         Antes de salvar valida as regras do tabuleiro
         ve se existe inicial, final e se existe apenas 1 destes
     */

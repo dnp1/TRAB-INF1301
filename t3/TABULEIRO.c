@@ -128,12 +128,17 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y ) ;
 *  ****/
 
     TAB_tpCondRet TAB_DestruirTabuleiro ( TAB_tppTabuleiro pTab ){
-        GRA_DestruirGrafo( pTab->pGrafo );
-        free(pTab->idCasa);
-        free(pTab->idAresta);
-        free(pTab);
+    
+        if(pTab != NULL){
+            GRA_DestruirGrafo( pTab->pGrafo );
+            free(pTab->idCasa);
+            free(pTab->idAresta);
+            free(pTab);
 
-        return TAB_CondRetOK;
+            return TAB_CondRetOK;
+        }
+        else
+            return TAB_CondRetTabuleiroInvalido;
     }
 
 /***************************************************************************

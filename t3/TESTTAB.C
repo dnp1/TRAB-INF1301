@@ -154,7 +154,14 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
         
       else if ( strcmp( ComandoTeste , DESTRUIR_TAB_CMD ) == 0 )
       {
-      
+          NumLidos = LER_LerParametros("ii",&inxTabuleiro,&CondRetEsperada);
+          if((NumLidos != 2) || !VerificarInx(inxTabuleiro))
+          {
+              return TST_CondRetParm;
+          }
+
+          CondRetObtida = TAB_DestruirTabuleiro( vtRefTabuleiros[inxTabuleiro]);
+          return TST_CompararInt( CondRetEsperada , CondRetObtida , "Retorno errado ao destruir tabuleiro." );
       } /* fim ativa: Testar TAB Destruir tabuleiro */
       
       /* Testar TAB Pode ir cima */

@@ -22,3 +22,9 @@
 
 == Sequencia Criar-destruir no Tabuleiro
 =criartab 1 10 10 str0 OK
+=destruirtab 1 OK
+=criartab 2 10 10 str0 OK
+=destruirtab 2 OK
+=destruirtab 3 OK
+=recuperar
+

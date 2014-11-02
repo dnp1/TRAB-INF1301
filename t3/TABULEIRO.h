@@ -47,15 +47,15 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 
     typedef enum {
         
-        TAB_CasaInicio ,
+        TAB_tpCasaInicio ,
 
-        TAB_CasaFim ,
+        TAB_tpCasaFim ,
         
-        TAB_CasaChao,
+        TAB_tpCasaChao,
         
-        TAB_CasaParede
+        TAB_tpCasaParede
     
-    } TAB_Casa ;
+    } TAB_tpCasa ;
 
 /***********************************************************************
 *
@@ -221,7 +221,7 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 *
 ***********************************************************************/
 
-    TAB_tpCondRet TAB_AndarPraCima ( TAB_tppTabuleiro pTab );
+    TAB_tpCondRet TAB_AndarPraCima ( TAB_tppTabuleiro pTab , int colisao );
 
 /***********************************************************************
 *
@@ -238,7 +238,7 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 *
 ***********************************************************************/
 
-    TAB_tpCondRet TAB_AndarPraEsquerda ( TAB_tppTabuleiro pTab );
+    TAB_tpCondRet TAB_AndarPraEsquerda ( TAB_tppTabuleiro pTab , int colisao );
 
 /***********************************************************************
 *
@@ -255,7 +255,7 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 *
 ***********************************************************************/
 
-    TAB_tpCondRet TAB_AndarPraBaixo ( TAB_tppTabuleiro pTab );
+    TAB_tpCondRet TAB_AndarPraBaixo ( TAB_tppTabuleiro pTab , int colisao );
 
 /***********************************************************************
 *
@@ -272,7 +272,7 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 *
 ***********************************************************************/
 
-    TAB_tpCondRet TAB_AndarPraDireita ( TAB_tppTabuleiro pTab );
+    TAB_tpCondRet TAB_AndarPraDireita ( TAB_tppTabuleiro pTab , int colisao );
 
 /***********************************************************************
 *
@@ -310,7 +310,7 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 *
 ***********************************************************************/
 
-    TAB_tpCondRet TAB_PoeParede ( TAB_tppTabuleiro pTab ) ;
+    TAB_tpCondRet TAB_PoeParede ( TAB_tppTabuleiro pTab , int x , int y ) ;
  
 /***********************************************************************
 *
@@ -329,7 +329,7 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 *
 ***********************************************************************/
 
-    TAB_tpCondRet TAB_PoeInicio ( TAB_tppTabuleiro pTab ) ;
+    TAB_tpCondRet TAB_PoeInicio ( TAB_tppTabuleiro pTab , int x , int y ) ;
  
 /***********************************************************************
 *
@@ -348,7 +348,7 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 *
 ***********************************************************************/
 
-    TAB_tpCondRet TAB_PoeFim ( TAB_tppTabuleiro pTab ) ;
+    TAB_tpCondRet TAB_PoeFim ( TAB_tppTabuleiro pTab , int x , int y ) ;
  
 /***********************************************************************
 *
@@ -369,7 +369,7 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 *
 ***********************************************************************/   
 
-    TAB_tpCondRet TAB_GetTipoCasa ( TAB_tppTabuleiro pTab, int x , int y , TAB_Casa* tipo ) ;
+    TAB_tpCondRet TAB_GetTipoCasa ( TAB_tppTabuleiro pTab, int x , int y , TAB_tpCasa* tipo ) ;
 
 /***********************************************************************
 *

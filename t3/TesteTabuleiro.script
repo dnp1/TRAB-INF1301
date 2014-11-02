@@ -1,0 +1,30 @@
+// Script:    TesteGrafo.script
+// Autor:     eav - Eduardo Alberto Verdeja
+// Data:      2/out/2014
+// Propósito: Testar superficialmente o módulo tabuleiro
+//
+
+== Inicializar valores
+=declararparm   str0    string  "abcdefg"
+=declararparm   str1    string  "qwerty"
+=declararparm   str2    string  "xxx"
+=declararparm   str3    string  "xpto"
+=declararparm   str4    string  "???"
+=declararparm   str5    string  "pera"
+
+=declararparm   OK                  int  0
+=declararparm   FaltouMemoria       int  1
+=declararparm   NaoEhCasa           int  2
+=declararparm   MovimentoInvalido   int  3
+=declararparm   AltercaoInvalida    int  4
+=declararparm   TabuleiroInvalido   int  5
+=declararparm   CondRetSemSolucao   int  6
+
+== Sequencia Criar-destruir no Tabuleiro
+=criartab 1 10 10 str0 OK
+=destruirtab 1 OK
+=criartab 2 10 10 str0 OK
+=destruirtab 2 OK
+=destruirtab 3 OK
+=recuperar
+

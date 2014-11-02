@@ -1,4 +1,3 @@
-#include "GRAFO.h"
 #include "TABULEIRO.h"
 #include "LEITOR.h"
 #include "ESTADO.h"
@@ -180,17 +179,17 @@ void PopulaMenus(EST_tppEstado e){
    Apresenta o Menu corrente
  */
 void APR_ApresentaMenu(EST_tppEstado e){
-    GRA_tppGrafo Menus = EST_GetMenus(e);
+    MEN_tppMenu Menus = EST_GetMenus(e);
     printf("\n#############\n#  Labirinto  #\n#############");
-    printf("\n %s\n--------------",MEN_GetMenuNome());
+    printf("\n %s\n--------------",MEN_GetMenuNome(Menus));
     printf("Digite:\n\n");
-    LIS_tppLista opc = MEN_GetMenuOpcoes();
+    LIS_tppLista opc = MEN_GetMenuOpcoes(Menus);
     LIS_IrInicio(opc);
     do
     {
         MEN_tppOpcao opcao = LIS_ObterValor(opc);
         if(opcao!=NULL)
-            printf("\n %c para %s",  MEN_GetOpcaoCmd(opc),MEN_GetOpcaoNome(opc));
+            printf("\n %c para %s",  MEN_GetOpcaoCmd(opcao),MEN_GetOpcaoNome(opcao));
     }
     while(LIS_IrProxElemento(opc)==LIS_CondRetOK);
 

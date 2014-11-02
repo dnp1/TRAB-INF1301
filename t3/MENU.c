@@ -1,6 +1,6 @@
 #include "MENU.h"
 #include "GRAFO.h"
-
+#include <stdlib.h>
 typedef struct Menu_{
     char* nome;
     int id;
@@ -10,7 +10,7 @@ typedef struct Menu_{
 typedef struct Opcao_{
     char cmd;
     char* nome;
-    callback;
+    void (*callback)(EST_tppEstado e,MEN_tppOpcao o);
 } Opcao;
 
 void MEN_DestruirMenu(MEN_tppMenu menu){
@@ -23,7 +23,11 @@ void MEN_DestruirMenu(MEN_tppMenu menu){
 
  */
 //mudar pra usar grafo em vez de lista
-MEN_CondRet MEN_CriarMenu(tppGrafo menus, int id, char* nome,int idpai){
+void volta(EST_tppEstado e,MEN_tppOpcao o){
+    
+}
+
+MEN_tpCondRet MEN_CriarMenu(MEN_tppMenus menus, int id, char* nome,int idpai){
     MEN_tppMenu m = malloc(sizeof(Menu));
     if(m==NULL)
         return MEN_CondRetFaltouMemoria;
@@ -37,7 +41,7 @@ MEN_CondRet MEN_CriarMenu(tppGrafo menus, int id, char* nome,int idpai){
     GRA_InserirVertice(menus,m,m->id);
     //ifs e returns...
     //TODO:Volta interno
-    MEN_CondRet cr = MEN_CriarOpcao(menus, m->id,'0', "Ir para o menu acima (encerrar o programa caso o menu atual seja o inicial(Inicio))",volta);
+    MEN_tpCondRet cr = MEN_CriarOpcao(menus, m->id,'0', "Ir para o menu acima (encerrar o programa caso o menu atual seja o inicial(Inicio))",volta);
     if(cr!=MEN_CondRetOK)
     {
         LIS_ExcluirLista(m->opcoes);
@@ -47,7 +51,7 @@ MEN_CondRet MEN_CriarMenu(tppGrafo menus, int id, char* nome,int idpai){
 }
 
 //mudar lis->gra
-MEN_CondRet MEN_CriarOpcao(tppGrafo menus, int idMenu,char cmd, char* nome,callback){
+MEN_tpCondRet MEN_CriarOpcao(MEN_tppMenus menus, int idMenu,char cmd, char* nome,void (*callback)(EST_tppEstado e,MEN_tppOpcao o)){
     MEN_tppOpcao o = malloc(sizeof(Opcao));
     if(o==NULL)
         return MEN_CondRetFaltouMemoria;
@@ -61,7 +65,7 @@ MEN_CondRet MEN_CriarOpcao(tppGrafo menus, int idMenu,char cmd, char* nome,callb
     LIS_InserirElementoApos(m->opcoes,o);
     return MEN_CondRetOK;
 }
-MEN_CondRet MudaMenu(tppGrafo menus,int id){
+MEN_tpCondRet MudaMenu(MEN_tppMenus menus,int id){
     	
     GRA_IrVizinho(menus,id);
 }

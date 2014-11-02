@@ -1,11 +1,11 @@
-#include "GRAFO.h"
+#include "ESTADO.h"
 //struct para manter o estado do jogo. 
 //Ela é passada por referência para para ser modificada e lida.
 //Ela é UNICA.
 typedef struct estado_{
     //o id do corrente de Menus eh o o id do menu atual
-    GRA_tppGrafo Menus;
-    GRA_tppGrafo tabuleiro;
+    MEN_tppMenus Menus;
+    TAB_tppTabuleiro Tabuleiro;
     //id do ultimo menu, do menu pai/acima
     //variavel utilizada para implementar a opcao 0 dos menus
     int UltimoMenu;
@@ -39,4 +39,14 @@ EST_CondRet EST_MenuInicial(EST_tppEstado e){
 }
 int EST_MenuCorrente(EST_tppEstado e){
     return GRA_ObterIdCorrente(e->Menus);
+}
+
+int EST_MudaUltimoMenu(EST_tppEstado e,int n){
+    return e->UltimoMenu;
+}
+MEN_tppMenus EST_GetMenus(EST_tppEstado e){
+    return e->Menus;
+}
+TAB_tppTabuleiro GetTabuleiro(EST_tppEstado e){
+    return e->Tabuleiro;
 }

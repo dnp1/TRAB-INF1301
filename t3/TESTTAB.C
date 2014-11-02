@@ -52,8 +52,17 @@ static const char SALVAR_TAB_CMD        [] = "=salvartab"       ;
 static const char CARREGAR_TAB_CMD      [] = "=carregartab"     ;
 static const char SOLUCIONAR_TAB_CMD    [] = "=solucionartab"   ;
 
+int estaInicializado = 0 ;
+
+#define DIM_VT_TABULEIROS   10
+
+TAB_tppTabuleiro vtRefTabuleiros[ DIM_VT_TABULEIROS ] ;
+
 
 /***** Protótipos das funções encapuladas no módulo *****/
+   
+    static void DestruirValor( void * pValor ) ;
+    static int VerificarInx( int inxTabuleiro );
 
 
 /*****  Código das funções exportadas pelo módulo  *****/
@@ -94,23 +103,51 @@ static const char SOLUCIONAR_TAB_CMD    [] = "=solucionartab"   ;
 *
 ***********************************************************************/
 
+
 TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
-   {   
-      TAB_tpCondRet CondRetObtida   = TAB_CondRetOK ;
+   {  
+      TAB_tpCondRet CondRetObtida = TAB_CondRetOK ;
       TAB_tpCondRet CondRetEsperada = TAB_CondRetFaltouMemoria ;
                                       /* inicializa para qualquer coisa */
       TAB_tpCondRet CondRetTemp = TAB_CondRetFaltouMemoria ;
                                       /* inicializa para qualquer coisa */
-                                      
-      /* Tratar: inicializar contexto */
+      int i ;
+      int NumLidos = -1 ;
+      int inxTabuleiro = -1 ;
 
-      /* fim ativa: Tratar: inicializar contexto */
+      /* Tratar: inicializar contexto */
+      
+      if ( strcmp( ComandoTeste , RESET_TAB_CMD ) == 0 ){
+
+        if ( estaInicializado ){
+            for( i = 0 ; i < DIM_VT_TABULEIROS ; i++ ){
+                TAB_DestruirTabuleiro( ( vtRefTabuleiros[ i ] )) ;
+            }
+        }
+
+        for( i = 0 ; i < DIM_VT_TABULEIROS ; i++ ){
+            vtRefTabuleiros[ i ] = 0 ;
+        }
+
+      estaInicializado = 1 ;
+
+      } /* fim ativa: Tratar: inicializar contexto */
       
       /* Testar TAB Criar tabuleiro */
             
       else if ( strcmp( ComandoTeste , CRIAR_TAB_CMD ) == 0 )
       {
-      
+          int altura, largura;
+          char* nome;
+
+          NumLidos = LER_LerParametros("iiisi",&inxTabuleiro,&altura,&largura,&nome,&CondRetEsperada);
+          if((NumLidos != 5) || !VerificarInx(inxTabuleiro))
+          {
+              return TST_CondRetParm;
+          }
+
+          CondRetObtida = TAB_CriarTabuleiro( &vtRefTabuleiros[inxTabuleiro],altura,largura,nome);
+          return TST_CompararInt( CondRetEsperada , CondRetObtida , "Retorno errado ao criar tabuleiro." );
       } /* fim ativa: Testar TAB Criar tabuleiro */
             
       /* Testar TAB Destruir tabuleiro */
@@ -234,7 +271,7 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
       
       /* Testar TAB Validar Tabuleiro */
             
-      else if ( strcmp( ComandoTeste , VALIDA_TAB_CMD ) == 0 )
+      else if ( strcmp( ComandoTeste , VALIDAR_TAB_CMD ) == 0 )
       {
       
       } /* fim ativa: Testar TAB Validar Tabuleiro */      
@@ -264,6 +301,32 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
    }
    
    /*****  Código das funções encapsuladas no módulo  *****/
+   
 
+/***********************************************************************
+*
+*  $FC Função: TTAB -Verificar índice de tabuleiro
+*
+*  $FV Valor retornado
+*     0 - inxTabuleiro não vale
+*     1 - inxTabuleiro vale
+*
+***********************************************************************/
+
+   int VerificarInx( int inxTabuleiro )
+   {
+
+      if ( ( inxTabuleiro <   0 )
+        || ( inxTabuleiro >= DIM_VT_TABULEIROS ))
+      {
+         return 0 ;
+      } /* if */
+
+      return 1 ;
+
+   } /* Fim função: TTAB -Verificar índice de tabuleiro */
 
 /********** Fim do módulo de implementação: TARV Teste específico para o módulo árvore **********/
+
+
+//********** Fim do módulo de implementação: TARV Teste específico para o módulo árvore **********/

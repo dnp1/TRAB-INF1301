@@ -1,3 +1,4 @@
+#include "GRAFO.h"
 
 /*
    ids dos Menus devem ser unicos e maiores que 1.
@@ -7,14 +8,14 @@
 typedef enum{
     MEN_CondRetFaltouMemoria,
     MEN_CondRetOK
-}
-typedef Menu* MEN_tppMenu;
-typedef Opcao* MEN_tppOpcao; 
+}MEN_tpCondRet;
+typedef struct Menu_ * MEN_tppMenu;
+typedef struct Opcao_ * MEN_tppOpcao; 
 
 void MEN_DestruirMenu(MEN_tppMenu menu);
 
-MEN_CondRet MEN_CriarMenu(tppGrafo menus, int id, char* nome);
+MEN_tpCondRet MEN_CriarMenu(GRA_tppGrafo menus, int id, char* nome,int idPai);
 
-MEN_CondRet MEN_CriarOpcao(tppGrafo menus, int idMenu,char cmd, char* nome,callback);
+MEN_tpCondRet MEN_CriarOpcao(GRA_tppGrafo menus, int idMenu,char cmd, char* nome,void (*callback)(EST_tppEstado,MEN_tppOpcao));
 
 

@@ -5,6 +5,7 @@ typedef struct Menu_{
     char* nome;
     int id;
     GRA_tppGrafo opcoes;        
+    int pai;
 } Menu;
 typedef struct Opcao_{
     char cmd;
@@ -22,7 +23,7 @@ void MEN_DestruirMenu(MEN_tppMenu menu){
 
  */
 //mudar pra usar grafo em vez de lista
-MEN_CondRet MEN_CriarMenu(tppGrafo menus, int id, char* nome,callback volta){
+MEN_CondRet MEN_CriarMenu(tppGrafo menus, int id, char* nome,int idpai){
     MEN_tppMenu m = malloc(sizeof(Menu));
     if(m==NULL)
         return MEN_CondRetFaltouMemoria;
@@ -35,6 +36,7 @@ MEN_CondRet MEN_CriarMenu(tppGrafo menus, int id, char* nome,callback volta){
     m->id = id;
     GRA_InserirVertice(menus,m,m->id);
     //ifs e returns...
+    //TODO:Volta interno
     MEN_CondRet cr = MEN_CriarOpcao(menus, m->id,'0', "Ir para o menu acima (encerrar o programa caso o menu atual seja o inicial(Inicio))",volta);
     if(cr!=MEN_CondRetOK)
     {
@@ -58,4 +60,8 @@ MEN_CondRet MEN_CriarOpcao(tppGrafo menus, int idMenu,char cmd, char* nome,callb
     GRA_ObterValor(menus,idMenu,m);
     LIS_InserirElementoApos(m->opcoes,o);
     return MEN_CondRetOK;
+}
+MEN_CondRet MudaMenu(tppGrafo menus,int id){
+    	
+    GRA_IrVizinho(menus,id);
 }

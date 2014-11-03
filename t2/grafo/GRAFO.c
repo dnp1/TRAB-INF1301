@@ -13,7 +13,7 @@
 *
 *  $HA Histórico de evolução:
 *     Versão  Autor    Data     Observações
-*		 1	   eav	 25/09/2014		//
+*        1     eav   25/09/2014     //
 *
 ***************************************************************************/
 
@@ -34,15 +34,15 @@
 *
 ***********************************************************************/
 
-	 typedef struct tpNode_ {
+     typedef struct tpNode_ {
 
-				void * pValor ;
-				/* Ponteiro para o valor contido no elemento */
+                void * pValor ;
+                /* Ponteiro para o valor contido no elemento */
 
-				LIS_tppLista arestas ;
-				//Lista de tppVertice
+                LIS_tppLista arestas ;
+                //Lista de tppVertice
                 /* Ponteiro para lista de aresta */
-	 } tpNode ;
+     } tpNode ;
 
 /***********************************************************************
 *
@@ -51,14 +51,14 @@
 *
 ***********************************************************************/
 
-	 typedef struct tpVertice_ {
-	 	tpNode * pNode ;
+     typedef struct tpVertice_ {
+        tpNode * pNode ;
         int id;
-							 /* Ponteiro para a cabeça de nó */      
-	 } tpVertice ;
+                             /* Ponteiro para a cabeça de nó */      
+     } tpVertice ;
 
-	
-	
+    
+    
 
 /***********************************************************************
 *
@@ -67,12 +67,12 @@
 *
 ***********************************************************************/
 
-	 typedef struct tpAresta_ {
+     typedef struct tpAresta_ {
 
-				tpVertice * pVizinho ;
-				/* Ponteiro para o valor contido no elemento */
+                tpVertice * pVizinho ;
+                /* Ponteiro para o valor contido no elemento */
                 int id;
-	 } tpAresta ;
+     } tpAresta ;
 
 
 /***********************************************************************
@@ -82,16 +82,16 @@
 *
 ***********************************************************************/
 
-	typedef struct GRA_tagGrafo {
-		LIS_tppLista vertices;
-	    
+    typedef struct GRA_tagGrafo {
+        LIS_tppLista vertices;
+        
         int corrente;
 
-		LIS_tppLista componentes;
-	 
-		void ( * ExcluirValor ) ( void * pValor ) ;
-				 /* Ponteiro para a função de destruição do valor contido em um elemento */
-	 } GRA_tpGrafo;
+        LIS_tppLista componentes;
+     
+        void ( * ExcluirValor ) ( void * pValor ) ;
+                 /* Ponteiro para a função de destruição do valor contido em um elemento */
+     } GRA_tpGrafo;
 
 /***** Protótipos das funções encapsuladas no módulo *****/
 
@@ -123,7 +123,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
 *  ****/    
     
     GRA_tpCondRet GRA_ObterCorrente( GRA_tppGrafo pGrafo , void** pDado ) {
-		tpVertice * tpVertice = NULL;
+        tpVertice * tpVertice = NULL;
 
         /* Verifica se vertice pertence ao grafo; */
         if ( pGrafo->corrente == -1 ) {
@@ -143,35 +143,35 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
 *  ****/
 
 
-	 GRA_tppGrafo GRA_CriarGrafo( void (*ExcluirValor) (void* pDado) )
-	 {
+     GRA_tppGrafo GRA_CriarGrafo( void (*ExcluirValor) (void* pDado) )
+     {
 
-			GRA_tpGrafo * pGrafo = NULL ;
-			LIS_tppLista l_vertice = NULL;
-			LIS_tppLista l_componente = NULL;
+            GRA_tpGrafo * pGrafo = NULL ;
+            LIS_tppLista l_vertice = NULL;
+            LIS_tppLista l_componente = NULL;
 
-			pGrafo = (GRA_tpGrafo*) calloc(1, sizeof(GRA_tpGrafo)) ;
-			if (pGrafo == NULL) {
-				 return NULL ;
-			} /* if */
-			l_vertice = LIS_CriarLista(free); //A Exclusão será manual, iterando sobre os elementos;
+            pGrafo = (GRA_tpGrafo*) calloc(1, sizeof(GRA_tpGrafo)) ;
+            if (pGrafo == NULL) {
+                 return NULL ;
+            } /* if */
+            l_vertice = LIS_CriarLista(free); //A Exclusão será manual, iterando sobre os elementos;
             if (l_vertice == NULL) {
                 free(pGrafo);
                 return NULL;
             }
-			l_componente = LIS_CriarLista(NULL); //Controle interno e autocontido; Componentes não cuidam de dados do valor, só armazenam ponteiros.
+            l_componente = LIS_CriarLista(NULL); //Controle interno e autocontido; Componentes não cuidam de dados do valor, só armazenam ponteiros.
             if (l_componente == NULL) {
                 free(pGrafo);
                 LIS_DestruirLista(l_vertice);
                 return NULL;
             }
-			
-			pGrafo->vertices = l_vertice;
-			pGrafo->componentes = l_componente;
-			pGrafo->ExcluirValor = ExcluirValor ;
+            
+            pGrafo->vertices = l_vertice;
+            pGrafo->componentes = l_componente;
+            pGrafo->ExcluirValor = ExcluirValor ;
             pGrafo->corrente = -1;
-			return pGrafo;
-	 } 
+            return pGrafo;
+     } 
      /* Fim função: GRA  &Criar grafo */
 
 /***************************************************************************
@@ -179,34 +179,34 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
 *  Função: GRA  &Destruir grafo
 *  ****/
 
-	 GRA_tpCondRet GRA_DestruirGrafo( GRA_tppGrafo pGrafo )
-	 {
-	 		tpVertice* pVertice = NULL;
-			#ifdef _DEBUG
-				 assert( pGrafo != NULL ) ;
-			#endif
+     GRA_tpCondRet GRA_DestruirGrafo( GRA_tppGrafo pGrafo )
+     {
+            tpVertice* pVertice = NULL;
+            #ifdef _DEBUG
+                 assert( pGrafo != NULL ) ;
+            #endif
             
-			LIS_DestruirLista(pGrafo->componentes); //Lista que não mexe com "ninguém"
+            LIS_DestruirLista(pGrafo->componentes); //Lista que não mexe com "ninguém"
 
-			LIS_IrInicioLista(pGrafo->vertices);
-			do {
-				pVertice = (tpVertice *)LIS_ObterValor(pGrafo->vertices);
-				if(pVertice == NULL) continue;
+            LIS_IrInicioLista(pGrafo->vertices);
+            do {
+                pVertice = (tpVertice *)LIS_ObterValor(pGrafo->vertices);
+                if(pVertice == NULL) continue;
 
                 if (pVertice->pNode->pValor != NULL && pGrafo->ExcluirValor != NULL) {
-					pGrafo->ExcluirValor(pVertice->pNode->pValor);
-				}
-				LIS_DestruirLista(pVertice->pNode->arestas);
-				free(pVertice->pNode);
-			} 
+                    pGrafo->ExcluirValor(pVertice->pNode->pValor);
+                }
+                LIS_DestruirLista(pVertice->pNode->arestas);
+                free(pVertice->pNode);
+            } 
             while(LIS_AvancarElementoCorrente(pGrafo->vertices, 1) == LIS_CondRetOK);
 
-			LIS_DestruirLista(pGrafo->vertices);
+            LIS_DestruirLista(pGrafo->vertices);
             
-			free( pGrafo ) ;
-			
-			return GRA_CondRetOK;
-	 } 
+            free( pGrafo ) ;
+            
+            return GRA_CondRetOK;
+     } 
      /* Fim função: GRA  &Destruir grafo */
 
 
@@ -215,35 +215,35 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
 *  Função: GRA  &Inserir vertice 
 *  ****/
 
-	 GRA_tpCondRet GRA_InserirVertice (GRA_tppGrafo pGrafo, void* pValor, int id)
-	 {
+     GRA_tpCondRet GRA_InserirVertice (GRA_tppGrafo pGrafo, void* pValor, int id)
+     {
         int i;
         tpVertice * pElem = NULL ;
         tpVertice * v = NULL ;
-		#ifdef _DEBUG
-			 assert( pGrafo != NULL ) ;
-		#endif
+        #ifdef _DEBUG
+             assert( pGrafo != NULL ) ;
+        #endif
 
-		/* Criar o Vertice antes */
+        /* Criar o Vertice antes */
         
-		pElem = CriarVertice( pGrafo, pValor, id ) ;
-		
+        pElem = CriarVertice( pGrafo, pValor, id ) ;
+        
         if ( pElem == NULL ) {
-			return GRA_CondRetFaltouMemoria ;
+            return GRA_CondRetFaltouMemoria ;
         }
-	 	
+        
         if( LIS_InserirElementoApos (pGrafo->vertices, pElem) != LIS_CondRetOK) {
             free(pElem);
-			return GRA_CondRetFaltouMemoria ;	
+            return GRA_CondRetFaltouMemoria ;   
         }
        
-		if(pGrafo->corrente == -1) { 
+        if(pGrafo->corrente == -1) { 
             pGrafo->corrente = id;
         }
         LIS_NumeroDeElementos(pElem->pNode->arestas);
         return GRA_CondRetOK ;
-	 } 
-	 /* Fim função: GRA  &Inserir vertice */
+     } 
+     /* Fim função: GRA  &Inserir vertice */
 
 
 /***************************************************************************
@@ -284,8 +284,8 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         }
         if (!EhVizinho(pGrafo, pVertice1, pVertice2)  && 
             !EhVizinho(pGrafo, pVertice2, pVertice1) ) {
-			tpAresta * aresta1 = NULL;
-			tpAresta * aresta2 = NULL;
+            tpAresta * aresta1 = NULL;
+            tpAresta * aresta2 = NULL;
 
             origem1 = ObterOrigem(pGrafo, pVertice1);
             origem2 = ObterOrigem(pGrafo, pVertice2);
@@ -358,8 +358,8 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
     GRA_tpCondRet GRA_ObterVizinhos ( GRA_tppGrafo pGrafo, int idVertice, LIS_tppLista* pLista) {
         
         tpVertice * pVertice = get_by_id(pGrafo,idVertice);
-		LIS_tppLista vizinhos = NULL;
-		LIS_tppLista Ret_vizinhos = NULL;
+        LIS_tppLista vizinhos = NULL;
+        LIS_tppLista Ret_vizinhos = NULL;
         tpAresta* aresta = NULL;
         int* idVerticeVizinho = NULL;
 
@@ -375,16 +375,17 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
 
         LIS_IrInicioLista(vizinhos);
 
-        do {
-            idVerticeVizinho = (int*) calloc(1, sizeof(int));
-            aresta = (tpAresta *)LIS_ObterValor(vizinhos);
-            (*idVerticeVizinho) = aresta->pVizinho->id;
-            if (LIS_InserirElementoApos( Ret_vizinhos, idVerticeVizinho) != LIS_CondRetOK ) {
-                return GRA_CondRetFaltouMemoria;
+        if(LIS_NumeroDeElementos(vizinhos) > 0){
+            do {
+                idVerticeVizinho = (int*) calloc(1, sizeof(int));
+                aresta = (tpAresta *)LIS_ObterValor(vizinhos);           
+                (*idVerticeVizinho) = aresta->pVizinho->id;
+                if (LIS_InserirElementoApos( Ret_vizinhos, idVerticeVizinho) != LIS_CondRetOK ) {
+                    return GRA_CondRetFaltouMemoria;
+                }
             }
+            while(LIS_AvancarElementoCorrente(vizinhos, 1) == LIS_CondRetOK);
         }
-        while(LIS_AvancarElementoCorrente(vizinhos, 1) == LIS_CondRetOK);
-
         *pLista = Ret_vizinhos;
 
         return GRA_CondRetOK;
@@ -414,11 +415,11 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         LIS_tppLista Ret_origens = NULL;    
         LIS_tppLista origens = NULL ;
 
-		Ret_origens = LIS_CriarLista(NULL);  
+        Ret_origens = LIS_CriarLista(NULL);  
         if (Ret_origens == NULL) {
             return GRA_CondRetFaltouMemoria;
         }
-		
+        
         origens = pGrafo->componentes;
 
         LIS_IrInicioLista(origens);
@@ -474,7 +475,27 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
 
     }
     /* Fim função: GRA  &Obter Valor Corrente */
- 
+
+/***************************************************************************
+*
+*  Função: GRA  &Obter Valores
+*  ****/  
+
+    GRA_tpCondRet GRA_ObterValores( GRA_tppGrafo pGrafo, LIS_tppLista pValores ) {
+        LIS_tppLista vertices;
+        tpVertice* vertice;
+        void* valor;
+        vertices = pGrafo->vertices;
+        LIS_IrInicioLista(vertices);
+        do{
+            valor = LIS_ObterValor(vertices);
+
+            LIS_InserirElementoApos(pValores,valor);
+            LIS_AvancarElementoCorrente(pValores,1);
+        }while(LIS_AvancarElementoCorrente(vertices,1) == LIS_CondRetOK);
+    }
+    /* Fim função: GRA  &Obter Valores */
+
 
 /***************************************************************************
 *
@@ -543,13 +564,13 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         
         tpAresta* vizinho = NULL;
         tpNode* no = NULL;
-		GRA_tpCondRet r;
+        GRA_tpCondRet r;
         tpVertice * pVertice = NULL;
         tpVertice * pVerticeCorrente = NULL;
-		int achou = 0;
-		
+        int achou = 0;
+        
         if (pGrafo->corrente == -1) { //Checagem de grafo vazio
-			return GRA_CondRetGrafoVazio ;
+            return GRA_CondRetGrafoVazio ;
         }
 
         pVerticeCorrente = get_by_id( pGrafo, pGrafo->corrente );
@@ -558,7 +579,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         }
         
         pVertice = get_by_id(pGrafo,idVertice);
-		if (pVertice == NULL) {
+        if (pVertice == NULL) {
             return GRA_CondRetNaoEhVertice;
         }
         
@@ -580,7 +601,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
 *  ****/    
     
     GRA_tpCondRet GRA_IrVizinhoCorrente( GRA_tppGrafo pGrafo , int id ) {
-		tpVertice * vizinho = NULL;
+        tpVertice * vizinho = NULL;
         /* Verifica se o grafo não está vazio(possui corrente); */
         if (pGrafo->corrente == -1) {
             return GRA_CondRetGrafoVazio;
@@ -609,7 +630,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
 *  ****/    
     
     GRA_tpCondRet GRA_InserirVizinhoCorrente( GRA_tppGrafo pGrafo , void* pValor, int idVertice, int idAresta ) {
-		tpVertice * vizinho = NULL;
+        tpVertice * vizinho = NULL;
         tpVertice * u;
         tpVertice * v;
         GRA_tpCondRet r;
@@ -643,7 +664,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
 *  ****/    
     
     GRA_tpCondRet GRA_MudarCorrente( GRA_tppGrafo pGrafo , int id ) {
-		tpVertice * vizinho = NULL;
+        tpVertice * vizinho = NULL;
 
         /* Verifica se vertice pertence ao grafo; */
         if (pGrafo->corrente == -1) {
@@ -653,6 +674,8 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         if(vizinho == NULL)
             return GRA_CondRetNaoEhVertice;
         
+        LIS_ProcurarValor(pGrafo->vertices,vizinho);
+
         pGrafo->corrente = id;
         return GRA_CondRetOK;
 
@@ -680,24 +703,36 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
 
 /***************************************************************************
 *
+*  Função: GRA  &NewInt
+*  ****/    
+
+
+    static void* newInt(int id) {
+        int* val = (int*)malloc(sizeof(int));
+        *val = id;
+        return (void*)val;
+    }
+
+/***************************************************************************
+*
 *  Função: GRA  &Buscar caminho 
 *  ****/    
     
     GRA_tpCondRet GRA_BuscarCaminho( GRA_tppGrafo pGrafo , int idVerticeOrigem, int idVerticeDestino, LIS_tppLista * pLista ) {
-		LIS_tppLista caminho = NULL;
-		tpVertice * v = NULL;
-		tpVertice * u = NULL; 		        
+        LIS_tppLista caminho = NULL;
+        tpVertice * v = NULL;
+        tpVertice * u = NULL;               
         LIS_tppLista V = NULL; // LISTA DE VERTICES VISITADOS
         LIS_tppLista Q = NULL; //FILA
         LIS_tppLista arestas = NULL;
-		LIS_tppLista retorno = NULL;
+        LIS_tppLista retorno = NULL;
         tpVertice* t = NULL;
         tpVertice* s = NULL;
-		tpAresta * atemp = NULL;
-		tpAresta * a = NULL;
-		tpVertice * origem1 = NULL;
-		tpVertice * origem2 = NULL;
-
+        tpAresta * atemp = NULL;
+        tpAresta * a = NULL;
+        tpVertice * origem1 = NULL;
+        tpVertice * origem2 = NULL;
+        int* idAux = NULL;
         int achou = 0;
         int achou_V = 0;
         
@@ -715,7 +750,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
             return GRA_CondRetFaltouMemoria;
         }
 
-        retorno = LIS_CriarLista(NULL);
+        retorno = LIS_CriarLista(free);
         if (retorno == NULL) {
             LIS_DestruirLista(caminho);
             return GRA_CondRetFaltouMemoria;
@@ -752,7 +787,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
             return GRA_CondRetFaltouMemoria;       
         }
         
-		atemp = (tpAresta *) malloc(sizeof(tpAresta)); 
+        atemp = (tpAresta *) malloc(sizeof(tpAresta)); 
         if (atemp == NULL) {
             LIS_DestruirLista(caminho);
             LIS_DestruirLista(retorno);
@@ -829,7 +864,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         
         //faz o backtrace
         while(a->pVizinho != NULL){
-            if(LIS_InserirElementoApos(retorno, a->id) != LIS_CondRetOK)
+            if(LIS_InserirElementoApos(retorno, newInt(a->id)) != LIS_CondRetOK)
                 return GRA_CondRetFaltouMemoria;
             LIS_IrInicioLista( caminho ) ;
             do{
@@ -857,6 +892,33 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         return GRA_CondRetOK;
     }
     /* Fim função: GRA  &Buscar caminho */
+
+    GRA_tpCondRet GRA_BuscarVertice( GRA_tppGrafo pGrafo , int* idVertice , int predicado(void* pDado, void* _parametro), void* parametro )
+    {
+        LIS_tppLista vertices;
+        tpVertice* vertice;
+        vertices = pGrafo->vertices;
+
+        if(LIS_NumeroDeElementos(vertices) == 0){
+            *idVertice = -1;
+            return GRA_CondRetGrafoVazio;
+        }
+
+        LIS_IrInicioLista(vertices);
+        do
+        {
+            vertice = (tpVertice*)LIS_ObterValor(vertices);
+            
+            if (predicado(vertice->pNode->pValor, parametro))
+            {
+                *idVertice = vertice->id;
+                return GRA_CondRetOK;
+            }
+        }
+        while (LIS_AvancarElementoCorrente(vertices, 1) == LIS_CondRetOK);
+
+        return GRA_CondRetNaoEhVertice;
+    }
    
     
 /*****  Código das funções encapsuladas no módulo  *****/
@@ -874,9 +936,8 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
 ***********************************************************************/
 
 static int EhVizinho( GRA_tppGrafo pGrafo, tpVertice * v, tpVertice * u ){
-    
     LIS_tppLista vizinhos = NULL;
-	tpAresta * viz = NULL;
+    tpAresta * viz = NULL;
     int vizinho = 0;
     
     vizinhos = u->pNode->arestas;
@@ -934,10 +995,10 @@ static tpVertice * get_by_id(GRA_tppGrafo pGrafo , int idVertice){
 
 
 void get_pair_by_id(GRA_tppGrafo pGrafo, int idAresta, tpVertice ** u, tpVertice ** v){
-	tpAresta * aresta = NULL;
-	tpVertice * vertice = NULL;
+    tpAresta * aresta = NULL;
+    tpVertice * vertice = NULL;
 
-	LIS_IrInicioLista( pGrafo->vertices );
+    LIS_IrInicioLista( pGrafo->vertices );
 
     // Para cada vértice
     do{
@@ -1040,11 +1101,11 @@ tpAresta* get_edge_by_vertex(LIS_tppLista  vizinhos, tpVertice * v){
             v->pNode = no;
             v->id = id;
 
-	 	    if( LIS_InserirElementoApos (grafo->componentes, v) != LIS_CondRetOK) {
+            if( LIS_InserirElementoApos (grafo->componentes, v) != LIS_CondRetOK) {
                 free(v);
                 free(no);
                 LIS_DestruirLista(arestas);
-		        return NULL ;
+                return NULL ;
             }
             return v;
     }
@@ -1061,7 +1122,7 @@ tpAresta* get_edge_by_vertex(LIS_tppLista  vizinhos, tpVertice * v){
 
     static void RemoverAresta(tpVertice* u, tpVertice* v) {
         LIS_tppLista vizinhos = NULL;
-		tpAresta * aresta_v = NULL;
+        tpAresta * aresta_v = NULL;
 
         vizinhos = u->pNode->arestas;
         aresta_v = get_edge_by_vertex(vizinhos, v); 
@@ -1093,7 +1154,7 @@ tpAresta* get_edge_by_vertex(LIS_tppLista  vizinhos, tpVertice * v){
 
         if (LIS_NumeroDeElementos(no->arestas) > 0) {
 
-            vizinhos = calloc(LIS_NumeroDeElementos(no->arestas), sizeof(tpAresta*));
+            vizinhos = (tpAresta**)calloc(LIS_NumeroDeElementos(no->arestas), sizeof(tpAresta*));
 
             LIS_IrInicioLista(no->arestas);
             do {

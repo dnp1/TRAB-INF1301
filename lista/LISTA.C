@@ -114,6 +114,9 @@
 
    void LIS_DestruirLista( LIS_tppLista pLista )
    {
+      if (pLista == NULL) { //Se a lista é nula, nada faz;
+         return;
+      }
 
       #ifdef _DEBUG
          assert( pLista != NULL ) ;

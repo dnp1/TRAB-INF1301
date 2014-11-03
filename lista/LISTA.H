@@ -128,7 +128,7 @@ typedef struct LIS_tagLista * LIS_tppLista ;
 *  $FC Função: LIS  &Destruir lista
 *
 *  $ED Descrição da função
-*     Destrói a lista fornecida.
+*     Destrói a lista fornecida. Se o ponteiro é nulo, não faz nada
 *     O parâmetro ponteiro para a lista não é modificado.
 *     Se ocorrer algum erro durante a destruição, a lista resultará
 *     estruturalmente incorreta.

@@ -421,7 +421,7 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
          
          else if ( strcmp( ComandoTeste , BUSCA_CAM_CMD ) == 0 )
          {            
-            LIS_tppLista caminho;
+            LIS_tppLista caminho = NULL;
 
             NumLidos = LER_LerParametros( "iiii" , &inxGrafo , &id , &_id , &CondRetEsperada ) ;
             if ( ( NumLidos != 4 ) || !VerificarInx( inxGrafo )  )

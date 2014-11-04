@@ -7,7 +7,14 @@
     #define ESTADO_EXT extern
 #endif
 
+
+#include "TIPOESTADO.h"
+/*
+#if ! defined ( TIPOESTADO_ )
+#define TIPOESTADO_
 typedef struct estado_ * EST_tppEstado;
+#endif
+*/
 #include "MENU.h"
 #include "TABULEIRO.h"
 

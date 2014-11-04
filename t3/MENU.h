@@ -12,6 +12,7 @@
    
 */
 #include "GRAFO.h"
+#include "TIPOESTADO.h"
 typedef enum{
     MEN_CondRetFaltouMemoria,
     MEN_CondRetOK
@@ -19,7 +20,6 @@ typedef enum{
 typedef GRA_tppGrafo MEN_tppMenus;
 typedef struct Menu_ * MEN_tppMenu;
 typedef struct Opcao_ * MEN_tppOpcao; 
-#include "ESTADO.h"
 
 void MEN_DestruirMenu(MEN_tppMenu menu);
 

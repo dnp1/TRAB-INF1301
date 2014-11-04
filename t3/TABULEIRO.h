@@ -84,9 +84,6 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
         TAB_CondRetAlteracaoInvalida , 
         /* Alteração do valor ( vazio/parede/inicio/fim ) inválida */
 
-        TAB_CondRetTabuleiroValido ,
-        /* Tabuleiro respeita as assertivas */
-
         TAB_CondRetTabuleiroInvalido ,
         /* Tabuleiro viola as assertivas */
 
@@ -150,7 +147,7 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 *
 ***********************************************************************/
 
-    TAB_tpCondRet TAB_PodeAndarPraCima ( TAB_tppTabuleiro pTab );
+    TAB_tpCondRet TAB_PodeAndarPraCima ( TAB_tppTabuleiro pTab , int colisao );
 
 /***********************************************************************
 *
@@ -168,7 +165,7 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 *
 ***********************************************************************/
 
-    TAB_tpCondRet TAB_PodeAndarPraEsquerda ( TAB_tppTabuleiro pTab );
+    TAB_tpCondRet TAB_PodeAndarPraEsquerda ( TAB_tppTabuleiro pTab , int colisao );
 
 /***********************************************************************
 *
@@ -186,7 +183,7 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 *
 ***********************************************************************/
 
-    TAB_tpCondRet TAB_PodeAndarPraBaixo ( TAB_tppTabuleiro pTab );
+    TAB_tpCondRet TAB_PodeAndarPraBaixo ( TAB_tppTabuleiro pTab , int colisao );
 
 /***********************************************************************
 *
@@ -204,7 +201,7 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 *
 ***********************************************************************/
 
-    TAB_tpCondRet TAB_PodeAndarPraDireita ( TAB_tppTabuleiro pTab );
+    TAB_tpCondRet TAB_PodeAndarPraDireita ( TAB_tppTabuleiro pTab , int colisao );
 
 /***********************************************************************
 *
@@ -221,7 +218,7 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 *
 ***********************************************************************/
 
-    TAB_tpCondRet TAB_AndarPraCima ( TAB_tppTabuleiro pTab , int colisao );
+    TAB_tpCondRet TAB_AndarPraCima ( TAB_tppTabuleiro pTab  );
 
 /***********************************************************************
 *
@@ -238,7 +235,7 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 *
 ***********************************************************************/
 
-    TAB_tpCondRet TAB_AndarPraEsquerda ( TAB_tppTabuleiro pTab , int colisao );
+    TAB_tpCondRet TAB_AndarPraEsquerda ( TAB_tppTabuleiro pTab );
 
 /***********************************************************************
 *
@@ -255,7 +252,7 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 *
 ***********************************************************************/
 
-    TAB_tpCondRet TAB_AndarPraBaixo ( TAB_tppTabuleiro pTab , int colisao );
+    TAB_tpCondRet TAB_AndarPraBaixo ( TAB_tppTabuleiro pTab );
 
 /***********************************************************************
 *
@@ -272,7 +269,7 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 *
 ***********************************************************************/
 
-    TAB_tpCondRet TAB_AndarPraDireita ( TAB_tppTabuleiro pTab , int colisao );
+    TAB_tpCondRet TAB_AndarPraDireita ( TAB_tppTabuleiro pTab  );
 
 /***********************************************************************
 *
@@ -291,7 +288,7 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 *
 ***********************************************************************/
 
-    TAB_tpCondRet TAB_PoeChao ( TAB_tppTabuleiro pTab , int x , int y ) ;
+    TAB_tpCondRet TAB_PoeChao ( TAB_tppTabuleiro pTab ) ;
  
 /***********************************************************************
 *
@@ -310,7 +307,7 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 *
 ***********************************************************************/
 
-    TAB_tpCondRet TAB_PoeParede ( TAB_tppTabuleiro pTab , int x , int y ) ;
+    TAB_tpCondRet TAB_PoeParede ( TAB_tppTabuleiro pTab ) ;
  
 /***********************************************************************
 *
@@ -329,7 +326,7 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 *
 ***********************************************************************/
 
-    TAB_tpCondRet TAB_PoeInicio ( TAB_tppTabuleiro pTab , int x , int y ) ;
+    TAB_tpCondRet TAB_PoeInicio ( TAB_tppTabuleiro pTab ) ;
  
 /***********************************************************************
 *
@@ -348,7 +345,7 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 *
 ***********************************************************************/
 
-    TAB_tpCondRet TAB_PoeFim ( TAB_tppTabuleiro pTab , int x , int y ) ;
+    TAB_tpCondRet TAB_PoeFim ( TAB_tppTabuleiro pTab ) ;
  
 /***********************************************************************
 *

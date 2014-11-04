@@ -59,7 +59,7 @@ static int MesmoTipo( void* a, void* b ) ;
 static int MesmaPosicao( void* a, void* b ) ;
 static int TemInicio( TAB_tppTabuleiro pTab );
 static int TemFim( TAB_tppTabuleiro pTab ) ;
-static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y ) ;
+static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y , int colisao ) ;
 
 /*****  Código das funções exportadas pelo módulo  *****/
 
@@ -119,6 +119,8 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y ) ;
             (*pTab)->idAresta[i] = -1;
         }
 
+        GRA_MudarCorrente((*pTab)->pGrafo,0);
+
         return TAB_CondRetOK ;
     }
 
@@ -146,19 +148,21 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y ) ;
 *  Função: TAB  &Pode andar pra cima
 *  ****/
 
-    TAB_tpCondRet TAB_PodeAndarPraCima(TAB_tppTabuleiro pTab ){
-        int idCorrente = -1;
-        GRA_ObterIDCorrente(pTab->pGrafo,&idCorrente);
-        if(idCorrente == -1)
-            return TAB_CondRetMovimentoInvalido;
+    TAB_tpCondRet TAB_PodeAndarPraCima(TAB_tppTabuleiro pTab , int colisao ){
+        Casa* corrente;
+        GRA_ObterValorCorrente(pTab->pGrafo,(void**)&corrente);
 
-        if(Norte(pTab)!=-1){
-            GRA_MudarCorrente(pTab->pGrafo,idCorrente);
-            return TAB_CondRetOK;
+        if(colisao){
+            if(Norte(pTab)!=-1)
+                return TAB_CondRetOK;
+            else
+                return TAB_CondRetMovimentoInvalido;
         }
         else{
-            GRA_MudarCorrente(pTab->pGrafo,idCorrente);
-            return TAB_CondRetMovimentoInvalido;
+            if(corrente->y-1 < 0)
+                return TAB_CondRetMovimentoInvalido;
+            else
+                return TAB_CondRetOK;
         }
     }
  
@@ -167,19 +171,21 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y ) ;
 *  Função: TAB  &Pode andar pra esquerda
 *  ****/
 
-    TAB_tpCondRet TAB_PodeAndarPraEsquerda(TAB_tppTabuleiro pTab){
-        int idCorrente = -1;
-        GRA_ObterIDCorrente(pTab->pGrafo,&idCorrente);
-        if(idCorrente == -1)
-            return TAB_CondRetMovimentoInvalido;
+    TAB_tpCondRet TAB_PodeAndarPraEsquerda(TAB_tppTabuleiro pTab , int colisao){
+        Casa* corrente;
+        GRA_ObterValorCorrente(pTab->pGrafo,(void**)&corrente);
 
-        if(Oeste(pTab)!=-1){
-            GRA_MudarCorrente(pTab->pGrafo,idCorrente);
-            return TAB_CondRetOK;
+        if(colisao){
+            if(Oeste(pTab)!=-1)
+                return TAB_CondRetOK;
+            else
+                return TAB_CondRetMovimentoInvalido;
         }
         else{
-            GRA_MudarCorrente(pTab->pGrafo,idCorrente);
-            return TAB_CondRetMovimentoInvalido;
+            if(corrente->x-1 < 0)
+                return TAB_CondRetMovimentoInvalido;
+            else
+                return TAB_CondRetOK;
         }
     }
  
@@ -188,19 +194,21 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y ) ;
 *  Função: TAB  &Pode andar pra baixo
 *  ****/
     
-    TAB_tpCondRet TAB_PodeAndarPraBaixo(TAB_tppTabuleiro pTab){
-        int idCorrente = -1;
-        GRA_ObterIDCorrente(pTab->pGrafo,&idCorrente);
-        if(idCorrente == -1)
-            return TAB_CondRetMovimentoInvalido;
+    TAB_tpCondRet TAB_PodeAndarPraBaixo(TAB_tppTabuleiro pTab , int colisao){
+        Casa* corrente;
+        GRA_ObterValorCorrente(pTab->pGrafo,(void**)&corrente);
 
-        if(Sul(pTab)!=-1){
-            GRA_MudarCorrente(pTab->pGrafo,idCorrente);
-            return TAB_CondRetOK;
+        if(colisao){
+            if(Sul(pTab)!=-1)
+                return TAB_CondRetOK;
+            else
+                return TAB_CondRetMovimentoInvalido;
         }
         else{
-            GRA_MudarCorrente(pTab->pGrafo,idCorrente);
-            return TAB_CondRetMovimentoInvalido;
+            if(corrente->y+1 < 0)
+                return TAB_CondRetMovimentoInvalido;
+            else
+                return TAB_CondRetOK;
         }
     }
  
@@ -209,19 +217,21 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y ) ;
 *  Função: TAB  &Pode andar pra direita
 *  ****/
 
-    TAB_tpCondRet TAB_PodeAndarPraDireita(TAB_tppTabuleiro pTab){ 
-        int idCorrente = -1;
-        GRA_ObterIDCorrente(pTab->pGrafo,&idCorrente);
-        if(idCorrente == -1)
-            return TAB_CondRetMovimentoInvalido;
+    TAB_tpCondRet TAB_PodeAndarPraDireita(TAB_tppTabuleiro pTab , int colisao){ 
+        Casa* corrente;
+        GRA_ObterValorCorrente(pTab->pGrafo,(void**)&corrente);
 
-        if(Leste(pTab)!=-1){
-            GRA_MudarCorrente(pTab->pGrafo,idCorrente);
-            return TAB_CondRetOK;
+        if(colisao){
+            if(Leste(pTab)!=-1)
+                return TAB_CondRetOK;
+            else
+                return TAB_CondRetMovimentoInvalido;
         }
         else{
-            GRA_MudarCorrente(pTab->pGrafo,idCorrente);
-            return TAB_CondRetMovimentoInvalido;
+            if(corrente->x+1 < 0)
+                return TAB_CondRetMovimentoInvalido;
+            else
+                return TAB_CondRetOK;
         }
     }
  
@@ -230,17 +240,20 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y ) ;
 *  Função: TAB  &Andar pra cima
 *  ****/
 
-    TAB_tpCondRet TAB_AndarPraCima(TAB_tppTabuleiro pTab, int colisao){
+    TAB_tpCondRet TAB_AndarPraCima(TAB_tppTabuleiro pTab){
         Casa* corrente;
+        int idVizinho = -1;
+        
+        GRA_ObterValorCorrente(pTab->pGrafo,(void**)&corrente);
+        idVizinho = GetIdByXY(pTab,corrente->x, corrente->y - 1, 1);
 
-        if(colisao){
-            GRA_MudarCorrente(pTab->pGrafo , Norte(pTab));
+        if(idVizinho != -1){
+            GRA_MudarCorrente(pTab->pGrafo , idVizinho);
             return TAB_CondRetOK;
         }
-        else{
-            GRA_ObterValorCorrente(pTab->pGrafo,(void**)&corrente);
-            corrente->y -= 1;
-        }
+        else
+            return TAB_CondRetMovimentoInvalido;
+ 
     }
  
 /***************************************************************************
@@ -248,17 +261,20 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y ) ;
 *  Função: TAB  &Andar pra esquerda
 *  ****/
 
-    TAB_tpCondRet TAB_AndarPraEsquerda(TAB_tppTabuleiro pTab, int colisao){
+    TAB_tpCondRet TAB_AndarPraEsquerda(TAB_tppTabuleiro pTab){
         Casa* corrente;
+        int idVizinho = -1;
+        
+        GRA_ObterValorCorrente(pTab->pGrafo,(void**)&corrente);
+        idVizinho = GetIdByXY(pTab,corrente->x - 1, corrente->y, 1);
 
-        if(colisao){
-            GRA_MudarCorrente(pTab->pGrafo , Oeste(pTab));
+        if(idVizinho != -1){
+            GRA_MudarCorrente(pTab->pGrafo , idVizinho);
             return TAB_CondRetOK;
         }
-        else{
-            GRA_ObterValorCorrente(pTab->pGrafo,(void**)&corrente);
-            corrente->x -= 1;
-        }
+        else
+            return TAB_CondRetMovimentoInvalido;
+ 
     }
  
 /***************************************************************************
@@ -266,17 +282,20 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y ) ;
 *  Função: TAB  &Andar pra baixo
 *  ****/
     
-    TAB_tpCondRet TAB_AndarPraBaixo(TAB_tppTabuleiro pTab, int colisao){
+    TAB_tpCondRet TAB_AndarPraBaixo(TAB_tppTabuleiro pTab){
         Casa* corrente;
+        int idVizinho = -1;
+        
+        GRA_ObterValorCorrente(pTab->pGrafo,(void**)&corrente);
+        idVizinho = GetIdByXY(pTab,corrente->x, corrente->y + 1, 1);
 
-        if(colisao){
-            GRA_MudarCorrente(pTab->pGrafo , Sul(pTab));
+        if(idVizinho != -1){
+            GRA_MudarCorrente(pTab->pGrafo , idVizinho);
             return TAB_CondRetOK;
         }
-        else{
-            GRA_ObterValorCorrente(pTab->pGrafo,(void**)&corrente);
-            corrente->y += 1;
-        }
+        else
+            return TAB_CondRetMovimentoInvalido;
+ 
     }
  
 /***************************************************************************
@@ -286,15 +305,18 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y ) ;
 
     TAB_tpCondRet TAB_AndarPraDireita(TAB_tppTabuleiro pTab, int colisao){
         Casa* corrente;
+        int idVizinho = -1;
+        
+        GRA_ObterValorCorrente(pTab->pGrafo,(void**)&corrente);
+        idVizinho = GetIdByXY(pTab,corrente->x + 1, corrente->y, 1);
 
-        if(colisao){
-            GRA_MudarCorrente(pTab->pGrafo , Leste(pTab));
+        if(idVizinho != -1){
+            GRA_MudarCorrente(pTab->pGrafo , idVizinho);
             return TAB_CondRetOK;
         }
-        else{
-            GRA_ObterValorCorrente(pTab->pGrafo,(void**)&corrente);
-            corrente->x += 1;
-        }
+        else
+            return TAB_CondRetMovimentoInvalido;
+ 
     }
   
 /***************************************************************************
@@ -321,7 +343,7 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y ) ;
         if(x < 0 || x > pTab->largura || y < 0 || y > pTab->altura )
             return TAB_CondRetNaoEhCasa;
 
-        if(GRA_ObterValor(pTab->pGrafo, GetIdByXY(pTab,x,y), (void**)&casaXY) == GRA_CondRetOK){
+        if(GRA_ObterValor(pTab->pGrafo, GetIdByXY(pTab,x,y,0), (void**)&casaXY) == GRA_CondRetOK){
             *tipo = casaXY->tipo;
             return TAB_CondRetOK;
         }
@@ -355,23 +377,26 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y ) ;
 *  Função: TAB  &Poe Chao
 *  ****/    
     
-    TAB_tpCondRet TAB_PoeChao (TAB_tppTabuleiro pTab, int x, int y){
+    TAB_tpCondRet TAB_PoeChao (TAB_tppTabuleiro pTab){
         Casa* casaXY;
         GRA_tpCondRet achouVertice = GRA_CondRetNaoEhVertice;
-        int idXY, idVertice, idAresta;
-        
-        idVertice = getCasaID (pTab,x,y);
-        achouVertice = GRA_ObterValor(pTab->pGrafo,idVertice,(void**)&casaXY);
+        int idXY, idVertice, idAresta, x , y;
+
+        achouVertice = GRA_ObterValorCorrente(pTab->pGrafo,(void**)&casaXY);
         
         if(achouVertice == GRA_CondRetNaoEhVertice)
             return TAB_CondRetNaoEhCasa;
 
+        x = casaXY->x;
+        y = casaXY->y;
+
+        idVertice = getCasaID (pTab,x,y);
         if(casaXY->tipo == TAB_tpCasaParede){
 
             pTab->idCasa[idVertice] = 1;
 
             //Vizinho ao norte
-            idXY = GetIdByXY(pTab,x,y-1);
+            idXY = GetIdByXY(pTab,x,y-1,0);
             //Reposiciona o corrente
             GRA_MudarCorrente(pTab->pGrafo, idVertice);
             if(idXY != -1){
@@ -383,7 +408,7 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y ) ;
             }
 
             //Vizinho ao oeste
-            idXY = GetIdByXY(pTab,x-1,y);
+            idXY = GetIdByXY(pTab,x-1,y,0);
             //Reposiciona o corrente
             GRA_MudarCorrente(pTab->pGrafo, idVertice);
             if(idXY != -1){
@@ -395,7 +420,7 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y ) ;
             }
 
             //Vizinho ao sul
-            idXY = GetIdByXY(pTab,x,y+1);
+            idXY = GetIdByXY(pTab,x,y+1,0);
             //Reposiciona o corrente
             GRA_MudarCorrente(pTab->pGrafo, idVertice);
             if(idXY != -1){
@@ -407,7 +432,7 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y ) ;
             }
 
             //Vizinho ao leste
-            idXY = GetIdByXY(pTab,x+1,y);
+            idXY = GetIdByXY(pTab,x+1,y,0);
             //Reposiciona o corrente
             GRA_MudarCorrente(pTab->pGrafo, idVertice);
             if(idXY != -1){
@@ -429,21 +454,25 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y ) ;
 *  Função: TAB  &Poe Parede
 *  ****/    
     
-    TAB_tpCondRet TAB_PoeParede (TAB_tppTabuleiro pTab, int x , int y ){
+    TAB_tpCondRet TAB_PoeParede (TAB_tppTabuleiro pTab){
         Casa* casaXY ,* parede;
         GRA_tpCondRet achouVertice = GRA_CondRetNaoEhVertice;
-        int idXY, idVertice, idAresta, idInicio;
-        
-        idVertice = getCasaID (pTab,x,y);
-        achouVertice = GRA_ObterValor(pTab->pGrafo,idVertice,(void**)&casaXY);
+        int idXY, idVertice, idAresta, idInicio, x , y;
+
+        achouVertice = GRA_ObterValorCorrente(pTab->pGrafo,(void**)&casaXY);
         
         if(achouVertice == GRA_CondRetNaoEhVertice)
             return TAB_CondRetNaoEhCasa;
 
+        x = casaXY->x;
+        y = casaXY->y;
+
+        idVertice = getCasaID (pTab,x,y);
+
         if(casaXY->tipo != TAB_tpCasaParede){
             
             //Vizinho ao norte
-            idXY = GetIdByXY(pTab,x,y-1);
+            idXY = GetIdByXY(pTab,x,y-1,0);
             //Reposiciona o corrente
             GRA_MudarCorrente(pTab->pGrafo, idVertice);
             if(idXY != -1){
@@ -453,7 +482,7 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y ) ;
             }
 
             //Vizinho ao oeste
-            idXY = GetIdByXY(pTab,x-1,y);
+            idXY = GetIdByXY(pTab,x-1,y,0);
             //Reposiciona o corrente
             GRA_MudarCorrente(pTab->pGrafo, idVertice);
             if(idXY != -1){
@@ -463,7 +492,7 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y ) ;
             }
 
             //Vizinho ao sul
-            idXY = GetIdByXY(pTab,x,y+1);
+            idXY = GetIdByXY(pTab,x,y+1,0);
             //Reposiciona o corrente
             GRA_MudarCorrente(pTab->pGrafo, idVertice);
             if(idXY != -1){
@@ -473,7 +502,7 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y ) ;
             }
 
             //Vizinho ao leste
-            idXY = GetIdByXY(pTab,x+1,y);
+            idXY = GetIdByXY(pTab,x+1,y,0);
             //Reposiciona o corrente
             GRA_MudarCorrente(pTab->pGrafo, idVertice);
             if(idXY != -1){
@@ -504,14 +533,21 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y ) ;
 *  Função: TAB  &Poe Inicio
 *  ****/    
     
-    TAB_tpCondRet TAB_PoeInicio (TAB_tppTabuleiro pTab, int x, int y){
+    TAB_tpCondRet TAB_PoeInicio (TAB_tppTabuleiro pTab){
         Casa* casaXY ,* casaInicio;
         GRA_tpCondRet achouVertice = GRA_CondRetNaoEhVertice;
-        int idXY, idVertice, idAresta, idInicio;
+        int idXY, idVertice, idAresta, idInicio, x , y;
+
+        achouVertice = GRA_ObterValorCorrente(pTab->pGrafo,(void**)&casaXY);
         
-        idInicio = -1; 
+        if(achouVertice == GRA_CondRetNaoEhVertice)
+            return TAB_CondRetNaoEhCasa;
+
+        x = casaXY->x;
+        y = casaXY->y;
+
+        idInicio = -1;
         idVertice = getCasaID (pTab,x,y);
-        achouVertice = GRA_ObterValor(pTab->pGrafo,idVertice,(void**)&casaXY);
         
         if(achouVertice == GRA_CondRetNaoEhVertice)
             return TAB_CondRetNaoEhCasa;
@@ -521,7 +557,7 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y ) ;
             pTab->idCasa[idVertice] = 1;
 
             //Vizinho ao norte
-            idXY = GetIdByXY(pTab,x,y-1);
+            idXY = GetIdByXY(pTab,x,y-1,0);
             //Reposiciona o corrente
             GRA_MudarCorrente(pTab->pGrafo, idVertice);
             if(idXY != -1){
@@ -533,7 +569,7 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y ) ;
             }
 
             //Vizinho ao oeste
-            idXY = GetIdByXY(pTab,x-1,y);
+            idXY = GetIdByXY(pTab,x-1,y,0);
             //Reposiciona o corrente
             GRA_MudarCorrente(pTab->pGrafo, idVertice);
             if(idXY != -1){
@@ -545,7 +581,7 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y ) ;
             }
 
             //Vizinho ao sul
-            idXY = GetIdByXY(pTab,x,y+1);
+            idXY = GetIdByXY(pTab,x,y+1,0);
             //Reposiciona o corrente
             GRA_MudarCorrente(pTab->pGrafo, idVertice);
             if(idXY != -1){
@@ -557,7 +593,7 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y ) ;
             }
 
             //Vizinho ao leste
-            idXY = GetIdByXY(pTab,x+1,y);
+            idXY = GetIdByXY(pTab,x+1,y,0);
             //Reposiciona o corrente
             GRA_MudarCorrente(pTab->pGrafo, idVertice);
             if(idXY != -1){
@@ -589,14 +625,21 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y ) ;
 *  Função: TAB  &Poe Fim
 *  ****/    
     
-    TAB_tpCondRet TAB_PoeFim (TAB_tppTabuleiro pTab, int x, int y){
+    TAB_tpCondRet TAB_PoeFim (TAB_tppTabuleiro pTab){
         Casa* casaXY ,* casaFim;
         GRA_tpCondRet achouVertice = GRA_CondRetNaoEhVertice;
-        int idXY, idVertice, idAresta, idFim;
+        int idXY, idVertice, idAresta, idFim, x , y;
+
+        achouVertice = GRA_ObterValorCorrente(pTab->pGrafo,(void**)&casaXY);
         
+        if(achouVertice == GRA_CondRetNaoEhVertice)
+            return TAB_CondRetNaoEhCasa;
+
+        x = casaXY->x;
+        y = casaXY->y;
+
         idFim = -1;
         idVertice = getCasaID (pTab,x,y);
-        achouVertice = GRA_ObterValor(pTab->pGrafo,idVertice,(void**)&casaXY);
         
         if(achouVertice == GRA_CondRetNaoEhVertice)
             return TAB_CondRetNaoEhCasa;
@@ -606,7 +649,7 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y ) ;
             pTab->idCasa[idVertice] = 1;
 
             //Vizinho ao norte
-            idXY = GetIdByXY(pTab,x,y-1);
+            idXY = GetIdByXY(pTab,x,y-1,0);
             //Reposiciona o corrente
             GRA_MudarCorrente(pTab->pGrafo, idVertice);
             if(idXY != -1){
@@ -618,7 +661,7 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y ) ;
             }
 
             //Vizinho ao oeste
-            idXY = GetIdByXY(pTab,x-1,y);
+            idXY = GetIdByXY(pTab,x-1,y,0);
             //Reposiciona o corrente
             GRA_MudarCorrente(pTab->pGrafo, idVertice);
             if(idXY != -1){
@@ -630,7 +673,7 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y ) ;
             }
 
             //Vizinho ao sul
-            idXY = GetIdByXY(pTab,x,y+1);
+            idXY = GetIdByXY(pTab,x,y+1,0);
             //Reposiciona o corrente
             GRA_MudarCorrente(pTab->pGrafo, idVertice);
             if(idXY != -1){
@@ -642,7 +685,7 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y ) ;
             }
 
             //Vizinho ao leste
-            idXY = GetIdByXY(pTab,x+1,y);
+            idXY = GetIdByXY(pTab,x+1,y,0);
             //Reposiciona o corrente
             GRA_MudarCorrente(pTab->pGrafo, idVertice);
             if(idXY != -1){
@@ -915,14 +958,16 @@ mapa1
             return -1;
     }
 
-    static int GetIdByXY(TAB_tppTabuleiro pTab, int x , int y ){
+    static int GetIdByXY(TAB_tppTabuleiro pTab, int x , int y , int colisao ){
         Casa parametro;
         int id = -1;
         parametro.x = x;
         parametro.y = y;
         GRA_BuscarVertice(pTab->pGrafo, &id, MesmaPosicao, (void*)&parametro);
         
-        if(pTab->idCasa[id] != -1)
+        if(colisao)
+            return id;
+        else if(pTab->idCasa[id] != -1)
             return id;
         else
             return -1;

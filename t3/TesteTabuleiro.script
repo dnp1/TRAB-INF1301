@@ -28,3 +28,37 @@
 =destruirtab 3 OK
 =recuperar
 
+== Posso sair do tabuleiro ?
+=podeircima 1 0 OK
+=recuperar
+=podeiresquerda 1 0 OK
+=recuperar
+=podeircima 1 1 OK
+=recuperar
+=podeiresquerda 1 1 OK
+=recuperar
+
+== Editor pode andar em paredes
+=podeirdireita 1 0 OK
+=podeirbaixo 1 0 OK
+
+== Jogador não pode andar em paredes
+=podeirdireita 1 1 OK
+=recuperar
+=podeirbaixo 1 1 OK
+=recuperar
+
+== Sequencia PoeX
+=poechao 1 OK
+=poeinicio 1 OK
+=poefim 1 OK
+=poeparede 1 OK
+
+== Criar caminho
+=poechao 1 OK
+=andarbaixo 1 OK
+=poechao 1 OK
+=andarbaixo 1 OK
+=poechao 1 OK
+=andardireita 1 OK
+=poechao 1 OK

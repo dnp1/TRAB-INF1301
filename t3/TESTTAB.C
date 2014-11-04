@@ -55,6 +55,7 @@ static const char SOLUCIONAR_TAB_CMD    [] = "=solucionartab"   ;
 int estaInicializado = 0 ;
 
 #define DIM_VT_TABULEIROS   10
+#define DIM_VALOR     1000
 
 TAB_tppTabuleiro vtRefTabuleiros[ DIM_VT_TABULEIROS ] ;
 
@@ -80,10 +81,10 @@ TAB_tppTabuleiro vtRefTabuleiros[ DIM_VT_TABULEIROS ] ;
 *           - anula o vetor de grafos Provoca vazamento de memória
 *     =criartab               inxTab   altura    largura   CondRetEsp
 *     =destruirtab            inxTab   CondRetEsp
-*     =podeircima"            inxTab   CondRetEsp
-*     =podeiresquerda"        inxTab   CondRetEsp
-*     =podeirdireita"         inxTab   CondRetEsp  
-*     =podeirbaixo"           inxTab   CondRetEsp
+*     =podeircima"            inxTab   colisao   CondRetEsp
+*     =podeiresquerda"        inxTab   colisao   CondRetEsp
+*     =podeirdireita"         inxTab   colisao   CondRetEsp 
+*     =podeirbaixo"           inxTab   colisao   CondRetEsp
 *     =andarcima"             inxTab   CondRetEsp
 *     =andaresquerda"         inxTab   CondRetEsp 
 *     =andarbaixo"            inxTab   CondRetEsp
@@ -111,9 +112,13 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
                                       /* inicializa para qualquer coisa */
       TAB_tpCondRet CondRetTemp = TAB_CondRetFaltouMemoria ;
                                       /* inicializa para qualquer coisa */
+      TAB_tpCasa casa;
       int i ;
       int NumLidos = -1 ;
       int inxTabuleiro = -1 ;
+      int colisao = -1 ;
+      int x, y;
+      char nome[DIM_VALOR];
 
       /* Tratar: inicializar contexto */
       
@@ -138,7 +143,6 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
       else if ( strcmp( ComandoTeste , CRIAR_TAB_CMD ) == 0 )
       {
           int altura, largura;
-          char* nome;
 
           NumLidos = LER_LerParametros("iiisi",&inxTabuleiro,&altura,&largura,&nome,&CondRetEsperada);
           if((NumLidos != 5) || !VerificarInx(inxTabuleiro))
@@ -168,112 +172,225 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
             
       else if ( strcmp( ComandoTeste , PODE_IR_CIMA_CMD ) == 0 )
       {
-      
+          NumLidos = LER_LerParametros("iii",&inxTabuleiro,&colisao,&CondRetEsperada);
+          if((NumLidos != 3) || !VerificarInx(inxTabuleiro))
+          {
+              return TST_CondRetParm;
+          }
+          
+          printf("\ncolisao = %d\n",colisao);
+          CondRetObtida = TAB_PodeAndarPraCima(vtRefTabuleiros[inxTabuleiro], colisao);
+          return TST_CompararInt( CondRetEsperada , CondRetObtida , "Retorno errado ao tentar descobrir se e possivel andar pra cima." );
       } /* fim ativa: Testar TAB Pode ir cima */
 
       /* Testar TAB Pode ir esquerda */
         
       else if ( strcmp( ComandoTeste , PODE_IR_ESQUERDA_CMD ) == 0 )
       {
-      
+          NumLidos = LER_LerParametros("iii",&inxTabuleiro,&colisao,&CondRetEsperada);
+          if((NumLidos != 3) || !VerificarInx(inxTabuleiro))
+          {
+              return TST_CondRetParm;
+          }
+
+          CondRetObtida = TAB_PodeAndarPraEsquerda(vtRefTabuleiros[inxTabuleiro],colisao);
+          return TST_CompararInt( CondRetEsperada , CondRetObtida , "Retorno errado ao tentar descobrir se e possivel andar pra esquerda." );
       } /* fim ativa: Testar TAB Pode ir esquerda */
             
       /* Testar TAB Pode ir baixo */
             
       else if ( strcmp( ComandoTeste , PODE_IR_BAIXO_CMD ) == 0 )
       {
-      
+          NumLidos = LER_LerParametros("iii",&inxTabuleiro,&colisao,&CondRetEsperada);
+          if((NumLidos != 3) || !VerificarInx(inxTabuleiro))
+          {
+              return TST_CondRetParm;
+          }
+
+          CondRetObtida = TAB_PodeAndarPraBaixo(vtRefTabuleiros[inxTabuleiro],colisao);
+          return TST_CompararInt( CondRetEsperada , CondRetObtida , "Retorno errado ao tentar descobrir se e possivel andar pra baixo." );
       } /* fim ativa: Testar TAB Pode ir baixo */
             
       /* Testar TAB Pode ir direita */
             
       else if ( strcmp( ComandoTeste , PODE_IR_DIREITA_CMD ) == 0 )
       {
-      
+          NumLidos = LER_LerParametros("iii",&inxTabuleiro,&colisao,&CondRetEsperada);
+          if((NumLidos != 3) || !VerificarInx(inxTabuleiro))
+          {
+              return TST_CondRetParm;
+          }
+
+          CondRetObtida = TAB_PodeAndarPraDireita(vtRefTabuleiros[inxTabuleiro],colisao);
+          return TST_CompararInt( CondRetEsperada , CondRetObtida , "Retorno errado ao tentar descobrir se e possivel andar pra direita." );
       } /* fim ativa: Testar TAB Pode ir direita */
       
       /* Testar TAB Andar pra cima */
             
       else if ( strcmp( ComandoTeste , ANDAR_CIMA_CMD ) == 0 )
       {
-      
+          NumLidos = LER_LerParametros("ii",&inxTabuleiro,&CondRetEsperada);
+          if((NumLidos != 2) || !VerificarInx(inxTabuleiro))
+          {
+              return TST_CondRetParm;
+          }
+
+          CondRetObtida = TAB_AndarPraCima(vtRefTabuleiros[inxTabuleiro]);
+          return TST_CompararInt( CondRetEsperada , CondRetObtida , "Retorno errado ao andar pra cima" );   
       } /* fim ativa: Testar TAB Andar pra cima */     
        
       /* Testar TAB Andar pra esquerda */
             
       else if ( strcmp( ComandoTeste , ANDAR_ESQUERDA_CMD ) == 0 )
       {
-      
+          NumLidos = LER_LerParametros("ii",&inxTabuleiro,&CondRetEsperada);
+          if((NumLidos != 2) || !VerificarInx(inxTabuleiro))
+          {
+              return TST_CondRetParm;
+          }
+
+          CondRetObtida = TAB_AndarPraEsquerda(vtRefTabuleiros[inxTabuleiro]);
+          return TST_CompararInt( CondRetEsperada , CondRetObtida , "Retorno errado ao andar pra esquerda" );   
       } /* fim ativa: Testar TAB Andar pra esquerda */
             
       /* Testar TAB Andar pra baixo */
             
       else if ( strcmp( ComandoTeste , ANDAR_BAIXO_CMD ) == 0 )
       {
-      
+          NumLidos = LER_LerParametros("ii",&inxTabuleiro,&CondRetEsperada);
+          if((NumLidos != 2) || !VerificarInx(inxTabuleiro))
+          {
+              return TST_CondRetParm;
+          }
+
+          CondRetObtida = TAB_AndarPraBaixo(vtRefTabuleiros[inxTabuleiro]);
+          return TST_CompararInt( CondRetEsperada , CondRetObtida , "Retorno errado ao andar pra baixo" );   
       } /* fim ativa: Testar TAB Andar pra baixo */      
       
       /* Testar TAB Andar pra direita */
             
       else if ( strcmp( ComandoTeste , ANDAR_DIREITA_CMD ) == 0 )
       {
-      
+          NumLidos = LER_LerParametros("ii",&inxTabuleiro,&CondRetEsperada);
+          if((NumLidos != 2) || !VerificarInx(inxTabuleiro))
+          {
+              return TST_CondRetParm;
+          }
+
+          CondRetObtida = TAB_AndarPraDireita(vtRefTabuleiros[inxTabuleiro]);
+          return TST_CompararInt( CondRetEsperada , CondRetObtida , "Retorno errado ao andar pra direita" );   
       } /* fim ativa: Testar TAB Andar pra direita */
       
       /* Testar TAB Poe chao */
             
       else if ( strcmp( ComandoTeste , POE_CHAO_CMD ) == 0 )
       {
-      
+          NumLidos = LER_LerParametros("ii",&inxTabuleiro,&CondRetEsperada);
+          if((NumLidos != 2) || !VerificarInx(inxTabuleiro))
+          {
+              return TST_CondRetParm;
+          }
+
+          CondRetObtida = TAB_PoeChao(vtRefTabuleiros[inxTabuleiro]);
+          return TST_CompararInt( CondRetEsperada , CondRetObtida , "Retorno errado ao por chao." );
       } /* fim ativa: Testar TAB Poe chao */   
          
       /* Testar TAB Poe parede */
             
       else if ( strcmp( ComandoTeste , POE_PAREDE_CMD ) == 0 )
       {
-      
+          NumLidos = LER_LerParametros("ii",&inxTabuleiro,&CondRetEsperada);
+          if((NumLidos != 2) || !VerificarInx(inxTabuleiro))
+          {
+              return TST_CondRetParm;
+          }
+
+          CondRetObtida = TAB_PoeParede(vtRefTabuleiros[inxTabuleiro]);
+          return TST_CompararInt( CondRetEsperada , CondRetObtida , "Retorno errado ao por parede." );
       } /* fim ativa: Testar TAB Poe parede */      
       
       /* Testar TAB Poe inicio */
         
       else if ( strcmp( ComandoTeste , POE_INICIO_CMD ) == 0 )
       {
-      
+          NumLidos = LER_LerParametros("ii",&inxTabuleiro,&CondRetEsperada);
+          if((NumLidos != 2) || !VerificarInx(inxTabuleiro))
+          {
+              return TST_CondRetParm;
+          }
+
+          CondRetObtida = TAB_PoeInicio(vtRefTabuleiros[inxTabuleiro]);
+          return TST_CompararInt( CondRetEsperada , CondRetObtida , "Retorno errado ao por inicio." );
       } /* fim ativa: Testar TAB Poe inicio */      
       
       /* Testar TAB Poe fim */
         
       else if ( strcmp( ComandoTeste , POE_FIM_CMD ) == 0 )
       {
-      
+          NumLidos = LER_LerParametros("ii",&inxTabuleiro,&CondRetEsperada);
+          if((NumLidos != 2) || !VerificarInx(inxTabuleiro))
+          {
+              return TST_CondRetParm;
+          }
+
+          CondRetObtida = TAB_PoeFim(vtRefTabuleiros[inxTabuleiro]);
+          return TST_CompararInt( CondRetEsperada , CondRetObtida , "Retorno errado ao por fim." );
       } /* fim ativa: Testar TAB Poe fim */      
       
       /* Testar TAB Get tipo casa */
             
       else if ( strcmp( ComandoTeste , GET_TIPO_CASA_CMD ) == 0 )
       {
-      
+          NumLidos = LER_LerParametros("ii",&inxTabuleiro,&CondRetEsperada);
+          if((NumLidos != 2) || !VerificarInx(inxTabuleiro))
+          {
+              return TST_CondRetParm;
+          }
+          TAB_PosicaoJogador(vtRefTabuleiros[inxTabuleiro],&x,&y);
+          CondRetObtida = TAB_GetTipoCasa(vtRefTabuleiros[inxTabuleiro],x,y,&casa);
+          return TST_CompararInt( CondRetEsperada , CondRetObtida , "Retorno errado obter o tipo da casa." );
       } /* fim ativa: Testar TAB Get tipo casa */      
       
       /* Testar TAB Get altura */
             
       else if ( strcmp( ComandoTeste , GET_ALTURA_CMD ) == 0 )
       {
-      
+          NumLidos = LER_LerParametros("ii",&inxTabuleiro,&CondRetEsperada);
+          if((NumLidos != 2) || !VerificarInx(inxTabuleiro))
+          {
+              return TST_CondRetParm;
+          }
+
+          CondRetObtida = TAB_GetAltura(vtRefTabuleiros[inxTabuleiro],&y);
+          return TST_CompararInt( CondRetEsperada , CondRetObtida , "Retorno errado ao obter altura." );
       } /* fim ativa: Testar TAB Get altura */      
       
       /* Testar TAB Get largura */
             
       else if ( strcmp( ComandoTeste , GET_LARGURA_CMD ) == 0 )
       {
-      
+          NumLidos = LER_LerParametros("ii",&inxTabuleiro,&CondRetEsperada);
+          if((NumLidos != 2) || !VerificarInx(inxTabuleiro))
+          {
+              return TST_CondRetParm;
+          }
+
+          CondRetObtida = TAB_GetLargura(vtRefTabuleiros[inxTabuleiro],&x);
+          return TST_CompararInt( CondRetEsperada , CondRetObtida , "Retorno errado ao obter largura." );
       } /* fim ativa: Testar TAB Get largura */  
              
       /* Testar TAB Posicao do jogador */
             
       else if ( strcmp( ComandoTeste , POSICAO_JOGADOR_CMD ) == 0 )
       {
-      
+          NumLidos = LER_LerParametros("ii",&inxTabuleiro,&CondRetEsperada);
+          if((NumLidos != 2) || !VerificarInx(inxTabuleiro))
+          {
+              return TST_CondRetParm;
+          }
+
+          CondRetObtida = TAB_PosicaoJogador(vtRefTabuleiros[inxTabuleiro],&x,&y);
+          return TST_CompararInt( CondRetEsperada , CondRetObtida , "Retorno errado ao por inicio." );
       } /* fim ativa: Testar TAB Posicao do jogador */      
       
       /* Testar TAB Validar Tabuleiro */

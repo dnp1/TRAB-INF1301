@@ -150,7 +150,8 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y , int colisao ) ;
 
     TAB_tpCondRet TAB_PodeAndarPraCima(TAB_tppTabuleiro pTab , int colisao ){
         Casa* corrente;
-        GRA_ObterValorCorrente(pTab->pGrafo,(void**)&corrente);
+        if(GRA_ObterValorCorrente(pTab->pGrafo,(void**)&corrente) != GRA_CondRetOK)
+            return TAB_CondRetMovimentoInvalido;
 
         if(colisao){
             if(Norte(pTab)!=-1)
@@ -173,7 +174,8 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y , int colisao ) ;
 
     TAB_tpCondRet TAB_PodeAndarPraEsquerda(TAB_tppTabuleiro pTab , int colisao){
         Casa* corrente;
-        GRA_ObterValorCorrente(pTab->pGrafo,(void**)&corrente);
+        if(GRA_ObterValorCorrente(pTab->pGrafo,(void**)&corrente) != GRA_CondRetOK)
+            return TAB_CondRetMovimentoInvalido;
 
         if(colisao){
             if(Oeste(pTab)!=-1)
@@ -196,7 +198,8 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y , int colisao ) ;
     
     TAB_tpCondRet TAB_PodeAndarPraBaixo(TAB_tppTabuleiro pTab , int colisao){
         Casa* corrente;
-        GRA_ObterValorCorrente(pTab->pGrafo,(void**)&corrente);
+        if(GRA_ObterValorCorrente(pTab->pGrafo,(void**)&corrente) != GRA_CondRetOK)
+            return TAB_CondRetMovimentoInvalido;
 
         if(colisao){
             if(Sul(pTab)!=-1)
@@ -219,7 +222,8 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y , int colisao ) ;
 
     TAB_tpCondRet TAB_PodeAndarPraDireita(TAB_tppTabuleiro pTab , int colisao){ 
         Casa* corrente;
-        GRA_ObterValorCorrente(pTab->pGrafo,(void**)&corrente);
+        if(GRA_ObterValorCorrente(pTab->pGrafo,(void**)&corrente) != GRA_CondRetOK)
+            return TAB_CondRetMovimentoInvalido;
 
         if(colisao){
             if(Leste(pTab)!=-1)

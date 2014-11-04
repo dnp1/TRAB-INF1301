@@ -742,6 +742,65 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         } while(LIS_AvancarElementoCorrente(lista, 1));
     }
 
+/***************************************************************************
+*
+*  Função: GRA  &converteListaParaVetorDeInteiros
+*  ****/    
+
+
+    static int* converteListaParaVetorDeInteiros(LIS_tppLista lista, int* len) {
+        int* vet;
+        *len = 0;
+        if (lista == NULL || LIS_NumeroDeElementos(lista) == 0) {
+            return NULL;
+        }
+        vet = calloc(LIS_NumeroDeElementos(lista) ,sizeof(int));
+        LIS_IrInicioLista(lista);
+        do {
+            vet[*len] = getInt(LIS_ObterValor(lista));
+            *len = (*len)+1;
+        } while(LIS_AvancarElementoCorrente(lista, 1));
+    }
+
+
+/***************************************************************************
+*
+*  Estrutura auxiliar: indiceDistancia;
+*  ****/    
+
+    typedef path {
+        int id;
+        int distancia;
+    } Dist;
+
+/***************************************************************************
+*
+*  Função: GRA  &newDist
+*  ****/    
+
+
+    static Dist* newDist(int id, int dist) {
+        Dist* d = malloc(1, sizeof(Dist));
+        d->id = id;
+        d->dist = dist;
+        return d;
+    }
+
+/***************************************************************************
+*
+*  Função: GRA  &newDist
+*  ****/    
+
+
+    static Dist* getDist(Dist** dists, int id) {
+        int i;
+        for (i=0;dists[i];i++) {
+            if (d[i]->id ==id) {
+                return d[i];
+            }
+        }
+        return NULL;
+    }
 
 /***************************************************************************
 *
@@ -770,7 +829,13 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         int achou_V = 0;
         int ok = 0;
         int i,j,in;
-
+        int alt = 0;
+        int lenD;
+        Dist** dists = NULL;
+        dists = calloc(LIS_NumeroDeElementos(pGrafo->vertices)+1, sizeof(*IndiceDistancia));
+        Dist* dist = NULL; //aux;
+        dists[0] = newDist(idVerticeOrigem, 0);
+        lenD = 1;
 
         v = get_by_id(pGrafo, idVerticeOrigem);
         u = get_by_id(pGrafo, idVerticeDestino);
@@ -807,7 +872,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
             Q = LIS_CriarLista(free);
             if (Q == NULL) { break; }
 
-            //if (LIS_InserirElementoApos(V, newInt(v)) != LIS_CondRetOK) { break;}
+            
             V[0] = v;
             lenV = 1;
             if (LIS_InserirElementoApos(Q, newInt(v)) != LIS_CondRetOK) { break;} //enque
@@ -837,16 +902,24 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
             vizinhos = converteListaParaVetorDeInteiros(arestas, &len);
             LIS_DestruirLista(arestas);
 
+            alt = getDist(dists, t)->dist + 1;
             for (i=0; i < len; i++) {
-                int in = 0;
+                in = 0;
                 for (j=0; j < lenV; j++) {
-                    if(V[j] == i) {
+                    if(V[j] == arestas[i] {
                         in = 1;
                     }
                 }
                 if (!in) {
-                    V[lenV] = i;
-                    lenV = lenV + 1;
+                    dist = getDist(dists, arestas[i]);
+                    if (dist == NULL) { //infinity
+                        dists[lenD] = newDist(arestas[i], alt);
+                        lenD++;
+                    } else if (alt < dist->dist) {
+                        dist->dist = alt;
+                    }
+                    
+                    
                     LIS_InserirElementoAntes(Q, newInt(i));
                 }
             }

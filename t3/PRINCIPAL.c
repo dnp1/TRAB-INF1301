@@ -1,5 +1,4 @@
 #include "TABULEIRO.h"
-#include "LEITOR.h"
 #include "ESTADO.h"
 #include "MENU.h"
 #include <stdio.h>
@@ -10,21 +9,77 @@
 
 typedef enum{
     PRI,
-    LEI,
     TAB,
     MEN
 } tpmodulo;
+typedef enum{
+    PRI_CondRetOK,
+    PRI_CondRetInvalido,
+    PRI_CondRetSemOpcao         
+} PRI_tpCondRet;
+
 void Erro(char* comm, int CondRet,tpmodulo module);
 /*
 void TrataPRI(int CondRet){
     switch(CondRet){
-        case PRI_FaltouMemoria:
+        case FaltouMemoria:
             printf("Operacao mal sucedida. Faltou Memoria.");
             break;   
             printf("Comando invalido"); 
     }
 }
 */
+/*
+    Tratamento de input
+*/
+/* 
+mudar de lis->gra
+*/
+PRI_tpCondRet LeCmd(EST_tppEstado e){
+    char c; 
+    scanf(" %c ",&c);
+    MEN_tppMenu m = GRA_ObterCorrente(EST_GetMenus(e));
+    LIS_tppLista opcoes = EST_GetOpcoes(m);
+    LIS_IrInicio(opcoes);
+    do
+    {
+        MEN_tppOpcao opcao = LIS_ObterValor(opcoes);
+        if(MEN_GetOpcaoCmd(opcao) == c){
+            MEN_Callback(opcao,e);
+            return PRI_CondRetOK;
+        }    
+    }
+    while(LIS_IrProxElemento(opcoes)==LIS_CondRetOK);
+  
+    return PRI_CondRetSemOpcao;         
+}
+
+/*
+valida retorna apenas CondRetOK ou PRI_CondRetInvalido
+
+*/
+
+/*
+trunca em 50
+*/
+PRI_tpCondRet LeString(char* dst, PRI_tpCondRet (*valida)(char* s)){
+    char temp[50];
+    scanf(" %s ",temp);
+    PRI_tpCondRet cr = valida(temp);
+    if(cr == PRI_CondRetOK){
+        strcpy(dst,temp);
+    }
+    return cr;    
+}
+PRI_tpCondRet LeInt(int* dst, PRI_tpCondRet (*valida)(int t)){
+    int temp;
+    scanf(" %d ",&temp);
+    PRI_tpCondRet cr = valida(temp);
+    if(cr == PRI_CondRetOK){
+        *dst = temp;
+    }
+    return cr;    
+}
 void Erro(char* comm, int CondRet,tpmodulo module){
     printf("%s",comm);
     if(CondRet == 0)//OK
@@ -41,8 +96,8 @@ void Erro(char* comm, int CondRet,tpmodulo module){
             case TAB:
                 trataTAB(CondRet);
                 break;
-            case LEI:
-                trataLEI(CondRet);
+            case PRI:
+                trataPRI(CondRet);
                 break;
         }*/
     }
@@ -102,17 +157,17 @@ void salva(EST_tppEstado e,MEN_tppOpcao opc){
 
  */
 
-LEI_tpCondRet validastring(char* s){
+PRI_tpCondRet validastring(char* s){
     if(strlen(s)<10 && !strcmp(s,""))
-        return LEI_CondRetOK;
+        return PRI_CondRetOK;
     else
-        return LEI_CondRetInvalido;
+        return PRI_CondRetInvalido;
 }
-LEI_tpCondRet validaint(int n){
+PRI_tpCondRet validaint(int n){
     if(n>0 && n<11) 
-        return LEI_CondRetOK;
+        return PRI_CondRetOK;
     else 
-        return LEI_CondRetInvalido;
+        return PRI_CondRetInvalido;
 }
 //TODO:recomendacoes de ux do flavio
 
@@ -121,11 +176,11 @@ void novo_tab(){
     int alt = 0;
     int lar = 0;
     while(!strcmp(nome,""))
-        Erro("Digite o nome (menos de 10 caracteres)",LEI_LeString(nome,validastring),LEI);
+        Erro("Digite o nome (menos de 10 caracteres)",LeString(nome,validastring),PRI);
     while(alt == 0)
-        Erro("Digite a altura (1..10)",LEI_LeInt(&alt,validaint),LEI);
+        Erro("Digite a altura (1..10)",LeInt(&alt,validaint),PRI);
     while(lar == 0)
-        Erro("Digite a largura (1..10)",LEI_LeInt(&lar,validaint),LEI);
+        Erro("Digite a largura (1..10)",LeInt(&lar,validaint),PRI);
     TAB_tppTabuleiro a;
     Erro("Criando tabuleiro",TAB_CriaTab(a,nome, alt,lar),TAB);
     Erro("Salvando tabuleiro",TAB_salvaTab(a),TAB);
@@ -178,7 +233,7 @@ void PopulaMenus(EST_tppEstado e){
 /*
    Apresenta o Menu corrente
  */
-void APR_ApresentaMenu(EST_tppEstado e){
+void ApresentaMenu(EST_tppEstado e){
     MEN_tppMenu Menus = EST_GetMenus(e);
     printf("\n#############\n#  Labirinto  #\n#############");
     printf("\n %s\n--------------",MEN_GetMenuNome(Menus));
@@ -221,7 +276,11 @@ void ApresentaTabuleiro(EST_tppEstado e){
 	}
 }
 
-void ApresentaSolucao(LIS_tppLista solucao){}
+void ApresentaSolucao(EST_tppEstado e){
+    char solucao[1000];
+    TAB_SolucionarTabuleiro(EST_GetTabuleiro(e),solucao);
+    printf("%s",solucao);    
+}
 
 /*
  *   Função Principal
@@ -240,7 +299,7 @@ int main(){
         int atual = EST_MenuCorrente();
         if(atual == EDITOR||atual == JOGO)
             ApresentaTabuleiro(e);
-        Erro("Digite um comando:",LEI_LeCmd(e),LEI);
+        Erro("Digite um comando:",LeCmd(e),PRI);
     }
     //clean(); //housekeeping
     return 0;

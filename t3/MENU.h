@@ -31,4 +31,5 @@ char* MEN_GetMenuNome(MEN_tppMenu m);
 
 char MEN_GetOpcaoCmd(MEN_tppOpcao o);
 char* MEN_GetOpcaoNome(MEN_tppOpcao o);
+void MEN_Callback(MEN_tppOpcao o, EST_tppEstado e);
 #endif

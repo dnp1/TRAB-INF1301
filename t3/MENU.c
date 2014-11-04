@@ -69,3 +69,8 @@ MEN_tpCondRet MudaMenu(MEN_tppMenus menus,int id){
     	
     GRA_IrVizinho(menus,id);
 }
+
+
+void MEN_Callback(MEN_tppOpcao o, EST_tppEstado e);
+            o->callback(e);
+}

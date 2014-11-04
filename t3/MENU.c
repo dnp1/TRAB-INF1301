@@ -1,10 +1,12 @@
 #include "MENU.h"
 #include "GRAFO.h"
 #include <stdlib.h>
+
+
 typedef struct Menu_{
     char* nome;
     int id;
-    GRA_tppGrafo opcoes;        
+    LIS_tppLista opcoes;        
     int pai;
 } Menu;
 typedef struct Opcao_{
@@ -24,7 +26,11 @@ void MEN_DestruirMenu(MEN_tppMenu menu){
  */
 //mudar pra usar grafo em vez de lista
 void volta(EST_tppEstado e,MEN_tppOpcao o){
-    
+   MEN_tppMenus menus = EST_GetMenus(e);
+   MEN_tppMenu atual;
+   GRA_ObterCorrente(menus,atual);
+   EST_MudaUltimoMenu(atual->id);
+   GRA_IrVizinho(menus,atual->pai); 
 }
 
 MEN_tpCondRet MEN_CriarMenu(MEN_tppMenus menus, int id, char* nome,int idpai){
@@ -71,6 +77,6 @@ MEN_tpCondRet MudaMenu(MEN_tppMenus menus,int id){
 }
 
 
-void MEN_Callback(MEN_tppOpcao o, EST_tppEstado e);
-            o->callback(e);
+void MEN_Callback(MEN_tppOpcao o, EST_tppEstado e){
+            o->callback(e,o);
 }

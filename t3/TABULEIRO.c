@@ -696,6 +696,11 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y , int colisao ) ;
 
         return TAB_CondRetOK;
     }
+	
+/***************************************************************************
+*
+*  Função: TAB  &Validar Tabuleiro
+*  ****/  
 
     TAB_tpCondRet TAB_ValidarTabuleiro(TAB_tppTabuleiro pTab){
         int idInicio = - 1, idFim = -1;
@@ -707,6 +712,11 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y , int colisao ) ;
         else
             return TAB_CondRetTabuleiroInvalido;
     }
+	
+/***************************************************************************
+*
+*  Função: TAB  &Salvar tabuleiro
+*  ****/  
 
     TAB_tpCondRet TAB_SalvarTabuleiro(TAB_tppTabuleiro pTab, char* path){
         int idVisitado, i;
@@ -790,6 +800,11 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y , int colisao ) ;
         return TAB_CondRetOK;
     }
 
+/***************************************************************************
+*
+*  Função: TAB  &Carregar tabuleiro
+*  ****/  
+
     TAB_tpCondRet TAB_CarregarTabuleiro(TAB_tppTabuleiro* pTab,char* path){
         FILE* entrada;
         TAB_tpCasa casa;
@@ -832,6 +847,11 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y , int colisao ) ;
         else
             return TAB_CondRetTabuleiroInvalido;
     }
+
+/***************************************************************************
+*
+*  Função: TAB  &Solucionar tabuleiro
+*  ****/  
 
     TAB_tpCondRet TAB_SolucionarTabuleiro(TAB_tppTabuleiro pTab, int** solucao){
         int idInicio, idFim, idParede, i;

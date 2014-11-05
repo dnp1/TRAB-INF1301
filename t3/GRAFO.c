@@ -707,7 +707,6 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
 *  Função: GRA  &NewInt
 *  ****/    
 
-
     static void* newInt(int id) {
         int* val = (int*)malloc(sizeof(int));
         *val = id;
@@ -728,14 +727,13 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
 *  Função: GRA  &converteListaParaVetorDeInteiros
 *  ****/    
 
-
     static int* converteListaParaVetorDeInteiros(LIS_tppLista lista, int* len) {
         int* vet;
         *len = 0;
         if (lista == NULL || LIS_NumeroDeElementos(lista) == 0) {
             return NULL;
         }
-        vet = (int*)calloc(LIS_NumeroDeElementos(lista), sizeof(int));
+        vet = (int*)calloc(LIS_NumeroDeElementos(lista) ,sizeof(int));
         LIS_IrInicioLista(lista);
         do {
             vet[*len] = getInt(LIS_ObterValor(lista));
@@ -745,11 +743,11 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         return vet;
     }
 
-
 /***************************************************************************
 *
 *  Estrutura auxiliar: indiceDistancia;
-*  ****/    
+*  ****/
+
     typedef struct _Dist Dist;
     struct _Dist {
         int id;
@@ -762,9 +760,8 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
 *  Função: GRA  &newDist
 *  ****/    
 
-    
     static Dist* newDist(int id, int dist) {
-        Dist* d = malloc(sizeof(Dist));
+        Dist* d = (Dist*)malloc(sizeof(Dist));
         d->id = id;
         d->dist = dist;
         d->prev = NULL;
@@ -773,9 +770,8 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
 
 /***************************************************************************
 *
-*  Função: GRA  &newDist
-*  ****/    
-
+*  Função: GRA  &getDist
+*  ****/   
 
     static Dist* getDist(Dist** dists, int id) {
         int i;
@@ -801,21 +797,19 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         LIS_tppLista Q = NULL; //FILA
         LIS_tppLista arestas = NULL;
         LIS_tppLista retorno = NULL;
-        int t = NULL;
-        int* visitados = NULL; // Vetor de vertices visitados
-        int* vizinhos = NULL;
+        int t;
         int len = 0;
-        int* idAux = NULL;
         int achou = 0;
         int ok = 0;
         int i,j,in;
-        int alt = 0;
         int lenD;
+        int alt = 0;
+        int* visitados = NULL; // Vetor de vertices visitados
+        int* vizinhos = NULL;
+        int* idAux = NULL;
         Dist** dists = NULL;
         Dist* dist = NULL; //aux;
         Dist* currDist = NULL;
-        dists = calloc(LIS_NumeroDeElementos(pGrafo->vertices)+1, sizeof(Dist*));
-        dists[0] = newDist(idVerticeOrigem, 0);
 
         lenD = 1;
 
@@ -833,6 +827,10 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         
 
         for (;;) {
+            dists = (Dist**)calloc(LIS_NumeroDeElementos(pGrafo->vertices)+1, sizeof(Dist*));
+            if (dists == NULL) {break;}
+            dists[0] = newDist(idVerticeOrigem, 0);
+
             retorno = LIS_CriarLista(free);
             if (retorno == NULL) { break; }
             else if (v == u) {
@@ -844,13 +842,13 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
                 }
             }
 
-            visitados = calloc(LIS_NumeroDeElementos(pGrafo->vertices)+1,sizeof(int));
+            visitados = (int*) calloc(LIS_NumeroDeElementos(pGrafo->vertices)+1,sizeof(int));
             if (visitados == NULL) { break; }
 
             Q = LIS_CriarLista(free);
             if (Q == NULL) { break; }
 
-            visitados[0] = v;
+            visitados[0] = idVerticeOrigem;
             lenV = 1;
             if (LIS_InserirElementoApos(Q, newInt(idVerticeOrigem)) != LIS_CondRetOK) { break;} //enque
 
@@ -858,6 +856,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
             break;
         }
         if (!ok) {
+            free(dists);
             LIS_DestruirLista(retorno);
             free(visitados);
             LIS_DestruirLista(Q);
@@ -883,6 +882,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
             }
             alt = currDist->dist + 1;
             for (i=0; i < len; i++) {
+                
                 in = 0;
                 for (j=0; j < lenV; j++) {
                     if (visitados[j] == vizinhos[i]) {
@@ -901,6 +901,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
                         dist->prev = currDist;
                     }
                     if (idVerticeDestino == vizinhos[i]) {
+                        currDist = dist;
                         achou = 1;
                     }
                     visitados[lenV] = vizinhos[i];
@@ -913,27 +914,33 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
                 currDist = dist;
                 break;
             }
-            if(lenV == LIS_NumeroDeElementos) {
+            if(lenV == LIS_NumeroDeElementos(pGrafo->vertices)) {
                 break;
             }
         }
         
         if (achou) {
+            //printf("\n");
+            // for(i=0; i < lenD; i++) {
+            //     printf("endr: %p, id: %d, dist: %d, prev: %p \n", *(dists+i), dists[i]->id, dists[i]->dist, dists[i]->prev);
+            // }
             while (currDist) {
                 LIS_InserirElementoAntes(retorno, newInt(currDist->id));
                 currDist  = currDist->prev;
             }
-        } else {
-            printf("ops...");
+
         }
 
+        
+
+        
+
+
+        //Limpando a memória        
         for (i=0; i < lenD; i++) {
             free(dists[i]);
         }
         free(dists);
-
-        //Montar Lista;
-        //Limpando a memória        
         free(visitados);
         LIS_DestruirLista(Q);
         *pLista = retorno;
@@ -1166,6 +1173,8 @@ tpAresta* get_edge_by_vertex(LIS_tppLista  vizinhos, tpVertice * v){
 *
 ***********************************************************************/
 
+
+
     static void RemoverAresta(tpVertice* u, tpVertice* v) {
         LIS_tppLista vizinhos = NULL;
         tpAresta * aresta_v = NULL;
@@ -1354,6 +1363,7 @@ tpAresta* get_edge_by_vertex(LIS_tppLista  vizinhos, tpVertice * v){
             }
             free(us);
         }
+
         return u;
     }
 

@@ -854,98 +854,39 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y , int colisao ) ;
         else
             return TAB_CondRetTabuleiroInvalido;
     }
-/*
-TAB_tpCondRet TAB_SalvaTabuleiro(TAB_tppTabuleiro pTab){
-    idAresta = 0
-    idVertice = 0
-    print(nome)
-    print(alt lar)
-    id1 = buscainicio
-    id2 = buscafim
-    print(id1 id2)
-    para cada vertice em pGrafo
-        print(idVertice x y num_vizinhos)
-        idVertice++
-        para cada vizinho 
-            print(idVertice idVizinho idAresta)//tomar cuidado para nao repetir aresta, ou mexer no grafo para suportar/esperar isso
-            idAresta++
-        exclui vertice
-}
 
-TRES OPCOES:
-mudar para ter x y
-======
-mapa1
-10 10
-1 7
-1 2
-1 2 1
-1 3 2
-2 0
+    TAB_tpCondRet TAB_SolucionarTabuleiro(TAB_tppTabuleiro pTab, int* solucao){
+        int idInicio, idFim, idParede;
+        int* idTemp;
+        LIS_tppLista lstSolucao = NULL;
+        Casa* parede;
 
-3 1
-3 4 3
-4 0
+        parede = (Casa*)malloc(sizeof(Casa));
+        if(parede == NULL) return TAB_CondRetFaltouMemoria;
+        parede->tipo = TAB_tpCasaParede;
 
-5 0
+        idInicio = TemInicio(pTab);
+        idFim = TemFim(pTab);
+        
+        while(GRA_BuscarVertice(pTab->pGrafo,&idParede,MesmoTipo,parede) == GRA_CondRetOK){
+            GRA_ExcluirVertice(pTab->pGrafo,idParede);
+        }
+        
 
-6 1
-6 7 4
-7 0
+        GRA_MudarCorrente(pTab->pGrafo,idInicio);
 
-=====
-mapa1
-10 10
-1 7
-1 2
-1 2 1
-1 3 2
-2 1
-2 1 1
-3 2
-3 1 2
-3 4 3
-4 1
-4 3 3
-5 0
+        GRA_BuscarCaminhoCorrente(pTab->pGrafo,idFim,&lstSolucao);
+        
+        if(LIS_NumeroDeElementos(lstSolucao) == 0) return TAB_CondRetSemSolucao;
+        
+        LIS_IrInicioLista(lstSolucao);
+        do{
+            idTemp = (int*)LIS_ObterValor(lstSolucao);
 
-6 1
-6 7 4
-7 1
-7 6 4
+        }while(LIS_AvancarElementoCorrente(lstSolucao,1) == LIS_CondRetOK);
 
-=====
-mapa1
-10 10
-1 7
-1 2
-1 2 1
-1 3 2
-2 1
-2 1 3
-3 2
-3 1 4
-3 4 5
-4 1
-4 3 6
-5 0 
-
-6 1
-6 7 7
-7 1
-7 6 8
-
-*/
-    /*
-    TAB_tpCondRet TAB_CarregaTabuleiro(TAB_tppTabuleiro pTab){}
-
-    
-
-        Antes de salvar valida as regras do tabuleiro
-        ve se existe inicial, final e se existe apenas 1 destes
-    */
-
-   
+        printf("oi");
+    }
     
 /*****  Código das funções encapsuladas no módulo  *****/
     

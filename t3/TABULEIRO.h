@@ -468,11 +468,12 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 *  $FC Função: TAB  &Solucionar Tabuleiro
 *
 *  $ED Descrição da função
-*     Soluciona o tabuleiro. A solução é retornada em uma string de caracteres.
+*     Soluciona o tabuleiro. A solução é retornada em um vetor de inteiros, aonde cada casa é representada
+*     por 2 posições do vetor. A primeira posição recebe o x da casa, a segunda recebe o y.
 *
 *  $EP Parâmetros
 *     pTab - ponteiro para o tabuleiro
-*     pSolucao - ponteiro para a cadeia de caracteres que representa a solução
+*     pSolucao - vetor de inteiros que representa a solução
 *
 *  $FV Valor retornado
 *     TAB_CondRetOK - O tabuleiro é válido;
@@ -480,7 +481,7 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 *
 ***********************************************************************/
 
-    TAB_tpCondRet TAB_SolucionarTabuleiro ( TAB_tppTabuleiro pTab, char* pSolucao ) ;    
+    TAB_tpCondRet TAB_SolucionarTabuleiro ( TAB_tppTabuleiro pTab, int* pSolucao ) ;    
 
 /***********************************************************************
 *

@@ -707,7 +707,6 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
 *  Função: GRA  &NewInt
 *  ****/    
 
-
     static void* newInt(int id) {
         int* val = (int*)malloc(sizeof(int));
         *val = id;
@@ -728,7 +727,6 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
 *  Função: GRA  &converteListaParaVetorDeInteiros
 *  ****/    
 
-
     static int* converteListaParaVetorDeInteiros(LIS_tppLista lista, int* len) {
         int* vet;
         *len = 0;
@@ -745,11 +743,11 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         return vet;
     }
 
-
 /***************************************************************************
 *
 *  Estrutura auxiliar: indiceDistancia;
-*  ****/    
+*  ****/
+
     typedef struct _Dist Dist;
     struct _Dist {
         int id;
@@ -762,7 +760,6 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
 *  Função: GRA  &newDist
 *  ****/    
 
-    
     static Dist* newDist(int id, int dist) {
         Dist* d = (Dist*)malloc(sizeof(Dist));
         d->id = id;
@@ -773,9 +770,8 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
 
 /***************************************************************************
 *
-*  Função: GRA  &newDist
-*  ****/    
-
+*  Função: GRA  &getDist
+*  ****/   
 
     static Dist* getDist(Dist** dists, int id) {
         int i;

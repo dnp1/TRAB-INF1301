@@ -18,12 +18,15 @@
 ***************************************************************************/
 #include    <string.h>
 #include    <stdio.h>
+#include    <stdlib.h>
 #include    <malloc.h>
 
 #define TABULEIRO_OWN
 #include "TABULEIRO.h"
 #include "LISTA.h"
 #undef TABULEIRO_OWN
+
+#define DIM_VALOR 256
 
 typedef struct Casa_{
     TAB_tpCasa tipo;
@@ -408,7 +411,7 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y , int colisao ) ;
                 if( GRA_InserirAresta(pTab->pGrafo,idVertice,idXY,idAresta) == GRA_CondRetFaltouMemoria )
                     return TAB_CondRetFaltouMemoria;
 
-                pTab->idAresta[idAresta] = idAresta;
+                pTab->idAresta[idAresta] = 1;
             }
 
             //Vizinho ao oeste
@@ -420,7 +423,7 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y , int colisao ) ;
                 if( GRA_InserirAresta(pTab->pGrafo,idVertice,idXY,idAresta) == GRA_CondRetFaltouMemoria )
                     return TAB_CondRetFaltouMemoria;
 
-                pTab->idAresta[idAresta] = idAresta;
+                pTab->idAresta[idAresta] = 1;
             }
 
             //Vizinho ao sul
@@ -432,7 +435,7 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y , int colisao ) ;
                 if( GRA_InserirAresta(pTab->pGrafo,idVertice,idXY,idAresta) == GRA_CondRetFaltouMemoria )
                     return TAB_CondRetFaltouMemoria;
 
-                pTab->idAresta[idAresta] = idAresta;
+                pTab->idAresta[idAresta] = 1;
             }
 
             //Vizinho ao leste
@@ -444,7 +447,7 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y , int colisao ) ;
                 if( GRA_InserirAresta(pTab->pGrafo,idVertice,idXY,idAresta) == GRA_CondRetFaltouMemoria )
                     return TAB_CondRetFaltouMemoria;
 
-                pTab->idAresta[idAresta] = idAresta;
+                pTab->idAresta[idAresta] = 1;
             }
         }
 
@@ -569,7 +572,7 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y , int colisao ) ;
                 if( GRA_InserirAresta(pTab->pGrafo,idVertice,idXY,idAresta) == GRA_CondRetFaltouMemoria )
                     return TAB_CondRetFaltouMemoria;
 
-                pTab->idAresta[idAresta] = idAresta;
+                pTab->idAresta[idAresta] = 1;
             }
 
             //Vizinho ao oeste
@@ -581,7 +584,7 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y , int colisao ) ;
                 if( GRA_InserirAresta(pTab->pGrafo,idVertice,idXY,idAresta) == GRA_CondRetFaltouMemoria )
                     return TAB_CondRetFaltouMemoria;
 
-                pTab->idAresta[idAresta] = idAresta;
+                pTab->idAresta[idAresta] = 1;
             }
 
             //Vizinho ao sul
@@ -593,7 +596,7 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y , int colisao ) ;
                 if( GRA_InserirAresta(pTab->pGrafo,idVertice,idXY,idAresta) == GRA_CondRetFaltouMemoria )
                     return TAB_CondRetFaltouMemoria;
 
-                pTab->idAresta[idAresta] = idAresta;
+                pTab->idAresta[idAresta] = 1;
             }
 
             //Vizinho ao leste
@@ -605,7 +608,7 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y , int colisao ) ;
                 if( GRA_InserirAresta(pTab->pGrafo,idVertice,idXY,idAresta) == GRA_CondRetFaltouMemoria )
                     return TAB_CondRetFaltouMemoria;
 
-                pTab->idAresta[idAresta] = idAresta;
+                pTab->idAresta[idAresta] = 1;
             }
 
         }
@@ -661,7 +664,7 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y , int colisao ) ;
                 if( GRA_InserirAresta(pTab->pGrafo,idVertice,idXY,idAresta) == GRA_CondRetFaltouMemoria )
                     return TAB_CondRetFaltouMemoria;
 
-                pTab->idAresta[idAresta] = idAresta;
+                pTab->idAresta[idAresta] = 1;
             }
 
             //Vizinho ao oeste
@@ -673,7 +676,7 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y , int colisao ) ;
                 if( GRA_InserirAresta(pTab->pGrafo,idVertice,idXY,idAresta) == GRA_CondRetFaltouMemoria )
                     return TAB_CondRetFaltouMemoria;
 
-                pTab->idAresta[idAresta] = idAresta;
+                pTab->idAresta[idAresta] = 1;
             }
 
             //Vizinho ao sul
@@ -685,7 +688,7 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y , int colisao ) ;
                 if( GRA_InserirAresta(pTab->pGrafo,idVertice,idXY,idAresta) == GRA_CondRetFaltouMemoria )
                     return TAB_CondRetFaltouMemoria;
 
-                pTab->idAresta[idAresta] = idAresta;
+                pTab->idAresta[idAresta] = 1;
             }
 
             //Vizinho ao leste
@@ -697,7 +700,7 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y , int colisao ) ;
                 if( GRA_InserirAresta(pTab->pGrafo,idVertice,idXY,idAresta) == GRA_CondRetFaltouMemoria )
                     return TAB_CondRetFaltouMemoria;
 
-                pTab->idAresta[idAresta] = idAresta;
+                pTab->idAresta[idAresta] = 1;
             }
 
         }
@@ -727,6 +730,130 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y , int colisao ) ;
             return TAB_CondRetTabuleiroInvalido;
     }
 
+    TAB_tpCondRet TAB_SalvarTabuleiro(TAB_tppTabuleiro pTab, char* path){
+        int idVisitado, i;
+        int* visitados,* idOrigem,* idProx,* vizinho;
+        FILE* saida;
+        Casa* casaVizinho,* casaCorrente;
+        LIS_tppLista fila = NULL;
+        LIS_tppLista origens = NULL;
+        LIS_tppLista vizinhos = NULL;
+
+        saida = fopen(path,"w");
+        fprintf(saida,"%d\n%d\n%s",pTab->largura,pTab->altura,pTab->nome);
+
+        // vetor de inteiros usado como flag
+        visitados = (int*)malloc(sizeof(int)*pTab->altura*pTab->largura);
+        for(i=0 ; i < pTab->altura*pTab->largura ; i++){
+            visitados[i] = pTab->idCasa[i];
+        }
+
+        // dados são referenciados por outros, não devem ser apagados
+        fila = LIS_CriarLista(NULL);        
+        origens = LIS_CriarLista(NULL);
+        vizinhos = LIS_CriarLista(NULL);
+
+        GRA_ObterOrigens(pTab->pGrafo,&origens);
+        LIS_IrInicioLista(origens);
+        do{ // Para cada componente
+            idOrigem = (int*)LIS_ObterValor(origens);
+            GRA_MudarCorrente(pTab->pGrafo,*idOrigem);
+            
+            // Origem é uma parede ?
+            GRA_ObterValorCorrente(pTab->pGrafo,(void**)&casaCorrente);
+            if(casaCorrente->tipo == TAB_tpCasaParede) continue;
+
+            // Escreve origem[i] no arquivo
+            fprintf(saida,"\n%d %d %d",casaCorrente->x,casaCorrente->y,casaCorrente->tipo);
+
+            // origem[i] ja foi visitada
+            LIS_InserirElementoApos(fila,idOrigem);
+            visitados[*idOrigem] = -2;
+
+            do{// Ate a fila ficar vazia
+
+               GRA_ObterVizinhosCorrente(pTab->pGrafo,&vizinhos);
+               LIS_IrInicioLista(vizinhos);
+                
+               
+               do{// preenche a fila com os vizinhos
+
+                   vizinho = (int*)LIS_ObterValor(vizinhos);
+                   // vizinho ja foi visitado ?
+                   if(visitados[*vizinho] != -2){
+                       GRA_ObterValor(pTab->pGrafo,*vizinho,(void**)&casaVizinho);
+                       
+                       // Escreve vizinho no arquivo
+                       fprintf(saida,"\n%d %d %d",casaVizinho->x,casaVizinho->y,casaVizinho->tipo);
+
+                       // vizinho foi visitado
+                       LIS_InserirElementoApos(fila,vizinho);
+                       visitados[*vizinho] = -2;
+                   }
+                   else continue;
+
+               }while(LIS_AvancarElementoCorrente(vizinhos,1) == LIS_CondRetOK);
+
+               // Retira o elemento da fila - vertice ja foi visitado
+               LIS_IrInicioLista(fila);
+               LIS_ExcluirElemento(fila);
+
+               // Fila vazia ?
+               if(LIS_NumeroDeElementos(fila) == 0) break;
+               
+               // Proximo vertice a ser visitado
+               idProx = (int*)LIS_ObterValor(fila);
+               GRA_MudarCorrente(pTab->pGrafo,*idProx);
+
+           }while(LIS_NumeroDeElementos(fila) > 0);
+        }while(LIS_AvancarElementoCorrente(origens,1) == LIS_CondRetOK);
+
+        fclose(saida);
+        return TAB_CondRetOK;
+    }
+
+    TAB_tpCondRet TAB_CarregarTabuleiro(TAB_tppTabuleiro* pTab,char* path){
+        FILE* entrada;
+        TAB_tpCasa casa;
+        Casa corrente;
+        int altura, largura, x, y, idCorrente;
+        char linha[DIM_VALOR];
+
+        entrada = fopen(path,"r");
+        if(entrada != NULL){
+
+            fgets(linha,sizeof(linha),entrada);
+            largura = atoi(linha);
+            
+            fgets(linha,sizeof(linha),entrada);
+            altura = atoi(linha);
+
+            fgets(linha,sizeof(linha),entrada);
+            TAB_CriarTabuleiro(pTab,altura,largura,linha);
+            
+            do{
+                fscanf(entrada,"%d %d %d",&x,&y,&casa);
+                idCorrente = GetIdByXY((*pTab),x,y,1);
+                GRA_MudarCorrente((*pTab)->pGrafo,idCorrente);
+
+                if(casa == TAB_tpCasaChao){
+                    TAB_PoeChao((*pTab));
+                }
+                else if(casa == TAB_tpCasaInicio){
+                    TAB_PoeInicio((*pTab));
+                }
+                else if(casa == TAB_tpCasaFim){
+                    TAB_PoeFim((*pTab));
+                }
+                else{
+                    return TAB_CondRetTabuleiroInvalido;
+                }
+            }while(fgets(linha,sizeof(linha),entrada));
+            return TAB_CondRetOK;
+        }
+        else
+            return TAB_CondRetTabuleiroInvalido;
+    }
 /*
 TAB_tpCondRet TAB_SalvaTabuleiro(TAB_tppTabuleiro pTab){
     idAresta = 0

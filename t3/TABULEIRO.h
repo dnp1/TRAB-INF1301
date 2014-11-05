@@ -427,13 +427,16 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 *
 *  $ED Descrição da função
 *     Salva o tabuleiro em um arquivo.
+*     As três primeiras linhas consistem, respectivamente, da largura, altura e nome do tabuleiro.
+*     Cada linha subsquente representa uma casa válida(chao, inicio, fim).
+*     A casa é descrita por três inteiros, representando, respectivamente, o x, y e tipo da casa.
 *
 *  $EP Parâmetros
 *     pTab - ponteiro para o tabuleiro
-*     saida - ponteiro para o arquivo aonde o tabuleiro vai ser salvo
+*     saida - string com a path do arquivo a ser criado.
 *
 *  $FV Valor retornado
-*     TAB_CondRetOK - O tabuleiro é válido; 
+*     TAB_CondRetOK - O tabuleiro foi salvo no arquivo com sucesso; 
 *
 ***********************************************************************/
 
@@ -444,18 +447,21 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 *  $FC Função: TAB  &Carregar Tabuleiro
 *
 *  $ED Descrição da função
-*     Carrega o tabuleiro de um arquivo.
+*     Carrega o tabuleiro de um arquivo. As 3 primeiras linhas do arquivo devem representar, respectivamente,
+*     a largura, altura e nome do tabuleiro.
+*     As linhas subsequentes devem ser da forma: x, y, tipo
+*     Dessa forma, a casa é representada por sua posição (x,y) no tabuleiro, assim como por seu tipo.
 *
 *  $EP Parâmetros
 *     pTab - ponteiro para o tabuleiro
-*     entrada - ponteiro para o arquivo de onde o tabuleiro vai ser lido
+*     entrada - string com a path do arquivo a ser lido
 *
 *  $FV Valor retornado
-*     TAB_CondRetOK - O tabuleiro é válido; 
-*
+*     TAB_CondRetOK - O tabuleiro foi carregado com sucesso; 
+*     TAB_CondRetTabuleiroInvalido - O arquivo não é válido;
 ***********************************************************************/
 
-    TAB_tpCondRet TAB_CarregarTabuleiro ( TAB_tppTabuleiro pTab, char* entrada ) ;
+    TAB_tpCondRet TAB_CarregarTabuleiro ( TAB_tppTabuleiro* pTab, char* entrada ) ;
         
 /***********************************************************************
 *

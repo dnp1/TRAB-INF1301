@@ -94,7 +94,7 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
     
 /***********************************************************************
 *
-*  $FC Função: GRA  &Criar Tabuleiro
+*  $FC Função: TAB  &Criar Tabuleiro
 *
 *  $ED Descrição da função
 *     Cria um Tabuleiro para labirinto, implementado com um grafo genérico.
@@ -106,8 +106,8 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 *     Largura - inteiro que representa o tamanho horizontal do tabuleiro.
 *
 *  $FV Valor retornado
-*     GRA_CondRetOK - criou o tabuleiro sem problemas
-*     GRA_CondRetFaltouMemoria - faltou memoria ao criar o tabuleiro
+*     TAB_CondRetOK - criou o tabuleiro sem problemas
+*     TAB_CondRetFaltouMemoria - faltou memoria ao criar o tabuleiro
 *
 ***********************************************************************/
 
@@ -115,7 +115,7 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
     
 /***********************************************************************
 *
-*  $FC Função: GRA  &Destruir Tabuleiro
+*  $FC Função: TAB  &Destruir Tabuleiro
 *
 *  $ED Descrição da função
 *     Destroi o tabuleiro
@@ -124,8 +124,8 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 *     pTab - ponteiro para o tabuleiro
 *
 *  $FV Valor retornado
-*     GRA_CondRetOK - criou o tabuleiro sem problemas
-*     GRA_CondRetFaltouMemoria - faltou memoria ao criar o tabuleiro
+*     TAB_CondRetOK - criou o tabuleiro sem problemas
+*     TAB_CondRetFaltouMemoria - faltou memoria ao criar o tabuleiro
 *
 ***********************************************************************/
 

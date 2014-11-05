@@ -375,12 +375,13 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
 
         LIS_IrInicioLista(vizinhos);
 
-        if(LIS_NumeroDeElementos(vizinhos) > 0){
+        if (LIS_NumeroDeElementos(vizinhos) > 0) {
             do {
                 idVerticeVizinho = (int*) calloc(1, sizeof(int));
                 aresta = (tpAresta *)LIS_ObterValor(vizinhos);           
                 (*idVerticeVizinho) = aresta->pVizinho->id;
                 if (LIS_InserirElementoApos( Ret_vizinhos, idVerticeVizinho) != LIS_CondRetOK ) {
+                    LIS_DestruirLista(Ret_vizinhos);
                     return GRA_CondRetFaltouMemoria;
                 }
             }
@@ -739,7 +740,9 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         do {
             vet[*len] = getInt(LIS_ObterValor(lista));
             *len = (*len)+1;
-        } while(LIS_AvancarElementoCorrente(lista, 1));
+        } while(LIS_AvancarElementoCorrente(lista, 1) == LIS_CondRetOK);
+
+        return vet;
     }
 
 
@@ -776,8 +779,8 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
 
     static Dist* getDist(Dist** dists, int id) {
         int i;
-        for (i=0;dists[i];i++) {
-            if (dists[i]->id ==id) {
+        for (i=0; dists[i]; i++) {
+            if (dists[i]->id == id) {
                 return dists[i];
             }
         }
@@ -790,9 +793,6 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
 *  ****/    
     
     GRA_tpCondRet GRA_BuscarCaminho( GRA_tppGrafo pGrafo , int idVerticeOrigem, int idVerticeDestino, LIS_tppLista * pLista ) {
-
-        LIS_tppLista caminho = NULL;
-
         tpVertice * v = NULL;
         tpVertice * u = NULL;         
         tpVertice * origem1 = NULL;
@@ -802,8 +802,8 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         LIS_tppLista arestas = NULL;
         LIS_tppLista retorno = NULL;
         int t = NULL;
-        int *visitados = NULL; // Vetor de vertices visitados
-        int* vizinhos;
+        int* visitados = NULL; // Vetor de vertices visitados
+        int* vizinhos = NULL;
         int len = 0;
         int* idAux = NULL;
         int achou = 0;
@@ -813,10 +813,11 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         int alt = 0;
         int lenD;
         Dist** dists = NULL;
-        dists = calloc(LIS_NumeroDeElementos(pGrafo->vertices)+1, sizeof(Dist*));
         Dist* dist = NULL; //aux;
         Dist* currDist = NULL;
+        dists = calloc(LIS_NumeroDeElementos(pGrafo->vertices)+1, sizeof(Dist*));
         dists[0] = newDist(idVerticeOrigem, 0);
+
         lenD = 1;
 
         v = get_by_id(pGrafo, idVerticeOrigem);
@@ -824,8 +825,6 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         if(v == NULL || u == NULL) {
             return GRA_CondRetNaoEhVertice; 
         }
-
-
 
         origem1 = ObterOrigem(pGrafo, v);
         origem2 = ObterOrigem(pGrafo, u);
@@ -846,7 +845,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
                 }
             }
 
-            visitados = calloc(LIS_NumeroDeElementos(pGrafo->vertices),sizeof(int));
+            visitados = calloc(LIS_NumeroDeElementos(pGrafo->vertices)+1,sizeof(int));
             if (visitados == NULL) { break; }
 
             Q = LIS_CriarLista(free);
@@ -855,13 +854,12 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
             
             visitados[0] = v;
             lenV = 1;
-            if (LIS_InserirElementoApos(Q, newInt(v)) != LIS_CondRetOK) { break;} //enque
+            if (LIS_InserirElementoApos(Q, newInt(idVerticeOrigem)) != LIS_CondRetOK) { break;} //enque
 
             ok = 1;
             break;
         }
         if (!ok) {
-            LIS_DestruirLista(caminho);
             LIS_DestruirLista(retorno);
             free(visitados);
             LIS_DestruirLista(Q);
@@ -869,6 +867,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         }
 
         while (LIS_NumeroDeElementos(Q) > 0) {
+
             //dequeue
             LIS_IrInicioLista(Q);
             t = getInt(LIS_ObterValor(Q));
@@ -878,10 +877,16 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
             GRA_ObterVizinhos(pGrafo, t, &arestas);
             vizinhos = converteListaParaVetorDeInteiros(arestas, &len);
             LIS_DestruirLista(arestas);
+            arestas = NULL;
 
             currDist = getDist(dists, t);
-            alt = getDist(dists, t)->dist + 1;
+            if(!currDist) {
+                return GRA_CondRetFaltouMemoria;
+            } else {
+            }
+            alt = currDist->dist + 1;
             for (i=0; i < len; i++) {
+
                 in = 0;
                 for (j=0; j < lenV; j++) {
                     if (visitados[j] == vizinhos[i]) {
@@ -893,23 +898,46 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
                     if (dist == NULL) { //infinity
                         dists[lenD] = newDist(vizinhos[i], alt);
                         dists[lenD]->prev = currDist;
+                        dist = dists[lenD];
                         lenD++;
                     } else if (alt < dist->dist) {
                         dist->dist = alt;
                         dist->prev = currDist;
                     }
-                    LIS_InserirElementoAntes(Q, newInt(i));
+                    if (idVerticeDestino == vizinhos[i]) {
+                        achou = 1;
+                    }
+                    visitados[lenV] = vizinhos[i];
+                    lenV++;
+                    LIS_InserirElementoAntes(Q, newInt(vizinhos[i]));
                 }
             }
             free(vizinhos);
+            if (achou) {
+                currDist = dist;
+                break;
+            }
+            if(lenV == LIS_NumeroDeElementos) {
+                break;
+            }
+        }
+        
+        if (achou) {
+            while (currDist) {
+                LIS_InserirElementoAntes(retorno, newInt(currDist->id));
+                currDist  = currDist->prev;
+            }
+        } else {
+            printf("ops...");
         }
 
+        for (i=0; i < lenD; i++) {
+            free(dists[i]);
+        }
+        free(dists);
 
         //Montar Lista;
-
-
         //Limpando a memória        
-        LIS_DestruirLista(caminho);    
         free(visitados);
         LIS_DestruirLista(Q);
         *pLista = retorno;

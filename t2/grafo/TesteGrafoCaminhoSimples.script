@@ -34,14 +34,18 @@
 =insvert 5  str1  128   OK
 =insvert 5  str5  255   OK
 =insvert 5  str5  300   OK
+=insvert 5  str1  100   OK
+=insvert 5  str4  101   OK
 
 == Inserindo Arestas no Grafo 5 (Verifica se ExclusÃ£o de Vertice deixa o grafo num estado vÃ¡lido)
 =insaresta  5  32   64    10   OK
 =insaresta  5  32   128   20  OK
 =insaresta  5  32   255   30   OK
 =insaresta  5  128  255   40  OK
-=insaresta  5  255  64    50   OK
+=insaresta  5  255  100   41  OK
+=insaresta  5  100  101   50   OK
 
 == Busca Caminho No Grafo 5
+=buscacam 5 64 101 OK
 =buscacam 5 64 300 NaoEhConexo
 

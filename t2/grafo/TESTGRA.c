@@ -424,16 +424,21 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
             LIS_tppLista caminho = NULL;
 
             NumLidos = LER_LerParametros( "iiii" , &inxGrafo , &id , &_id , &CondRetEsperada ) ;
-            if ( ( NumLidos != 4 ) || !VerificarInx( inxGrafo )  )
-            {
+            if (( NumLidos != 4 ) || !VerificarInx( inxGrafo )) {
                return TST_CondRetParm ;
             } /* if */
+            CondRetObtida = GRA_BuscarCaminho( vtRefGrafos[ inxGrafo ] , id , _id , &caminho );
 
+            // if(CondRetObtida == GRA_CondRetOK) {
+            //   printf("\n\n\tPath: [");
+            //   LIS_IrInicioLista(caminho);
+            //   do {
+            //     printf("%d ", *((int*)LIS_ObterValor(caminho)));
+            //   }while(LIS_AvancarElementoCorrente(caminho,1)==LIS_CondRetOK);
+            //   printf("];\n\n");
+            // }
             
-            CondRetObtida = GRA_BuscarCaminho( vtRefGrafos[ inxGrafo ] , id , _id , &caminho ) ;
-            if(caminho!=NULL) {
-                LIS_DestruirLista(caminho);
-            }
+            LIS_DestruirLista(caminho);
             return TST_CompararInt( CondRetEsperada , CondRetObtida ,
                                     "Retorno errado ao buscar o caminho." );
             
@@ -453,7 +458,7 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
 
             strcpy(stringDado, stringTemp);          
 
-            CondRetObtida = GRA_InserirVizinhoCorrente( vtRefGrafos[ inxGrafo ] , stringDado , id , id2) ;           
+            CondRetObtida = GRA_InserirVizinhoCorrente( vtRefGrafos[ inxGrafo ] , stringDado , id , id2) ;
             if (CondRetObtida != GRA_CondRetOK) {
               free(stringDado);
             }

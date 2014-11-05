@@ -3,6 +3,10 @@
 #include <stdlib.h>
 
 
+typedef struct Menus_{
+    GRA_tppGrafo grafo;
+    int UltimoMenu;
+} tpMenus;
 typedef struct Menu_{
     char* nome;
     int id;
@@ -44,15 +48,14 @@ MEN_tpCondRet MEN_CriarMenu(MEN_tppMenus menus, int id, char* nome,int idpai){
     }
     m->nome = nome;
     m->id = id;
-    GRA_InserirVertice(menus,m,m->id);
-    //ifs e returns...
-    //TODO:Volta interno
     MEN_tpCondRet cr = MEN_CriarOpcao(menus, m->id,'0', "Ir para o menu acima (encerrar o programa caso o menu atual seja o inicial(Inicio))",volta);
     if(cr!=MEN_CondRetOK)
     {
         LIS_ExcluirLista(m->opcoes);
         free(m);
     }
+    //tratar cond ret
+    GRA_InserirVertice(menus->grafo,m,m->id);
     return cr;
 }
 
@@ -98,4 +101,33 @@ MEN_tpCondRet MEN_GetOpcaoNome(MEN_tppOpcao o, char* nome){
     nome = nome->nome;
     return MEN_CondRetOK;
 
+}
+MEN_tpCondRet MEN_CriarMenus(MEN_tppMenus* men){
+    
+    MEN_tppMenus m = malloc(sizeof(tpMenus));
+    if(m == NULL)
+        return MEN_CondRetFaltouMemoria;
+    GRA_tppGrafo Menus = GRA_CriarGrafo(MEN_DestruirMenu);
+    if(m == NULL){
+        free(m);
+        return MEN_CondRetFaltouMemoria;
+    }
+    m->grafo = Menus;
+    m->UltimoMenu = 0;
+    
+    *men->grafo = (MEN_tppMenus)Menus;
+    return MEN_CondRetOK;
+}
+MEN_tpCondRet MEN_MenuInicial(MEN_tppMenus men){
+    //algo proximo a isso, tem q tratar os condret
+    GRA_MudarCorrente(men->grafo,1);
+    return MEN_CondRetOK;
+}
+MEN_tpCondRet MEN_MenuCorrente(MEN_tppMenus e, int* id){
+    *id = GRA_ObterIdCorrente(men->grafo);
+    return MEN_CondRetOK;
+}
+MEN_tpCondRet MEN_MudaUltimoMenu(MEN_tppMenus e,int n){
+    men->UltimoMenu = n;
+    return MEN_CondRetOK;
 }

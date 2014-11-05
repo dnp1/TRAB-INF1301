@@ -1,6 +1,7 @@
 #include "TABULEIRO.h"
 #include "ESTADO.h"
 #include "MENU.h"
+#include "LISTA.h"
 #include <stdio.h>
 #include <stdlib.h>
 /*
@@ -221,12 +222,12 @@ void PopulaMenuJogar(EST_tppEstado e){
 }
 //housekeeping
 //tpCondRet
-void PopulaMenus(EST_tppEstado e){
+PRI_tpCondRet PopulaMenus(EST_tppEstado e){
     PopulaMenuInicio(e);
     PopulaMenuEditor(e);
     PopulaMenuResolvedor(e);
     PopulaMenuJogar(e);
-    
+    return CondRetOK;
 }
 /*
  *   Apresenta Dados para o usuario

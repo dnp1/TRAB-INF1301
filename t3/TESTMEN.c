@@ -28,29 +28,22 @@
 #include    "TABULEIRO.h"
 #include    "LISTA.h"
 
-static const char RESET_TAB_CMD         [] = "=resetteste"      ;
-static const char CRIAR_TAB_CMD         [] = "=criartab"        ;
-static const char DESTRUIR_TAB_CMD      [] = "=destruirtab"     ;
-static const char PODE_IR_CIMA_CMD      [] = "=podeircima"      ;
-static const char PODE_IR_ESQUERDA_CMD  [] = "=podeiresquerda"  ;
-static const char PODE_IR_BAIXO_CMD     [] = "=podeirdireita"   ;
-static const char PODE_IR_DIREITA_CMD   [] = "=podeirbaixo"     ;
-static const char ANDAR_CIMA_CMD        [] = "=andarcima"       ;
-static const char ANDAR_ESQUERDA_CMD    [] = "=andaresquerda"   ;
-static const char ANDAR_BAIXO_CMD       [] = "=andarbaixo"      ;
-static const char ANDAR_DIREITA_CMD     [] = "=andardireita"    ;  
-static const char POE_CHAO_CMD          [] = "=poechao"         ;  
-static const char POE_PAREDE_CMD        [] = "=poeparede"       ;  
-static const char POE_INICIO_CMD        [] = "=poeinicio"       ;  
-static const char POE_FIM_CMD           [] = "=poefim"          ;
-static const char GET_TIPO_CASA_CMD     [] = "=gettipocasa"     ;
-static const char GET_ALTURA_CMD        [] = "=getaltura"       ;
-static const char GET_LARGURA_CMD       [] = "=getlargura"      ;
-static const char POSICAO_JOGADOR_CMD   [] = "=posicaojogador"  ;
-static const char VALIDAR_TAB_CMD       [] = "=validartab"      ;
-static const char SALVAR_TAB_CMD        [] = "=salvartab"       ;
-static const char CARREGAR_TAB_CMD      [] = "=carregartab"     ;
-static const char SOLUCIONAR_TAB_CMD    [] = "=solucionartab"   ;
+static const char RESET_MEN_CMD         [] = "=resetteste"      ;
+static const char CRIAR_MENS_CMD        [] = "=criarmens"        ;
+static const char CRIAR_MEN_CMD         [] = "=criarmen"        ;
+static const char CRIAR_OPC_CMD         [] = "=criaropc"        ;
+static const char DESTRUIR_MEN_CMD      [] = "=destruirmen"     ;
+static const char DESTRUIR_MENS_CMD     [] = "=destruirmens"     ;
+static const char GET_MENU_CMD          [] = "=getmenu"      ;
+static const char GET_MENUOPC_CMD       [] = "=getopc"  ;
+static const char GET_MENUNOME_CMD      [] = "=getnome"  ;
+static const char GET_OPCCMD_CMD        [] = "=getcmd"   ;
+static const char GET_OPCNOME_CMD       [] = "=getnomeopc"   ;
+static const char CALLBACK_CMD          [] = "=call"   ;
+static const char MUDAMEN_CMD           [] = "=mudamenu"   ;
+static const char INICIAL_CMD           [] = "=inicial"   ;
+static const char CORRENTE_CMD          [] = "=corrente"   ;
+static const char MUDA_ULTIMO_CMD       [] = "=mudaultimo"   ;
 
 int estaInicializado = 0 ;
 
@@ -61,9 +54,7 @@ TAB_tppTabuleiro vtRefTabuleiros[ DIM_VT_TABULEIROS ] ;
 
 /***** Protótipos das funções encapuladas no módulo *****/
    
-    static void DestruirValor( void * pValor ) ;
-    static int VerificarInx( int inxTabuleiro );
-
+    static MEN_tpCondRet F(EST_tppEstado e, Men_tppOpcao o);
 
 /*****  Código das funções exportadas pelo módulo  *****/
 
@@ -72,37 +63,30 @@ TAB_tppTabuleiro vtRefTabuleiros[ DIM_VT_TABULEIROS ] ;
 *  $FC Função: TLIS &Testar tabuleiro
 *
 *  $ED Descrição da função
-*     Podem ser criadas até 10 tabuleiros, identificadas pelos índices 0 a 10
 *
 *     Comandos disponíveis:
 *
-*     =resetteste
-*           - anula o vetor de grafos Provoca vazamento de memória
-*     =criartab               inxTab   altura    largura   CondRetEsp
-*     =destruirtab            inxTab   CondRetEsp
-*     =podeircima"            inxTab   CondRetEsp
-*     =podeiresquerda"        inxTab   CondRetEsp
-*     =podeirdireita"         inxTab   CondRetEsp  
-*     =podeirbaixo"           inxTab   CondRetEsp
-*     =andarcima"             inxTab   CondRetEsp
-*     =andaresquerda"         inxTab   CondRetEsp 
-*     =andarbaixo"            inxTab   CondRetEsp
-*     =andardireita"          inxTab   CondRetEsp
-*     =poechao"               inxTab   CondRetEsp
-*     =poeparede"             inxTab   CondRetEsp
-*     =poeinicio"             inxTab   CondRetEsp
-*     =poefim"                inxTab   CondRetEsp
-*     =gettipocasa"           inxTab   x y   tipoEsp    CondRetEsp
-*     =getaltura"             inxTab   alturaEsp        CondRetEsp       
-*     =getlargura"            inxTab   alturaEsp        CondRetEsp
-*     =posicaojogador"        inxTab   xEsp    yEsp     CondRetEsp
-*     =validartab"            inxTab   condRetEsp
-*     =salvartab"             inxTab   condRetEsp
-*     =carregartab"           inxTab   condRetEsp
-*     =solucionartab"         inxTab   condRetEsp
+*     =resetteste      
+*     =criarmens       
+*     =criaropc        
+*     =destruirmens     
+*     =destruirmen     
+*     =getmenu      
+*     =getopc  
+*     =getnome  
+*     =getcmd   
+*     =getnomeopc   
+*     =call   
+*     =mudamenu   
+*     =inicial
+*     =corrente
+*     =mudaultimo   
 *
 ***********************************************************************/
 
+MEN_tpCondRet F(EST_tppEstado e, Men_tppOpcao o){
+    return CondRetOK;
+}
 
 TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
    {  
@@ -117,7 +101,7 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
 
       /* Tratar: inicializar contexto */
       
-      if ( strcmp( ComandoTeste , RESET_TAB_CMD ) == 0 ){
+      if ( strcmp( ComandoTeste , RESET_MEN_CMD ) == 0 ){
 
         if ( estaInicializado ){
             for( i = 0 ; i < DIM_VT_TABULEIROS ; i++ ){
@@ -135,7 +119,7 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
       
       /* Testar TAB Criar tabuleiro */
             
-      else if ( strcmp( ComandoTeste , CRIAR_TAB_CMD ) == 0 )
+      else if ( strcmp( ComandoTeste , CRIAR_MEN_CMD ) == 0 )
       {
           int altura, largura;
           char* nome;

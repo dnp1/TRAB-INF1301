@@ -19,7 +19,7 @@ typedef struct estado_ * EST_tppEstado;
 #include "TABULEIRO.h"
 
 EST_tppEstado EST_CriaEstado();
-int EST_MudaUltimoMenu(int n);
+int EST_MudaUltimoMenu(EST_tppEstado e, int n);
 MEN_tppMenus EST_GetMenus(EST_tppEstado e);
 TAB_tppTabuleiro EST_GetTabuleiro(EST_tppEstado e);
 #endif

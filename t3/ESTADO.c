@@ -1,4 +1,5 @@
 #include "ESTADO.h"
+#include <stdlib.h>
 //struct para manter o estado do jogo. 
 //Ela é passada por referência para para ser modificada e lida.
 //Ela é UNICA.
@@ -33,7 +34,8 @@ EST_tppEstado CriaEstado(){
     return e;
 }
 
-EST_CondRet EST_MenuInicial(EST_tppEstado e){
+//EST_tpCondRet EST_MenuInicial(EST_tppEstado e){
+int EST_MenuInicial(EST_tppEstado e){
     //algo proximo a isso, tem q tratar os condret
     return GRA_MudarCorrente(e->Menus,1);
 }
@@ -42,7 +44,7 @@ int EST_MenuCorrente(EST_tppEstado e){
 }
 
 int EST_MudaUltimoMenu(EST_tppEstado e,int n){
-    return e->UltimoMenu;
+    e->UltimoMenu = n;
 }
 MEN_tppMenus EST_GetMenus(EST_tppEstado e){
     return e->Menus;

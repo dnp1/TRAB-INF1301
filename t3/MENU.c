@@ -12,7 +12,7 @@ typedef struct Menu_{
 typedef struct Opcao_{
     char cmd;
     char* nome;
-    void (*callback)(EST_tppEstado e,MEN_tppOpcao o);
+    MEN_tpCondRet (*callback)(EST_tppEstado e,MEN_tppOpcao o);
 } Opcao;
 
 void MEN_DestruirMenu(MEN_tppMenu menu){
@@ -57,7 +57,7 @@ MEN_tpCondRet MEN_CriarMenu(MEN_tppMenus menus, int id, char* nome,int idpai){
 }
 
 //mudar lis->gra
-MEN_tpCondRet MEN_CriarOpcao(MEN_tppMenus menus, int idMenu,char cmd, char* nome,void (*callback)(EST_tppEstado e,MEN_tppOpcao o)){
+MEN_tpCondRet MEN_CriarOpcao(MEN_tppMenus menus, int idMenu,char cmd, char* nome,MEN_tpCondRet (*callback)(EST_tppEstado e,MEN_tppOpcao o)){
     MEN_tppOpcao o = malloc(sizeof(Opcao));
     if(o==NULL)
         return MEN_CondRetFaltouMemoria;
@@ -71,12 +71,31 @@ MEN_tpCondRet MEN_CriarOpcao(MEN_tppMenus menus, int idMenu,char cmd, char* nome
     LIS_InserirElementoApos(m->opcoes,o);
     return MEN_CondRetOK;
 }
-MEN_tpCondRet MudaMenu(MEN_tppMenus menus,int id){
-    	
+MEN_tpCondRet MEN_MudaMenu(MEN_tppMenus menus,int id){    	
     GRA_IrVizinho(menus,id);
 }
 
 
-void MEN_Callback(MEN_tppOpcao o, EST_tppEstado e){
-            o->callback(e,o);
+MEN_tpCondRet MEN_Callback(MEN_tppOpcao o, EST_tppEstado e){
+    return o->callback(e,o);
+}
+
+MEN_tpCondRet MEN_GetMenuOpcoes(MEN_tppMenu m,LIS_tppLista l){
+    l = m->opcoes;
+    return MEN_CondRetOK;
+} 
+MEN_tpCondRet MEN_GetMenuNome(MEN_tppMenu m, char* nome){
+    nome = m->nome;
+    return MEN_CondRetOK;
+
+}
+MEN_tpCondRet MEN_GetOpcaoCmd(MEN_tppOpcao o, char* cmd){
+    cmd = o->cmd;
+    return MEN_CondRetOK;
+
+}
+MEN_tpCondRet MEN_GetOpcaoNome(MEN_tppOpcao o, char* nome){
+    nome = nome->nome;
+    return MEN_CondRetOK;
+
 }

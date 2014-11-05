@@ -45,7 +45,7 @@ PRI_tpCondRet LeCmd(EST_tppEstado e){
     {
         MEN_tppOpcao opcao = LIS_ObterValor(opcoes);
         if(MEN_GetOpcaoCmd(opcao) == c){
-            MEN_Callback(opcao,e);
+            Erro("executando opcao selecionada\n",MEN_Callback(opcao,e),MEN);
             return PRI_CondRetOK;
         }    
     }
@@ -108,19 +108,19 @@ void Erro(char* comm, int CondRet,tpmodulo module){
  */
 
 void vaiMenu1(EST_tppEstado e,MEN_tppOpcao opc){ 
-    EST_MudaUltimoMenu(1); 
+    EST_MudaUltimoMenu(e,1); 
     MEN_MudaMenu(EST_GetMenus(e),1); 
 }
 void vaiMenu2(EST_tppEstado e,MEN_tppOpcao opc){ 
-    EST_MudaUltimoMenu(2); 
+    EST_MudaUltimoMenu(e,2); 
     MEN_MudaMenu(EST_GetMenus(e),2); 
 }
 void vaiMenu3(EST_tppEstado e,MEN_tppOpcao opc){ 
-    EST_MudaUltimoMenu(3); 
+    EST_MudaUltimoMenu(e,3); 
     MEN_MudaMenu(EST_GetMenus(e),3); 
 }
 void vaiMenu4(EST_tppEstado e,MEN_tppOpcao opc){ 
-    EST_MudaUltimoMenu(4); 
+    EST_MudaUltimoMenu(e,4); 
     MEN_MudaMenu(EST_GetMenus(e),4); 
 }
 /*

@@ -71,7 +71,8 @@ typedef enum{
 *     Cria um grafo de Menus para aplicações, implementado com um grafo genérico.
 *     Os Menus são implementados com um grafo de tipo homogêneo 
 *     genérico não direcionado sem peso nas arestas. 
-*     Por convenção, o menu inicial tem id 1;
+*     O menu inicial tem id 1;
+*     O menu representando fim de jogo tem id 0;
 *  $EP Parâmetros
 *
 *  $FV Valor retornado
@@ -79,9 +80,60 @@ typedef enum{
 *
 ***********************************************************************/
 MEN_tpCondRet MEN_CriarMenus(MEN_tppMenus* m);
-MEN_tpCondRet MEN_DestruirMenus(MEN_tppMenus* m);
-MEN_tpCondRet MEN_DestruirMenu(MEN_tppMenu menu);
+/***********************************************************************
+*
+*  $FC Função: MEN  &Criar Menu
+*
+*  $ED Descrição da função
+*     Cria um Menu e o insere em um grafo de Menus
+*     O menu contém:
+*       um id, que deve ser único.
+*       um nome.
+*       um id do menu pai, pois todo menu tem por padrão um comando de voltar para o menu acima.
+*       uma lista de opcoes, que devem ser populadas por MEN_CriarOpcao
+*  $EP Parâmetros
+*
+*  $FV Valor retornado
+*     MEN_CondRetFaltouMemoria - faltou memoria ao criar os Menus
+*
+***********************************************************************/
 MEN_tpCondRet MEN_CriarMenu(MEN_tppMenus menus, int id, char* nome,int idPai);
+/***********************************************************************
+*
+*  $FC Função: MEN  &Destruir Menus
+*
+*  $ED Descrição da função
+*     Destroi menus, liberando sua memoria.
+*     O menu contém:
+*       um id, que deve ser único.
+*       um nome.
+*       um id do menu pai, pois todo menu tem por padrão um comando de voltar para o menu acima.
+*       uma lista de opcoes, que devem ser populadas por MEN_CriarOpcao
+*  $EP Parâmetros
+*
+*  $FV Valor retornado
+*     MEN_CondRetFaltouMemoria - faltou memoria ao criar os Menus
+*
+***********************************************************************/
+MEN_tpCondRet MEN_DestruirMenus(MEN_tppMenus* m);
+/***********************************************************************
+*
+*  $FC Função: MEN  &Criar Menu
+*
+*  $ED Descrição da função
+*     Cria um Menu e o insere em um grafo de Menus
+*     O menu contém:
+*       um id, que deve ser único.
+*       um nome.
+*       um id do menu pai, pois todo menu tem por padrão um comando de voltar para o menu acima.
+*       uma lista de opcoes, que devem ser populadas por MEN_CriarOpcao
+*  $EP Parâmetros
+*
+*  $FV Valor retornado
+*     MEN_CondRetFaltouMemoria - faltou memoria ao criar os Menus
+*
+***********************************************************************/
+MEN_tpCondRet MEN_DestruirMenu(MEN_tppMenu menu);
 MEN_tpCondRet MEN_CriarOpcao(MEN_tppMenus menus, int idMenu,char cmd, char* nome,void (*callback)(EST_tppEstado e,MEN_tppOpcao o));
 
 

@@ -21,7 +21,7 @@ teste-menu:
 teste-tabuleiro:
 	$(CC) $(CFLAGS) -o teste_menu.exe -lArcaboucoTeste TABULEIRO.o GRAFO.o LISTA.o 
 clean:
-	rm *.gch
-	rm *.o
-	rm *.exe
+	rm *.gch -f
+	rm *.o -f
+	rm *.exe -f
 

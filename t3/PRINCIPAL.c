@@ -219,6 +219,8 @@ void PopulaMenuJogar(EST_tppEstado e){
 
     Erro("criando opcao 1 de Jogar", MEN_CriarOpcao(EST_GetMenus(e),idMenu,'1',"Carregar",carrega),MEN) ;
 }
+//housekeeping
+//tpCondRet
 void PopulaMenus(EST_tppEstado e){
     PopulaMenuInicio(e);
     PopulaMenuEditor(e);
@@ -289,8 +291,13 @@ void ApresentaSolucao(EST_tppEstado e){
 #define EDITOR 2
 int main(){
     EST_tppEstado e = EST_CriaEstado();
-    if(e!=NULL)
+    Erro("Alocando Estado",(e!=NULL?PRI_CondRetOK:PRI_CondRetFaltouMemoria),PRI);
+    if(e!=NULL){
         PopulaMenus(e);
+    }
+    else{
+        return 0;
+    }
     //inicia a navegacao em 1
     EST_MenuInicial(e);
     //só sera 0 quando o ultimo corrente for 1 e o usuario digitar 0

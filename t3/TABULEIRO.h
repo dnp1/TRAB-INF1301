@@ -2,23 +2,23 @@
 #define TABULEIRO_
 /***************************************************************************
 *
-*  $MCD MÛdulo de definiÁ„o: TAB Tabuleiro de labirinto
+*  $MCD M√≥dulo de defini√ß√£o: TAB Tabuleiro de labirinto
 *
 *  Arquivo gerado:              TABULEIRO.h
 *  Letras identificadoras:      TAB
 *
-*  Nome da base de software:    ArcabouÁo para a automaÁ„o de testes de programas redigidos em C
+*  Nome da base de software:    Arcabou√ßo para a automa√ß√£o de testes de programas redigidos em C
 *  Arquivo da base de software: D:\AUTOTEST\PROJETOS\Tabuleiro.BSW
 *
 *  Projeto: INF 1301 / Labirinto
 *  Gestor:  LSKDANEAV
 *  Autores: eav
 *
-*  $HA HistÛrico de evoluÁ„o:
-*     Vers„o  Autor    Data     ObservaÁıes
+*  $HA Hist√≥rico de evolu√ß√£o:
+*     Vers√£o  Autor    Data     Observa√ß√µes
 *		 1	   eav	 20/10/2014		//
 *
-*  $ED DescriÁ„o do mÛdulo
+*  $ED Descri√ß√£o do m√≥dulo
 *
 ***************************************************************************/
 
@@ -30,9 +30,9 @@
 
 #include "GRAFO.h"
 
-/***** DeclaraÁıes exportadas pelo mÛdulo *****/
+/***** Declara√ß√µes exportadas pelo m√≥dulo *****/
 
-/* Tipo referÍncia para um tabuleiro */
+/* Tipo refer√™ncia para um tabuleiro */
 
 typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 
@@ -40,8 +40,8 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 *
 *  $TC Tipo de dados: TAB Tipo da casa
 *
-*  $ED DescriÁ„o do tipo
-*     Representa se a casa È inicio, fim, ch„o ou parede
+*  $ED Descri√ß√£o do tipo
+*     Representa se a casa √© inicio, fim, ch√£o ou parede
 *
 ***********************************************************************/
 
@@ -59,11 +59,11 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 
 /***********************************************************************
 *
-*  $TC Tipo de dados: TAB CondiÁıes de retorno
+*  $TC Tipo de dados: TAB Condi√ß√µes de retorno
 *
 *
-*  $ED DescriÁ„o do tipo
-*     CondiÁıes de retorno das funÁıes do tabuleiro
+*  $ED Descri√ß√£o do tipo
+*     Condi√ß√µes de retorno das fun√ß√µes do tabuleiro
 *
 ***********************************************************************/
 
@@ -73,35 +73,32 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
         /* Concluiu corretamente */
 				
         TAB_CondRetFaltouMemoria ,
-        /* Faltou memÛria */
+        /* Faltou mem√≥ria */
 
         TAB_CondRetNaoEhCasa ,
         /* A casa explicitada nao pertence ao tabuleiro */
 
         TAB_CondRetMovimentoInvalido ,
-        /* Movimento inv·lido */
-
-        TAB_CondRetAlteracaoInvalida , 
-        /* AlteraÁ„o do valor ( vazio/parede/inicio/fim ) inv·lida */
-
+        /* Movimento inv√°lido */
+        
         TAB_CondRetTabuleiroInvalido ,
         /* Tabuleiro viola as assertivas */
 
         TAB_CondRetSemSolucao
-        /* Tabuleiro n„o tem soluÁ„o */
+        /* Tabuleiro n√£o tem solu√ß√£o */
 
     } TAB_tpCondRet ;
     
 /***********************************************************************
 *
-*  $FC FunÁ„o: TAB  &Criar Tabuleiro
+*  $FC Fun√ß√£o: TAB  &Criar Tabuleiro
 *
-*  $ED DescriÁ„o da funÁ„o
-*     Cria um Tabuleiro para labirinto, implementado com um grafo genÈrico.
-*     O Tabuleiro È implementado com um grafo de tipo homogÍneo 
-*     genÈrico n„o direcionado sem peso nas arestas. 
+*  $ED Descri√ß√£o da fun√ß√£o
+*     Cria um Tabuleiro para labirinto, implementado com um grafo gen√©rico.
+*     O Tabuleiro √© implementado com um grafo de tipo homog√™neo 
+*     gen√©rico n√£o direcionado sem peso nas arestas. 
 *
-*  $EP Par‚metros
+*  $EP Par√¢metros
 *     Altura - inteiro que representa o tamanho vertical do tabuleiro.
 *     Largura - inteiro que representa o tamanho horizontal do tabuleiro.
 *
@@ -115,12 +112,12 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
     
 /***********************************************************************
 *
-*  $FC FunÁ„o: TAB  &Destruir Tabuleiro
+*  $FC Fun√ß√£o: TAB  &Destruir Tabuleiro
 *
-*  $ED DescriÁ„o da funÁ„o
+*  $ED Descri√ß√£o da fun√ß√£o
 *     Destroi o tabuleiro
 *
-*  $EP Par‚metros
+*  $EP Par√¢metros
 *     pTab - ponteiro para o tabuleiro
 *
 *  $FV Valor retornado
@@ -133,17 +130,17 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 
 /***********************************************************************
 *
-*  $FC FunÁ„o: TAB &Pode andar pra cima
+*  $FC Fun√ß√£o: TAB &Pode andar pra cima
 *
-*  $ED DescriÁ„o da funÁ„o
+*  $ED Descri√ß√£o da fun√ß√£o
 *     Valida a possibilidade de um movimento para o norte.
 *
-*  $EP Par‚metros
+*  $EP Par√¢metros
 *     pTab - ponteiro para o tabuleiro
 *
 *  $FV Valor retornado
-*     TAB_CondRetOK - O movimento È v·lido; 
-*     TAB_CondRetMovimentoInvalido - O movimento È inv·lido; 
+*     TAB_CondRetOK - O movimento √© v√°lido; 
+*     TAB_CondRetMovimentoInvalido - O movimento √© inv√°lido; 
 *
 ***********************************************************************/
 
@@ -151,17 +148,17 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 
 /***********************************************************************
 *
-*  $FC FunÁ„o: TAB  &Pode andar pra esquerda
+*  $FC Fun√ß√£o: TAB  &Pode andar pra esquerda
 *
-*  $ED DescriÁ„o da funÁ„o
+*  $ED Descri√ß√£o da fun√ß√£o
 *     Valida a possibilidade de um movimento. 
 *
-*  $EP Par‚metros
+*  $EP Par√¢metros
 *     pTab - ponteiro para o tabuleiro
 *
 *  $FV Valor retornado
-*     TAB_CondRetOK - O movimento È v·lido; 
-*     TAB_CondRetMovimentoInvalido - O movimento È inv·lido; 
+*     TAB_CondRetOK - O movimento √© v√°lido; 
+*     TAB_CondRetMovimentoInvalido - O movimento √© inv√°lido; 
 *
 ***********************************************************************/
 
@@ -169,17 +166,17 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 
 /***********************************************************************
 *
-*  $FC FunÁ„o: TAB  &Pode andar pra baixo
+*  $FC Fun√ß√£o: TAB  &Pode andar pra baixo
 *
-*  $ED DescriÁ„o da funÁ„o
+*  $ED Descri√ß√£o da fun√ß√£o
 *     Valida a possibilidade de um movimento. 
 *
-*  $EP Par‚metros
+*  $EP Par√¢metros
 *     pTab - ponteiro para o tabuleiro
 *
 *  $FV Valor retornado
-*     TAB_CondRetOK - O movimento È v·lido; 
-*     TAB_CondRetMovimentoInvalido - O movimento È inv·lido; 
+*     TAB_CondRetOK - O movimento √© v√°lido; 
+*     TAB_CondRetMovimentoInvalido - O movimento √© inv√°lido; 
 *
 ***********************************************************************/
 
@@ -187,17 +184,17 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 
 /***********************************************************************
 *
-*  $FC FunÁ„o: TAB  &Pode andar pra direita
+*  $FC Fun√ß√£o: TAB  &Pode andar pra direita
 *
-*  $ED DescriÁ„o da funÁ„o
+*  $ED Descri√ß√£o da fun√ß√£o
 *     Valida a possibilidade de um movimento. 
 *
-*  $EP Par‚metros
+*  $EP Par√¢metros
 *     pTab - ponteiro para o tabuleiro
 *
 *  $FV Valor retornado
-*     TAB_CondRetOK - O movimento È v·lido; 
-*     TAB_CondRetMovimentoInvalido - O movimento È inv·lido; 
+*     TAB_CondRetOK - O movimento √© v√°lido; 
+*     TAB_CondRetMovimentoInvalido - O movimento √© inv√°lido; 
 *
 ***********************************************************************/
 
@@ -205,16 +202,16 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 
 /***********************************************************************
 *
-*  $FC FunÁ„o: TAB &Andar pra cima
+*  $FC Fun√ß√£o: TAB &Andar pra cima
 *
-*  $ED DescriÁ„o da funÁ„o
+*  $ED Descri√ß√£o da fun√ß√£o
 *     Muda o corrente para o vizinho ao norte dele.
 *
-*  $EP Par‚metros
+*  $EP Par√¢metros
 *     pTab - ponteiro para o tabuleiro
 *
 *  $FV Valor retornado
-*     TAB_CondRetOK - O movimento È v·lido; 
+*     TAB_CondRetOK - O movimento √© v√°lido; 
 *
 ***********************************************************************/
 
@@ -222,16 +219,16 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 
 /***********************************************************************
 *
-*  $FC FunÁ„o: TAB  &Andar pra esquerda
+*  $FC Fun√ß√£o: TAB  &Andar pra esquerda
 *
-*  $ED DescriÁ„o da funÁ„o
+*  $ED Descri√ß√£o da fun√ß√£o
 *     Muda o corrente para o vizinho ao oeste dele. 
 *
-*  $EP Par‚metros
+*  $EP Par√¢metros
 *     pTab - ponteiro para o tabuleiro
 *
 *  $FV Valor retornado
-*     TAB_CondRetOK - O movimento È v·lido; 
+*     TAB_CondRetOK - O movimento √© v√°lido; 
 *
 ***********************************************************************/
 
@@ -239,16 +236,16 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 
 /***********************************************************************
 *
-*  $FC FunÁ„o: TAB  &Andar pra baixo
+*  $FC Fun√ß√£o: TAB  &Andar pra baixo
 *
-*  $ED DescriÁ„o da funÁ„o
+*  $ED Descri√ß√£o da fun√ß√£o
 *     Muda o corrente para o vizinho ao sul dele.
 *
-*  $EP Par‚metros
+*  $EP Par√¢metros
 *     pTab - ponteiro para o tabuleiro
 *
 *  $FV Valor retornado
-*     TAB_CondRetOK - O movimento È v·lido; 
+*     TAB_CondRetOK - O movimento √© v√°lido; 
 *
 ***********************************************************************/
 
@@ -256,16 +253,16 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 
 /***********************************************************************
 *
-*  $FC FunÁ„o: TAB  &Andar pra direita
+*  $FC Fun√ß√£o: TAB  &Andar pra direita
 *
-*  $ED DescriÁ„o da funÁ„o
+*  $ED Descri√ß√£o da fun√ß√£o
 *     Muda o corrente para o vizinho ao leste dele. 
 *
-*  $EP Par‚metros
+*  $EP Par√¢metros
 *     pTab - ponteiro para o tabuleiro
 *
 *  $FV Valor retornado
-*     TAB_CondRetOK - O movimento È v·lido;
+*     TAB_CondRetOK - O movimento √© v√°lido;
 *
 ***********************************************************************/
 
@@ -273,16 +270,16 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 
 /***********************************************************************
 *
-*  $FC FunÁ„o: TAB  &Poe Chao
+*  $FC Fun√ß√£o: TAB  &Poe Chao
 *
-*  $ED DescriÁ„o da funÁ„o
+*  $ED Descri√ß√£o da fun√ß√£o
 *     Altera o tipo da casa para chao
 *
-*  $EP Par‚metros
+*  $EP Par√¢metros
 *     pTab - ponteiro para o tabuleiro
 *
 *  $FV Valor retornado
-*     TAB_CondRetOK - O tabuleiro È v·lido; 
+*     TAB_CondRetOK - O tabuleiro √© v√°lido; 
 *     TAB_CondRetFaltouMemoria - ;
 *     TAB_CondRetAlteracaoInvalida - ;
 *
@@ -292,16 +289,16 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
  
 /***********************************************************************
 *
-*  $FC FunÁ„o: TAB  &Poe Parede
+*  $FC Fun√ß√£o: TAB  &Poe Parede
 *
-*  $ED DescriÁ„o da funÁ„o
+*  $ED Descri√ß√£o da fun√ß√£o
 *     Altera o tipo da casa para parede
 *
-*  $EP Par‚metros
+*  $EP Par√¢metros
 *     pTab - ponteiro para o tabuleiro
 *
 *  $FV Valor retornado
-*     TAB_CondRetOK - O tabuleiro È v·lido; 
+*     TAB_CondRetOK - O tabuleiro √© v√°lido; 
 *     TAB_CondRetFaltouMemoria - ;
 *     TAB_CondRetAlteracaoInvalida - ;
 *
@@ -311,16 +308,16 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
  
 /***********************************************************************
 *
-*  $FC FunÁ„o: TAB  &Poe Inicio
+*  $FC Fun√ß√£o: TAB  &Poe Inicio
 *
-*  $ED DescriÁ„o da funÁ„o
+*  $ED Descri√ß√£o da fun√ß√£o
 *     Altera o tipo da casa para inicio
 *
-*  $EP Par‚metros
+*  $EP Par√¢metros
 *     pTab - ponteiro para o tabuleiro
 *
 *  $FV Valor retornado
-*     TAB_CondRetOK - O tabuleiro È v·lido; 
+*     TAB_CondRetOK - O tabuleiro √© v√°lido; 
 *     TAB_CondRetFaltouMemoria - ;
 *     TAB_CondRetAlteracaoInvalida - ;
 *
@@ -330,16 +327,16 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
  
 /***********************************************************************
 *
-*  $FC FunÁ„o: TAB  &Poe Fim
+*  $FC Fun√ß√£o: TAB  &Poe Fim
 *
-*  $ED DescriÁ„o da funÁ„o
+*  $ED Descri√ß√£o da fun√ß√£o
 *     Altera o tipo da casa para fim
 *
-*  $EP Par‚metros
+*  $EP Par√¢metros
 *     pTab - ponteiro para o tabuleiro
 *
 *  $FV Valor retornado
-*     TAB_CondRetOK - O tabuleiro È v·lido; 
+*     TAB_CondRetOK - O tabuleiro √© v√°lido; 
 *     TAB_CondRetFaltouMemoria - ;
 *     TAB_CondRetAlteracaoInvalida - ;
 *
@@ -349,20 +346,20 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
  
 /***********************************************************************
 *
-*  $FC FunÁ„o: TAB  &Get Tipo Casa
+*  $FC Fun√ß√£o: TAB  &Get Tipo Casa
 *
-*  $ED DescriÁ„o da funÁ„o
-*     Da o tipo (ch„o, parede, inicio ou fim) da casa representada por (x,y). 
+*  $ED Descri√ß√£o da fun√ß√£o
+*     Da o tipo (ch√£o, parede, inicio ou fim) da casa representada por (x,y). 
 *
-*  $EP Par‚metros
+*  $EP Par√¢metros
 *     pTab - ponteiro para o tabuleiro
 *     x - x da casa a ser modificada
 *     y - y da casa a ser modificada
 *     tipo - ponteiro para o tipo da casa
 *
 *  $FV Valor retornado
-*     TAB_CondRetOK - O tabuleiro È v·lido;
-*     TAB_CondRetNaoEhCasa - O tabuleiro n„o possuia uma casa representada por (x,y)
+*     TAB_CondRetOK - O tabuleiro √© v√°lido;
+*     TAB_CondRetNaoEhCasa - O tabuleiro n√£o possuia uma casa representada por (x,y)
 *
 ***********************************************************************/   
 
@@ -370,17 +367,17 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 
 /***********************************************************************
 *
-*  $FC FunÁ„o: TAB  &Get Altura
+*  $FC Fun√ß√£o: TAB  &Get Altura
 *
-*  $ED DescriÁ„o da funÁ„o
+*  $ED Descri√ß√£o da fun√ß√£o
 *     Da a altura do tabuleiro.
 *
-*  $EP Par‚metros
+*  $EP Par√¢metros
 *     pTab - ponteiro para o tabuleiro
 *     altura - ponteiro para a altura
 *
 *  $FV Valor retornado
-*     TAB_CondRetOK - O tabuleiro È v·lido;
+*     TAB_CondRetOK - O tabuleiro √© v√°lido;
 *
 ***********************************************************************/   
 
@@ -388,17 +385,17 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 
 /***********************************************************************
 *
-*  $FC FunÁ„o: TAB  &Get Largura
+*  $FC Fun√ß√£o: TAB  &Get Largura
 *
-*  $ED DescriÁ„o da funÁ„o
+*  $ED Descri√ß√£o da fun√ß√£o
 *     Da a largura do tabuleiro.
 *
-*  $EP Par‚metros
+*  $EP Par√¢metros
 *     pTab - ponteiro para o tabuleiro
 *     largura - ponteiro para a largura
 *
 *  $FV Valor retornado
-*     TAB_CondRetOK - O tabuleiro È v·lido;
+*     TAB_CondRetOK - O tabuleiro √© v√°lido;
 *
 ***********************************************************************/   
 
@@ -406,16 +403,16 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 
 /***********************************************************************
 *
-*  $FC FunÁ„o: TAB  &Validar Tabuleiro
+*  $FC Fun√ß√£o: TAB  &Validar Tabuleiro
 *
-*  $ED DescriÁ„o da funÁ„o
+*  $ED Descri√ß√£o da fun√ß√£o
 *     Valida o tabuleiro. 
 *
-*  $EP Par‚metros
+*  $EP Par√¢metros
 *     pTab - ponteiro para o tabuleiro
 *
 *  $FV Valor retornado
-*     TAB_CondRetOK - O tabuleiro È v·lido; 
+*     TAB_CondRetOK - O tabuleiro √© v√°lido; 
 *
 ***********************************************************************/
 
@@ -423,15 +420,15 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
     
 /***********************************************************************
 *
-*  $FC FunÁ„o: TAB  &Salvar Tabuleiro
+*  $FC Fun√ß√£o: TAB  &Salvar Tabuleiro
 *
-*  $ED DescriÁ„o da funÁ„o
+*  $ED Descri√ß√£o da fun√ß√£o
 *     Salva o tabuleiro em um arquivo.
-*     As trÍs primeiras linhas consistem, respectivamente, da largura, altura e nome do tabuleiro.
-*     Cada linha subsquente representa uma casa v·lida(chao, inicio, fim).
-*     A casa È descrita por trÍs inteiros, representando, respectivamente, o x, y e tipo da casa.
+*     As tr√™s primeiras linhas consistem, respectivamente, da largura, altura e nome do tabuleiro.
+*     Cada linha subsquente representa uma casa v√°lida(chao, inicio, fim).
+*     A casa √© descrita por tr√™s inteiros, representando, respectivamente, o x, y e tipo da casa.
 *
-*  $EP Par‚metros
+*  $EP Par√¢metros
 *     pTab - ponteiro para o tabuleiro
 *     saida - string com a path do arquivo a ser criado.
 *
@@ -444,40 +441,40 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
         
 /***********************************************************************
 *
-*  $FC FunÁ„o: TAB  &Carregar Tabuleiro
+*  $FC Fun√ß√£o: TAB  &Carregar Tabuleiro
 *
-*  $ED DescriÁ„o da funÁ„o
+*  $ED Descri√ß√£o da fun√ß√£o
 *     Carrega o tabuleiro de um arquivo. As 3 primeiras linhas do arquivo devem representar, respectivamente,
 *     a largura, altura e nome do tabuleiro.
 *     As linhas subsequentes devem ser da forma: x, y, tipo
-*     Dessa forma, a casa È representada por sua posiÁ„o (x,y) no tabuleiro, assim como por seu tipo.
+*     Dessa forma, a casa √© representada por sua posi√ß√£o (x,y) no tabuleiro, assim como por seu tipo.
 *
-*  $EP Par‚metros
+*  $EP Par√¢metros
 *     pTab - ponteiro para o tabuleiro
 *     entrada - string com a path do arquivo a ser lido
 *
 *  $FV Valor retornado
 *     TAB_CondRetOK - O tabuleiro foi carregado com sucesso; 
-*     TAB_CondRetTabuleiroInvalido - O arquivo n„o È v·lido;
+*     TAB_CondRetTabuleiroInvalido - O arquivo n√£o √© v√°lido;
 ***********************************************************************/
 
     TAB_tpCondRet TAB_CarregarTabuleiro ( TAB_tppTabuleiro* pTab, char* entrada ) ;
         
 /***********************************************************************
 *
-*  $FC FunÁ„o: TAB  &Solucionar Tabuleiro
+*  $FC Fun√ß√£o: TAB  &Solucionar Tabuleiro
 *
-*  $ED DescriÁ„o da funÁ„o
-*     Soluciona o tabuleiro. A soluÁ„o È retornada em um vetor de inteiros, aonde cada casa È representada
-*     por 2 posiÁıes do vetor. A primeira posiÁ„o recebe o x da casa, a segunda recebe o y.
+*  $ED Descri√ß√£o da fun√ß√£o
+*     Soluciona o tabuleiro. A solu√ß√£o √© retornada em um vetor de inteiros, aonde cada casa √© representada
+*     por 2 posi√ß√µes do vetor. A primeira posi√ß√£o recebe o x da casa, a segunda recebe o y.
 *
-*  $EP Par‚metros
+*  $EP Par√¢metros
 *     pTab - ponteiro para o tabuleiro
-*     pSolucao - vetor de inteiros que representa a soluÁ„o
+*     pSolucao - vetor de inteiros que representa a solu√ß√£o
 *
 *  $FV Valor retornado
-*     TAB_CondRetOK - O tabuleiro È v·lido;
-*     TAB_CondRetSemSolucao - O tabuleiro n„o possui soluÁ„o;
+*     TAB_CondRetOK - O tabuleiro √© v√°lido;
+*     TAB_CondRetSemSolucao - O tabuleiro n√£o possui solu√ß√£o;
 *
 ***********************************************************************/
 
@@ -485,18 +482,18 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 
 /***********************************************************************
 *
-*  $FC FunÁ„o: TAB  &Posicao do Jogador
+*  $FC Fun√ß√£o: TAB  &Posicao do Jogador
 *
-*  $ED DescriÁ„o da funÁ„o
-*     Da a posiÁ„o (x,y) do jogador no tabuleiro.
+*  $ED Descri√ß√£o da fun√ß√£o
+*     Da a posi√ß√£o (x,y) do jogador no tabuleiro.
 *
-*  $EP Par‚metros
+*  $EP Par√¢metros
 *     pTab - ponteiro para o tabuleiro
 *     pX - ponteiro para inteiro que representa a coordenada X do jogador
 *     pY - ponteiro para inteiro que representa a coordenada Y do jogador
 *
 *  $FV Valor retornado
-*     TAB_CondRetOK - O tabuleiro È v·lido;
+*     TAB_CondRetOK - O tabuleiro √© v√°lido;
 *
 ***********************************************************************/
 

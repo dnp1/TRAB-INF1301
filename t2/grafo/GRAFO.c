@@ -742,47 +742,29 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         } while(LIS_AvancarElementoCorrente(lista, 1));
     }
 
-/***************************************************************************
-*
-*  Função: GRA  &converteListaParaVetorDeInteiros
-*  ****/    
-
-
-    static int* converteListaParaVetorDeInteiros(LIS_tppLista lista, int* len) {
-        int* vet;
-        *len = 0;
-        if (lista == NULL || LIS_NumeroDeElementos(lista) == 0) {
-            return NULL;
-        }
-        vet = calloc(LIS_NumeroDeElementos(lista) ,sizeof(int));
-        LIS_IrInicioLista(lista);
-        do {
-            vet[*len] = getInt(LIS_ObterValor(lista));
-            *len = (*len)+1;
-        } while(LIS_AvancarElementoCorrente(lista, 1));
-    }
-
 
 /***************************************************************************
 *
 *  Estrutura auxiliar: indiceDistancia;
 *  ****/    
-
-    typedef path {
+    typedef struct _Dist Dist;
+    struct _Dist {
         int id;
-        int distancia;
-    } Dist;
+        int dist;
+        Dist* prev;
+    };
 
 /***************************************************************************
 *
 *  Função: GRA  &newDist
 *  ****/    
 
-
+    
     static Dist* newDist(int id, int dist) {
-        Dist* d = malloc(1, sizeof(Dist));
+        Dist* d = malloc(sizeof(Dist));
         d->id = id;
         d->dist = dist;
+        d->prev = NULL;
         return d;
     }
 
@@ -795,8 +777,8 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
     static Dist* getDist(Dist** dists, int id) {
         int i;
         for (i=0;dists[i];i++) {
-            if (d[i]->id ==id) {
-                return d[i];
+            if (dists[i]->id ==id) {
+                return dists[i];
             }
         }
         return NULL;
@@ -808,22 +790,21 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
 *  ****/    
     
     GRA_tpCondRet GRA_BuscarCaminho( GRA_tppGrafo pGrafo , int idVerticeOrigem, int idVerticeDestino, LIS_tppLista * pLista ) {
+
         LIS_tppLista caminho = NULL;
+
         tpVertice * v = NULL;
-        tpVertice * u = NULL;               
-        int *V = NULL; // Vetor de vertices vizitados
+        tpVertice * u = NULL;         
+        tpVertice * origem1 = NULL;
+        tpVertice * origem2 = NULL;
         int lenV = 0;
         LIS_tppLista Q = NULL; //FILA
         LIS_tppLista arestas = NULL;
         LIS_tppLista retorno = NULL;
         int t = NULL;
+        int *visitados = NULL; // Vetor de vertices visitados
         int* vizinhos;
         int len = 0;
-        tpVertice* s = NULL;
-        tpAresta * atemp = NULL;
-        tpAresta * a = NULL;
-        tpVertice * origem1 = NULL;
-        tpVertice * origem2 = NULL;
         int* idAux = NULL;
         int achou = 0;
         int achou_V = 0;
@@ -832,8 +813,9 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         int alt = 0;
         int lenD;
         Dist** dists = NULL;
-        dists = calloc(LIS_NumeroDeElementos(pGrafo->vertices)+1, sizeof(*IndiceDistancia));
+        dists = calloc(LIS_NumeroDeElementos(pGrafo->vertices)+1, sizeof(Dist*));
         Dist* dist = NULL; //aux;
+        Dist* currDist = NULL;
         dists[0] = newDist(idVerticeOrigem, 0);
         lenD = 1;
 
@@ -863,22 +845,17 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
                     break;
                 }
             }
-            caminho = LIS_CriarLista(free);
-            if (caminho == NULL) { break; }
 
-            V = calloc(LIS_NumeroDeElementos(pGrafo->vertices),sizeof(int));
-            if (V == NULL) { break; }
+            visitados = calloc(LIS_NumeroDeElementos(pGrafo->vertices),sizeof(int));
+            if (visitados == NULL) { break; }
 
             Q = LIS_CriarLista(free);
             if (Q == NULL) { break; }
 
             
-            V[0] = v;
+            visitados[0] = v;
             lenV = 1;
             if (LIS_InserirElementoApos(Q, newInt(v)) != LIS_CondRetOK) { break;} //enque
-
-            atemp = (tpAresta *) malloc(sizeof(tpAresta)); 
-            if (atemp == NULL) { break; }
 
             ok = 1;
             break;
@@ -886,7 +863,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         if (!ok) {
             LIS_DestruirLista(caminho);
             LIS_DestruirLista(retorno);
-            free(V);
+            free(visitados);
             LIS_DestruirLista(Q);
             return GRA_CondRetFaltouMemoria;
         }
@@ -902,33 +879,38 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
             vizinhos = converteListaParaVetorDeInteiros(arestas, &len);
             LIS_DestruirLista(arestas);
 
+            currDist = getDist(dists, t);
             alt = getDist(dists, t)->dist + 1;
             for (i=0; i < len; i++) {
                 in = 0;
                 for (j=0; j < lenV; j++) {
-                    if(V[j] == arestas[i] {
+                    if (visitados[j] == vizinhos[i]) {
                         in = 1;
                     }
                 }
                 if (!in) {
-                    dist = getDist(dists, arestas[i]);
+                    dist = getDist(dists, vizinhos[i]);
                     if (dist == NULL) { //infinity
-                        dists[lenD] = newDist(arestas[i], alt);
+                        dists[lenD] = newDist(vizinhos[i], alt);
+                        dists[lenD]->prev = currDist;
                         lenD++;
                     } else if (alt < dist->dist) {
                         dist->dist = alt;
+                        dist->prev = currDist;
                     }
-                    
-                    
                     LIS_InserirElementoAntes(Q, newInt(i));
                 }
             }
             free(vizinhos);
         }
 
+
+        //Montar Lista;
+
+
         //Limpando a memória        
         LIS_DestruirLista(caminho);    
-        free(V);
+        free(visitados);
         LIS_DestruirLista(Q);
         *pLista = retorno;
 

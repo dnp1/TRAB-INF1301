@@ -28,11 +28,19 @@ EST_tpCondRet CriaEstado(EST_tppEstado* est){
     return EST_CondRetOK;
 }
 
+EST_tpCondRet EST_SetMenus(EST_tppEstado e, MEN_tppMenus men){
+    e->Menus = men;
+    return EST_CondRetOK;
+}
+EST_tpCondRet EST_SetTabuleiro(EST_tppEstado e,TAB_tppTabuleiro tab){
+    e->Tabuleiro = tab;
+    return EST_CondRetOK;
+}
 EST_tpCondRet EST_GetMenus(EST_tppEstado e, MEN_tppMenus* men){
     *men =  e->Menus;
     return EST_CondRetOK;
 }
-EST_tpCondRet GetTabuleiro(EST_tppEstado e,TAB_tppTabuleiro* tab){
+EST_tpCondRet EST_GetTabuleiro(EST_tppEstado e,TAB_tppTabuleiro* tab){
     *tab =  e->Tabuleiro;
     return EST_CondRetOK;
 }

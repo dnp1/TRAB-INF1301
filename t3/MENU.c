@@ -22,8 +22,7 @@ typedef struct Opcao_{
 } Opcao;
 
 static void ExcluirMenu(void* menu){
-    LIS_tppLista l;
-    MEN_GetMenuOpcoes((MEN_tppMenu)menu,l);
+    LIS_tppLista l = ((MEN_tppMenu)menu)->opcoes;
     LIS_DestruirLista(l);
     free(menu);
 }
@@ -58,7 +57,7 @@ void volta(EST_tppEstado e,MEN_tppOpcao o){
    MEN_tppMenus menus;
    MEN_tppMenu atual;
 
-   EST_GetMenus(e,menus);
+   EST_GetMenus(e,&menus);
    GRA_ObterValorCorrente(menus->grafo,(void**)&atual);
    MEN_MudaMenu(menus,atual->pai);
 }
@@ -108,12 +107,16 @@ MEN_tpCondRet MEN_Callback(MEN_tppOpcao o, EST_tppEstado e){
     return o->callback(e,o);
 }
 
-MEN_tpCondRet MEN_GetMenuOpcoes(MEN_tppMenu m,LIS_tppLista l){
-    l = m->opcoes;
+MEN_tpCondRet MEN_GetMenuOpcoes(MEN_tppMenus m,int id,LIS_tppLista l){
+    MEN_tppMenu menu;
+    GRA_ObterValor(m->grafo,id,&menu);
+    l = menu->opcoes;
     return MEN_CondRetOK;
 } 
-MEN_tpCondRet MEN_GetMenuNome(MEN_tppMenu m, char* nome){
-    nome = m->nome;
+MEN_tpCondRet MEN_GetMenuNome(MEN_tppMenus m, int id, char* nome){
+    MEN_tppMenu menu;
+    GRA_ObterValor(m->grafo,id,&menu);
+    nome = menu->nome;
     return MEN_CondRetOK;
 
 }

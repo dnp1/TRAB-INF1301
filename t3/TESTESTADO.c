@@ -1,18 +1,18 @@
 /***************************************************************************
-*  $MCI Módulo de implementação: TEST Teste Tabuleiro para labirinto
+*  $MCI MÃ³dulo de implementaÃ§Ã£o: TEST Teste Tabuleiro para labirinto
 *
 *  Arquivo gerado:              TESTESTADO.c
 *  Letras identificadoras:      TEST
 *
-*  Nome da base de software:    Arcabouço para a automação de testes de programas redigidos em C
+*  Nome da base de software:    ArcabouÃ§o para a automaÃ§Ã£o de testes de programas redigidos em C
 *  Arquivo da base de software: D:\AUTOTEST\PROJETOS\ESTADO.BSW
 *
-*  Projeto: INF 1301 / 1628 Automatização dos testes de módulos C
+*  Projeto: INF 1301 / 1628 AutomatizaÃ§Ã£o dos testes de mÃ³dulos C
 *  Gestor:  LES/DI/PUC-Rio
 *  Autores: eav
 *
-*  $HA Histórico de evolução:
-*     1       eav   5/nov/2014 início desenvolvimento
+*  $HA HistÃ³rico de evoluÃ§Ã£o:
+*     1       eav   5/nov/2014 inÃ­cio desenvolvimento
 *
 ***************************************************************************/
 
@@ -32,7 +32,9 @@
     static const char CRIA_ESTADO_CMD          [] = "=criaestado"         ;
     static const char DESTRUIR_ESTADO_CMD      [] = "=destruirestado"     ;
     static const char GET_MENUS_CMD            [] = "=getmenus"           ;
+    static const char SET_MENUS_CMD            [] = "=setmenus"           ;
     static const char GET_TABULEIRO_CMD        [] = "=gettabuleiro"       ;
+    static const char SET_TABULEIRO_CMD        [] = "=settabuleiro"           ;
 
 int estaInicializado = 0 ;
 
@@ -42,27 +44,29 @@ int estaInicializado = 0 ;
 EST_tppEstado vtRefEstados[ DIM_VT_ESTADOS ] ;
 
 
-/***** Protótipos das funções encapuladas no módulo *****/
+/***** ProtÃ³tipos das funÃ§Ãµes encapuladas no mÃ³dulo *****/
    
     static int VerificarInx( int inxEstado );
 
-/*****  Código das funções exportadas pelo módulo  *****/
+/*****  CÃ³digo das funÃ§Ãµes exportadas pelo mÃ³dulo  *****/
 
 /***********************************************************************
 *
-*  $FC Função: TLIS &Testar estado
+*  $FC FunÃ§Ã£o: TLIS &Testar estado
 *
-*  $ED Descrição da função
-*     Podem ser criadas até 10 estados, identificadas pelos índices 0 a 10
+*  $ED DescriÃ§Ã£o da funÃ§Ã£o
+*     Podem ser criadas atÃ© 10 estados, identificadas pelos Ã­ndices 0 a 10
 *
-*     Comandos disponíveis:
+*     Comandos disponÃ­veis:
 *
 *     =resetteste
-*           - anula o vetor de estados Provoca vazamento de memória
+*           - anula o vetor de estados Provoca vazamento de memÃ³ria
 *     =criarestado            inxEstado  CondRetEsp
 *     =destruirestado         inxEstado  CondRetEsp
 *     =getmenus               inxEstado  CondRetEsp
+*     =setmenus               inxEstado  CondRetEsp
 *     =gettabuleiro           inxEstado  CondRetEsp
+*     =settabuleiro           inxEstado  CondRetEsp       
 *
 *
 ***********************************************************************/
@@ -131,13 +135,27 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
             {
                 return TST_CondRetParm;
             }
+            
+            CondRetObtida = EST_GetMenus( vtRefEstados[inxEstado],&menu);
+            return TST_CompararInt( CondRetEsperada , CondRetObtida , "Retorno errado ao obter os menus." );
+        } /* fim ativa: Testar EST Get Menus */
+                    
+        /* Testar EST Set Menus */
+        else if ( strcmp( ComandoTeste , SET_MENUS_CMD ) == 0 )
+        {
+            NumLidos = LER_LerParametros("ii",&inxEstado,&CondRetEsperada);
+            if((NumLidos != 2) || !VerificarInx(inxEstado))
+            {
+                return TST_CondRetParm;
+            }
 
             MEN_CriarMenus(&menu);
 
-            CondRetObtida = EST_GetMenus( vtRefEstados[inxEstado],menu);
-            return TST_CompararInt( CondRetEsperada , CondRetObtida , "Retorno errado ao obter os menus." );
-        } /* fim ativa: Testar EST Get Menus */
 
+            CondRetObtida = EST_SetMenus( vtRefEstados[inxEstado],menu);
+            return TST_CompararInt( CondRetEsperada , CondRetObtida , "Retorno errado ao setar os menus." );
+        } /* fim ativa: Testar EST Set Menus */
+        
         /* Testar EST Get Tabuleiro */
         else if ( strcmp( ComandoTeste , GET_TABULEIRO_CMD ) == 0 )
         {
@@ -147,23 +165,37 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
                 return TST_CondRetParm;
             }
 
-            TAB_CriarTabuleiro(&tabuleiro,DIM_VALOR,DIM_VALOR,"tabuleiro");
-
-            CondRetObtida = EST_GetTabuleiro( vtRefEstados[inxEstado],tabuleiro);
+            CondRetObtida = EST_GetTabuleiro( vtRefEstados[inxEstado],&tabuleiro);
             return TST_CompararInt( CondRetEsperada , CondRetObtida , "Retorno errado ao obter o tabuleiro." );
         } /* fim ativa: Testar EST Get Tabuleiro */
+                
+        /* Testar EST Set Tabuleiro */
+        else if ( strcmp( ComandoTeste , SET_TABULEIRO_CMD ) == 0 )
+        {
+            NumLidos = LER_LerParametros("ii",&inxEstado,&CondRetEsperada);
+            if((NumLidos != 2) || !VerificarInx(inxEstado))
+            {
+                return TST_CondRetParm;
+            }
+
+            TAB_CriarTabuleiro(&tabuleiro,DIM_VALOR,DIM_VALOR,"tabuleiro");
+
+            CondRetObtida = EST_SetTabuleiro( vtRefEstados[inxEstado],tabuleiro);
+            return TST_CompararInt( CondRetEsperada , CondRetObtida , "Retorno errado ao obter o tabuleiro." );
+        } /* fim ativa: Testar EST Set Tabuleiro */
+        
         return TST_CondRetNaoConhec ;  
     }
 
    
-   /*****  Código das funções encapsuladas no módulo  *****/
+   /*****  CÃ³digo das funÃ§Ãµes encapsuladas no mÃ³dulo  *****/
    
 /***********************************************************************
 *
-*  $FC Função: TEST -Verificar índice de estado
+*  $FC FunÃ§Ã£o: TEST -Verificar Ã­ndice de estado
 *
 *  $FV Valor retornado
-*     0 - inxEstado não vale
+*     0 - inxEstado nÃ£o vale
 *     1 - inxEstado vale
 *
 ***********************************************************************/
@@ -179,4 +211,4 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
 
       return 1 ;
 
-   } /* Fim função: TEST -Verificar índice de estado */
+   } /* Fim funÃ§Ã£o: TEST -Verificar Ã­ndice de estado */

@@ -12,7 +12,7 @@ typedef struct estado_{
 } tpEstado;
 
 
-EST_tpCondRet CriaEstado(EST_tppEstado* est){
+EST_tpCondRet EST_CriaEstado(EST_tppEstado* est){
     
     EST_tppEstado e = (EST_tppEstado)malloc(sizeof(tpEstado));
     
@@ -25,6 +25,14 @@ EST_tpCondRet CriaEstado(EST_tppEstado* est){
         return EST_CondRetFaltouMemoria;
     }; 
     *est = e;
+    return EST_CondRetOK;
+}
+
+EST_tpCondRet EST_DestruirEstado(EST_tppEstado est){
+    TAB_DestruirTabuleiro(est->Tabuleiro);
+    MEN_DestruirMenus(est->Menus);
+    free(est);
+
     return EST_CondRetOK;
 }
 

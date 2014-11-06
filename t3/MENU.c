@@ -22,7 +22,9 @@ typedef struct Opcao_{
 } Opcao;
 
 static void ExcluirMenu(void* menu){
-    LIS_DestruirLista(menu->opcoes);
+    LIS_tppLista l;
+    MEN_GetMenuOpcoes((MEN_tppMenu)menu,l);
+    LIS_DestruirLista(l);
     free(menu);
     return MEN_CondRetOK;
 }

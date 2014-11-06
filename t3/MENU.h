@@ -54,11 +54,11 @@ typedef struct Opcao_ * MEN_tppOpcao;
 
 typedef enum{
 
-    MEN_CondRetOK
+    MEN_CondRetOK,
     /* Concluiu corretamente */
     MEN_CondRetFaltouMemoria,
     /* Faltou Memoria */
-    MEN_CondRetComandoInvalido,
+    MEN_CondRetComandoInvalido
     /* O comando é invalido */
 
 

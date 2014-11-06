@@ -44,17 +44,17 @@ PRI_tpCondRet LeCmd(EST_tppEstado e){
     int* id;
     LIS_tppLista opcoes;
     MEN_tppMenus ms;
-    scanf(" %c ",&c);
+    scanf("%c",&c);
     EST_GetMenus(e,&ms);
     MEN_MenuCorrente(ms,id);
-    MEN_GetMenuOpcoes(ms,*id,opcoes);
+    MEN_GetMenuOpcoes(ms,*id,&opcoes);
     LIS_IrInicioLista(opcoes);
     do
     {
         MEN_tppOpcao opcao = LIS_ObterValor(opcoes);
-        Erro("Comando selecionado\n",MEN_GetOpcaoCmd(opcao,&cmd),MEN);
+        MEN_GetOpcaoCmd(opcao,&cmd),MEN;
         if(cmd == c){
-            Erro("Executando opcao selecionada\n",MEN_Callback(opcao,e),MEN);
+            Erro("Executando opcao selecionada:",MEN_Callback(opcao,e),MEN);
             return PRI_CondRetOK;
         }    
     }
@@ -90,7 +90,7 @@ PRI_tpCondRet LeInt(int* dst, PRI_tpCondRet (*valida)(int t)){
     return cr;    
 }
 void Erro(char* comm, int CondRet,tpmodulo module){
-    printf("%s",comm);
+    printf("\n%s\n",comm);
     if(CondRet == 0)//OK
     {
         printf("OK");
@@ -200,6 +200,8 @@ void novo_tab(EST_tppEstado e){
     //Erro("Salvando tabuleiro",TAB_salvaTab(a),TAB);
 }
 
+#define JOGO 4 
+#define EDITOR 2 
 void PopulaMenuInicio(EST_tppEstado e){
     int idMenu = 1;
     int idPai = 0;
@@ -207,20 +209,20 @@ void PopulaMenuInicio(EST_tppEstado e){
     EST_GetMenus(e,&m);
     Erro("criando menu Inicio", MEN_CriarMenu(m,idMenu,"Inicio",idPai),MEN);
 
-    Erro("criando opcao idMenu de Inicio", MEN_CriarOpcao(m,1,'1',"Editor",vaiMenu2),MEN) ;
+    Erro("criando opcao 1 de Inicio", MEN_CriarOpcao(m,1,'1',"Editor",vaiMenu2),MEN) ;
     Erro("criando opcao 2 de Inicio", MEN_CriarOpcao(m,idMenu,'2',"Resolvedor",vaiMenu3),MEN);
     Erro("criando opcao 3 de Inicio", MEN_CriarOpcao(m,idMenu,'3',"Jogar",vaiMenu4),MEN);
 }
 
 void PopulaMenuEditor(EST_tppEstado e){
-    int idMenu = 2;
+    int idMenu = EDITOR;
     int idPai = 1;
     MEN_tppMenus m;
     EST_GetMenus(e,&m);
     Erro("criando menu Editor", MEN_CriarMenu(m,idMenu,"Editor",idPai),MEN);
 
     Erro("criando opcao 1 de Editor", MEN_CriarOpcao(m,idMenu,'1',"Carregar",carrega),MEN) ;
-    Erro("criando opcao idMenu de Editor", MEN_CriarOpcao(m,2,'2',"Novo",novo_tab),MEN);
+    Erro("criando opcao 2 de Editor", MEN_CriarOpcao(m,2,'2',"Novo",novo_tab),MEN);
     Erro("criando opcao 3 de Editor", MEN_CriarOpcao(m,idMenu,'3',"Deletar",deleta),MEN);
 }
 void PopulaMenuResolvedor(EST_tppEstado e){
@@ -233,7 +235,7 @@ void PopulaMenuResolvedor(EST_tppEstado e){
     Erro("criando opcao 1 de Resolvedor", MEN_CriarOpcao(m,idMenu,'1',"Carregar",carrega),MEN) ;
 }
 void PopulaMenuJogar(EST_tppEstado e){
-    int idMenu = 4;
+    int idMenu = JOGO;
     int idPai = 1;
     MEN_tppMenus m;
     EST_GetMenus(e,&m);
@@ -269,23 +271,24 @@ void ApresentaMenu(EST_tppEstado e){
     MEN_tppMenus ms;
     EST_GetMenus(e,&ms);
     MEN_MenuCorrente(ms,id);
-    MEN_GetMenuOpcoes(ms,*id,opc);
-    MEN_GetMenuNome(ms,*id,nome);
-    printf("\n#############\n#  Labirinto  #\n#############");
+    MEN_GetMenuOpcoes(ms,*id,&opc);
+    MEN_GetMenuNome(ms,*id,&nome);
+    printf("\n###############\n#  Labirinto  #\n###############");
     printf("\n %s\n--------------",nome);
-    printf("Digite:\n\n");
+    printf("\nDigite:\n\n");
     LIS_IrInicioLista(opc);
     do
     {
         MEN_tppOpcao opcao = LIS_ObterValor(opc);
         if(opcao!=NULL){
             MEN_GetOpcaoCmd(opcao,&cmd);
-            MEN_GetOpcaoNome(opcao,nomeopc);
+            MEN_GetOpcaoNome(opcao,&nomeopc);
             printf("\n %c para %s", cmd,nomeopc);
         }
     }
     while(LIS_AvancarElementoCorrente(opc,1)==LIS_CondRetOK);
 
+    printf("\n--------------\n");
 
 }
 
@@ -331,8 +334,6 @@ void ApresentaSolucao(EST_tppEstado e){
 /*
  *   Função Principal
  */
-#define JOGO 1
-#define EDITOR 2
 int main(){
     int atual;
     EST_tppEstado e;

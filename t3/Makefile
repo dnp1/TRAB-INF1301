@@ -1,7 +1,7 @@
 CC=gcc
-CFLAGS=-I. -L. -O0 -g -fpermissive -Wall #-fdiagnostics-color="always"
+CFLAGS=-I. -L. -O0 -g -fpermissive -w#-Wall #-fdiagnostics-color="always"
 
-all: estado grafo lista menu tabuleiro teste-menu teste-tabuleiro principal
+all: lista grafo menu tabuleiro estado principal teste-tabuleiro teste-menu
 estado:
 	$(CC) $(CFLAGS) -c -x c++ ESTADO.c -o ESTADO.o	
 grafo:

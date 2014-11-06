@@ -24,10 +24,10 @@
 
 typedef enum{
 
-    EST_CondRetFaltouMemoria,
+    EST_CondRetOK,
     /* Concluiu corretamente */
 
-    EST_CondRetOK
+    EST_CondRetFaltouMemoria
     /* Concluiu corretamente */
 
 } EST_tpCondRet;

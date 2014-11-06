@@ -74,6 +74,7 @@ MEN_tpCondRet MEN_CriarMenu(MEN_tppMenus menus, int id, char* nome,int idpai){
     }
     m->nome = nome;
     m->id = id;
+    GRA_InserirVertice(menus->grafo,m,m->id);
     cr = MEN_CriarOpcao(menus, m->id,'0', "Ir para o menu acima (encerrar o programa caso o menu atual seja o inicial(Inicio))",volta);
     if(cr!=MEN_CondRetOK)
     {
@@ -81,7 +82,6 @@ MEN_tpCondRet MEN_CriarMenu(MEN_tppMenus menus, int id, char* nome,int idpai){
         free(m);
     }
     //tratar cond ret
-    GRA_InserirVertice(menus->grafo,m,m->id);
     return cr;
 }
 
@@ -107,26 +107,26 @@ MEN_tpCondRet MEN_Callback(MEN_tppOpcao o, EST_tppEstado e){
     return o->callback(e,o);
 }
 
-MEN_tpCondRet MEN_GetMenuOpcoes(MEN_tppMenus m,int id,LIS_tppLista l){
+MEN_tpCondRet MEN_GetMenuOpcoes(MEN_tppMenus m,int id,LIS_tppLista* l){
     MEN_tppMenu menu;
     GRA_ObterValor(m->grafo,id,&menu);
-    l = menu->opcoes;
+    *l = menu->opcoes;
     return MEN_CondRetOK;
 } 
-MEN_tpCondRet MEN_GetMenuNome(MEN_tppMenus m, int id, char* nome){
+MEN_tpCondRet MEN_GetMenuNome(MEN_tppMenus m, int id, char** nome){
     MEN_tppMenu menu;
     GRA_ObterValor(m->grafo,id,&menu);
-    nome = menu->nome;
+    *nome = menu->nome;
     return MEN_CondRetOK;
 
 }
 MEN_tpCondRet MEN_GetOpcaoCmd(MEN_tppOpcao o, char* cmd){
-    cmd = o->cmd;
+    *cmd = o->cmd;
     return MEN_CondRetOK;
 
 }
-MEN_tpCondRet MEN_GetOpcaoNome(MEN_tppOpcao o, char* nome){
-    nome = o->nome;
+MEN_tpCondRet MEN_GetOpcaoNome(MEN_tppOpcao o, char** nome){
+    *nome = o->nome;
     return MEN_CondRetOK;
 
 }
@@ -136,11 +136,13 @@ MEN_tpCondRet MEN_CriarMenus(MEN_tppMenus* men){
     if(m == NULL)
         return MEN_CondRetFaltouMemoria;
     Menus = GRA_CriarGrafo(ExcluirMenu);
-    if(m == NULL){
+    if(Menus == NULL){
         free(m);
         return MEN_CondRetFaltouMemoria;
     }
+    
     m->grafo = Menus;
+    GRA_MudarCorrente(m->grafo,1);
     m->UltimoMenu = 0;
     
     *men = m;
@@ -153,7 +155,9 @@ MEN_tpCondRet MEN_MenuInicial(MEN_tppMenus men){
 }
 MEN_tpCondRet MEN_MenuCorrente(MEN_tppMenus men, int* id){
     //checacondret
-    GRA_ObterIDCorrente(men->grafo,id);
+    int temp;
+    GRA_ObterIDCorrente(men->grafo,&temp);
+    *id = temp;
     return MEN_CondRetOK;
 }
 MEN_tpCondRet MEN_MudaMenu(MEN_tppMenus menus,int id){

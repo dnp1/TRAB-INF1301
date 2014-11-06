@@ -128,7 +128,7 @@ MEN_tpCondRet MEN_CriarMenus(MEN_tppMenus* men){
     MEN_tppMenus m = malloc(sizeof(tpMenus));
     if(m == NULL)
         return MEN_CondRetFaltouMemoria;
-    GRA_tppGrafo Menus = GRA_CriarGrafo(MEN_DestruirMenu);
+    GRA_tppGrafo Menus = GRA_CriarGrafo(ExcluirMenu);
     if(m == NULL){
         free(m);
         return MEN_CondRetFaltouMemoria;

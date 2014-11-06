@@ -21,7 +21,7 @@ typedef struct Opcao_{
     MEN_tpCondRet (*callback)(EST_tppEstado e,MEN_tppOpcao o);
 } Opcao;
 
-static void ExcluirMenu(MEN_tppMenu menu){
+static void ExcluirMenu(void* menu){
     LIS_DestruirLista(menu->opcoes);
     free(menu);
     return MEN_CondRetOK;

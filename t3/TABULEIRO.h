@@ -19,6 +19,11 @@
 *		 1	   eav	 20/10/2014		//
 *
 *  $ED Descrição do módulo
+*		Implementa um tabuleiro para labirinto. Uma interface para grafo generico é usada para implementação.
+*       Por hipótese, as ids requeridas pela interface são únicos para cada tabuleiro.
+*		Por hipótese, os ponteiros para tabuleiro requeridos pela interface são válidos.
+*       Este ponteiro é provido pela função TAB_CriarTabuleiro
+*		Para o bom funcionamento do módulo, o usuário deve garantir estas hipóteses.
 *
 ***************************************************************************/
 
@@ -105,6 +110,14 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 *  $FV Valor retornado
 *     TAB_CondRetOK - criou o tabuleiro sem problemas
 *     TAB_CondRetFaltouMemoria - faltou memoria ao criar o tabuleiro
+*  
+*  Assertivas de Entrada: 
+*           
+*
+*  Assertivas de Saida: 
+*       O ponteiro retornado deve ser do tipo TAB_tppTabuleiro, 
+*       terá um grafo válido,
+*		terá dois vetores de inteiros, idCasa (com #(max. vertices) elementos) e idAresta (com #(max. arestas) elementos), populados com -1,
 *
 ***********************************************************************/
 
@@ -122,8 +135,13 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 *
 *  $FV Valor retornado
 *     TAB_CondRetOK - criou o tabuleiro sem problemas
-*     TAB_CondRetFaltouMemoria - faltou memoria ao criar o tabuleiro
+*     TAB_CondRetTabuleiroInvalido - o tabuleiro nao era valido para ser destruido
+*  
+*  Assertivas de Entrada: 
+*      pTab != NULL
 *
+*  Assertivas de Saida: 
+*      pTab = NULL
 ***********************************************************************/
 
     TAB_tpCondRet TAB_DestruirTabuleiro ( TAB_tppTabuleiro pTab ) ;
@@ -137,11 +155,21 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 *
 *  $EP Parâmetros
 *     pTab - ponteiro para o tabuleiro
+*     colisao - inteiro que representa se o usuario esta no modo editor ou jogador
+*				0 - Usuario esta no modo editor e nao colide com paredes
+*				1 - Usuario esta no modo jogador e colide com paredes
 *
 *  $FV Valor retornado
 *     TAB_CondRetOK - O movimento é válido; 
 *     TAB_CondRetMovimentoInvalido - O movimento é inválido; 
+*  
+*  Assertivas de Entrada: 
+*      pTab != NULL
+*	   colisao == 0 || colisao == 1
 *
+*  Assertivas de Saida: 
+*      pTab != NULL
+*	
 ***********************************************************************/
 
     TAB_tpCondRet TAB_PodeAndarPraCima ( TAB_tppTabuleiro pTab , int colisao );
@@ -155,11 +183,21 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 *
 *  $EP Parâmetros
 *     pTab - ponteiro para o tabuleiro
+*     colisao - inteiro que representa se o usuario esta no modo editor ou jogador
+*				0 - Usuario esta no modo editor e nao colide com paredes
+*				1 - Usuario esta no modo jogador e colide com paredes
 *
 *  $FV Valor retornado
 *     TAB_CondRetOK - O movimento é válido; 
 *     TAB_CondRetMovimentoInvalido - O movimento é inválido; 
+*  
+*  Assertivas de Entrada: 
+*      pTab != NULL
+*	   colisao == 0 || colisao == 1
 *
+*  Assertivas de Saida: 
+*      pTab != NULL
+*	
 ***********************************************************************/
 
     TAB_tpCondRet TAB_PodeAndarPraEsquerda ( TAB_tppTabuleiro pTab , int colisao );
@@ -173,11 +211,21 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 *
 *  $EP Parâmetros
 *     pTab - ponteiro para o tabuleiro
+*     colisao - inteiro que representa se o usuario esta no modo editor ou jogador
+*				0 - Usuario esta no modo editor e nao colide com paredes
+*				1 - Usuario esta no modo jogador e colide com paredes
 *
 *  $FV Valor retornado
 *     TAB_CondRetOK - O movimento é válido; 
 *     TAB_CondRetMovimentoInvalido - O movimento é inválido; 
+*  
+*  Assertivas de Entrada: 
+*      pTab != NULL
+*	   colisao == 0 || colisao == 1
 *
+*  Assertivas de Saida: 
+*      pTab != NULL
+*	
 ***********************************************************************/
 
     TAB_tpCondRet TAB_PodeAndarPraBaixo ( TAB_tppTabuleiro pTab , int colisao );
@@ -191,11 +239,21 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 *
 *  $EP Parâmetros
 *     pTab - ponteiro para o tabuleiro
+*     colisao - inteiro que representa se o usuario esta no modo editor ou jogador
+*				0 - Usuario esta no modo editor e nao colide com paredes
+*				1 - Usuario esta no modo jogador e colide com paredes
 *
 *  $FV Valor retornado
 *     TAB_CondRetOK - O movimento é válido; 
 *     TAB_CondRetMovimentoInvalido - O movimento é inválido; 
+*  
+*  Assertivas de Entrada: 
+*      pTab != NULL
+*	   colisao == 0 || colisao == 1
 *
+*  Assertivas de Saida: 
+*      pTab != NULL
+*	
 ***********************************************************************/
 
     TAB_tpCondRet TAB_PodeAndarPraDireita ( TAB_tppTabuleiro pTab , int colisao );
@@ -211,8 +269,15 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 *     pTab - ponteiro para o tabuleiro
 *
 *  $FV Valor retornado
-*     TAB_CondRetOK - O movimento é válido; 
+*     TAB_CondRetOK - O movimento é válido
+*	  TAB_CondRetMovimentoInvalido - O movimento pretendia sair do tabuleiro
+*  
+*  Assertivas de Entrada: 
+*      pTab != NULL
 *
+*  Assertivas de Saida: 
+*      pTab != NULL
+*	
 ***********************************************************************/
 
     TAB_tpCondRet TAB_AndarPraCima ( TAB_tppTabuleiro pTab  );
@@ -228,7 +293,14 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 *     pTab - ponteiro para o tabuleiro
 *
 *  $FV Valor retornado
-*     TAB_CondRetOK - O movimento é válido; 
+*     TAB_CondRetOK - O movimento é válido
+*	  TAB_CondRetMovimentoInvalido - O movimento pretendia sair do tabuleiro
+*  
+*  Assertivas de Entrada: 
+*      pTab != NULL
+*
+*  Assertivas de Saida: 
+*      pTab != NULL
 *
 ***********************************************************************/
 
@@ -245,7 +317,14 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 *     pTab - ponteiro para o tabuleiro
 *
 *  $FV Valor retornado
-*     TAB_CondRetOK - O movimento é válido; 
+*     TAB_CondRetOK - O movimento é válido
+*	  TAB_CondRetMovimentoInvalido - O movimento pretendia sair do tabuleiro
+*  
+*  Assertivas de Entrada: 
+*      pTab != NULL
+*
+*  Assertivas de Saida: 
+*      pTab != NULL
 *
 ***********************************************************************/
 
@@ -262,7 +341,14 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 *     pTab - ponteiro para o tabuleiro
 *
 *  $FV Valor retornado
-*     TAB_CondRetOK - O movimento é válido;
+*     TAB_CondRetOK - O movimento é válido
+*	  TAB_CondRetMovimentoInvalido - O movimento pretendia sair do tabuleiro
+*  
+*  Assertivas de Entrada: 
+*      pTab != NULL
+*
+*  Assertivas de Saida: 
+*      pTab != NULL
 *
 ***********************************************************************/
 
@@ -279,9 +365,14 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 *     pTab - ponteiro para o tabuleiro
 *
 *  $FV Valor retornado
-*     TAB_CondRetOK - O tabuleiro é válido; 
-*     TAB_CondRetFaltouMemoria - ;
-*     TAB_CondRetAlteracaoInvalida - ;
+*     TAB_CondRetOK - O tabuleiro é válido
+*     TAB_CondRetFaltouMemoria - Faltou memoria ao botar chao
+*  
+*  Assertivas de Entrada: 
+*      pTab != NULL
+*
+*  Assertivas de Saida: 
+*      pTab != NULL
 *
 ***********************************************************************/
 
@@ -298,9 +389,14 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 *     pTab - ponteiro para o tabuleiro
 *
 *  $FV Valor retornado
-*     TAB_CondRetOK - O tabuleiro é válido; 
-*     TAB_CondRetFaltouMemoria - ;
-*     TAB_CondRetAlteracaoInvalida - ;
+*     TAB_CondRetOK - O tabuleiro é válido
+*     TAB_CondRetFaltouMemoria - Faltou memoria ao botar parede
+*  
+*  Assertivas de Entrada: 
+*      pTab != NULL
+*
+*  Assertivas de Saida: 
+*      pTab != NULL
 *
 ***********************************************************************/
 
@@ -317,9 +413,14 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 *     pTab - ponteiro para o tabuleiro
 *
 *  $FV Valor retornado
-*     TAB_CondRetOK - O tabuleiro é válido; 
-*     TAB_CondRetFaltouMemoria - ;
-*     TAB_CondRetAlteracaoInvalida - ;
+*     TAB_CondRetOK - O tabuleiro é válido
+*     TAB_CondRetFaltouMemoria - Faltou memoria ao botar inicio
+*  
+*  Assertivas de Entrada: 
+*      pTab != NULL
+*
+*  Assertivas de Saida: 
+*      pTab != NULL
 *
 ***********************************************************************/
 
@@ -336,9 +437,14 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 *     pTab - ponteiro para o tabuleiro
 *
 *  $FV Valor retornado
-*     TAB_CondRetOK - O tabuleiro é válido; 
-*     TAB_CondRetFaltouMemoria - ;
-*     TAB_CondRetAlteracaoInvalida - ;
+*     TAB_CondRetOK - O tabuleiro é válido
+*     TAB_CondRetFaltouMemoria - Faltou memoria ao botar fim
+*  
+*  Assertivas de Entrada: 
+*      pTab != NULL
+*
+*  Assertivas de Saida: 
+*      pTab != NULL
 *
 ***********************************************************************/
 
@@ -358,8 +464,14 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 *     tipo - ponteiro para o tipo da casa
 *
 *  $FV Valor retornado
-*     TAB_CondRetOK - O tabuleiro é válido;
-*     TAB_CondRetNaoEhCasa - O tabuleiro não possuia uma casa representada por (x,y)
+*     TAB_CondRetOK - O tabuleiro é válido
+*     TAB_CondRetNaoEhCasa - O tabuleiro não possui uma casa representada por (x,y)
+*  
+*  Assertivas de Entrada: 
+*      pTab != NULL
+*
+*  Assertivas de Saida: 
+*      pTab != NULL
 *
 ***********************************************************************/   
 
@@ -378,6 +490,12 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 *
 *  $FV Valor retornado
 *     TAB_CondRetOK - O tabuleiro é válido;
+*  
+*  Assertivas de Entrada: 
+*      pTab != NULL
+*
+*  Assertivas de Saida: 
+*      pTab != NULL
 *
 ***********************************************************************/   
 
@@ -396,6 +514,12 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 *
 *  $FV Valor retornado
 *     TAB_CondRetOK - O tabuleiro é válido;
+*  
+*  Assertivas de Entrada: 
+*      pTab != NULL
+*
+*  Assertivas de Saida: 
+*      pTab != NULL
 *
 ***********************************************************************/   
 
@@ -412,7 +536,14 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 *     pTab - ponteiro para o tabuleiro
 *
 *  $FV Valor retornado
-*     TAB_CondRetOK - O tabuleiro é válido; 
+*     TAB_CondRetOK - O tabuleiro é válido
+*	  TAB_CondRetTabuleiroInvalido - O tabuleiro não é válido
+*  
+*  Assertivas de Entrada: 
+*      pTab != NULL
+*
+*  Assertivas de Saida: 
+*      pTab != NULL
 *
 ***********************************************************************/
 
@@ -433,7 +564,16 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 *     saida - string com a path do arquivo a ser criado.
 *
 *  $FV Valor retornado
-*     TAB_CondRetOK - O tabuleiro foi salvo no arquivo com sucesso; 
+*     TAB_CondRetOK - O tabuleiro foi salvo no arquivo com sucesso
+*	  TAB_CondRetFaltouMemoria - Faltou memoria ao criar as estruturas auxiliares
+*  
+*  Assertivas de Entrada: 
+*      pTab != NULL
+*	   saida != NULL
+*
+*  Assertivas de Saida: 
+*      pTab != NULL
+*	   saida != NULL
 *
 ***********************************************************************/
 
@@ -456,6 +596,15 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 *  $FV Valor retornado
 *     TAB_CondRetOK - O tabuleiro foi carregado com sucesso; 
 *     TAB_CondRetTabuleiroInvalido - O arquivo não é válido;
+*  
+*  Assertivas de Entrada: 
+*      pTab != NULL
+*	   entrada != NULL
+*
+*  Assertivas de Saida: 
+*      pTab != NULL
+*	   entrada != NULL
+*
 ***********************************************************************/
 
     TAB_tpCondRet TAB_CarregarTabuleiro ( TAB_tppTabuleiro* pTab, char* entrada ) ;
@@ -470,15 +619,24 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 *
 *  $EP Parâmetros
 *     pTab - ponteiro para o tabuleiro
-*     pSolucao - vetor de inteiros que representa a solução
+*     pSolucao - ponteiro para o vetor de inteiros que representa a solução
+*	  pTam	- ponteiro para inteiro que representa o tamanho da solução
 *
 *  $FV Valor retornado
-*     TAB_CondRetOK - O tabuleiro é válido;
-*     TAB_CondRetSemSolucao - O tabuleiro não possui solução;
+*     TAB_CondRetOK - O tabuleiro é válido
+*     TAB_CondRetSemSolucao - O tabuleiro não possui solução
+*	  TAB_CondRetFaltouMemoria - Faltou memoria ao criar as estruturas auxiliares
+*  
+*  Assertivas de Entrada: 
+*      pTab != NULL
+*	   pSolucao == NULL // recomendação para evitar memoryleak
+*
+*  Assertivas de Saida: 
+*      pTab != NULL
 *
 ***********************************************************************/
 
-    TAB_tpCondRet TAB_SolucionarTabuleiro ( TAB_tppTabuleiro pTab, int* pSolucao ) ;    
+    TAB_tpCondRet TAB_SolucionarTabuleiro ( TAB_tppTabuleiro pTab, int** pSolucao, int* pTam ) ;    
 
 /***********************************************************************
 *
@@ -494,6 +652,13 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 *
 *  $FV Valor retornado
 *     TAB_CondRetOK - O tabuleiro é válido;
+*
+*  Assertivas de Entrada: 
+*      pTab != NULL
+*	   pSolucao == NULL // recomendação para evitar memoryleak
+*
+*  Assertivas de Saida: 
+*      pTab != NULL
 *
 ***********************************************************************/
 

@@ -56,10 +56,10 @@ MEN_tpCondRet MEN_DestruirMenus(MEN_tppMenus m){
 void volta(EST_tppEstado e,MEN_tppOpcao o){
    MEN_tppMenus menus;
    MEN_tppMenu atual;
-
    EST_GetMenus(e,&menus);
-   GRA_ObterValorCorrente(menus->grafo,(void**)&atual);
+   GRA_ObterValorCorrente(menus->grafo,&atual);
    MEN_MudaMenu(menus,atual->pai);
+   EST_SetMenus(e,menus);
 }
 
 MEN_tpCondRet MEN_CriarMenu(MEN_tppMenus menus, int id, char* nome,int idpai){

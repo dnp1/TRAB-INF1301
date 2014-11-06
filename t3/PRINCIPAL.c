@@ -44,7 +44,7 @@ PRI_tpCondRet LeCmd(EST_tppEstado e){
     int* id;
     LIS_tppLista opcoes;
     MEN_tppMenus ms;
-    scanf("%c",&c);
+    scanf(" %c",&c);
     EST_GetMenus(e,&ms);
     MEN_MenuCorrente(ms,id);
     MEN_GetMenuOpcoes(ms,*id,&opcoes);
@@ -71,12 +71,12 @@ valida retorna apenas CondRetOK ou PRI_CondRetInvalido
 /*
 trunca em 50
 */
-PRI_tpCondRet LeString(char* dst, PRI_tpCondRet (*valida)(char* s)){
+PRI_tpCondRet LeString(char** dst, PRI_tpCondRet (*valida)(char* s)){
     char temp[50];
-    scanf(" %s ",temp);
+    scanf(" %s",temp);
     PRI_tpCondRet cr = valida(temp);
     if(cr == PRI_CondRetOK){
-        strcpy(dst,temp);
+        strcpy(*dst,temp);
     }
     return cr;    
 }
@@ -185,23 +185,29 @@ PRI_tpCondRet validaint(int n){
 //TODO:recomendacoes de ux do flavio
 
 void novo_tab(EST_tppEstado e){
-    char nome[10] = "";
-    int alt = 0;
-    int lar = 0;
-    while(!strcmp(nome,""))
-        Erro("Digite o nome (menos de 10 caracteres)",LeString(nome,validastring),PRI);
-    while(alt == 0)
+    char* nome = malloc(sizeof(char)*10);
+    int alt = -1;
+    int lar = -1;
+    while(alt == -1){
         Erro("Digite a altura (1..10)",LeInt(&alt,validaint),PRI);
-    while(lar == 0)
+        if(alt == 0) return;
+    }
+    while(lar == -1){
         Erro("Digite a largura (1..10)",LeInt(&lar,validaint),PRI);
+        if(lar == 0) return;
+    }
+    while(!strcmp(nome,"")){
+        Erro("Digite o nome (menos de 10 caracteres)",LeString(&nome,validastring),PRI);
+        //if(strcmp)
+    }
     TAB_tppTabuleiro a;
     EST_GetTabuleiro(e,&a);
     //Erro("Criando tabuleiro",TAB_CriaTab(a,nome, alt,lar),TAB);
     //Erro("Salvando tabuleiro",TAB_salvaTab(a),TAB);
 }
 
-#define JOGO 4 
-#define EDITOR 2 
+#define JOGO 6 
+#define EDITOR 5 
 void PopulaMenuInicio(EST_tppEstado e){
     int idMenu = 1;
     int idPai = 0;
@@ -215,7 +221,7 @@ void PopulaMenuInicio(EST_tppEstado e){
 }
 
 void PopulaMenuEditor(EST_tppEstado e){
-    int idMenu = EDITOR;
+    int idMenu = 2;
     int idPai = 1;
     MEN_tppMenus m;
     EST_GetMenus(e,&m);
@@ -235,7 +241,7 @@ void PopulaMenuResolvedor(EST_tppEstado e){
     Erro("criando opcao 1 de Resolvedor", MEN_CriarOpcao(m,idMenu,'1',"Carregar",carrega),MEN) ;
 }
 void PopulaMenuJogar(EST_tppEstado e){
-    int idMenu = JOGO;
+    int idMenu = 4;
     int idPai = 1;
     MEN_tppMenus m;
     EST_GetMenus(e,&m);

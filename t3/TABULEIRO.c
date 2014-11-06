@@ -211,7 +211,7 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y , int colisao ) ;
                 return TAB_CondRetMovimentoInvalido;
         }
         else{
-            if(corrente->y+1 < 0)
+			if(corrente->y+1 >= pTab->altura)
                 return TAB_CondRetMovimentoInvalido;
             else
                 return TAB_CondRetOK;
@@ -228,14 +228,14 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y , int colisao ) ;
         if(GRA_ObterValorCorrente(pTab->pGrafo,(void**)&corrente) != GRA_CondRetOK)
             return TAB_CondRetMovimentoInvalido;
 
-        if(colisao){
+		if(colisao){
             if(Leste(pTab)!=-1)
                 return TAB_CondRetOK;
             else
                 return TAB_CondRetMovimentoInvalido;
         }
         else{
-            if(corrente->x+1 < 0)
+			if(corrente->x+1 >= pTab->largura)
                 return TAB_CondRetMovimentoInvalido;
             else
                 return TAB_CondRetOK;
@@ -386,13 +386,9 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y , int colisao ) ;
     
     TAB_tpCondRet TAB_PoeChao (TAB_tppTabuleiro pTab){
         Casa* casaXY;
-        GRA_tpCondRet achouVertice = GRA_CondRetNaoEhVertice;
         int idXY, idVertice, idAresta, x , y;
 
-        achouVertice = GRA_ObterValorCorrente(pTab->pGrafo,(void**)&casaXY);
-        
-        if(achouVertice == GRA_CondRetNaoEhVertice)
-            return TAB_CondRetNaoEhCasa;
+        GRA_ObterValorCorrente(pTab->pGrafo,(void**)&casaXY);
 
         x = casaXY->x;
         y = casaXY->y;
@@ -463,13 +459,9 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y , int colisao ) ;
     
     TAB_tpCondRet TAB_PoeParede (TAB_tppTabuleiro pTab){
         Casa* casaXY ,* parede;
-        GRA_tpCondRet achouVertice = GRA_CondRetNaoEhVertice;
         int idXY, idVertice, idAresta, idInicio, x , y;
 
-        achouVertice = GRA_ObterValorCorrente(pTab->pGrafo,(void**)&casaXY);
-        
-        if(achouVertice == GRA_CondRetNaoEhVertice)
-            return TAB_CondRetNaoEhCasa;
+        GRA_ObterValorCorrente(pTab->pGrafo,(void**)&casaXY);
 
         x = casaXY->x;
         y = casaXY->y;
@@ -542,22 +534,15 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y , int colisao ) ;
     
     TAB_tpCondRet TAB_PoeInicio (TAB_tppTabuleiro pTab){
         Casa* casaXY ,* casaInicio;
-        GRA_tpCondRet achouVertice = GRA_CondRetNaoEhVertice;
         int idXY, idVertice, idAresta, idInicio, x , y;
 
-        achouVertice = GRA_ObterValorCorrente(pTab->pGrafo,(void**)&casaXY);
-        
-        if(achouVertice == GRA_CondRetNaoEhVertice)
-            return TAB_CondRetNaoEhCasa;
+        GRA_ObterValorCorrente(pTab->pGrafo,(void**)&casaXY);
 
         x = casaXY->x;
         y = casaXY->y;
 
         idInicio = -1;
         idVertice = getCasaID (pTab,x,y);
-        
-        if(achouVertice == GRA_CondRetNaoEhVertice)
-            return TAB_CondRetNaoEhCasa;
 
         if(casaXY->tipo == TAB_tpCasaParede){
 
@@ -634,13 +619,9 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y , int colisao ) ;
     
     TAB_tpCondRet TAB_PoeFim (TAB_tppTabuleiro pTab){
         Casa* casaXY ,* casaFim;
-        GRA_tpCondRet achouVertice = GRA_CondRetNaoEhVertice;
         int idXY, idVertice, idAresta, idFim, x , y;
-
-        achouVertice = GRA_ObterValorCorrente(pTab->pGrafo,(void**)&casaXY);
-        
-        if(achouVertice == GRA_CondRetNaoEhVertice)
-            return TAB_CondRetNaoEhCasa;
+		
+        GRA_ObterValorCorrente(pTab->pGrafo,(void**)&casaXY);
 
         x = casaXY->x;
         y = casaXY->y;
@@ -648,9 +629,6 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y , int colisao ) ;
         idFim = -1;
         idVertice = getCasaID (pTab,x,y);
         
-        if(achouVertice == GRA_CondRetNaoEhVertice)
-            return TAB_CondRetNaoEhCasa;
-
         if(casaXY->tipo == TAB_tpCasaParede){
 
             pTab->idCasa[idVertice] = 1;
@@ -718,6 +696,11 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y , int colisao ) ;
 
         return TAB_CondRetOK;
     }
+	
+/***************************************************************************
+*
+*  Função: TAB  &Validar Tabuleiro
+*  ****/  
 
     TAB_tpCondRet TAB_ValidarTabuleiro(TAB_tppTabuleiro pTab){
         int idInicio = - 1, idFim = -1;
@@ -729,6 +712,11 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y , int colisao ) ;
         else
             return TAB_CondRetTabuleiroInvalido;
     }
+	
+/***************************************************************************
+*
+*  Função: TAB  &Salvar tabuleiro
+*  ****/  
 
     TAB_tpCondRet TAB_SalvarTabuleiro(TAB_tppTabuleiro pTab, char* path){
         int idVisitado, i;
@@ -812,6 +800,11 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y , int colisao ) ;
         return TAB_CondRetOK;
     }
 
+/***************************************************************************
+*
+*  Função: TAB  &Carregar tabuleiro
+*  ****/  
+
     TAB_tpCondRet TAB_CarregarTabuleiro(TAB_tppTabuleiro* pTab,char* path){
         FILE* entrada;
         TAB_tpCasa casa;
@@ -855,37 +848,52 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y , int colisao ) ;
             return TAB_CondRetTabuleiroInvalido;
     }
 
-    TAB_tpCondRet TAB_SolucionarTabuleiro(TAB_tppTabuleiro pTab, int* solucao){
-        int idInicio, idFim, idParede;
+/***************************************************************************
+*
+*  Função: TAB  &Solucionar tabuleiro
+*  ****/  
+
+    TAB_tpCondRet TAB_SolucionarTabuleiro(TAB_tppTabuleiro pTab, int** solucao){
+        int idInicio, idFim, idParede, i;
         int* idTemp;
         LIS_tppLista lstSolucao = NULL;
-        Casa* parede;
+        Casa* parede,* corrente;
+
+
+		*solucao = (int*)malloc(sizeof(int)*DIM_VALOR);
+		if(solucao == NULL) return TAB_CondRetFaltouMemoria;
 
         parede = (Casa*)malloc(sizeof(Casa));
-        if(parede == NULL) return TAB_CondRetFaltouMemoria;
+        if(parede == NULL){
+			LIS_DestruirLista(lstSolucao);
+			free(solucao);
+			return TAB_CondRetFaltouMemoria;
+		}
         parede->tipo = TAB_tpCasaParede;
 
         idInicio = TemInicio(pTab);
         idFim = TemFim(pTab);
-        
-        while(GRA_BuscarVertice(pTab->pGrafo,&idParede,MesmoTipo,parede) == GRA_CondRetOK){
-            GRA_ExcluirVertice(pTab->pGrafo,idParede);
-        }
-        
 
         GRA_MudarCorrente(pTab->pGrafo,idInicio);
 
         GRA_BuscarCaminhoCorrente(pTab->pGrafo,idFim,&lstSolucao);
         
-        if(LIS_NumeroDeElementos(lstSolucao) == 0) return TAB_CondRetSemSolucao;
+        if(lstSolucao == NULL || LIS_NumeroDeElementos(lstSolucao) == 0){
+			free(*solucao);
+			free(parede);
+			return TAB_CondRetSemSolucao;
+		}
         
         LIS_IrInicioLista(lstSolucao);
+		i = 0;
         do{
             idTemp = (int*)LIS_ObterValor(lstSolucao);
-
+			GRA_ObterValor(pTab->pGrafo,*idTemp,(void**)&corrente);
+			
+			(*solucao)[i] = corrente->x;
+			(*solucao)[i+1] = corrente->y;
+			i = i + 2;
         }while(LIS_AvancarElementoCorrente(lstSolucao,1) == LIS_CondRetOK);
-
-        printf("oi");
     }
     
 /*****  Código das funções encapsuladas no módulo  *****/

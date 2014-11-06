@@ -26,11 +26,10 @@ static void ExcluirMenu(void* menu){
     MEN_GetMenuOpcoes((MEN_tppMenu)menu,l);
     LIS_DestruirLista(l);
     free(menu);
-    return MEN_CondRetOK;
 }
 MEN_tpCondRet MEN_DestruirOpcao(MEN_tppMenus m, int idMenu, char cmd){
    MEN_tppMenu menu;
-   GRA_ObterValor(m->grafo,idMenu,&menu); 
+   GRA_ObterValor(m->grafo,idMenu,(void**)&menu); 
    do{
         if(((MEN_tppOpcao)LIS_ObterValor(menu->opcoes))->cmd == cmd){
             LIS_ExcluirElemento(menu->opcoes); 
@@ -57,14 +56,16 @@ MEN_tpCondRet MEN_DestruirMenus(MEN_tppMenus m){
 //mudar pra usar grafo em vez de lista
 void volta(EST_tppEstado e,MEN_tppOpcao o){
    MEN_tppMenus menus;
-   EST_GetMenus(e,&menus);
    MEN_tppMenu atual;
-   GRA_ObterValorCorrente(menus->grafo,&atual);
+
+   EST_GetMenus(e,menus);
+   GRA_ObterValorCorrente(menus->grafo,(void**)&atual);
    MEN_MudaMenu(menus,atual->pai);
 }
 
 MEN_tpCondRet MEN_CriarMenu(MEN_tppMenus menus, int id, char* nome,int idpai){
-    MEN_tppMenu m = malloc(sizeof(Menu));
+    MEN_tpCondRet cr;
+    MEN_tppMenu m = (MEN_tppMenu)malloc(sizeof(Menu));
     if(m==NULL)
         return MEN_CondRetFaltouMemoria;
     m->opcoes = LIS_CriarLista(free);         
@@ -74,7 +75,7 @@ MEN_tpCondRet MEN_CriarMenu(MEN_tppMenus menus, int id, char* nome,int idpai){
     }
     m->nome = nome;
     m->id = id;
-    MEN_tpCondRet cr = MEN_CriarOpcao(menus, m->id,'0', "Ir para o menu acima (encerrar o programa caso o menu atual seja o inicial(Inicio))",volta);
+    cr = MEN_CriarOpcao(menus, m->id,'0', "Ir para o menu acima (encerrar o programa caso o menu atual seja o inicial(Inicio))",volta);
     if(cr!=MEN_CondRetOK)
     {
         LIS_DestruirLista(m->opcoes);
@@ -87,7 +88,8 @@ MEN_tpCondRet MEN_CriarMenu(MEN_tppMenus menus, int id, char* nome,int idpai){
 
 //mudar lis->gra
 MEN_tpCondRet MEN_CriarOpcao(MEN_tppMenus menus, int idMenu,char cmd, char* nome,MEN_tpCondRet (*callback)(EST_tppEstado e,MEN_tppOpcao o)){
-    MEN_tppOpcao o = malloc(sizeof(Opcao));
+    MEN_tppMenu m;
+    MEN_tppOpcao o = (MEN_tppOpcao)malloc(sizeof(Opcao));
     if(o==NULL)
         return MEN_CondRetFaltouMemoria;
     //if(nome==NULL)
@@ -95,8 +97,8 @@ MEN_tpCondRet MEN_CriarOpcao(MEN_tppMenus menus, int idMenu,char cmd, char* nome
     o->nome = nome;
     o->cmd = cmd;
     o->callback = callback;
-    MEN_tppMenu m;
-    GRA_ObterValor(menus->grafo,idMenu,&m);
+
+    GRA_ObterValor(menus->grafo,idMenu,(void**)&m);
     LIS_InserirElementoApos(m->opcoes,o);
     return MEN_CondRetOK;
 }
@@ -126,11 +128,11 @@ MEN_tpCondRet MEN_GetOpcaoNome(MEN_tppOpcao o, char* nome){
 
 }
 MEN_tpCondRet MEN_CriarMenus(MEN_tppMenus* men){
-    
-    MEN_tppMenus m = malloc(sizeof(tpMenus));
+    GRA_tppGrafo Menus;
+    MEN_tppMenus m = (MEN_tppMenus)malloc(sizeof(tpMenus));
     if(m == NULL)
         return MEN_CondRetFaltouMemoria;
-    GRA_tppGrafo Menus = GRA_CriarGrafo(ExcluirMenu);
+    Menus = GRA_CriarGrafo(ExcluirMenu);
     if(m == NULL){
         free(m);
         return MEN_CondRetFaltouMemoria;

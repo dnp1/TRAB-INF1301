@@ -84,16 +84,24 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y , int colisao ) ;
             return TAB_CondRetFaltouMemoria ;
 
         grafo = GRA_CriarGrafo(free);
-        if(grafo == NULL)
-            return TAB_CondRetFaltouMemoria ;
+        if(grafo == NULL){
+			TAB_DestruirTabuleiro(*pTab);
+			return TAB_CondRetFaltouMemoria ;
+		}
 
         (*pTab)->idCasa = (int*)malloc(sizeof(int)*maxCasas);
-        if((*pTab)->idCasa == NULL)
-            return TAB_CondRetFaltouMemoria ;
+        if((*pTab)->idCasa == NULL){
+			TAB_DestruirTabuleiro(*pTab);
+			GRA_DestruirGrafo(grafo);
+			return TAB_CondRetFaltouMemoria ;
+		}
 
         (*pTab)->idAresta = (int*)malloc(sizeof(int)*maxArestas);
-        if((*pTab)->idAresta == NULL)
-            return TAB_CondRetFaltouMemoria ;
+        if((*pTab)->idAresta == NULL){
+            TAB_DestruirTabuleiro(*pTab);
+			GRA_DestruirGrafo(grafo);
+			return TAB_CondRetFaltouMemoria ;
+		}
 
         (*pTab)->altura = alt;
         (*pTab)->largura = lar;
@@ -104,8 +112,10 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y , int colisao ) ;
         for(id = 0, y = 0 ; y < alt ; y++){
             for(x = 0 ; x < lar ; x++){
                 parede = (Casa*)malloc(sizeof(Casa));
-                if(parede == NULL)
-                    return TAB_CondRetFaltouMemoria ;
+                if(parede == NULL){
+					TAB_DestruirTabuleiro(*pTab);
+					return TAB_CondRetFaltouMemoria ;
+				}
                 
                 parede->tipo = TAB_tpCasaParede;
                 parede->x = x;
@@ -732,14 +742,33 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y , int colisao ) ;
 
         // vetor de inteiros usado como flag
         visitados = (int*)malloc(sizeof(int)*pTab->altura*pTab->largura);
+		if(visitados == NULL) return TAB_CondRetFaltouMemoria;
+
         for(i=0 ; i < pTab->altura*pTab->largura ; i++){
             visitados[i] = pTab->idCasa[i];
         }
 
         // dados são referenciados por outros, não devem ser apagados
-        fila = LIS_CriarLista(NULL);        
+        fila = LIS_CriarLista(NULL);
+		if(fila == NULL){
+			free(visitados);
+			return TAB_CondRetFaltouMemoria;
+		}
+
         origens = LIS_CriarLista(NULL);
+		if(origens == NULL){
+			free(visitados);
+			LIS_DestruirLista(fila);
+			return TAB_CondRetFaltouMemoria;
+		}
+
         vizinhos = LIS_CriarLista(NULL);
+		if(vizinhos == NULL){
+			free(visitados);
+			LIS_DestruirLista(fila);
+			LIS_DestruirLista(origens);
+			return TAB_CondRetFaltouMemoria;
+		}
 
         GRA_ObterOrigens(pTab->pGrafo,&origens);
         LIS_IrInicioLista(origens);
@@ -853,12 +882,11 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y , int colisao ) ;
 *  Função: TAB  &Solucionar tabuleiro
 *  ****/  
 
-    TAB_tpCondRet TAB_SolucionarTabuleiro(TAB_tppTabuleiro pTab, int** solucao){
-        int idInicio, idFim, idParede, i;
+    TAB_tpCondRet TAB_SolucionarTabuleiro(TAB_tppTabuleiro pTab, int** solucao, int* tam){
+        int idInicio, idFim, idParede;
         int* idTemp;
         LIS_tppLista lstSolucao = NULL;
         Casa* parede,* corrente;
-
 
 		*solucao = (int*)malloc(sizeof(int)*DIM_VALOR);
 		if(solucao == NULL) return TAB_CondRetFaltouMemoria;
@@ -885,14 +913,14 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y , int colisao ) ;
 		}
         
         LIS_IrInicioLista(lstSolucao);
-		i = 0;
+		*tam = 0;
         do{
             idTemp = (int*)LIS_ObterValor(lstSolucao);
 			GRA_ObterValor(pTab->pGrafo,*idTemp,(void**)&corrente);
 			
-			(*solucao)[i] = corrente->x;
-			(*solucao)[i+1] = corrente->y;
-			i = i + 2;
+			(*solucao)[*tam] = corrente->x;
+			(*solucao)[(*tam)+1] = corrente->y;
+			*tam = *tam + 2;
         }while(LIS_AvancarElementoCorrente(lstSolucao,1) == LIS_CondRetOK);
     }
     
@@ -1052,3 +1080,5 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y , int colisao ) ;
         else
             return -1;
     }
+
+/********** Fim do módulo de implementação: TAB Tabuleiro **********/

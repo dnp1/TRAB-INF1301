@@ -1,5 +1,5 @@
 /***************************************************************************
-*  $MCI Módulo de implementação: TGRA Teste Tabuleiro para labirinto
+*  $MCI Módulo de implementação: TTAB Teste Tabuleiro para labirinto
 *
 *  Arquivo gerado:              TESTTAB.c
 *  Letras identificadoras:      TTAB
@@ -78,7 +78,7 @@ TAB_tppTabuleiro vtRefTabuleiros[ DIM_VT_TABULEIROS ] ;
 *     Comandos disponíveis:
 *
 *     =resetteste
-*           - anula o vetor de grafos Provoca vazamento de memória
+*           - anula o vetor de tabuleiros Provoca vazamento de memória
 *     =criartab               inxTab   altura    largura   CondRetEsp
 *     =destruirtab            inxTab   CondRetEsp
 *     =podeircima"            inxTab   colisao   CondRetEsp
@@ -93,10 +93,10 @@ TAB_tppTabuleiro vtRefTabuleiros[ DIM_VT_TABULEIROS ] ;
 *     =poeparede"             inxTab   CondRetEsp
 *     =poeinicio"             inxTab   CondRetEsp
 *     =poefim"                inxTab   CondRetEsp
-*     =gettipocasa"           inxTab   x y   tipoEsp    CondRetEsp
-*     =getaltura"             inxTab   alturaEsp        CondRetEsp       
-*     =getlargura"            inxTab   alturaEsp        CondRetEsp
-*     =posicaojogador"        inxTab   xEsp    yEsp     CondRetEsp
+*     =gettipocasa"           inxTab   x y       CondRetEsp
+*     =getaltura"             inxTab   CondRetEsp       
+*     =getlargura"            inxTab   CondRetEsp
+*     =posicaojogador"        inxTab   CondRetEsp
 *     =validartab"            inxTab   condRetEsp
 *     =salvartab"             inxTab   condRetEsp
 *     =carregartab"           inxTab   condRetEsp
@@ -113,12 +113,15 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
       TAB_tpCondRet CondRetTemp = TAB_CondRetFaltouMemoria ;
                                       /* inicializa para qualquer coisa */
       TAB_tpCasa casa;
-      int i ;
+      int i, tam;
       int NumLidos = -1 ;
       int inxTabuleiro = -1 ;
       int colisao = -1 ;
       int x, y;
+      int* solucao;
       char nome[DIM_VALOR];
+      char pathSalvar[] = "SalvarTeste.txt";
+      char pathCarregar[] = "CarregarTeste.txt";
 
       /* Tratar: inicializar contexto */
       
@@ -178,7 +181,6 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
               return TST_CondRetParm;
           }
           
-          printf("\ncolisao = %d\n",colisao);
           CondRetObtida = TAB_PodeAndarPraCima(vtRefTabuleiros[inxTabuleiro], colisao);
           return TST_CompararInt( CondRetEsperada , CondRetObtida , "Retorno errado ao tentar descobrir se e possivel andar pra cima." );
       } /* fim ativa: Testar TAB Pode ir cima */
@@ -397,28 +399,56 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
             
       else if ( strcmp( ComandoTeste , VALIDAR_TAB_CMD ) == 0 )
       {
-      
+          NumLidos = LER_LerParametros("ii",&inxTabuleiro,&CondRetEsperada);
+          if((NumLidos != 2) || !VerificarInx(inxTabuleiro))
+          {
+              return TST_CondRetParm;
+          }
+
+          CondRetObtida = TAB_ValidarTabuleiro(vtRefTabuleiros[inxTabuleiro]);
+          return TST_CompararInt( CondRetEsperada , CondRetObtida , "Retorno errado ao validar tabuleiro." );
       } /* fim ativa: Testar TAB Validar Tabuleiro */      
       
       /* Testar TAB Salvar Tabuleiro */
             
       else if ( strcmp( ComandoTeste , SALVAR_TAB_CMD ) == 0 )
       {
-      
+          NumLidos = LER_LerParametros("ii",&inxTabuleiro,&CondRetEsperada);
+          if((NumLidos != 2) || !VerificarInx(inxTabuleiro))
+          {
+              return TST_CondRetParm;
+          }
+
+          CondRetObtida = TAB_SalvarTabuleiro(vtRefTabuleiros[inxTabuleiro],pathSalvar);
+          return TST_CompararInt( CondRetEsperada , CondRetObtida , "Retorno errado ao salvar tabuleiro." );
       } /* fim ativa: Testar TAB Salvar Tabuleiro */      
       
       /* Testar TAB Carregar Tabuleiro */
             
       else if ( strcmp( ComandoTeste , CARREGAR_TAB_CMD ) == 0 )
       {
-      
+          NumLidos = LER_LerParametros("ii",&inxTabuleiro,&CondRetEsperada);
+          if((NumLidos != 2) || !VerificarInx(inxTabuleiro))
+          {
+              return TST_CondRetParm;
+          }
+
+          CondRetObtida = TAB_CarregarTabuleiro(&vtRefTabuleiros[inxTabuleiro],pathCarregar);
+          return TST_CompararInt( CondRetEsperada , CondRetObtida , "Retorno errado ao carregar tabuleiro." );
       } /* fim ativa: Testar TAB Carregar Tabuleiro */      
       
       /* Testar TAB Solucionar Tabuleiro */
             
       else if ( strcmp( ComandoTeste , SOLUCIONAR_TAB_CMD ) == 0 )
       {
-      
+          NumLidos = LER_LerParametros("ii",&inxTabuleiro,&CondRetEsperada);
+          if((NumLidos != 2) || !VerificarInx(inxTabuleiro))
+          {
+              return TST_CondRetParm;
+          }
+
+          CondRetObtida = TAB_SolucionarTabuleiro(vtRefTabuleiros[inxTabuleiro], &solucao, &tam);
+          return TST_CompararInt( CondRetEsperada , CondRetObtida , "Retorno errado ao validar tabuleiro." );
       } /* fim ativa: Testar TAB Solucionar Tabuleiro */      
       
       return TST_CondRetNaoConhec ;  

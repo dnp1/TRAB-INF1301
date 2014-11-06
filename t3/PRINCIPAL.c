@@ -4,6 +4,7 @@
 #include "LISTA.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 /*
  *   Tratamento de Erros
  */
@@ -11,6 +12,7 @@
 typedef enum{
     PRI,
     TAB,
+    EST,
     MEN
 } tpmodulo;
 typedef enum{
@@ -38,19 +40,25 @@ mudar de lis->gra
 */
 PRI_tpCondRet LeCmd(EST_tppEstado e){
     char c; 
+    char cmd;
+    int* id;
+    LIS_tppLista opcoes;
+    MEN_tppMenus ms;
     scanf(" %c ",&c);
-    MEN_tppMenu m = GRA_ObterCorrente(EST_GetMenus(e));
-    LIS_tppLista opcoes = EST_GetOpcoes(m);
-    LIS_IrInicio(opcoes);
+    EST_GetMenus(e,&ms);
+    MEN_MenuCorrente(ms,id);
+    MEN_GetMenuOpcoes(ms,*id,opcoes);
+    LIS_IrInicioLista(opcoes);
     do
     {
         MEN_tppOpcao opcao = LIS_ObterValor(opcoes);
-        if(MEN_GetOpcaoCmd(opcao) == c){
-            Erro("executando opcao selecionada\n",MEN_Callback(opcao,e),MEN);
+        Erro("Comando selecionado\n",MEN_GetOpcaoCmd(opcao,&cmd),MEN);
+        if(cmd == c){
+            Erro("Executando opcao selecionada\n",MEN_Callback(opcao,e),MEN);
             return PRI_CondRetOK;
         }    
     }
-    while(LIS_IrProxElemento(opcoes)==LIS_CondRetOK);
+    while(LIS_AvancarElementoCorrente(opcoes,1)==LIS_CondRetOK);
   
     return PRI_CondRetSemOpcao;         
 }
@@ -109,20 +117,24 @@ void Erro(char* comm, int CondRet,tpmodulo module){
  */
 
 void vaiMenu1(EST_tppEstado e,MEN_tppOpcao opc){ 
-    EST_MudaUltimoMenu(e,1); 
-    MEN_MudaMenu(EST_GetMenus(e),1); 
+    MEN_tppMenus m;
+    EST_GetMenus(e,&m);
+    MEN_MudaMenu(m,1); 
 }
 void vaiMenu2(EST_tppEstado e,MEN_tppOpcao opc){ 
-    EST_MudaUltimoMenu(e,2); 
-    MEN_MudaMenu(EST_GetMenus(e),2); 
+    MEN_tppMenus m;
+    EST_GetMenus(e,&m);
+    MEN_MudaMenu(m,2); 
 }
 void vaiMenu3(EST_tppEstado e,MEN_tppOpcao opc){ 
-    EST_MudaUltimoMenu(e,3); 
-    MEN_MudaMenu(EST_GetMenus(e),3); 
+    MEN_tppMenus m;
+    EST_GetMenus(e,&m);
+    MEN_MudaMenu(m,3); 
 }
 void vaiMenu4(EST_tppEstado e,MEN_tppOpcao opc){ 
-    EST_MudaUltimoMenu(e,4); 
-    MEN_MudaMenu(EST_GetMenus(e),4); 
+    MEN_tppMenus m;
+    EST_GetMenus(e,&m);
+    MEN_MudaMenu(m,4); 
 }
 /*
 void carregar(EST_tppEstado e,MEN_tppOpcao opc){
@@ -143,10 +155,10 @@ void carrega(EST_tppEstado e,MEN_tppOpcao opc){
     //    TAB_carrega(MEN_GetNomeOpcao(opc));    
 }
 void deleta(EST_tppEstado e,MEN_tppOpcao opc){
-    TAB_Deletar(EST_GetTabuleiro(e));
+//    TAB_Deletar(EST_GetTabuleiro(e));
 }
 void salva(EST_tppEstado e,MEN_tppOpcao opc){
-    TAB_Salva(e);
+//    TAB_Salva(e);
 }
 
 /*
@@ -172,7 +184,7 @@ PRI_tpCondRet validaint(int n){
 }
 //TODO:recomendacoes de ux do flavio
 
-void novo_tab(){
+void novo_tab(EST_tppEstado e){
     char nome[10] = "";
     int alt = 0;
     int lar = 0;
@@ -183,51 +195,63 @@ void novo_tab(){
     while(lar == 0)
         Erro("Digite a largura (1..10)",LeInt(&lar,validaint),PRI);
     TAB_tppTabuleiro a;
-    Erro("Criando tabuleiro",TAB_CriaTab(a,nome, alt,lar),TAB);
-    Erro("Salvando tabuleiro",TAB_salvaTab(a),TAB);
+    EST_GetTabuleiro(e,&a);
+    //Erro("Criando tabuleiro",TAB_CriaTab(a,nome, alt,lar),TAB);
+    //Erro("Salvando tabuleiro",TAB_salvaTab(a),TAB);
 }
 
 void PopulaMenuInicio(EST_tppEstado e){
     int idMenu = 1;
     int idPai = 0;
-    Erro("criando menu Inicio", MEN_CriarMenu(EST_GetMenus(e),idMenu,"Inicio",idPai),MEN);
+    MEN_tppMenus m;
+    EST_GetMenus(e,&m);
+    Erro("criando menu Inicio", MEN_CriarMenu(m,idMenu,"Inicio",idPai),MEN);
 
-    Erro("criando opcao idMenu de Inicio", MEN_CriarOpcao(EST_GetMenus(e),1,'1',"Editor",vaiMenu2),MEN) ;
-    Erro("criando opcao 2 de Inicio", MEN_CriarOpcao(EST_GetMenus(e),idMenu,'2',"Resolvedor",vaiMenu3),MEN);
-    Erro("criando opcao 3 de Inicio", MEN_CriarOpcao(EST_GetMenus(e),idMenu,'3',"Jogar",vaiMenu4),MEN);
+    Erro("criando opcao idMenu de Inicio", MEN_CriarOpcao(m,1,'1',"Editor",vaiMenu2),MEN) ;
+    Erro("criando opcao 2 de Inicio", MEN_CriarOpcao(m,idMenu,'2',"Resolvedor",vaiMenu3),MEN);
+    Erro("criando opcao 3 de Inicio", MEN_CriarOpcao(m,idMenu,'3',"Jogar",vaiMenu4),MEN);
 }
 
 void PopulaMenuEditor(EST_tppEstado e){
     int idMenu = 2;
     int idPai = 1;
-    Erro("criando menu Editor", MEN_CriarMenu(EST_GetMenus(e),idMenu,"Editor",idPai),MEN);
+    MEN_tppMenus m;
+    EST_GetMenus(e,&m);
+    Erro("criando menu Editor", MEN_CriarMenu(m,idMenu,"Editor",idPai),MEN);
 
-    Erro("criando opcao 1 de Editor", MEN_CriarOpcao(EST_GetMenus(e),idMenu,'1',"Carregar",carrega),MEN) ;
-    Erro("criando opcao idMenu de Editor", MEN_CriarOpcao(EST_GetMenus(e),2,'2',"Novo",novo_tab),MEN);
-    Erro("criando opcao 3 de Editor", MEN_CriarOpcao(EST_GetMenus(e),idMenu,'3',"Deletar",deleta),MEN);
+    Erro("criando opcao 1 de Editor", MEN_CriarOpcao(m,idMenu,'1',"Carregar",carrega),MEN) ;
+    Erro("criando opcao idMenu de Editor", MEN_CriarOpcao(m,2,'2',"Novo",novo_tab),MEN);
+    Erro("criando opcao 3 de Editor", MEN_CriarOpcao(m,idMenu,'3',"Deletar",deleta),MEN);
 }
 void PopulaMenuResolvedor(EST_tppEstado e){
     int idMenu = 3;
     int idPai = 1;
-    Erro("criando menu Resolvedor", MEN_CriarMenu(EST_GetMenus(e),idMenu,"Resolvedor",idPai),MEN);
+    MEN_tppMenus m;
+    EST_GetMenus(e,&m);
+    Erro("criando menu Resolvedor", MEN_CriarMenu(m,idMenu,"Resolvedor",idPai),MEN);
 
-    Erro("criando opcao 1 de Resolvedor", MEN_CriarOpcao(EST_GetMenus(e),idMenu,'1',"Carregar",carrega),MEN) ;
+    Erro("criando opcao 1 de Resolvedor", MEN_CriarOpcao(m,idMenu,'1',"Carregar",carrega),MEN) ;
 }
 void PopulaMenuJogar(EST_tppEstado e){
     int idMenu = 4;
     int idPai = 1;
-    Erro("criando menu Jogar", MEN_CriarMenu(EST_GetMenus(e),idMenu,"Jogar",idPai),MEN);
+    MEN_tppMenus m;
+    EST_GetMenus(e,&m);
+    Erro("criando menu Jogar", MEN_CriarMenu(m,idMenu,"Jogar",idPai),MEN);
 
-    Erro("criando opcao 1 de Jogar", MEN_CriarOpcao(EST_GetMenus(e),idMenu,'1',"Carregar",carrega),MEN) ;
+    Erro("criando opcao 1 de Jogar", MEN_CriarOpcao(m,idMenu,'1',"Carregar",carrega),MEN) ;
 }
 //housekeeping
 //tpCondRet
 PRI_tpCondRet PopulaMenus(EST_tppEstado e){
+    MEN_tppMenus menus;
+    MEN_CriarMenus(&menus);
+    EST_SetMenus(e,menus);
     PopulaMenuInicio(e);
     PopulaMenuEditor(e);
     PopulaMenuResolvedor(e);
     PopulaMenuJogar(e);
-    return CondRetOK;
+    return PRI_CondRetOK;
 }
 /*
  *   Apresenta Dados para o usuario
@@ -237,26 +261,39 @@ PRI_tpCondRet PopulaMenus(EST_tppEstado e){
    Apresenta o Menu corrente
  */
 void ApresentaMenu(EST_tppEstado e){
-    MEN_tppMenu Menus = EST_GetMenus(e);
+    char cmd;
+    int* id;
+    char* nome;
+    char* nomeopc;
+    LIS_tppLista opc;
+    MEN_tppMenus ms;
+    EST_GetMenus(e,&ms);
+    MEN_MenuCorrente(ms,id);
+    MEN_GetMenuOpcoes(ms,*id,opc);
+    MEN_GetMenuNome(ms,*id,nome);
     printf("\n#############\n#  Labirinto  #\n#############");
-    printf("\n %s\n--------------",MEN_GetMenuNome(Menus));
+    printf("\n %s\n--------------",nome);
     printf("Digite:\n\n");
-    LIS_tppLista opc = MEN_GetMenuOpcoes(Menus);
-    LIS_IrInicio(opc);
+    LIS_IrInicioLista(opc);
     do
     {
         MEN_tppOpcao opcao = LIS_ObterValor(opc);
-        if(opcao!=NULL)
-            printf("\n %c para %s",  MEN_GetOpcaoCmd(opcao),MEN_GetOpcaoNome(opcao));
+        if(opcao!=NULL){
+            MEN_GetOpcaoCmd(opcao,&cmd);
+            MEN_GetOpcaoNome(opcao,nomeopc);
+            printf("\n %c para %s", cmd,nomeopc);
+        }
     }
-    while(LIS_IrProxElemento(opc)==LIS_CondRetOK);
+    while(LIS_AvancarElementoCorrente(opc,1)==LIS_CondRetOK);
+
 
 }
 
 
 void ApresentaTabuleiro(EST_tppEstado e){
-	TAB_tppTabuleiro Tabuleiro = EST_GetTabuleiro(e);
+	TAB_tppTabuleiro Tabuleiro; 
 	int a,l,i,j,jx,jy;
+    EST_GetTabuleiro(e,&Tabuleiro);
 	TAB_GetAltura(Tabuleiro,&a);
 	TAB_GetLargura(Tabuleiro,&l);
 	TAB_PosicaoJogador(Tabuleiro,&i,&j);
@@ -280,9 +317,15 @@ void ApresentaTabuleiro(EST_tppEstado e){
 }
 
 void ApresentaSolucao(EST_tppEstado e){
-    char solucao[1000];
-    TAB_SolucionarTabuleiro(EST_GetTabuleiro(e),solucao);
-    printf("%s",solucao);    
+    int * solucao;
+    int tam;
+    int i;
+    TAB_tppTabuleiro t;
+    EST_GetTabuleiro(e,&t);
+    TAB_SolucionarTabuleiro(t,&solucao,&tam);
+    for(i=0;i<tam;i+=2){
+        printf("Passo %d: (x,y) -> (%d,%d)\n",(i/2)+1,solucao[i],solucao[i+1]);    
+    }
 }
 
 /*
@@ -291,25 +334,34 @@ void ApresentaSolucao(EST_tppEstado e){
 #define JOGO 1
 #define EDITOR 2
 int main(){
-    EST_tppEstado e = EST_CriaEstado();
-    Erro("Alocando Estado",(e!=NULL?PRI_CondRetOK:PRI_CondRetFaltouMemoria),PRI);
+    int atual;
+    EST_tppEstado e;
+    MEN_tppMenus menus;
+    Erro("Alocando Estado",EST_CriaEstado(&e),EST);
     if(e!=NULL){
-        PopulaMenus(e);
+        PRI_tpCondRet cr = PopulaMenus(e);
+        Erro("Populando Menus",cr,PRI);
+        if(cr!=PRI_CondRetOK)
+            return 0;
     }
     else{
         return 0;
     }
+    
+    EST_GetMenus(e,&menus);
     //inicia a navegacao em 1
-    EST_MenuInicial(e);
+    MEN_MenuInicial(menus);
     //só sera 0 quando o ultimo corrente for 1 e o usuario digitar 0
-    while(EST_MenuCorrente()!=0){
+    
+    MEN_MenuCorrente(menus,&atual);
+    while(atual!=0){
         ApresentaMenu(e);
-        int atual = EST_MenuCorrente();
         if(atual == EDITOR||atual == JOGO)
             ApresentaTabuleiro(e);
         Erro("Digite um comando:",LeCmd(e),PRI);
+        MEN_MenuCorrente(menus,&atual);
     }
-    //clean(); //housekeeping
+    EST_DestruirEstado(e);
     return 0;
 }
 

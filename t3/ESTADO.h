@@ -18,8 +18,28 @@ typedef struct estado_ * EST_tppEstado;
 #include "MENU.h"
 #include "TABULEIRO.h"
 
-EST_tppEstado EST_CriaEstado();
-int EST_MudaUltimoMenu(EST_tppEstado e, int n);
-MEN_tppMenus EST_GetMenus(EST_tppEstado e);
-TAB_tppTabuleiro EST_GetTabuleiro(EST_tppEstado e);
+/***********************************************************************
+*
+*  $TC Tipo de dados: EST Condições de retorno
+*
+*
+*  $ED Descrição do tipo
+*     Condições de retorno das funções do tabuleiro
+*
+***********************************************************************/
+
+typedef enum{
+
+    EST_CondRetFaltouMemoria,
+    /* Concluiu corretamente */
+
+    EST_CondRetOK
+    /* Concluiu corretamente */
+
+} EST_tpCondRet;
+
+EST_tpCondRet EST_CriaEstado(EST_tppEstado e);
+EST_tpCondRet EST_GetMenus(EST_tppEstado e, MEN_tppMenus men);
+EST_tpCondRet EST_GetTabuleiro(EST_tppEstado e, TAB_tppTabuleiro tab);
+EST_tpCondRet EST_DestruirEstado(EST_tppEstado e);
 #endif

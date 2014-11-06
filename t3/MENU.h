@@ -54,11 +54,13 @@ typedef struct Opcao_ * MEN_tppOpcao;
 
 typedef enum{
 
-    MEN_CondRetFaltouMemoria,
-    /* Concluiu corretamente */
-
     MEN_CondRetOK
     /* Concluiu corretamente */
+    MEN_CondRetFaltouMemoria,
+    /* Faltou Memoria */
+    MEN_CondRetComandoInvalido,
+    /* O comando é invalido */
+
 
 } MEN_tpCondRet;
 
@@ -92,7 +94,8 @@ MEN_tpCondRet MEN_CriarMenus(MEN_tppMenus* m);
 *       um id do menu pai, pois todo menu tem por padrão um comando de voltar para o menu acima.
 *       uma lista de opcoes, que devem ser populadas por MEN_CriarOpcao
 *  $EP Parâmetros
-*
+*       id - identificador único
+*       nome - string alocada externamente ou constante 
 *  $FV Valor retornado
 *     MEN_CondRetFaltouMemoria - faltou memoria ao criar os Menus
 *
@@ -103,14 +106,9 @@ MEN_tpCondRet MEN_CriarMenu(MEN_tppMenus menus, int id, char* nome,int idPai);
 *  $FC Função: MEN  &Destruir Menus
 *
 *  $ED Descrição da função
-*     Destroi menus, liberando sua memoria.
-*     O menu contém:
-*       um id, que deve ser único.
-*       um nome.
-*       um id do menu pai, pois todo menu tem por padrão um comando de voltar para o menu acima.
-*       uma lista de opcoes, que devem ser populadas por MEN_CriarOpcao
+*     Destroi o grafo e a estrutura de m, liberando sua memoria.
 *  $EP Parâmetros
-*
+*     m - MEN_tppMenus a ser destruido
 *  $FV Valor retornado
 *     MEN_CondRetFaltouMemoria - faltou memoria ao criar os Menus
 *
@@ -118,22 +116,30 @@ MEN_tpCondRet MEN_CriarMenu(MEN_tppMenus menus, int id, char* nome,int idPai);
 MEN_tpCondRet MEN_DestruirMenus(MEN_tppMenus* m);
 /***********************************************************************
 *
-*  $FC Função: MEN  &Criar Menu
+*  $FC Função: MEN  &Destruir Menu
 *
 *  $ED Descrição da função
-*     Cria um Menu e o insere em um grafo de Menus
-*     O menu contém:
-*       um id, que deve ser único.
-*       um nome.
-*       um id do menu pai, pois todo menu tem por padrão um comando de voltar para o menu acima.
-*       uma lista de opcoes, que devem ser populadas por MEN_CriarOpcao
+*     Destroi o menu de id 'id' em m
 *  $EP Parâmetros
 *
 *  $FV Valor retornado
 *     MEN_CondRetFaltouMemoria - faltou memoria ao criar os Menus
 *
 ***********************************************************************/
-MEN_tpCondRet MEN_DestruirMenu(MEN_tppMenu menu);
+MEN_tpCondRet MEN_DestruirMenu(MEN_tppMenus m, int id);
+/***********************************************************************
+*
+*  $FC Função: MEN  &Destruir Opcao
+*
+*  $ED Descrição da função
+*     Destroi a Opcao representando o cmd 'cmd', no menu de id 'id' em m
+*  $EP Parâmetros
+*
+*  $FV Valor retornado
+*     MEN_CondRetFaltouMemoria - faltou memoria ao criar os Menus
+*
+***********************************************************************/
+MEN_tpCondRet MEN_DestruirOpcao(MEN_tppMenus m, int idMenu, char cmd);
 MEN_tpCondRet MEN_CriarOpcao(MEN_tppMenus menus, int idMenu,char cmd, char* nome,void (*callback)(EST_tppEstado e,MEN_tppOpcao o));
 
 
@@ -145,5 +151,5 @@ MEN_tpCondRet MEN_Callback(MEN_tppOpcao o, EST_tppEstado e);
 MEN_tpCondRet MEN_MudaMenu(MEN_tppMenus m, int id);
 MEN_tpCondRet MEN_MenuInicial(MEN_tppMenus men);
 MEN_tpCondRet MEN_MenuCorrente(MEN_tppMenus e, int* id);
-MEN_tpCondRet MEN_MudaUltimoMenu(MEN_tppMenus e,int n);
+MEN_tpCondRet MEN_MudaMenu(MEN_tppMenus e,int n);
 #endif

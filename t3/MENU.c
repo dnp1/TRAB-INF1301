@@ -1,5 +1,6 @@
 #include "MENU.h"
 #include "GRAFO.h"
+#include "LISTA.h"
 #include <stdlib.h>
 
 
@@ -19,10 +20,32 @@ typedef struct Opcao_{
     MEN_tpCondRet (*callback)(EST_tppEstado e,MEN_tppOpcao o);
 } Opcao;
 
-void MEN_DestruirMenu(MEN_tppMenu menu){
+static void ExcluirMenu(MEN_tppMenu menu){
     LIS_DestruirLista(menu->opcoes);
     free(menu);
+    return MEN_CondRetOK;
 }
+MEN_tpCondRet MEN_DestruirOpcao(MEN_tppMenus m, int idMenu, char cmd){
+   MEN_tppMenu menu;
+   GRA_ObterValor(m->grafo,idMenu,menu); 
+   do{
+        if((MEN_tppOpcao)LIS_ObterValor(menu->opcoes)->cmd == cmd){
+            LIS_ExcluirElemento(menu->opcoes); 
+            return MEN_CondRetOK;
+        }
+   }
+   while(LIS_AvancarElementoCorrente(menu->opcoes));
+   return MEN_CondRetComandoInvalido;
+}
+
+MEN_tpCondRet MEN_DestruirMenu(MEN_tppMenus m, int id){
+    GRA_ExcluirVertice(m->grafo, id);
+}
+MEN_tpCondRet MEN_DestruirMenus(MEN_tppMenus* m){
+    GRA_DestruirGrafo(m->grafo);
+    free(m);
+    return MEN_CondRetOK;
+};
 /*
 
    Por hipotese existe o grafo menus, id identifica, nome!=null
@@ -75,7 +98,9 @@ MEN_tpCondRet MEN_CriarOpcao(MEN_tppMenus menus, int idMenu,char cmd, char* nome
     return MEN_CondRetOK;
 }
 MEN_tpCondRet MEN_MudaMenu(MEN_tppMenus menus,int id){    	
+    //tratar condret
     GRA_IrVizinho(menus,id);
+    return MEN_tpCondRetOK;
 }
 
 
@@ -123,11 +148,13 @@ MEN_tpCondRet MEN_MenuInicial(MEN_tppMenus men){
     GRA_MudarCorrente(men->grafo,1);
     return MEN_CondRetOK;
 }
-MEN_tpCondRet MEN_MenuCorrente(MEN_tppMenus e, int* id){
+MEN_tpCondRet MEN_MenuCorrente(MEN_tppMenus men, int* id){
     *id = GRA_ObterIdCorrente(men->grafo);
     return MEN_CondRetOK;
 }
-MEN_tpCondRet MEN_MudaUltimoMenu(MEN_tppMenus e,int n){
-    men->UltimoMenu = n;
+MEN_tpCondRet MEN_MudaMenu(MEN_tppMenus men,int n){
+    men->UltimoMenu = GRA_ObterIdCorrente(men->grafo);
+    //checa condret
+    GRA_MudarCorrente(men->grafo,n);
     return MEN_CondRetOK;
 }

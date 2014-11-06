@@ -217,9 +217,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
 
      GRA_tpCondRet GRA_InserirVertice (GRA_tppGrafo pGrafo, void* pValor, int id)
      {
-        int i;
         tpVertice * pElem = NULL ;
-        tpVertice * v = NULL ;
         #ifdef _DEBUG
              assert( pGrafo != NULL ) ;
         #endif
@@ -272,7 +270,6 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         tpVertice* origem2 = NULL;
         tpVertice* pVertice1 = get_by_id(pGrafo,idVertice1);
         tpVertice* pVertice2 = get_by_id(pGrafo,idVertice2);
-        tpAresta* vizinho = NULL;   
 
         /* Verifica se vertice pertence ao grafo; */
         if (pVertice1 == NULL || pVertice2 == NULL) {
@@ -329,9 +326,6 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
     GRA_tpCondRet GRA_ExcluirAresta( GRA_tppGrafo pGrafo , int idAresta ) {
         tpVertice * pVertice1 = NULL; 
         tpVertice * pVertice2 = NULL;
-        tpVertice * t = NULL;
-        tpAresta * vizinho = NULL;
-        int i;
 
         get_pair_by_id(pGrafo,idAresta, &pVertice1, &pVertice2);
 
@@ -484,7 +478,6 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
 
     GRA_tpCondRet GRA_ObterValores( GRA_tppGrafo pGrafo, LIS_tppLista pValores ) {
         LIS_tppLista vertices;
-        tpVertice* vertice;
         void* valor;
         vertices = pGrafo->vertices;
         LIS_IrInicioLista(vertices);
@@ -563,9 +556,6 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
      
     GRA_tpCondRet GRA_ExcluirVizinhoCorrente (GRA_tppGrafo pGrafo, int idVertice) {
         
-        tpAresta* vizinho = NULL;
-        tpNode* no = NULL;
-        GRA_tpCondRet r;
         tpVertice * pVertice = NULL;
         tpVertice * pVerticeCorrente = NULL;
         int achou = 0;
@@ -631,9 +621,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
 *  ****/    
     
     GRA_tpCondRet GRA_InserirVizinhoCorrente( GRA_tppGrafo pGrafo , void* pValor, int idVertice, int idAresta ) {
-        tpVertice * vizinho = NULL;
-        tpVertice * u;
-        tpVertice * v;
+        //tpVertice * vizinho = NULL;
         GRA_tpCondRet r;
 
         /* Verifica se vertice pertence ao grafo; */
@@ -641,7 +629,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
             return GRA_CondRetGrafoVazio;
         }
        
-        vizinho = get_by_id(pGrafo,idVertice);
+        //vizinho = get_by_id(pGrafo,idVertice);
         /*
         por hipotese nao precisamos checar isso
         if(vizinho != NULL)
@@ -806,7 +794,6 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         int alt = 0;
         int* visitados = NULL; // Vetor de vertices visitados
         int* vizinhos = NULL;
-        int* idAux = NULL;
         Dist** dists = NULL;
         Dist* dist = NULL; //aux;
         Dist* currDist = NULL;
@@ -1132,7 +1119,6 @@ tpAresta* get_edge_by_vertex(LIS_tppLista  vizinhos, tpVertice * v){
             tpVertice* v = NULL;    
             tpNode* no = NULL;
             LIS_tppLista arestas = NULL;
-            tpVertice* t = NULL;
 
             v = (tpVertice*) malloc( sizeof(tpVertice) );
             if (v == NULL) {
@@ -1199,7 +1185,6 @@ tpAresta* get_edge_by_vertex(LIS_tppLista  vizinhos, tpVertice * v){
     static GRA_tpCondRet ExcluirVertice (GRA_tppGrafo pGrafo, tpVertice* pVertice) {
         tpAresta** vizinhos = NULL;
         tpNode* no = NULL;
-        tpVertice * pVerticeVizinho = NULL;
         int i = 0;
         
         no = pVertice->pNode;
@@ -1217,7 +1202,7 @@ tpAresta* get_edge_by_vertex(LIS_tppLista  vizinhos, tpVertice * v){
                 i++;
             } while ( LIS_AvancarElementoCorrente(no->arestas,1) == LIS_CondRetOK);
             
-            for (i; i; i--) {
+            for (; i; i--) {
                 ExcluirAresta(pGrafo, pVertice, vizinhos[i-1]->pVizinho); 
             }
             
@@ -1356,7 +1341,7 @@ tpAresta* get_edge_by_vertex(LIS_tppLista  vizinhos, tpVertice * v){
             } while(LIS_AvancarElementoCorrente(origens, 1) == LIS_CondRetOK);
 
 
-            for ( i;i; i--) {
+            for ( ;i; i--) {
                 if (BFS(us[i-1],v) == 1) {
                     u =  us[i-1];
                 }

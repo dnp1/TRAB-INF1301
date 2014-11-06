@@ -27,21 +27,21 @@ static void ExcluirMenu(MEN_tppMenu menu){
 }
 MEN_tpCondRet MEN_DestruirOpcao(MEN_tppMenus m, int idMenu, char cmd){
    MEN_tppMenu menu;
-   GRA_ObterValor(m->grafo,idMenu,menu); 
+   GRA_ObterValor(m->grafo,idMenu,&menu); 
    do{
-        if((MEN_tppOpcao)LIS_ObterValor(menu->opcoes)->cmd == cmd){
+        if(((MEN_tppOpcao)LIS_ObterValor(menu->opcoes))->cmd == cmd){
             LIS_ExcluirElemento(menu->opcoes); 
             return MEN_CondRetOK;
         }
    }
-   while(LIS_AvancarElementoCorrente(menu->opcoes));
+   while(LIS_AvancarElementoCorrente(menu->opcoes,1)==LIS_CondRetOK);
    return MEN_CondRetComandoInvalido;
 }
 
 MEN_tpCondRet MEN_DestruirMenu(MEN_tppMenus m, int id){
     GRA_ExcluirVertice(m->grafo, id);
 }
-MEN_tpCondRet MEN_DestruirMenus(MEN_tppMenus* m){
+MEN_tpCondRet MEN_DestruirMenus(MEN_tppMenus m){
     GRA_DestruirGrafo(m->grafo);
     free(m);
     return MEN_CondRetOK;
@@ -97,11 +97,6 @@ MEN_tpCondRet MEN_CriarOpcao(MEN_tppMenus menus, int idMenu,char cmd, char* nome
     LIS_InserirElementoApos(m->opcoes,o);
     return MEN_CondRetOK;
 }
-MEN_tpCondRet MEN_MudaMenu(MEN_tppMenus menus,int id){    	
-    //tratar condret
-    GRA_IrVizinho(menus,id);
-    return MEN_tpCondRetOK;
-}
 
 
 MEN_tpCondRet MEN_Callback(MEN_tppOpcao o, EST_tppEstado e){
@@ -123,7 +118,7 @@ MEN_tpCondRet MEN_GetOpcaoCmd(MEN_tppOpcao o, char* cmd){
 
 }
 MEN_tpCondRet MEN_GetOpcaoNome(MEN_tppOpcao o, char* nome){
-    nome = nome->nome;
+    nome = o->nome;
     return MEN_CondRetOK;
 
 }
@@ -140,7 +135,7 @@ MEN_tpCondRet MEN_CriarMenus(MEN_tppMenus* men){
     m->grafo = Menus;
     m->UltimoMenu = 0;
     
-    *men->grafo = (MEN_tppMenus)Menus;
+    *men = m;
     return MEN_CondRetOK;
 }
 MEN_tpCondRet MEN_MenuInicial(MEN_tppMenus men){
@@ -149,12 +144,13 @@ MEN_tpCondRet MEN_MenuInicial(MEN_tppMenus men){
     return MEN_CondRetOK;
 }
 MEN_tpCondRet MEN_MenuCorrente(MEN_tppMenus men, int* id){
-    *id = GRA_ObterIdCorrente(men->grafo);
+    //checacondret
+    GRA_ObterIDCorrente(men->grafo,id);
     return MEN_CondRetOK;
 }
-MEN_tpCondRet MEN_MudaMenu(MEN_tppMenus men,int n){
-    men->UltimoMenu = GRA_ObterIdCorrente(men->grafo);
+MEN_tpCondRet MEN_MudaMenu(MEN_tppMenus menus,int id){
+    GRA_ObterIDCorrente(menus->grafo,&(menus->UltimoMenu));
     //checa condret
-    GRA_MudarCorrente(men->grafo,n);
+    GRA_MudarCorrente(menus->grafo,id);
     return MEN_CondRetOK;
 }

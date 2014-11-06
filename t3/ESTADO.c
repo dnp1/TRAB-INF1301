@@ -14,7 +14,7 @@ typedef struct estado_{
 
 EST_tpCondRet CriaEstado(EST_tppEstado* est){
     
-    EST_tppEstado e = malloc(sizeof(tpEstado));
+    EST_tppEstado e = (EST_tppEstado)malloc(sizeof(tpEstado));
     
     if(e==NULL) 
     {

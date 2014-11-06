@@ -113,7 +113,7 @@ MEN_tpCondRet MEN_CriarMenu(MEN_tppMenus menus, int id, char* nome,int idPai);
 *     MEN_CondRetFaltouMemoria - faltou memoria ao criar os Menus
 *
 ***********************************************************************/
-MEN_tpCondRet MEN_DestruirMenus(MEN_tppMenus* m);
+MEN_tpCondRet MEN_DestruirMenus(MEN_tppMenus m);
 /***********************************************************************
 *
 *  $FC Função: MEN  &Destruir Menu
@@ -140,12 +140,12 @@ MEN_tpCondRet MEN_DestruirMenu(MEN_tppMenus m, int id);
 *
 ***********************************************************************/
 MEN_tpCondRet MEN_DestruirOpcao(MEN_tppMenus m, int idMenu, char cmd);
-MEN_tpCondRet MEN_CriarOpcao(MEN_tppMenus menus, int idMenu,char cmd, char* nome,void (*callback)(EST_tppEstado e,MEN_tppOpcao o));
+MEN_tpCondRet MEN_CriarOpcao(MEN_tppMenus menus, int idMenu,char cmd, char* nome,MEN_tpCondRet (*callback)(EST_tppEstado e,MEN_tppOpcao o));
 
 
 MEN_tpCondRet MEN_GetMenuOpcoes(MEN_tppMenu m,LIS_tppLista l); 
 MEN_tpCondRet MEN_GetMenuNome(MEN_tppMenu m, char* nome);
-MEN_tpCondRet MEN_GetOpcaoCmd(MEN_tppOpcao o, char cmd);
+MEN_tpCondRet MEN_GetOpcaoCmd(MEN_tppOpcao o, char* cmd);
 MEN_tpCondRet MEN_GetOpcaoNome(MEN_tppOpcao o, char* nome);
 MEN_tpCondRet MEN_Callback(MEN_tppOpcao o, EST_tppEstado e);
 MEN_tpCondRet MEN_MudaMenu(MEN_tppMenus m, int id);

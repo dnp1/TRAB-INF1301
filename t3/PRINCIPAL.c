@@ -63,6 +63,9 @@ PRI_tpCondRet LeCmd(EST_tppEstado e){
     return PRI_CondRetSemOpcao;         
 }
 
+void Msg(char* comm){
+    printf("== %s\n",comm);
+}
 /*
 valida retorna apenas CondRetOK ou PRI_CondRetInvalido
 
@@ -71,18 +74,18 @@ valida retorna apenas CondRetOK ou PRI_CondRetInvalido
 /*
 trunca em 50
 */
-PRI_tpCondRet LeString(char** dst, PRI_tpCondRet (*valida)(char* s)){
+PRI_tpCondRet LeString(char* dst, PRI_tpCondRet (*valida)(char* s)){
     char temp[50];
     scanf(" %s",temp);
     PRI_tpCondRet cr = valida(temp);
     if(cr == PRI_CondRetOK){
-        strcpy(*dst,temp);
+        strcpy(dst,temp);
     }
     return cr;    
 }
 PRI_tpCondRet LeInt(int* dst, PRI_tpCondRet (*valida)(int t)){
     int temp;
-    scanf(" %d ",&temp);
+    scanf(" %d",&temp);
     PRI_tpCondRet cr = valida(temp);
     if(cr == PRI_CondRetOK){
         *dst = temp;
@@ -110,8 +113,8 @@ void Erro(char* comm, int CondRet,tpmodulo module){
                 break;
         }*/
     }
+	printf("\n");     
 }
-
 /* 
  *    Popula Menus 
  */
@@ -171,13 +174,21 @@ void salva(EST_tppEstado e,MEN_tppOpcao opc){
  */
 
 PRI_tpCondRet validastring(char* s){
-    if(strlen(s)<10 && !strcmp(s,""))
-        return PRI_CondRetOK;
-    else
+    if(strlen(s)<10){
+        if(strcmp(s,"")){
+            return PRI_CondRetOK;
+        }
+        else{
+            return PRI_CondRetInvalido;
+        }
+    }
+    else{
         return PRI_CondRetInvalido;
+    }
 }
 PRI_tpCondRet validaint(int n){
-    if(n>0 && n<11) 
+    printf("%d",n);
+    if(n>=0 && n<11) 
         return PRI_CondRetOK;
     else 
         return PRI_CondRetInvalido;
@@ -189,16 +200,28 @@ void novo_tab(EST_tppEstado e){
     int alt = -1;
     int lar = -1;
     while(alt == -1){
-        Erro("Digite a altura (1..10)",LeInt(&alt,validaint),PRI);
-        if(alt == 0) return;
+        Msg("Digite a altura (1..10) ou 0 para voltar");
+        Erro("validando:",LeInt(&alt,validaint),PRI);
+        if(alt == 0){
+            Msg("cancelando operacao");
+             return;
+        }
     }
     while(lar == -1){
-        Erro("Digite a largura (1..10)",LeInt(&lar,validaint),PRI);
-        if(lar == 0) return;
+        Msg("Digite a largura (1..10) ou 0 para voltar");
+        Erro("validando:",LeInt(&lar,validaint),PRI);
+        if(lar == 0){
+            Msg("cancelando operacao");
+             return;
+        }
     }
     while(!strcmp(nome,"")){
-        Erro("Digite o nome (menos de 10 caracteres)",LeString(&nome,validastring),PRI);
-        //if(strcmp)
+        Msg("Digite o nome (menos de 10 caracteres) ou 0 para voltar");
+        Erro("validando:",LeString(nome,validastring),PRI);
+        if(!strcmp(nome,"0")){
+            Msg("cancelando operacao");
+             return;
+        }
     }
     TAB_tppTabuleiro a;
     EST_GetTabuleiro(e,&a);

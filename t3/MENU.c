@@ -53,13 +53,28 @@ MEN_tpCondRet MEN_DestruirMenus(MEN_tppMenus m){
 
  */
 //mudar pra usar grafo em vez de lista
+#include<stdio.h>
 void volta(EST_tppEstado e,MEN_tppOpcao o){
    MEN_tppMenus menus;
    MEN_tppMenu atual;
+   int id;
    EST_GetMenus(e,&menus);
+   
+   MEN_MenuCorrente(menus,&id);
+   printf("corr %d\n",id);
+   
    GRA_ObterValorCorrente(menus->grafo,&atual);
+   printf("pai %d\n",atual->pai);
    MEN_MudaMenu(menus,atual->pai);
+   
+   MEN_MenuCorrente(menus,&id);
+   printf("corr %d\n",id);
+   
    EST_SetMenus(e,menus);
+   
+   EST_GetMenus(e,&menus);
+   MEN_MenuCorrente(menus,&id);
+   printf("corr %d\n",id);
 }
 
 MEN_tpCondRet MEN_CriarMenu(MEN_tppMenus menus, int id, char* nome,int idpai){
@@ -74,6 +89,7 @@ MEN_tpCondRet MEN_CriarMenu(MEN_tppMenus menus, int id, char* nome,int idpai){
     }
     m->nome = nome;
     m->id = id;
+    m->pai = idpai;
     GRA_InserirVertice(menus->grafo,m,m->id);
     cr = MEN_CriarOpcao(menus, m->id,'0', "Ir para o menu acima (encerrar o programa caso o menu atual seja o inicial(Inicio))",volta);
     if(cr!=MEN_CondRetOK)
@@ -142,6 +158,7 @@ MEN_tpCondRet MEN_CriarMenus(MEN_tppMenus* men){
     }
     
     m->grafo = Menus;
+    MEN_CriarMenu(m,0,"fim",0);
     GRA_MudarCorrente(m->grafo,1);
     m->UltimoMenu = 0;
     

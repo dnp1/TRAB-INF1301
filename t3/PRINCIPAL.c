@@ -360,6 +360,7 @@ int main(){
         if(atual == EDITOR||atual == JOGO)
             ApresentaTabuleiro(e);
         Erro("Digite um comando:",LeCmd(e),PRI);
+        EST_GetMenus(e,&menus);
         MEN_MenuCorrente(menus,&atual);
     }
     EST_DestruirEstado(e);

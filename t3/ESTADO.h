@@ -9,12 +9,6 @@
 
 
 #include "TIPOESTADO.h"
-/*
-#if ! defined ( TIPOESTADO_ )
-#define TIPOESTADO_
-typedef struct estado_ * EST_tppEstado;
-#endif
-*/
 #include "MENU.h"
 #include "TABULEIRO.h"
 
@@ -39,7 +33,7 @@ typedef enum{
 } EST_tpCondRet;
 
 EST_tpCondRet EST_CriaEstado(EST_tppEstado e);
-EST_tpCondRet EST_GetMenus(EST_tppEstado e, MEN_tppMenus men);
-EST_tpCondRet EST_GetTabuleiro(EST_tppEstado e, TAB_tppTabuleiro tab);
+EST_tpCondRet EST_GetMenus(EST_tppEstado e, MEN_tppMenus* men);
+EST_tpCondRet EST_GetTabuleiro(EST_tppEstado e, TAB_tppTabuleiro* tab);
 EST_tpCondRet EST_DestruirEstado(EST_tppEstado e);
 #endif

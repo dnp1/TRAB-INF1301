@@ -1,4 +1,5 @@
 #include "MENU.h"
+#include "ESTADO.h"
 #include "GRAFO.h"
 #include "LISTA.h"
 #include <stdlib.h>
@@ -53,11 +54,11 @@ MEN_tpCondRet MEN_DestruirMenus(MEN_tppMenus m){
  */
 //mudar pra usar grafo em vez de lista
 void volta(EST_tppEstado e,MEN_tppOpcao o){
-   MEN_tppMenus menus = EST_GetMenus(e);
+   MEN_tppMenus menus;
+   EST_GetMenus(e,&menus);
    MEN_tppMenu atual;
-   GRA_ObterCorrente(menus,atual);
-   EST_MudaUltimoMenu(atual->id);
-   GRA_IrVizinho(menus,atual->pai); 
+   GRA_ObterValorCorrente(menus->grafo,&atual);
+   MEN_MudaMenu(menus,atual->pai);
 }
 
 MEN_tpCondRet MEN_CriarMenu(MEN_tppMenus menus, int id, char* nome,int idpai){
@@ -74,7 +75,7 @@ MEN_tpCondRet MEN_CriarMenu(MEN_tppMenus menus, int id, char* nome,int idpai){
     MEN_tpCondRet cr = MEN_CriarOpcao(menus, m->id,'0', "Ir para o menu acima (encerrar o programa caso o menu atual seja o inicial(Inicio))",volta);
     if(cr!=MEN_CondRetOK)
     {
-        LIS_ExcluirLista(m->opcoes);
+        LIS_DestruirLista(m->opcoes);
         free(m);
     }
     //tratar cond ret
@@ -93,7 +94,7 @@ MEN_tpCondRet MEN_CriarOpcao(MEN_tppMenus menus, int idMenu,char cmd, char* nome
     o->cmd = cmd;
     o->callback = callback;
     MEN_tppMenu m;
-    GRA_ObterValor(menus,idMenu,m);
+    GRA_ObterValor(menus->grafo,idMenu,&m);
     LIS_InserirElementoApos(m->opcoes,o);
     return MEN_CondRetOK;
 }

@@ -320,7 +320,7 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y , int colisao ) ;
 *  Função: TAB  &Andar pra direita
 *  ****/
 
-    TAB_tpCondRet TAB_AndarPraDireita(TAB_tppTabuleiro pTab, int colisao){
+    TAB_tpCondRet TAB_AndarPraDireita(TAB_tppTabuleiro pTab){
         Casa* corrente;
         int idVizinho = -1;
         

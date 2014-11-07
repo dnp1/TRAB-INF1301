@@ -76,8 +76,9 @@ trunca em 50
 */
 PRI_tpCondRet LeString(char** dst, PRI_tpCondRet (*valida)(char* s)){
     char temp[50];
+    PRI_tpCondRet cr;
     scanf(" %s",temp);
-    PRI_tpCondRet cr = valida(temp);
+    cr = valida(temp);
     if(cr == PRI_CondRetOK){
         strcpy(*dst,temp);
     }
@@ -85,8 +86,9 @@ PRI_tpCondRet LeString(char** dst, PRI_tpCondRet (*valida)(char* s)){
 }
 PRI_tpCondRet LeInt(int* dst, PRI_tpCondRet (*valida)(int t)){
     int temp;
+    PRI_tpCondRet cr;
     scanf(" %d",&temp);
-    PRI_tpCondRet cr = valida(temp);
+    cr = valida(temp);
     if(cr == PRI_CondRetOK){
         *dst = temp;
     }
@@ -302,6 +304,8 @@ PRI_tpCondRet validaint(int n){
 
 void novo_tab(EST_tppEstado e){
     char* nome = malloc(sizeof(char)*10);
+    MEN_tppMenus m;
+    TAB_tppTabuleiro a;
     int alt = -1;
     int lar = -1;
     char* saida;
@@ -329,14 +333,12 @@ void novo_tab(EST_tppEstado e){
              return;
         }
     }
-    TAB_tppTabuleiro a;
     if(EST_GetTabuleiro(e,&a)==EST_CondRetOK)
         TAB_DestruirTabuleiro(a);
     Erro("Criando tabuleiro",TAB_CriarTabuleiro(&a,alt,lar,nome),TAB);
     EST_SetTabuleiro(e,a);
     //Erro("Salvando tabuleiro",TAB_SalvarTabuleiro(a,nome),TAB);
     
-    MEN_tppMenus m;
     EST_GetMenus(e,&m);
     MEN_MudaMenu(m,EDITOR); 
 }

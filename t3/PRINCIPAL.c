@@ -119,6 +119,8 @@ void Erro(char* comm, int CondRet,tpmodulo module){
  *    Popula Menus 
  */
 
+#define JOGO 6 
+#define EDITOR 5 
 void vaiMenu1(EST_tppEstado e,MEN_tppOpcao opc){ 
     MEN_tppMenus m;
     EST_GetMenus(e,&m);
@@ -161,9 +163,24 @@ void deleta(EST_tppEstado e,MEN_tppOpcao opc){
 //    TAB_Deletar(EST_GetTabuleiro(e));
 }
 void salva(EST_tppEstado e,MEN_tppOpcao opc){
-//    TAB_Salva(e);
+    TAB_tppTabuleiro t;
+    char* nome;
+    EST_GetTabuleiro(e,&t);
+    TAB_ 
+    Erro("Salvando tabuleiro",TAB_SalvarTabuleiro(t,nome),TAB);
+    TAB_Salva(e);
 }
 
+    Erro("criando opcao 1 de Edicao", MEN_CriarOpcao(m,idMenu,'w',"andar para cima",andacimaeditor),MEN) ;
+    Erro("criando opcao 2 de Edicao", MEN_CriarOpcao(m,idMenu,'s',"andar para baixo",andabaixoeditor),MEN) ;
+    Erro("criando opcao 3 de Edicao", MEN_CriarOpcao(m,idMenu,'a',"andar para esquerda",andaesqeditor),MEN) ;
+    Erro("criando opcao 4 de Edicao", MEN_CriarOpcao(m,idMenu,'d',"andar para direita",andadireditor),MEN) ;
+    Erro("criando opcao 5 de Edicao", MEN_CriarOpcao(m,idMenu,'1',"por parede",poeparede),MEN) ;
+    Erro("criando opcao 6 de Edicao", MEN_CriarOpcao(m,idMenu,'2',"por chao",poechao),MEN) ;
+    Erro("criando opcao 7 de Edicao", MEN_CriarOpcao(m,idMenu,'3',"por inicio",poeinicio),MEN) ;
+    Erro("criando opcao 8 de Edicao", MEN_CriarOpcao(m,idMenu,'4',"por fim",poefim),MEN) ;
+    Erro("criando opcao 9 de Edicao", MEN_CriarOpcao(m,idMenu,'5',"salvar",salva),MEN) ;
+    Erro("criando opcao 10 de Edicao", MEN_CriarOpcao(m,idMenu,'6',"jogar",joga),MEN) ;
 /*
    Tres tipos de retorno: 
    no inicial, que termina o programa
@@ -199,6 +216,7 @@ void novo_tab(EST_tppEstado e){
     char* nome = malloc(sizeof(char)*10);
     int alt = -1;
     int lar = -1;
+    char* saida;
     while(alt == -1){
         Msg("Digite a altura (1..10) ou 0 para voltar");
         Erro("validando:",LeInt(&alt,validaint),PRI);
@@ -224,13 +242,17 @@ void novo_tab(EST_tppEstado e){
         }
     }
     TAB_tppTabuleiro a;
-    EST_GetTabuleiro(e,&a);
-    //Erro("Criando tabuleiro",TAB_CriaTab(a,nome, alt,lar),TAB);
-    //Erro("Salvando tabuleiro",TAB_salvaTab(a),TAB);
+    if(EST_GetTabuleiro(e,&a)==EST_CondRetOK)
+        TAB_DestruirTabuleiro(a);
+    Erro("Criando tabuleiro",TAB_CriarTabuleiro(&a,alt,lar,nome),TAB);
+    EST_SetTabuleiro(e,a);
+    //Erro("Salvando tabuleiro",TAB_SalvarTabuleiro(a,nome),TAB);
+    
+    MEN_tppMenus m;
+    EST_GetMenus(e,&m);
+    MEN_MudaMenu(m,EDITOR); 
 }
 
-#define JOGO 6 
-#define EDITOR 5 
 void PopulaMenuInicio(EST_tppEstado e){
     int idMenu = 1;
     int idPai = 0;
@@ -272,6 +294,24 @@ void PopulaMenuJogar(EST_tppEstado e){
 
     Erro("criando opcao 1 de Jogar", MEN_CriarOpcao(m,idMenu,'1',"Carregar",carrega),MEN) ;
 }
+void PopulaMenuEdicao(EST_tppEstado e){
+    int idMenu = EDITOR;
+    int idPai = 2;
+    MEN_tppMenus m;
+    EST_GetMenus(e,&m);
+    Erro("criando Editor", MEN_CriarMenu(m,idMenu,"Edicao",idPai),MEN);
+
+    Erro("criando opcao 1 de Edicao", MEN_CriarOpcao(m,idMenu,'w',"andar para cima",andacimaeditor),MEN) ;
+    Erro("criando opcao 2 de Edicao", MEN_CriarOpcao(m,idMenu,'s',"andar para baixo",andabaixoeditor),MEN) ;
+    Erro("criando opcao 3 de Edicao", MEN_CriarOpcao(m,idMenu,'a',"andar para esquerda",andaesqeditor),MEN) ;
+    Erro("criando opcao 4 de Edicao", MEN_CriarOpcao(m,idMenu,'d',"andar para direita",andadireditor),MEN) ;
+    Erro("criando opcao 5 de Edicao", MEN_CriarOpcao(m,idMenu,'1',"por parede",poeparede),MEN) ;
+    Erro("criando opcao 6 de Edicao", MEN_CriarOpcao(m,idMenu,'2',"por chao",poechao),MEN) ;
+    Erro("criando opcao 7 de Edicao", MEN_CriarOpcao(m,idMenu,'3',"por inicio",poeinicio),MEN) ;
+    Erro("criando opcao 8 de Edicao", MEN_CriarOpcao(m,idMenu,'4',"por fim",poefim),MEN) ;
+    Erro("criando opcao 9 de Edicao", MEN_CriarOpcao(m,idMenu,'5',"salvar",salva),MEN) ;
+    Erro("criando opcao 10 de Edicao", MEN_CriarOpcao(m,idMenu,'6',"jogar",joga),MEN) ;
+}
 //housekeeping
 //tpCondRet
 PRI_tpCondRet PopulaMenus(EST_tppEstado e){
@@ -282,6 +322,7 @@ PRI_tpCondRet PopulaMenus(EST_tppEstado e){
     PopulaMenuEditor(e);
     PopulaMenuResolvedor(e);
     PopulaMenuJogar(e);
+    PopulaMenuEdicao(e);
     return PRI_CondRetOK;
 }
 /*

@@ -41,13 +41,13 @@ mudar de lis->gra
 PRI_tpCondRet LeCmd(EST_tppEstado e){
     char c; 
     char cmd;
-    int* id;
+    int id;
     LIS_tppLista opcoes;
     MEN_tppMenus ms;
     scanf(" %c",&c);
     EST_GetMenus(e,&ms);
-    MEN_MenuCorrente(ms,id);
-    MEN_GetMenuOpcoes(ms,*id,&opcoes);
+    MEN_MenuCorrente(ms,&id);
+    MEN_GetMenuOpcoes(ms,id,&opcoes);
     LIS_IrInicioLista(opcoes);
     do
     {
@@ -141,6 +141,11 @@ void vaiMenu4(EST_tppEstado e,MEN_tppOpcao opc){
     EST_GetMenus(e,&m);
     MEN_MudaMenu(m,4); 
 }
+void joga(EST_tppEstado e,MEN_tppOpcao opc){ 
+    MEN_tppMenus m;
+    EST_GetMenus(e,&m);
+    MEN_MudaMenu(m,JOGO); 
+}
 /*
 void carregar(EST_tppEstado e,MEN_tppOpcao opc){
 
@@ -166,21 +171,78 @@ void salva(EST_tppEstado e,MEN_tppOpcao opc){
     TAB_tppTabuleiro t;
     char* nome;
     EST_GetTabuleiro(e,&t);
-    TAB_ 
     Erro("Salvando tabuleiro",TAB_SalvarTabuleiro(t,nome),TAB);
-    TAB_Salva(e);
+}
+void andadireditor(EST_tppEstado e,MEN_tppOpcao opc){
+    TAB_tppTabuleiro t;
+    EST_GetTabuleiro(e,&t);
+    if(TAB_PodeAndarPraDireita(t,0)==TAB_CondRetOK)
+        TAB_AndarPraDireita(t);
+}
+void andaesqeditor(EST_tppEstado e,MEN_tppOpcao opc){
+    TAB_tppTabuleiro t;
+    EST_GetTabuleiro(e,&t);
+    if(TAB_PodeAndarPraEsquerda(t,0)==TAB_CondRetOK)
+        TAB_AndarPraEsquerda(t);
+}
+void andabaixoeditor(EST_tppEstado e,MEN_tppOpcao opc){
+    TAB_tppTabuleiro t;
+    EST_GetTabuleiro(e,&t);
+    if(TAB_PodeAndarPraBaixo(t,0)==TAB_CondRetOK)
+        TAB_AndarPraBaixo(t);
+}
+void andacimaeditor(EST_tppEstado e,MEN_tppOpcao opc){
+    TAB_tppTabuleiro t;
+    EST_GetTabuleiro(e,&t);
+    if(TAB_PodeAndarPraCima(t,0)==TAB_CondRetOK)
+        TAB_AndarPraCima(t);
+}
+void andadirjogador(EST_tppEstado e,MEN_tppOpcao opc){
+    TAB_tppTabuleiro t;
+    EST_GetTabuleiro(e,&t);
+    if(TAB_PodeAndarPraDireita(t,1)==TAB_CondRetOK)
+        TAB_AndarPraDireita(t);
+}
+void andaesqjogador(EST_tppEstado e,MEN_tppOpcao opc){
+    TAB_tppTabuleiro t;
+    EST_GetTabuleiro(e,&t);
+    if(TAB_PodeAndarPraEsquerda(t,1)==TAB_CondRetOK)
+        TAB_AndarPraEsquerda(t);
+}
+void andabaixojogador(EST_tppEstado e,MEN_tppOpcao opc){
+    TAB_tppTabuleiro t;
+    EST_GetTabuleiro(e,&t);
+    if(TAB_PodeAndarPraBaixo(t,1)==TAB_CondRetOK)
+        TAB_AndarPraBaixo(t);
+}
+void andacimajogador(EST_tppEstado e,MEN_tppOpcao opc){
+    TAB_tppTabuleiro t;
+    EST_GetTabuleiro(e,&t);
+    if(TAB_PodeAndarPraCima(t,1)==TAB_CondRetOK)
+        TAB_AndarPraCima(t);
 }
 
-    Erro("criando opcao 1 de Edicao", MEN_CriarOpcao(m,idMenu,'w',"andar para cima",andacimaeditor),MEN) ;
-    Erro("criando opcao 2 de Edicao", MEN_CriarOpcao(m,idMenu,'s',"andar para baixo",andabaixoeditor),MEN) ;
-    Erro("criando opcao 3 de Edicao", MEN_CriarOpcao(m,idMenu,'a',"andar para esquerda",andaesqeditor),MEN) ;
-    Erro("criando opcao 4 de Edicao", MEN_CriarOpcao(m,idMenu,'d',"andar para direita",andadireditor),MEN) ;
-    Erro("criando opcao 5 de Edicao", MEN_CriarOpcao(m,idMenu,'1',"por parede",poeparede),MEN) ;
-    Erro("criando opcao 6 de Edicao", MEN_CriarOpcao(m,idMenu,'2',"por chao",poechao),MEN) ;
-    Erro("criando opcao 7 de Edicao", MEN_CriarOpcao(m,idMenu,'3',"por inicio",poeinicio),MEN) ;
-    Erro("criando opcao 8 de Edicao", MEN_CriarOpcao(m,idMenu,'4',"por fim",poefim),MEN) ;
-    Erro("criando opcao 9 de Edicao", MEN_CriarOpcao(m,idMenu,'5',"salvar",salva),MEN) ;
-    Erro("criando opcao 10 de Edicao", MEN_CriarOpcao(m,idMenu,'6',"jogar",joga),MEN) ;
+void poefim(EST_tppEstado e,MEN_tppOpcao opc){
+    TAB_tppTabuleiro t;
+    EST_GetTabuleiro(e,&t);
+    TAB_PoeFim(t);
+}
+void poeinicio(EST_tppEstado e,MEN_tppOpcao opc){
+    TAB_tppTabuleiro t;
+    EST_GetTabuleiro(e,&t);
+    TAB_PoeInicio(t);
+}
+void poechao(EST_tppEstado e,MEN_tppOpcao opc){
+    TAB_tppTabuleiro t;
+    EST_GetTabuleiro(e,&t);
+    TAB_PoeChao(t);
+}
+
+void poeparede(EST_tppEstado e,MEN_tppOpcao opc){
+    TAB_tppTabuleiro t;
+    EST_GetTabuleiro(e,&t);
+    TAB_PoeParede(t);
+}
 /*
    Tres tipos de retorno: 
    no inicial, que termina o programa
@@ -204,7 +266,6 @@ PRI_tpCondRet validastring(char* s){
     }
 }
 PRI_tpCondRet validaint(int n){
-    printf("%d",n);
     if(n>=0 && n<11) 
         return PRI_CondRetOK;
     else 
@@ -312,6 +373,18 @@ void PopulaMenuEdicao(EST_tppEstado e){
     Erro("criando opcao 9 de Edicao", MEN_CriarOpcao(m,idMenu,'5',"salvar",salva),MEN) ;
     Erro("criando opcao 10 de Edicao", MEN_CriarOpcao(m,idMenu,'6',"jogar",joga),MEN) ;
 }
+void PopulaMenuJogo(EST_tppEstado e){
+    int idMenu = JOGO;
+    int idPai = 4;
+    MEN_tppMenus m;
+    EST_GetMenus(e,&m);
+    Erro("criando Jogo", MEN_CriarMenu(m,idMenu,"Jogo",idPai),MEN);
+
+    Erro("criando opcao 1 de Jogo", MEN_CriarOpcao(m,idMenu,'w',"andar para cima",andacimajogador),MEN) ;
+    Erro("criando opcao 2 de Jogo", MEN_CriarOpcao(m,idMenu,'s',"andar para baixo",andabaixojogador),MEN) ;
+    Erro("criando opcao 3 de Jogo", MEN_CriarOpcao(m,idMenu,'a',"andar para esquerda",andaesqjogador),MEN) ;
+    Erro("criando opcao 4 de Jogo", MEN_CriarOpcao(m,idMenu,'d',"andar para direita",andadirjogador),MEN) ;
+}
 //housekeeping
 //tpCondRet
 PRI_tpCondRet PopulaMenus(EST_tppEstado e){
@@ -366,16 +439,19 @@ void ApresentaMenu(EST_tppEstado e){
 void ApresentaTabuleiro(EST_tppEstado e){
 	TAB_tppTabuleiro Tabuleiro; 
 	int a,l,i,j,jx,jy;
+    char* nome;
     EST_GetTabuleiro(e,&Tabuleiro);
 	TAB_GetAltura(Tabuleiro,&a);
 	TAB_GetLargura(Tabuleiro,&l);
-	TAB_PosicaoJogador(Tabuleiro,&i,&j);
-	for(i=0;i<a;i++){
+    TAB_GetNome(Tabuleiro,&nome);
+	TAB_PosicaoJogador(Tabuleiro,&jx,&jy);
+	printf("Nome do Tabuleiro: %s\n",nome);
+    for(i=0;i<a;i++){
 	    for(j=0;j<l;j++){
-               TAB_tpCasa casa;
+           TAB_tpCasa casa;
 	       TAB_GetTipoCasa(Tabuleiro,i,j,&casa);
                //posicao do jogador
-               if(i==jx && j==jy){
+               if(j==jx && i==jy){
                    printf("O");    
                }
                else{

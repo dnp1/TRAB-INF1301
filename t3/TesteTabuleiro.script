@@ -1,4 +1,4 @@
-// Script:    TesteGrafo.script
+// Script:    TesteTabuleiro.script
 // Autor:     eav - Eduardo Alberto Verdeja
 // Data:      2/out/2014
 // Propósito: Testar superficialmente o módulo tabuleiro
@@ -12,10 +12,10 @@
 =declararparm   str4    string  "???"
 =declararparm   str5    string  "pera"
 
-=declararparm   OK                  				int 0
+=declararparm   OK                      int 0
 =declararparm   FaltouMemoria       	int 1
 =declararparm	  NaoEhCasa				int 2
-=declararparm   MovimentoInvalido    int 3
+=declararparm   MovimentoInvalido       int 3
 =declararparm   TabuleiroInvalido   	int 4
 =declararparm   SemSolucao   			int 5
 
@@ -138,6 +138,9 @@
 
 == Obtem largura do tabuleiro
 =getlargura 1 OK
+
+== Obtem nome do tabuleiro
+=getnome 1 OK
 
 == Criar caminho
 =poechao 1 OK

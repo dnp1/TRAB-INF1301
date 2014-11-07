@@ -46,6 +46,7 @@ static const char POE_FIM_CMD           [] = "=poefim"          ;
 static const char GET_TIPO_CASA_CMD     [] = "=gettipocasa"     ;
 static const char GET_ALTURA_CMD        [] = "=getaltura"       ;
 static const char GET_LARGURA_CMD       [] = "=getlargura"      ;
+static const char GET_NOME_CMD          [] = "=getnome"         ;
 static const char POSICAO_JOGADOR_CMD   [] = "=posicaojogador"  ;
 static const char VALIDAR_TAB_CMD       [] = "=validartab"      ;
 static const char SALVAR_TAB_CMD        [] = "=salvartab"       ;
@@ -79,28 +80,29 @@ TAB_tppTabuleiro vtRefTabuleiros[ DIM_VT_TABULEIROS ] ;
 *
 *     =resetteste
 *           - anula o vetor de tabuleiros Provoca vazamento de memória
-*     =criartab               inxTab   altura    largura   CondRetEsp
-*     =destruirtab            inxTab   CondRetEsp
-*     =podeircima"            inxTab   colisao   CondRetEsp
-*     =podeiresquerda"        inxTab   colisao   CondRetEsp
-*     =podeirdireita"         inxTab   colisao   CondRetEsp 
-*     =podeirbaixo"           inxTab   colisao   CondRetEsp
-*     =andarcima"             inxTab   CondRetEsp
-*     =andaresquerda"         inxTab   CondRetEsp 
-*     =andarbaixo"            inxTab   CondRetEsp
-*     =andardireita"          inxTab   CondRetEsp
-*     =poechao"               inxTab   CondRetEsp
-*     =poeparede"             inxTab   CondRetEsp
-*     =poeinicio"             inxTab   CondRetEsp
-*     =poefim"                inxTab   CondRetEsp
-*     =gettipocasa"           inxTab   x y       CondRetEsp
-*     =getaltura"             inxTab   CondRetEsp       
-*     =getlargura"            inxTab   CondRetEsp
-*     =posicaojogador"        inxTab   CondRetEsp
-*     =validartab"            inxTab   condRetEsp
-*     =salvartab"             inxTab   condRetEsp
-*     =carregartab"           inxTab   condRetEsp
-*     =solucionartab"         inxTab   condRetEsp
+*     =criartab              inxTab   altura    largura   CondRetEsp
+*     =destruirtab           inxTab   CondRetEsp
+*     =podeircima            inxTab   colisao   CondRetEsp
+*     =podeiresquerda        inxTab   colisao   CondRetEsp
+*     =podeirdireita         inxTab   colisao   CondRetEsp 
+*     =podeirbaixo           inxTab   colisao   CondRetEsp
+*     =andarcima             inxTab   CondRetEsp
+*     =andaresquerda         inxTab   CondRetEsp 
+*     =andarbaixo            inxTab   CondRetEsp
+*     =andardireita          inxTab   CondRetEsp
+*     =poechao               inxTab   CondRetEsp
+*     =poeparede             inxTab   CondRetEsp
+*     =poeinicio             inxTab   CondRetEsp
+*     =poefim                inxTab   CondRetEsp
+*     =gettipocasa           inxTab   x y       CondRetEsp
+*     =getaltura             inxTab   CondRetEsp       
+*     =getlargura            inxTab   CondRetEsp
+*     =getnome               inxTab   CondRetEsp
+*     =posicaojogador        inxTab   CondRetEsp
+*     =validartab            inxTab   condRetEsp
+*     =salvartab             inxTab   condRetEsp
+*     =carregartab           inxTab   condRetEsp
+*     =solucionartab         inxTab   condRetEsp
 *
 ***********************************************************************/
 
@@ -120,6 +122,7 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
       int x, y;
       int* solucao;
       char nome[DIM_VALOR];
+      char* getNome;
       char pathSalvar[] = "SalvarTeste.txt";
       char pathCarregar[] = "CarregarTeste.txt";
 
@@ -380,7 +383,21 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
           CondRetObtida = TAB_GetLargura(vtRefTabuleiros[inxTabuleiro],&x);
           return TST_CompararInt( CondRetEsperada , CondRetObtida , "Retorno errado ao obter largura." );
       } /* fim ativa: Testar TAB Get largura */  
-             
+       
+      /* Testar TAB Get nome */
+            
+      else if ( strcmp( ComandoTeste , GET_NOME_CMD ) == 0 )
+      {
+          NumLidos = LER_LerParametros("ii",&inxTabuleiro,&CondRetEsperada);
+          if((NumLidos != 2) || !VerificarInx(inxTabuleiro))
+          {
+              return TST_CondRetParm;
+          }
+
+          CondRetObtida = TAB_GetNome(vtRefTabuleiros[inxTabuleiro],&getNome);
+          return TST_CompararInt( CondRetEsperada , CondRetObtida , "Retorno errado ao obter nome." );
+      } /* fim ativa: Testar TAB Get largura */  
+                         
       /* Testar TAB Posicao do jogador */
             
       else if ( strcmp( ComandoTeste , POSICAO_JOGADOR_CMD ) == 0 )

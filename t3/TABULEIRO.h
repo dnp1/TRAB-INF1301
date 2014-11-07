@@ -527,6 +527,30 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 
 /***********************************************************************
 *
+*  $FC Função: TAB  &Get Nome
+*
+*  $ED Descrição da função
+*     Da a nome do tabuleiro.
+*
+*  $EP Parâmetros
+*     pTab - ponteiro para o tabuleiro
+*     nome - ponteiro para a cadeia de caracteres que representa o nome
+*
+*  $FV Valor retornado
+*     TAB_CondRetOK - O tabuleiro é válido - nome retornado com sucesso;
+*  
+*  Assertivas de Entrada: 
+*      pTab != NULL
+*
+*  Assertivas de Saida: 
+*      pTab != NULL
+*
+***********************************************************************/   
+
+    TAB_tpCondRet TAB_GetNome ( TAB_tppTabuleiro pTab,  char** nome ) ;
+    
+/***********************************************************************
+*
 *  $FC Função: TAB  &Validar Tabuleiro
 *
 *  $ED Descrição da função

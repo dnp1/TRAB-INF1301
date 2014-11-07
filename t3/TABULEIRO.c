@@ -383,9 +383,19 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y , int colisao ) ;
 *
 *  Função: TAB  &Get largura
 *  ****/
-    
+
     TAB_tpCondRet TAB_GetLargura (TAB_tppTabuleiro pTab, int* largura){
         *largura = pTab->largura;
+        return TAB_CondRetOK;
+    }
+
+/***************************************************************************
+*
+*  Função: TAB  &Get nome
+*  ****/
+    
+    TAB_tpCondRet TAB_GetNome (TAB_tppTabuleiro pTab, char** nome){
+        *nome = pTab->nome;
         return TAB_CondRetOK;
     }
 

@@ -360,7 +360,7 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y , int colisao ) ;
         if(x < 0 || x > pTab->largura || y < 0 || y > pTab->altura )
             return TAB_CondRetNaoEhCasa;
 
-        if(GRA_ObterValor(pTab->pGrafo, GetIdByXY(pTab,x,y,0), (void**)&casaXY) == GRA_CondRetOK){
+        if(GRA_ObterValor(pTab->pGrafo, GetIdByXY(pTab,x,y,1), (void**)&casaXY) == GRA_CondRetOK){
             *tipo = casaXY->tipo;
             return TAB_CondRetOK;
         }

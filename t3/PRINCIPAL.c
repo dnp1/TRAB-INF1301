@@ -144,12 +144,18 @@ void vaiMenu4(EST_tppEstado e,MEN_tppOpcao opc){
     MEN_MudaMenu(m,4); 
 }
 void joga(EST_tppEstado e,MEN_tppOpcao opc){ 
+    int id;
     MEN_tppMenus m;
     TAB_tppTabuleiro t;
     EST_GetMenus(e,&m);
     EST_GetTabuleiro(e,&t);
     TAB_IrInicio(t);
-    MEN_MudaMenu(m,JOGO); 
+    MEN_MenuCorrente(m,&id);
+    printf("antes %d\n",id);
+    MEN_MudaMenu(m,JOGO);
+    MEN_MenuCorrente(m,&id);
+    printf("dps %d\n",id);
+     
 }
 /*
 void carregar(EST_tppEstado e,MEN_tppOpcao opc){
@@ -382,7 +388,8 @@ void PopulaMenuJogar(EST_tppEstado e){
     EST_GetMenus(e,&m);
     Erro("criando menu Jogar", MEN_CriarMenu(m,idMenu,"Jogar",idPai),MEN);
 
-    Erro("criando opcao 1 de Jogar", MEN_CriarOpcao(m,idMenu,'1',"Carregar",carrega),MEN) ;
+    Erro("criando opcao 1 de Jogar", MEN_CriarOpcao(m,idMenu,'1',"Jogar atual",joga),MEN) ;
+    Erro("criando opcao 2 de Jogar", MEN_CriarOpcao(m,idMenu,'2',"Carregar",carrega),MEN) ;
 }
 void PopulaMenuEdicao(EST_tppEstado e){
     int idMenu = EDITOR;
@@ -425,6 +432,7 @@ PRI_tpCondRet PopulaMenus(EST_tppEstado e){
     PopulaMenuResolvedor(e);
     PopulaMenuJogar(e);
     PopulaMenuEdicao(e);
+    PopulaMenuJogo(e);
     return PRI_CondRetOK;
 }
 /*
@@ -484,13 +492,13 @@ void ApresentaTabuleiro(EST_tppEstado e){
                    printf("O");    
                }
                else{
-		       printf("%d",casa);
-               /*
+		       //printf("%d",casa);
+               
                if(casa==TAB_tpCasaInicio) printf("I"); 
 		       else if(casa==TAB_tpCasaFim) printf("F"); 
 		       else if(casa==TAB_tpCasaChao) printf(" "); 
 		       else if(casa==TAB_tpCasaParede) printf("#"); 
-               */
+               
                }
             }	
             printf("\n");

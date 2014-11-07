@@ -200,29 +200,54 @@ void andacimaeditor(EST_tppEstado e,MEN_tppOpcao opc){
     if(TAB_PodeAndarPraCima(t,0)==TAB_CondRetOK)
         TAB_AndarPraCima(t);
 }
+/*
+*   Checa Vitoria
+*   verifica se o usuário, durante o jogo, solucionou o labirinto. Caso afirmativo,retorna para o menu acima. 
+*/
+void ChecaVitoria(EST_tppEstado e){  
+    TAB_tppTabuleiro t;
+    MEN_tppMenus m;
+    int x,y;
+    TAB_tpCasa casa;
+    EST_GetTabuleiro(e,&t);
+    EST_GetMenus(e,&m);
+	TAB_PosicaoJogador(t,&x,&y);
+	TAB_GetTipoCasa(t,x,y,&casa);
+    if(casa == TAB_tpCasaFim) 
+        MEN_MudaMenu(m,4);
+        //4 é o pai de JOGO 
+}
 void andadirjogador(EST_tppEstado e,MEN_tppOpcao opc){
     TAB_tppTabuleiro t;
     EST_GetTabuleiro(e,&t);
-    if(TAB_PodeAndarPraDireita(t,1)==TAB_CondRetOK)
+    if(TAB_PodeAndarPraDireita(t,1)==TAB_CondRetOK){
         TAB_AndarPraDireita(t);
+        ChecaVitoria(e);
+    }
 }
 void andaesqjogador(EST_tppEstado e,MEN_tppOpcao opc){
     TAB_tppTabuleiro t;
     EST_GetTabuleiro(e,&t);
-    if(TAB_PodeAndarPraEsquerda(t,1)==TAB_CondRetOK)
+    if(TAB_PodeAndarPraEsquerda(t,1)==TAB_CondRetOK){
         TAB_AndarPraEsquerda(t);
+        ChecaVitoria(e);
+    }
 }
 void andabaixojogador(EST_tppEstado e,MEN_tppOpcao opc){
     TAB_tppTabuleiro t;
     EST_GetTabuleiro(e,&t);
-    if(TAB_PodeAndarPraBaixo(t,1)==TAB_CondRetOK)
+    if(TAB_PodeAndarPraBaixo(t,1)==TAB_CondRetOK){
         TAB_AndarPraBaixo(t);
+        ChecaVitoria(e);
+    }
 }
 void andacimajogador(EST_tppEstado e,MEN_tppOpcao opc){
     TAB_tppTabuleiro t;
     EST_GetTabuleiro(e,&t);
-    if(TAB_PodeAndarPraCima(t,1)==TAB_CondRetOK)
+    if(TAB_PodeAndarPraCima(t,1)==TAB_CondRetOK){
         TAB_AndarPraCima(t);
+        ChecaVitoria(e);
+    }
 }
 
 void poefim(EST_tppEstado e,MEN_tppOpcao opc){
@@ -451,7 +476,7 @@ void ApresentaTabuleiro(EST_tppEstado e){
 	printf("Nome do Tabuleiro: %s\n",nome);
     for(i=0;i<a;i++){
 	    for(j=0;j<l;j++){
-	       TAB_GetTipoCasa(Tabuleiro,i,j,&casa);
+	       TAB_GetTipoCasa(Tabuleiro,j,i,&casa);
                //posicao do jogador
                if(j==jx && i==jy){
                    printf("O");    
@@ -482,23 +507,6 @@ void ApresentaSolucao(EST_tppEstado e){
     }
 }
 /*
-*   Checa Vitoria
-*   verifica se o usuário, durante o jogo, solucionou o labirinto. Caso afirmativo,retorna para o menu acima. 
-*/
-void ChecaVitoria(EST_tppEstado e){  
-    TAB_tppTabuleiro t;
-    MEN_tppMenus m;
-    int x,y;
-    TAB_tpCasa casa;
-    EST_GetTabuleiro(e,&t);
-    EST_GetMenus(e,&m);
-	TAB_PosicaoJogador(t,&x,&y);
-	TAB_GetTipoCasa(t,x,y,&casa);
-    if(casa == TAB_tpCasaFim) 
-        MEN_MudaMenu(m,4);
-        //4 é o pai de JOGO 
-}
-/*
  *   Função Principal
  */
 int main(){
@@ -526,10 +534,8 @@ int main(){
         ApresentaMenu(e);
         if(atual == EDITOR||atual == JOGO){
             ApresentaTabuleiro(e);
-            if(atual == JOGO)
-                ChecaVitoria(e);
         }
-        Erro("Digite um comando:",LeCmd(e),PRI);
+        Erro("Comando:",LeCmd(e),PRI);
         EST_GetMenus(e,&menus);
         MEN_MenuCorrente(menus,&atual);
     }

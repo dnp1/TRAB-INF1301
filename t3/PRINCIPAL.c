@@ -407,15 +407,15 @@ PRI_tpCondRet PopulaMenus(EST_tppEstado e){
  */
 void ApresentaMenu(EST_tppEstado e){
     char cmd;
-    int* id;
+    int id;
     char* nome;
     char* nomeopc;
     LIS_tppLista opc;
     MEN_tppMenus ms;
     EST_GetMenus(e,&ms);
-    MEN_MenuCorrente(ms,id);
-    MEN_GetMenuOpcoes(ms,*id,&opc);
-    MEN_GetMenuNome(ms,*id,&nome);
+    MEN_MenuCorrente(ms,&id);
+    MEN_GetMenuOpcoes(ms,id,&opc);
+    MEN_GetMenuNome(ms,id,&nome);
     printf("\n###############\n#  Labirinto  #\n###############");
     printf("\n %s\n--------------",nome);
     printf("\nDigite:\n\n");
@@ -455,10 +455,13 @@ void ApresentaTabuleiro(EST_tppEstado e){
                    printf("O");    
                }
                else{
-		       if(casa==TAB_tpCasaInicio) printf("I"); 
+		       printf("%d",casa);
+               /*
+               if(casa==TAB_tpCasaInicio) printf("I"); 
 		       else if(casa==TAB_tpCasaFim) printf("F"); 
 		       else if(casa==TAB_tpCasaChao) printf(" "); 
 		       else if(casa==TAB_tpCasaParede) printf("#"); 
+               */
                }
             }	
             printf("\n");

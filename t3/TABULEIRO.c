@@ -934,6 +934,16 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y , int colisao ) ;
         }while(LIS_AvancarElementoCorrente(lstSolucao,1) == LIS_CondRetOK);
     }
     
+/***************************************************************************
+*
+*  Função: TAB  &Ir inicio
+*  ****/  
+    TAB_tpCondRet TAB_IrInicio ( TAB_tppTabuleiro pTab){
+        //procura o inicio de pTab 
+        //jogador = inicio
+        return TAB_CondRetOK;
+    }
+            
 /*****  Código das funções encapsuladas no módulo  *****/
     
     static int getCasaID ( TAB_tppTabuleiro pTab, int x, int y){

@@ -74,12 +74,12 @@ valida retorna apenas CondRetOK ou PRI_CondRetInvalido
 /*
 trunca em 50
 */
-PRI_tpCondRet LeString(char* dst, PRI_tpCondRet (*valida)(char* s)){
+PRI_tpCondRet LeString(char** dst, PRI_tpCondRet (*valida)(char* s)){
     char temp[50];
     scanf(" %s",temp);
     PRI_tpCondRet cr = valida(temp);
     if(cr == PRI_CondRetOK){
-        strcpy(dst,temp);
+        strcpy(*dst,temp);
     }
     return cr;    
 }
@@ -143,7 +143,10 @@ void vaiMenu4(EST_tppEstado e,MEN_tppOpcao opc){
 }
 void joga(EST_tppEstado e,MEN_tppOpcao opc){ 
     MEN_tppMenus m;
+    TAB_tppTabuleiro t;
     EST_GetMenus(e,&m);
+    EST_GetTabuleiro(e,&t);
+    TAB_IrInicio(t);
     MEN_MudaMenu(m,JOGO); 
 }
 /*
@@ -271,7 +274,6 @@ PRI_tpCondRet validaint(int n){
     else 
         return PRI_CondRetInvalido;
 }
-//TODO:recomendacoes de ux do flavio
 
 void novo_tab(EST_tppEstado e){
     char* nome = malloc(sizeof(char)*10);
@@ -296,7 +298,7 @@ void novo_tab(EST_tppEstado e){
     }
     while(!strcmp(nome,"")){
         Msg("Digite o nome (menos de 10 caracteres) ou 0 para voltar");
-        Erro("validando:",LeString(nome,validastring),PRI);
+        Erro("validando:",LeString(&nome,validastring),PRI);
         if(!strcmp(nome,"0")){
             Msg("cancelando operacao");
              return;
@@ -440,6 +442,7 @@ void ApresentaTabuleiro(EST_tppEstado e){
 	TAB_tppTabuleiro Tabuleiro; 
 	int a,l,i,j,jx,jy;
     char* nome;
+    TAB_tpCasa casa;
     EST_GetTabuleiro(e,&Tabuleiro);
 	TAB_GetAltura(Tabuleiro,&a);
 	TAB_GetLargura(Tabuleiro,&l);
@@ -448,7 +451,6 @@ void ApresentaTabuleiro(EST_tppEstado e){
 	printf("Nome do Tabuleiro: %s\n",nome);
     for(i=0;i<a;i++){
 	    for(j=0;j<l;j++){
-           TAB_tpCasa casa;
 	       TAB_GetTipoCasa(Tabuleiro,i,j,&casa);
                //posicao do jogador
                if(j==jx && i==jy){
@@ -479,7 +481,23 @@ void ApresentaSolucao(EST_tppEstado e){
         printf("Passo %d: (x,y) -> (%d,%d)\n",(i/2)+1,solucao[i],solucao[i+1]);    
     }
 }
-
+/*
+*   Checa Vitoria
+*   verifica se o usuário, durante o jogo, solucionou o labirinto. Caso afirmativo,retorna para o menu acima. 
+*/
+void ChecaVitoria(EST_tppEstado e){  
+    TAB_tppTabuleiro t;
+    MEN_tppMenus m;
+    int x,y;
+    TAB_tpCasa casa;
+    EST_GetTabuleiro(e,&t);
+    EST_GetMenus(e,&m);
+	TAB_PosicaoJogador(t,&x,&y);
+	TAB_GetTipoCasa(t,x,y,&casa);
+    if(casa == TAB_tpCasaFim) 
+        MEN_MudaMenu(m,4);
+        //4 é o pai de JOGO 
+}
 /*
  *   Função Principal
  */
@@ -506,8 +524,11 @@ int main(){
     MEN_MenuCorrente(menus,&atual);
     while(atual!=0){
         ApresentaMenu(e);
-        if(atual == EDITOR||atual == JOGO)
+        if(atual == EDITOR||atual == JOGO){
             ApresentaTabuleiro(e);
+            if(atual == JOGO)
+                ChecaVitoria(e);
+        }
         Erro("Digite um comando:",LeCmd(e),PRI);
         EST_GetMenus(e,&menus);
         MEN_MenuCorrente(menus,&atual);

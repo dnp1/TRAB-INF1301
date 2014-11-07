@@ -679,7 +679,6 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 *
 *  Assertivas de Entrada: 
 *      pTab != NULL
-*	   pSolucao == NULL // recomendação para evitar memoryleak
 *
 *  Assertivas de Saida: 
 *      pTab != NULL
@@ -688,4 +687,26 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 
     TAB_tpCondRet TAB_PosicaoJogador ( TAB_tppTabuleiro pTab , int* x , int* y ) ;        
 
+/***********************************************************************
+*
+*  $FC Função: TAB  &Ir inicio
+*
+*  $ED Descrição da função
+*     Move o jogador para o inicio do tabuleiro.
+*
+*  $EP Parâmetros
+*     pTab - ponteiro para o tabuleiro
+*
+*  $FV Valor retornado
+*     TAB_CondRetOK - O tabuleiro é válido;
+*
+*  Assertivas de Entrada: 
+*      pTab != NULL
+*
+*  Assertivas de Saida: 
+*      pTab != NULL
+*
+***********************************************************************/
+
+    TAB_tpCondRet TAB_IrInicio ( TAB_tppTabuleiro pTab) ;        
 #endif

@@ -1,5 +1,6 @@
+
 CC=gcc
-CFLAGS=-I. -L. -O0 -g -fpermissive -w#-Wall #-fdiagnostics-color="always"
+CFLAGS=-I. -L. -O0 -g -fpermissive #-fdiagnostics-color="always"
 
 all: lista grafo menu tabuleiro estado principal teste-tabuleiro teste-menu
 estado:
@@ -17,9 +18,10 @@ tabuleiro:
 	$(CC) $(CFLAGS) -c -x c++ TABULEIRO.c -o TABULEIRO.o
 teste-menu:
 	$(CC) $(CFLAGS) -c -x c++ TESTMEN.c -o TESTMEN.o
-	$(CC) $(CFLAGS) -o teste_tabuleiro.exe -lArcaboucoTeste MENU.o GRAFO.o LISTA.o
+	$(CC) $(CFLAGS) -o teste_tabuleiro.exe -lArcaboucoTeste TESTMEN.o MENU.o GRAFO.o LISTA.o
 teste-tabuleiro:
-	$(CC) $(CFLAGS) -o teste_menu.exe -lArcaboucoTeste TABULEIRO.o GRAFO.o LISTA.o 
+	$(CC) $(CFLAGS) -c -x c++ TESTTAB.C -o TESTTAB.o
+	$(CC) $(CFLAGS) -o teste_menu.exe -lArcaboucoTeste TESTTAB.o TABULEIRO.o GRAFO.o LISTA.o 
 clean:
 	rm *.gch -f
 	rm *.o -f

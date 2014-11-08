@@ -64,7 +64,6 @@ PRI_tpCondRet LeCmd(EST_tppEstado e){
             Erro("Executando opcao selecionada:",MEN_Callback(ms,id,c,e),MEN);
             return PRI_CondRetOK;
         }    
-    
     }
     free(opcoes);
     return PRI_CondRetSemOpcao;         
@@ -204,6 +203,7 @@ void salva(EST_tppEstado e){
     TAB_tppTabuleiro t;
     char* nome;
     EST_GetTabuleiro(e,&t);
+	TAB_GetNome(t,&nome);
     if(t!=NULL)
         Erro("Salvando tabuleiro",TAB_SalvarTabuleiro(t,nome),TAB);
     else 
@@ -247,7 +247,7 @@ void ChecaVitoria(EST_tppEstado e){
 	TAB_PosicaoJogador(t,&x,&y);
 	TAB_GetTipoCasa(t,x,y,&casa);
     if(casa == TAB_tpCasaFim){ 
-        Msg("Voce ganhou!!!");
+        Msg("Voce ganhou!!! BRENO");
         MEN_MudaMenu(m,4);
         //4 é o pai de JOGO 
     }
@@ -358,17 +358,18 @@ void novo_tab(EST_tppEstado e){
              return;
         }
     }
-    while(!strcmp(nome,"")){
+    do{
         Msg("Digite o nome (menos de 10 caracteres) ou 0 para voltar");
         Erro("validando:",LeString(&nome,validastring),PRI);
         if(!strcmp(nome,"0")){
             Msg("cancelando operacao");
              return;
         }
-    }
-    
+    }while(!strcmp(nome,""));
+    /*
     if(EST_GetTabuleiro(e,&a)==EST_CondRetOK)
         TAB_DestruirTabuleiro(a);
+	*/
     Erro("Criando tabuleiro",TAB_CriarTabuleiro(&a,alt,lar,nome),TAB);
     EST_SetTabuleiro(e,a);
     //Erro("Salvando tabuleiro",TAB_SalvarTabuleiro(a,nome),TAB);
@@ -398,8 +399,8 @@ void PopulaMenuEditor(EST_tppEstado e){
 
     Erro("criando opcao 1 de Editor", MEN_CriarOpcao(m,idMenu,'1',"Carregar",carrega),MEN) ;
     Erro("criando opcao 2 de Editor", MEN_CriarOpcao(m,2,'2',"Novo",novo_tab),MEN);
-    Erro("criando opcao 3 de Editor", MEN_CriarOpcao(m,idMenu,'3',"Editar atual",edita),MEN) ;
-    //Erro("criando opcao 4 de Editor", MEN_CriarOpcao(m,idMenu,'4',"Deletar",deleta),MEN);
+    Erro("criando opcao 3 de Editor", MEN_CriarOpcao(m,idMenu,'3',"Deletar",deleta),MEN);
+    Erro("criando opcao 4 de Editor", MEN_CriarOpcao(m,idMenu,'4',"Editar atual",edita),MEN) ;
 }
 void PopulaMenuResolvedor(EST_tppEstado e){
     int idMenu = 3;
@@ -513,8 +514,8 @@ void ApresentaTabuleiro(EST_tppEstado e){
 	int a,l,i,j,jx,jy;
     TAB_tpCasa casa;
     EST_GetTabuleiro(e,&Tabuleiro);
-	TAB_GetAltura(Tabuleiro,&a);
 	TAB_GetLargura(Tabuleiro,&l);
+	TAB_GetAltura(Tabuleiro,&a);
 	TAB_PosicaoJogador(Tabuleiro,&jx,&jy);
     for(i=0;i<a;i++){
 	    for(j=0;j<l;j++){
@@ -577,7 +578,8 @@ int main(){
     while(atual!=0){
         ApresentaMenu(e);
         if(atual == EDITOR||atual == JOGO){
-            ApresentaTabuleiro(e);
+            
+			ApresentaTabuleiro(e);
         }
         Erro("Comando:",LeCmd(e),PRI);
         EST_GetMenus(e,&menus);

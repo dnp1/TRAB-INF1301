@@ -1,3 +1,4 @@
+#include "TIPOESTADO.h"
 #include "TABULEIRO.h"
 #include "ESTADO.h"
 #include "MENU.h"
@@ -130,37 +131,37 @@ void Erro(char* comm, int CondRet,tpmodulo module){
 
 #define JOGO 6 
 #define EDITOR 5 
-void vaiMenu1(EST_tppEstado e){ 
+static MEN_tpCondRet vaiMenu1(EST_tppEstado e){ 
     MEN_tppMenus m;
     EST_GetMenus(e,&m);
     MEN_MudaMenu(m,1); 
 }
-void vaiMenu2(EST_tppEstado e){ 
+static MEN_tpCondRet vaiMenu2(EST_tppEstado e){ 
     MEN_tppMenus m;
     EST_GetMenus(e,&m);
     MEN_MudaMenu(m,2); 
 }
-void vaiMenu3(EST_tppEstado e){ 
+static MEN_tpCondRet vaiMenu3(EST_tppEstado e){ 
     MEN_tppMenus m;
     EST_GetMenus(e,&m);
     MEN_MudaMenu(m,3); 
 }
-void vaiMenu4(EST_tppEstado e){ 
+static MEN_tpCondRet vaiMenu4(EST_tppEstado e){ 
     MEN_tppMenus m;
     EST_GetMenus(e,&m);
     MEN_MudaMenu(m,4); 
 }
-void joga(EST_tppEstado e){ 
+static MEN_tpCondRet joga(EST_tppEstado e){ 
     MEN_tppMenus m;
     TAB_tppTabuleiro t;
     EST_GetMenus(e,&m);
-    if(EST_GetTabuleiro(e,&t)!=EST_CondRetOK) break;
-    if(TAB_ValidarTabuleiro(t)!=TAB_CondRetOK) break;
+    if(EST_GetTabuleiro(e,&t)!=EST_CondRetOK) return MEN_CondRetFaltouMemoria;
+    if(TAB_ValidarTabuleiro(t)!=TAB_CondRetOK)  return MEN_CondRetFaltouMemoria;
     TAB_IrInicio(t);
     MEN_MudaMenu(m,JOGO);
    
 }
-void edita(EST_tppEstado e){ 
+static MEN_tpCondRet edita(EST_tppEstado e){ 
     MEN_tppMenus m;
     TAB_tppTabuleiro t;
     EST_GetMenus(e,&m);
@@ -171,7 +172,7 @@ void edita(EST_tppEstado e){
         MEN_MudaMenu(m,EDITOR);
     }
 }
-static void soluciona(EST_tppEstado e){ 
+static MEN_tpCondRet soluciona(EST_tppEstado e){ 
     TAB_tppTabuleiro t;
     EST_GetTabuleiro(e,&t);
     if(EST_GetTabuleiro(e,&t)==EST_CondRetOK)
@@ -192,52 +193,71 @@ void carregar(EST_tppEstado e){
 
 }
 */
-void carrega(EST_tppEstado e){
-    TAB_tppTabuleiro t;
+static MEN_tpCondRet carrega(EST_tppEstado e){
+    TAB_tppTabuleiro t,a;
     char* nome;
-	/*
+    char** nomes;
+    int tam;
+    int i;
+	PRI_tpCondRet cr = PRI_CondRetInvalido;
+    //Erro("Lendo Diretorio:",TAB_ListaTabuleiros(&nomes, &tam),TAB);
+    for(i=0;i<tam;i++){
+        printf("\t%s",nomes[i]);
+    }
+     
+    
 	do{
         Msg("Digite o nome (menos de 10 caracteres) ou 0 para voltar");
-        Erro("validando:",LeString(&nome,validastring),PRI);
+        Erro("validando (string ok):",LeString(&nome,validastring),PRI);
         if(!strcmp(nome,"0")){
             Msg("cancelando operacao");
-             return;
+            return MEN_CondRetFaltouMemoria;
         }
-    }while(!strcmp(nome,""));
-	*/
-	Erro("Carregando tabuleiro",TAB_CarregarTabuleiro(&t,"tabuleiro.txt"),TAB);
-
+    
+        for(i=0;i<tam;i++){
+            if(strcmp(nome,nomes[i])==0) cr = PRI_CondRetOK;
+        }
+        Erro("validando[2] (nome do arquivo ok):",cr,PRI);
+	
+    }while(!strcmp(nome,"") && cr != PRI_CondRetOK);
+	
+    Erro("Carregando tabuleiro",TAB_CarregarTabuleiro(&t,nome),TAB);
+    if(EST_GetTabuleiro(e,&a)==EST_CondRetOK)
+        TAB_DestruirTabuleiro(a);
+    EST_SetTabuleiro(e,t);
 }
-void deleta(EST_tppEstado e){
+static MEN_tpCondRet deleta(EST_tppEstado e){
 //    TAB_Deletar(EST_GetTabuleiro(e));
 }
-void salva(EST_tppEstado e){
+static MEN_tpCondRet salva(EST_tppEstado e){
     TAB_tppTabuleiro t;
     char* nome;
-    if(EST_GetTabuleiro(e,&t)!=EST_CondRetOK) break;
-	if(TAB_ValidarTabuleiro(t)!=TAB_CondRetOK) break;
+    if(EST_GetTabuleiro(e,&t)!=EST_CondRetOK) 
+        return MEN_CondRetFaltouMemoria;
+	if(TAB_ValidarTabuleiro(t)!=TAB_CondRetOK) 
+        return MEN_CondRetFaltouMemoria;
     TAB_GetNome(t,&nome);
     Erro("Salvando tabuleiro",TAB_SalvarTabuleiro(t,nome),TAB);
 }
-void andadireditor(EST_tppEstado e){
+static MEN_tpCondRet andadireditor(EST_tppEstado e){
     TAB_tppTabuleiro t;
     EST_GetTabuleiro(e,&t);
     if(TAB_PodeAndarPraDireita(t,0)==TAB_CondRetOK)
         TAB_AndarPraDireita(t);
 }
-void andaesqeditor(EST_tppEstado e){
+static MEN_tpCondRet andaesqeditor(EST_tppEstado e){
     TAB_tppTabuleiro t;
     EST_GetTabuleiro(e,&t);
     if(TAB_PodeAndarPraEsquerda(t,0)==TAB_CondRetOK)
         TAB_AndarPraEsquerda(t);
 }
-void andabaixoeditor(EST_tppEstado e){
+static MEN_tpCondRet andabaixoeditor(EST_tppEstado e){
     TAB_tppTabuleiro t;
     EST_GetTabuleiro(e,&t);
     if(TAB_PodeAndarPraBaixo(t,0)==TAB_CondRetOK)
         TAB_AndarPraBaixo(t);
 }
-void andacimaeditor(EST_tppEstado e){
+static MEN_tpCondRet andacimaeditor(EST_tppEstado e){
     TAB_tppTabuleiro t;
     EST_GetTabuleiro(e,&t);
     if(TAB_PodeAndarPraCima(t,0)==TAB_CondRetOK)
@@ -262,7 +282,7 @@ void ChecaVitoria(EST_tppEstado e){
         //4 é o pai de JOGO 
     }
 }
-void andadirjogador(EST_tppEstado e){
+static MEN_tpCondRet andadirjogador(EST_tppEstado e){
     TAB_tppTabuleiro t;
     EST_GetTabuleiro(e,&t);
     if(TAB_PodeAndarPraDireita(t,1)==TAB_CondRetOK){
@@ -270,7 +290,7 @@ void andadirjogador(EST_tppEstado e){
         ChecaVitoria(e);
     }
 }
-void andaesqjogador(EST_tppEstado e){
+static MEN_tpCondRet andaesqjogador(EST_tppEstado e){
     TAB_tppTabuleiro t;
     EST_GetTabuleiro(e,&t);
     if(TAB_PodeAndarPraEsquerda(t,1)==TAB_CondRetOK){
@@ -278,7 +298,7 @@ void andaesqjogador(EST_tppEstado e){
         ChecaVitoria(e);
     }
 }
-void andabaixojogador(EST_tppEstado e){
+static MEN_tpCondRet andabaixojogador(EST_tppEstado e){
     TAB_tppTabuleiro t;
     EST_GetTabuleiro(e,&t);
     if(TAB_PodeAndarPraBaixo(t,1)==TAB_CondRetOK){
@@ -286,7 +306,7 @@ void andabaixojogador(EST_tppEstado e){
         ChecaVitoria(e);
     }
 }
-void andacimajogador(EST_tppEstado e){
+static MEN_tpCondRet andacimajogador(EST_tppEstado e){
     TAB_tppTabuleiro t;
     EST_GetTabuleiro(e,&t);
     if(TAB_PodeAndarPraCima(t,1)==TAB_CondRetOK){
@@ -295,23 +315,23 @@ void andacimajogador(EST_tppEstado e){
     }
 }
 
-void poefim(EST_tppEstado e){
+static MEN_tpCondRet poefim(EST_tppEstado e){
     TAB_tppTabuleiro t;
     EST_GetTabuleiro(e,&t);
     TAB_PoeFim(t);
 }
-void poeinicio(EST_tppEstado e){
+static MEN_tpCondRet poeinicio(EST_tppEstado e){
     TAB_tppTabuleiro t;
     EST_GetTabuleiro(e,&t);
     TAB_PoeInicio(t);
 }
-void poechao(EST_tppEstado e){
+static MEN_tpCondRet poechao(EST_tppEstado e){
     TAB_tppTabuleiro t;
     EST_GetTabuleiro(e,&t);
     TAB_PoeChao(t);
 }
 
-void poeparede(EST_tppEstado e){
+static MEN_tpCondRet poeparede(EST_tppEstado e){
     TAB_tppTabuleiro t;
     EST_GetTabuleiro(e,&t);
     TAB_PoeParede(t);
@@ -345,7 +365,7 @@ PRI_tpCondRet validaint(int n){
         return PRI_CondRetInvalido;
 }
 
-void novo_tab(EST_tppEstado e){
+static MEN_tpCondRet novo_tab(EST_tppEstado e){
     char* nome = malloc(sizeof(char)*10);
     MEN_tppMenus m;
     TAB_tppTabuleiro a;
@@ -357,7 +377,7 @@ void novo_tab(EST_tppEstado e){
         Erro("validando:",LeInt(&alt,validaint),PRI);
         if(alt == 0){
             Msg("cancelando operacao");
-             return;
+             return MEN_CondRetFaltouMemoria;
         }
     }
     while(lar == -1){
@@ -365,7 +385,7 @@ void novo_tab(EST_tppEstado e){
         Erro("validando:",LeInt(&lar,validaint),PRI);
         if(lar == 0){
             Msg("cancelando operacao");
-             return;
+             return MEN_CondRetFaltouMemoria;
         }
     }
     do{
@@ -373,13 +393,13 @@ void novo_tab(EST_tppEstado e){
         Erro("validando:",LeString(&nome,validastring),PRI);
         if(!strcmp(nome,"0")){
             Msg("cancelando operacao");
-             return;
+             return MEN_CondRetFaltouMemoria;
         }
     }while(!strcmp(nome,""));
-    /*
+    
     if(EST_GetTabuleiro(e,&a)==EST_CondRetOK)
         TAB_DestruirTabuleiro(a);
-	*/
+	
     Erro("Criando tabuleiro",TAB_CriarTabuleiro(&a,alt,lar,nome),TAB);
     EST_SetTabuleiro(e,a);
     //Erro("Salvando tabuleiro",TAB_SalvarTabuleiro(a,nome),TAB);

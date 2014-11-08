@@ -65,7 +65,7 @@ LIS_tppLista stringsUsadas = NULL;
 *
 *     Comandos disponíveis:
 *
-*     =resetteste    inxMenu    CondRetEsp   
+*     =resetteste 
 *     =criarmens     inxMenu    CondRetEsp
 *     =criarmen      inxMenu    idMenu         nome    idPai   CondRetEsp
 *     =criaropc      inxMenu    idMenu        cmd   nome CondRetEsp        
@@ -110,7 +110,9 @@ TST_tpCondRet TST_EfetuarComando(char * ComandoTeste) {
 
         if (estaInicializado){
             for(i = 0 ; i < DIM_VT_MENUS ; i++){ //Destroi todos menus
-                MEN_DestruirMenus(vtRefMenus[i]) ;
+               if (vtRefMenus[i] != NULL) {
+                  MEN_DestruirMenus(vtRefMenus[i]) ;
+               }
             }
             LIS_DestruirLista(stringsUsadas);
         }
@@ -119,7 +121,7 @@ TST_tpCondRet TST_EfetuarComando(char * ComandoTeste) {
         }
         stringsUsadas = LIS_CriarLista(free);
         estaInicializado = 1 ;
-
+        return TST_CondRetOK;
       } /* fim ativa: Tratar: inicializar contexto */      
 
 
@@ -139,10 +141,16 @@ TST_tpCondRet TST_EfetuarComando(char * ComandoTeste) {
       /* Testar MEN Destruir menus */
          else if (strcmp(ComandoTeste , DESTRUIR_MENS_CMD) == 0) { 
             NumLidos = LER_LerParametros("ii", &inxMenu, &CondRetEsperada);
-            if(NumLidos != 2 || !VerificarInx(inxMenu)) {
+            if (NumLidos != 2 || !VerificarInx(inxMenu)) {
                return TST_CondRetParm;
             }
+            if (vtRefMenus[inxMenu] == NULL) {
+               return TST_CompararPonteiroNulo(1, vtRefMenus[inxMenu], "Tentando Excluir Ponteiro Nulo. Operação Não Permitira");
+            }
             CondRetObtida = MEN_DestruirMenus(vtRefMenus[inxMenu]);
+            if (CondRetObtida == MEN_CondRetOK) {
+               vtRefMenus[inxMenu] = NULL;
+            }
             return TST_CompararInt(CondRetEsperada , CondRetObtida , "Retorno errado ao destruir um TAD 'Menus'.");
          } /* fim ativa: Testar MEN Destruir TAD 'Menus' */
 
@@ -242,8 +250,8 @@ TST_tpCondRet TST_EfetuarComando(char * ComandoTeste) {
 
       /* Testar MEN Menu Corrente*/
          else if (strcmp(ComandoTeste , CORRENTE_CMD) == 0) {
-            NumLidos = LER_LerParametros("iiii", &inxMenu, &idMenuEsperado, &CondRetEsperada);
-            if (NumLidos != 4 || !VerificarInx(inxMenu)) {
+            NumLidos = LER_LerParametros("iii", &inxMenu, &idMenuEsperado, &CondRetEsperada);
+            if (NumLidos != 3 || !VerificarInx(inxMenu)) {
                return TST_CondRetParm;
             }
             CondRetObtida = MEN_MenuCorrente(vtRefMenus[inxMenu], &idMenu);
@@ -257,7 +265,7 @@ TST_tpCondRet TST_EfetuarComando(char * ComandoTeste) {
 
       /* Testar MEN Get Opcao Nome */
          else if (strcmp(ComandoTeste , GET_OPCNOME_CMD) == 0) {
-            NumLidos = LER_LerParametros("iiisi", &inxMenu, &idMenu, &cmd, nome, &CondRetEsperada);
+            NumLidos = LER_LerParametros("iicsi", &inxMenu, &idMenu, &cmd, nome, &CondRetEsperada);
             if (NumLidos != 5 || !VerificarInx(inxMenu)) {
                return TST_CondRetParm;
             }
@@ -287,12 +295,12 @@ TST_tpCondRet TST_EfetuarComando(char * ComandoTeste) {
 
          /* Testar MEN CallBack*/
          else if (strcmp(ComandoTeste , CALLBACK_CMD) == 0) {
-            NumLidos = LER_LerParametros("iiii", &inxMenu, &idMenu, &cmd, &CondRetEsperada);
+            NumLidos = LER_LerParametros("iici", &inxMenu, &idMenu, &cmd, &CondRetEsperada);
             if (NumLidos != 4 || !VerificarInx(inxMenu)) {
                return TST_CondRetParm;
             }
             CondRetObtida = MEN_Callback(vtRefMenus[inxMenu], idMenu, cmd, NULL);
-            return TST_CompararInt(CondRetEsperada , CondRetObtida , "Id do Menu Corrente esperado diferente do Obtido");
+            return TST_CompararInt(CondRetEsperada , CondRetObtida , "Condiçao de retorno errado na chamada de Callback");
          } /* fim ativa: Testar MEN Callback*/
 
       return TST_CondRetNaoConhec ;  
@@ -350,7 +358,7 @@ TST_tpCondRet TST_EfetuarComando(char * ComandoTeste) {
 ***********************************************************************/
 
    MEN_tpCondRet CallBackTeste(EST_tppEstado e) {
-      MEN_CondRetOK;
+      return MEN_CondRetOK;
    }
 
 

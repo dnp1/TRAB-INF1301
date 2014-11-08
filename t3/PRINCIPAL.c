@@ -311,7 +311,7 @@ static void ChecaVitoria(EST_tppEstado e){
 	TAB_PosicaoJogador(t,&x,&y);
 	TAB_GetTipoCasa(t,x,y,&casa);
     if(casa == TAB_tpCasaFim){ 
-        Msg("Voce ganhou!!! BRENO");
+        Msg("Voce ganhou!!!");
         MEN_MudaMenu(m,4);
         //4 é o pai de JOGO 
     }
@@ -538,7 +538,7 @@ static void ApresentaMenu(EST_tppEstado e){
     int i;
     MEN_tppMenus ms;
     EST_GetMenus(e,&ms);
-    if(EST_GetTabuleiro(e,&t)!=EST_CondRetOK)    
+    if(EST_GetTabuleiro(e,&t)==EST_CondRetOK)    
         TAB_GetNome(t,&tab);
     else
         tab = "Nao existe";

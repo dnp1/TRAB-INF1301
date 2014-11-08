@@ -220,7 +220,7 @@ void carrega(EST_tppEstado e){
 	
     }while(!strcmp(nome,"") && cr != PRI_CondRetOK);
 	
-    Erro("Carregando tabuleiro",TAB_CarregarTabuleiro(&t,"tabuleiro.txt"),TAB);
+    Erro("Carregando tabuleiro",TAB_CarregarTabuleiro(&t,nome),TAB);
     if(EST_GetTabuleiro(e,&a)==EST_CondRetOK)
         TAB_DestruirTabuleiro(a);
     EST_SetTabuleiro(e,t);

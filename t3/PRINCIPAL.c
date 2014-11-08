@@ -25,12 +25,57 @@ typedef enum{
 /*
     Funcoes presentes
 */
-
+//Output
 static void Erro(char* comm, int CondRet,tpmodulo module);
+static void Msg(char* comm);
 static void ApresentaMenu(EST_tppEstado e);
 static void ApresentaSolucao(EST_tppEstado e);
 static void ApresentaTabuleiro(EST_tppEstado e);
-PRI_tpCondRet validastring(char* s);
+//validacao de input
+static PRI_tpCondRet validastring(char* s);
+static PRI_tpCondRet validaint(int n);
+//input
+static PRI_tpCondRet LeCmd(EST_tppEstado e);
+static PRI_tpCondRet LeString(char** dst, PRI_tpCondRet (*valida)(char* s));
+static PRI_tpCondRet LeInt(int* dst, PRI_tpCondRet (*valida)(int t));
+//callbacks
+//movimentacao
+static MEN_tpCondRet vaiMenu1(EST_tppEstado e); 
+static MEN_tpCondRet vaiMenu2(EST_tppEstado e); 
+static MEN_tpCondRet vaiMenu3(EST_tppEstado e); 
+static MEN_tpCondRet vaiMenu4(EST_tppEstado e); 
+static MEN_tpCondRet joga(EST_tppEstado e); 
+static MEN_tpCondRet edita(EST_tppEstado e); 
+static MEN_tpCondRet soluciona(EST_tppEstado e); 
+static MEN_tpCondRet novo_tab(EST_tppEstado e);
+//operacoes com arquivos
+static MEN_tpCondRet carrega(EST_tppEstado e);
+static MEN_tpCondRet deleta(EST_tppEstado e);
+static MEN_tpCondRet salva(EST_tppEstado e);
+//editor
+static MEN_tpCondRet andadireditor(EST_tppEstado e);
+static MEN_tpCondRet andaesqeditor(EST_tppEstado e);
+static MEN_tpCondRet andabaixoeditor(EST_tppEstado e);
+static MEN_tpCondRet andacimaeditor(EST_tppEstado e);
+static MEN_tpCondRet poefim(EST_tppEstado e);
+static MEN_tpCondRet poeinicio(EST_tppEstado e);
+static MEN_tpCondRet poechao(EST_tppEstado e);
+static MEN_tpCondRet poeparede(EST_tppEstado e);
+//jogo
+static void ChecaVitoria(EST_tppEstado e);  
+static MEN_tpCondRet andadirjogador(EST_tppEstado e);
+static MEN_tpCondRet andaesqjogador(EST_tppEstado e);
+static MEN_tpCondRet andabaixojogador(EST_tppEstado e);
+static MEN_tpCondRet andacimajogador(EST_tppEstado e);
+//inicialização
+static void PopulaMenuInicio(EST_tppEstado e);
+static void PopulaMenuEditor(EST_tppEstado e);
+static void PopulaMenuResolvedor(EST_tppEstado e);
+static void PopulaMenuJogar(EST_tppEstado e);
+static void PopulaMenuEdicao(EST_tppEstado e);
+static void PopulaMenuJogo(EST_tppEstado e);
+static PRI_tpCondRet PopulaMenus(EST_tppEstado e);
+
 /*
  *   Tratamento de Erros
  */
@@ -49,7 +94,7 @@ void TrataPRI(int CondRet){
 /*
     Tratamento de input
 */
-PRI_tpCondRet LeCmd(EST_tppEstado e){
+static PRI_tpCondRet LeCmd(EST_tppEstado e){
     char c; 
     char cmd;
     int id;
@@ -71,7 +116,7 @@ PRI_tpCondRet LeCmd(EST_tppEstado e){
     return PRI_CondRetSemOpcao;         
 }
 
-void Msg(char* comm){
+static void Msg(char* comm){
     printf("\n== %s\n",comm);
 }
 /*
@@ -82,7 +127,7 @@ valida retorna apenas CondRetOK ou PRI_CondRetInvalido
 /*
 trunca em 50
 */
-PRI_tpCondRet LeString(char** dst, PRI_tpCondRet (*valida)(char* s)){
+static PRI_tpCondRet LeString(char** dst, PRI_tpCondRet (*valida)(char* s)){
     char temp[50];
     PRI_tpCondRet cr;
     scanf(" %s",temp);
@@ -92,7 +137,7 @@ PRI_tpCondRet LeString(char** dst, PRI_tpCondRet (*valida)(char* s)){
     }
     return cr;    
 }
-PRI_tpCondRet LeInt(int* dst, PRI_tpCondRet (*valida)(int t)){
+static PRI_tpCondRet LeInt(int* dst, PRI_tpCondRet (*valida)(int t)){
     int temp;
     PRI_tpCondRet cr;
     scanf(" %d",&temp);

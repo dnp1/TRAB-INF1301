@@ -159,7 +159,7 @@ MEN_tpCondRet MEN_DestruirOpcao(MEN_tppMenus m, int id, char cmd);
 *  $FC Função: MEN  &Criar Opcao
 *
 *  $ED Descrição da função
-*     Destroi o menu de id 'id' em m
+*     Cria a opcao no menu de id 'id' em m, com identificador cmd e associando a callback passada
 *  $EP Parâmetros
 *     m - ponteiro para grafo de menus 
 *     id - identificador do menu em m, unico para m 
@@ -171,13 +171,13 @@ MEN_tpCondRet MEN_DestruirOpcao(MEN_tppMenus m, int id, char cmd);
 * Assertiva de entrada: m não é nulo e as assertivas estruturais valem, id é unico para m, cmd é unico para (id,m), callback != null
 * Assertiva de saida:  m não é nulo e as assertivas estruturais valem
 ***********************************************************************/
-MEN_tpCondRet MEN_CriarOpcao(MEN_tppMenus menus, int idMenu,char cmd, char* nome,MEN_tpCondRet (*callback)(EST_tppEstado e));
+MEN_tpCondRet MEN_CriarOpcao(MEN_tppMenus m, int id,char cmd, char* nome,MEN_tpCondRet (*callback)(EST_tppEstado e));
 /***********************************************************************
 *
 *  $FC Função: MEN  &Get Menu Opcoes
 *
 *  $ED Descrição da função
-*     Destroi o menu de id 'id' em m
+*     Retorna as opcoes de um menu 
 *  $EP Parâmetros
 *     m - ponteiro para grafo de menus 
 *     id - identificador do menu em m, unico para m 
@@ -195,7 +195,7 @@ MEN_tpCondRet MEN_GetMenuOpcoes(MEN_tppMenus m,int id,char** l,int* tam);
 *  $FC Função: MEN  &Get Menu Nome
 *
 *  $ED Descrição da função
-*     Destroi o menu de id 'id' em m
+*     Retorna o nome de um menu 
 *  $EP Parâmetros
 *     m - ponteiro para grafo de menus 
 *     id - identificador do menu em m, unico para m 
@@ -211,7 +211,7 @@ MEN_tpCondRet MEN_GetMenuNome(MEN_tppMenus m,int id, char** nome);
 *  $FC Função: MEN  &Get Opcao Nome
 *
 *  $ED Descrição da função
-*     Destroi o menu de id 'id' em m
+*     Retorna o nome de uma opcao 
 *  $EP Parâmetros
 *     m - ponteiro para grafo de menus 
 *     id - identificador do menu em m, unico para m 

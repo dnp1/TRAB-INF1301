@@ -3,6 +3,7 @@
 #include "GRAFO.h"
 #include "LISTA.h"
 #include <stdlib.h>
+#include <string.h>
 
 
 typedef struct Menus_{
@@ -36,8 +37,9 @@ static void ExcluirMenu(void* menu){
 static MEN_tppOpcao getbycmd(MEN_tppMenus m, int id, char cmd){
    MEN_tppMenu menu;
    GRA_ObterValor(m->grafo,id,(void**)&menu); 
+   LIS_IrInicioLista(menu->opcoes);
    do{
-        MEN_tppOpcao o = LIS_ObterValor(menu->opcoes);
+        MEN_tppOpcao o = (MEN_tppOpcao)LIS_ObterValor(menu->opcoes);
         if(o->cmd == cmd){
             return o;
         }
@@ -77,7 +79,7 @@ void volta(EST_tppEstado e){
    MEN_tppMenus menus;
    MEN_tppMenu atual;
    EST_GetMenus(e,&menus);
-   GRA_ObterValorCorrente(menus->grafo,&atual);
+   GRA_ObterValorCorrente(menus->grafo,(void**)&atual);
    MEN_MudaMenu(menus,atual->pai);
    EST_SetMenus(e,menus);
 }
@@ -129,23 +131,26 @@ MEN_tpCondRet MEN_Callback(MEN_tppMenus m, int id, char cmd, EST_tppEstado e){
 MEN_tpCondRet MEN_GetMenuOpcoes(MEN_tppMenus m,int id,char** l, int* tam){
     int n,x;
     MEN_tppMenu menu;
+	char* l1;
     n = 0;
-    GRA_ObterValor(m->grafo,id,&menu);
+    GRA_ObterValor(m->grafo,id,(void**)&menu);
     x = LIS_NumeroDeElementos(menu->opcoes);
-    char* l1 = malloc(x); 
+    *l = (char*)malloc(x);
+    l1 = (char*)malloc(x); 
+	LIS_IrInicioLista(menu->opcoes);
     do{
-        MEN_tppOpcao o = LIS_ObterValor(menu->opcoes);
+        MEN_tppOpcao o = (MEN_tppOpcao)LIS_ObterValor(menu->opcoes);
         l1[n] = o->cmd;
         n++;
     }
     while(LIS_AvancarElementoCorrente(menu->opcoes,1)==LIS_CondRetOK);
     *tam = n;
-    *l = l1;
+	strcpy(*l,l1);
     return MEN_CondRetOK;
 } 
 MEN_tpCondRet MEN_GetMenuNome(MEN_tppMenus m, int id, char** nome){
     MEN_tppMenu menu;
-    GRA_ObterValor(m->grafo,id,&menu);
+    GRA_ObterValor(m->grafo,id,(void**)&menu);
     *nome = menu->nome;
     return MEN_CondRetOK;
 

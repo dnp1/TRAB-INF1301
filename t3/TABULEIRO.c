@@ -947,7 +947,7 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y , int colisao ) ;
 /*****  Código das funções encapsuladas no módulo  *****/
     
     static int getCasaID ( TAB_tppTabuleiro pTab, int x, int y){
-        return x+(y*pTab->altura);
+        return x+(y*pTab->largura);
     }
     
     static int getArestaHorizontalID ( TAB_tppTabuleiro pTab, int x, int y){

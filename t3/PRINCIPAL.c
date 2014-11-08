@@ -484,10 +484,12 @@ void ApresentaMenu(EST_tppEstado e){
     int i;
     MEN_tppMenus ms;
     EST_GetMenus(e,&ms);
-    EST_GetTabuleiro(e,&t);
-    if(t!=NULL)
+    EST_GetTabuleiro(e,&t);    
+	/*
+	if(t!=NULL)
         TAB_GetNome(t,&tab);
     else
+	*/
         tab = "Nao existe";
     MEN_MenuCorrente(ms,&id);
     MEN_GetMenuOpcoes(ms,id,&opc,&tam);

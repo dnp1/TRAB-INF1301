@@ -195,18 +195,35 @@ void carregar(EST_tppEstado e){
 void carrega(EST_tppEstado e){
     TAB_tppTabuleiro t;
     char* nome;
-	/*
+    char** nomes;
+    int tam;
+    int i;
+	PRI_tpCondRet cr = PRI_CondRetInvalido;
+    Erro("Lendo Diretorio:",TAB_ListaTabuleiros(&nomes, &tam),TAB);
+    for(i=0;i<tam;i++){
+        printf("\t%s",nomes[i]);
+    }
+     
+    
 	do{
         Msg("Digite o nome (menos de 10 caracteres) ou 0 para voltar");
-        Erro("validando:",LeString(&nome,validastring),PRI);
+        Erro("validando (string ok):",LeString(&nome,validastring),PRI);
         if(!strcmp(nome,"0")){
             Msg("cancelando operacao");
              return;
         }
-    }while(!strcmp(nome,""));
-	*/
-	Erro("Carregando tabuleiro",TAB_CarregarTabuleiro(&t,"tabuleiro.txt"),TAB);
-
+    
+        for(i=0;i<tam;i++){
+            if(strcmp(nome,nomes[i])==0) cr = PRI_CondRetOK;
+        }
+        Erro("validando[2] (nome do arquivo ok):",cr,PRI);
+	
+    }while(!strcmp(nome,"") && cr != PRI_CondRetOK);
+	
+    Erro("Carregando tabuleiro",TAB_CarregarTabuleiro(&t,"tabuleiro.txt"),TAB);
+    if(EST_GetTabuleiro(e,&a)==EST_CondRetOK)
+        TAB_DestruirTabuleiro(a);
+    EST_SetTabuleiro(e,t);
 }
 void deleta(EST_tppEstado e){
 //    TAB_Deletar(EST_GetTabuleiro(e));
@@ -376,10 +393,10 @@ void novo_tab(EST_tppEstado e){
              return;
         }
     }while(!strcmp(nome,""));
-    /*
+    
     if(EST_GetTabuleiro(e,&a)==EST_CondRetOK)
         TAB_DestruirTabuleiro(a);
-	*/
+	
     Erro("Criando tabuleiro",TAB_CriarTabuleiro(&a,alt,lar,nome),TAB);
     EST_SetTabuleiro(e,a);
     //Erro("Salvando tabuleiro",TAB_SalvarTabuleiro(a,nome),TAB);

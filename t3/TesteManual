@@ -1,0 +1,86 @@
+Inicie a aplicação como visto no LeiaMe
+Digite 0 <Enter> para sair da aplicação
+Reinicie a aplicação
+Digite 1 <Enter> para entrar no menu de edicao
+Digite 0 <Enter> para voltar ao menu acima
+Digite 0 <Enter> para sair da aplicação
+Reinicie a aplicação
+Digite 1 <Enter> para entrar no menu de edicao
+Digite 2 <Enter> para criar um novo tabuleiro
+Digite 4 <Enter>
+Digite 5 <Enter>
+Digite nome <Enter>
+Voce vai desenhar um mapa
+Digite d <Enter>
+Digite s <Enter>
+Digite 3 <Enter> para inserir um inicio
+Digite d <Enter>
+Digite 2 <Enter> para inserir um chao
+Digite d <Enter>
+Digite 2 <Enter> para inserir um chao
+Digite d <Enter>
+Digite 4 <Enter> para inserir um fim
+Digite 6 <Enter> para jogar
+Agora voce esta jogando
+Digite d <Enter>
+Digite d <Enter>
+Digite d <Enter>
+Digite d <Enter>
+Voce ganhou, jogue novamente
+Digite 1 <Enter>  
+Digite d <Enter>
+Digite a <Enter>
+Digite s <Enter>
+Digite w <Enter>
+Nao é possível se mover para as paredes
+Digite d <Enter>
+Digite d <Enter>
+Digite d <Enter>
+Voce ganhou novamente, jogue de novo
+Digite 1 <Enter>  
+Digite d <Enter>
+Digite d <Enter>
+Digite 0 <Enter>
+Voce saiu do jogo
+Digite 0 <Enter> para subir o menu
+Digite 2 <Enter> para resolver automaticamente
+Digite 2 <Enter> para escolher o labirinto da memoria
+A solucao esta na tela
+Vamos fazer outro mapa
+Digite 0 <Enter>
+Digite 1 <Enter>
+Digite 2 <Enter>
+Digite 8 <Enter>
+Digite 7 <Enter>
+Digite modular <Enter>
+Digite d <Enter>
+Digite d <Enter>
+Digite d <Enter>
+Digite s <Enter>
+Digite s <Enter>
+Digite s <Enter>
+Digite 3 <Enter> para inserir um inicio
+Digite d <Enter>
+Digite d <Enter>
+Digite 3 <Enter> para inserir outro inicio
+Automaticamente o outro inicio do tabuleiro desapareceu
+Vamos tentar jogar
+Digite 6 <Enter> 
+O jogo impediu, pois nao ha um fim
+Voce pode ver: Executando opcao selecionada: ===> Falhou
+Digite d <Enter>
+Digite d <Enter>
+Digite 4 <Enter> para inserir um fim
+Digite 6 <Enter> 
+Digite 0 <Enter>
+Voce saiu do jogo
+Digite 0 <Enter> para subir o menu
+Digite 2 <Enter> para resolver automaticamente
+Digite 2 <Enter> para escolher o labirinto da memoria
+A solucao esta na tela
+==mostrar editar um na memoria
+==mostrar que impede de jogar sem inicio, para nas bordas
+==poe inicio e so sai
+==mostrar jogar da memoria, para nas bordas
+==mostrar salvar
+==mostrar carregar

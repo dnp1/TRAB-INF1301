@@ -18,10 +18,10 @@ tabuleiro:
 	$(CC) $(CFLAGS) -c -x c++ TABULEIRO.c -o TABULEIRO.o
 teste-menu:
 	$(CC) $(CFLAGS) -c -x c++ TESTMEN.c -o TESTMEN.o
-	$(CC) $(CFLAGS) -o teste_tabuleiro.exe -lArcaboucoTeste TESTMEN.o MENU.o GRAFO.o LISTA.o ESTADO.o TABULEIRO.o
+	$(CC) $(CFLAGS) -o teste_menu.exe -lArcaboucoTeste TESTMEN.o MENU.o GRAFO.o LISTA.o ESTADO.o TABULEIRO.o
 teste-tabuleiro:
 	$(CC) $(CFLAGS) -c -x c++ TESTTAB.C -o TESTTAB.o
-	$(CC) $(CFLAGS) -o teste_menu.exe -lArcaboucoTeste TESTTAB.o TABULEIRO.o GRAFO.o LISTA.o 
+	$(CC) $(CFLAGS) -o teste_tabuleiro.exe -lArcaboucoTeste TESTTAB.o TABULEIRO.o GRAFO.o LISTA.o 
 clean:
 	rm *.gch -f
 	rm *.o -f

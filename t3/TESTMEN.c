@@ -65,7 +65,7 @@ LIS_tppLista stringsUsadas = NULL;
 *
 *     Comandos disponíveis:
 *
-*     =resetteste    inxMenu    CondRetEsp   
+*     =resetteste 
 *     =criarmens     inxMenu    CondRetEsp
 *     =criarmen      inxMenu    idMenu         nome    idPai   CondRetEsp
 *     =criaropc      inxMenu    idMenu        cmd   nome CondRetEsp        
@@ -110,7 +110,9 @@ TST_tpCondRet TST_EfetuarComando(char * ComandoTeste) {
 
         if (estaInicializado){
             for(i = 0 ; i < DIM_VT_MENUS ; i++){ //Destroi todos menus
-                MEN_DestruirMenus(vtRefMenus[i]) ;
+               if (vtRefMenus[i] != NULL) {
+                  MEN_DestruirMenus(vtRefMenus[i]) ;
+               }
             }
             LIS_DestruirLista(stringsUsadas);
         }
@@ -119,7 +121,7 @@ TST_tpCondRet TST_EfetuarComando(char * ComandoTeste) {
         }
         stringsUsadas = LIS_CriarLista(free);
         estaInicializado = 1 ;
-
+        return TST_CondRetOK;
       } /* fim ativa: Tratar: inicializar contexto */      
 
 
@@ -139,10 +141,13 @@ TST_tpCondRet TST_EfetuarComando(char * ComandoTeste) {
       /* Testar MEN Destruir menus */
          else if (strcmp(ComandoTeste , DESTRUIR_MENS_CMD) == 0) { 
             NumLidos = LER_LerParametros("ii", &inxMenu, &CondRetEsperada);
-            if(NumLidos != 2 || !VerificarInx(inxMenu)) {
+            if (NumLidos != 2 || !VerificarInx(inxMenu)) {
                return TST_CondRetParm;
             }
             CondRetObtida = MEN_DestruirMenus(vtRefMenus[inxMenu]);
+            if (CondRetObtida == MEN_CondRetOK) {
+               vtRefMenus[inxMenu] = NULL;
+            }
             return TST_CompararInt(CondRetEsperada , CondRetObtida , "Retorno errado ao destruir um TAD 'Menus'.");
          } /* fim ativa: Testar MEN Destruir TAD 'Menus' */
 

@@ -6,8 +6,8 @@
 #include <stdlib.h>
 #include <string.h>
 /*
- *   Tratamento de Erros
- */
+    Tipos internos
+*/
 
 typedef enum{
     PRI,
@@ -15,13 +15,26 @@ typedef enum{
     EST,
     MEN
 } tpmodulo;
+
 typedef enum{
     PRI_CondRetOK,
     PRI_CondRetInvalido,
     PRI_CondRetSemOpcao         
 } PRI_tpCondRet;
 
-void Erro(char* comm, int CondRet,tpmodulo module);
+/*
+    Funcoes presentes
+*/
+
+static void Erro(char* comm, int CondRet,tpmodulo module);
+static void ApresentaMenu(EST_tppEstado e);
+static void ApresentaSolucao(EST_tppEstado e);
+static void ApresentaTabuleiro(EST_tppEstado e);
+/*
+ *   Tratamento de Erros
+ */
+
+
 /*
 void TrataPRI(int CondRet){
     switch(CondRet){
@@ -64,7 +77,7 @@ PRI_tpCondRet LeCmd(EST_tppEstado e){
 }
 
 void Msg(char* comm){
-    printf("== %s\n",comm);
+    printf("\n== %s\n",comm);
 }
 /*
 valida retorna apenas CondRetOK ou PRI_CondRetInvalido
@@ -95,14 +108,14 @@ PRI_tpCondRet LeInt(int* dst, PRI_tpCondRet (*valida)(int t)){
     return cr;    
 }
 void Erro(char* comm, int CondRet,tpmodulo module){
-    printf("\n%s\n",comm);
+    printf("\n%s ===> ",comm);
     if(CondRet == 0)//OK
     {
         printf("OK");
     }
     else
     {    
-	printf("falhou");     
+	printf("Falhou");     
 /*   switch (module){
             case PRI:
                 trataPRI(CondRet);
@@ -115,7 +128,7 @@ void Erro(char* comm, int CondRet,tpmodulo module){
                 break;
         }*/
     }
-	printf("\n");     
+	printf("");     
 }
 /* 
  *    Popula Menus 
@@ -144,18 +157,31 @@ void vaiMenu4(EST_tppEstado e,MEN_tppOpcao opc){
     MEN_MudaMenu(m,4); 
 }
 void joga(EST_tppEstado e,MEN_tppOpcao opc){ 
-    int id;
     MEN_tppMenus m;
     TAB_tppTabuleiro t;
     EST_GetMenus(e,&m);
     EST_GetTabuleiro(e,&t);
     TAB_IrInicio(t);
-    MEN_MenuCorrente(m,&id);
-    printf("antes %d\n",id);
     MEN_MudaMenu(m,JOGO);
-    MEN_MenuCorrente(m,&id);
-    printf("dps %d\n",id);
+}
+void edita(EST_tppEstado e,MEN_tppOpcao opc){ 
+    MEN_tppMenus m;
+    TAB_tppTabuleiro t;
+    EST_GetMenus(e,&m);
+    EST_GetTabuleiro(e,&t);
      
+    if(t==NULL)
+        Msg("Nao existe atual");
+    else
+        MEN_MudaMenu(m,EDITOR);
+}
+static void soluciona(EST_tppEstado e,MEN_tppOpcao opc){ 
+    TAB_tppTabuleiro t;
+    EST_GetTabuleiro(e,&t);
+    if(t==NULL)
+        Msg("Nao existe atual");
+    else
+        ApresentaSolucao(e); 
 }
 /*
 void carregar(EST_tppEstado e,MEN_tppOpcao opc){
@@ -221,9 +247,11 @@ void ChecaVitoria(EST_tppEstado e){
     EST_GetMenus(e,&m);
 	TAB_PosicaoJogador(t,&x,&y);
 	TAB_GetTipoCasa(t,x,y,&casa);
-    if(casa == TAB_tpCasaFim) 
+    if(casa == TAB_tpCasaFim){ 
+        Msg("Voce ganhou!!!");
         MEN_MudaMenu(m,4);
         //4 é o pai de JOGO 
+    }
 }
 void andadirjogador(EST_tppEstado e,MEN_tppOpcao opc){
     TAB_tppTabuleiro t;
@@ -371,6 +399,7 @@ void PopulaMenuEditor(EST_tppEstado e){
     Erro("criando opcao 1 de Editor", MEN_CriarOpcao(m,idMenu,'1',"Carregar",carrega),MEN) ;
     Erro("criando opcao 2 de Editor", MEN_CriarOpcao(m,2,'2',"Novo",novo_tab),MEN);
     Erro("criando opcao 3 de Editor", MEN_CriarOpcao(m,idMenu,'3',"Deletar",deleta),MEN);
+    Erro("criando opcao 4 de Editor", MEN_CriarOpcao(m,idMenu,'4',"Editar atual",edita),MEN) ;
 }
 void PopulaMenuResolvedor(EST_tppEstado e){
     int idMenu = 3;
@@ -379,7 +408,8 @@ void PopulaMenuResolvedor(EST_tppEstado e){
     EST_GetMenus(e,&m);
     Erro("criando menu Resolvedor", MEN_CriarMenu(m,idMenu,"Resolvedor",idPai),MEN);
 
-    Erro("criando opcao 1 de Resolvedor", MEN_CriarOpcao(m,idMenu,'1',"Carregar",carrega),MEN) ;
+    Erro("criando opcao 1 de Resolvedor", MEN_CriarOpcao(m,idMenu,'1',"Carregar",carrega),MEN);
+    Erro("criando opcao 2 de Resolvedor", MEN_CriarOpcao(m,idMenu,'2',"Solucionar atual",soluciona),MEN) ;
 }
 void PopulaMenuJogar(EST_tppEstado e){
     int idMenu = 4;
@@ -447,14 +477,21 @@ void ApresentaMenu(EST_tppEstado e){
     int id;
     char* nome;
     char* nomeopc;
+    char* tab;
+    TAB_tppTabuleiro t;
     LIS_tppLista opc;
     MEN_tppMenus ms;
     EST_GetMenus(e,&ms);
+    EST_GetTabuleiro(e,&t);
+    if(t!=NULL)
+        TAB_GetNome(t,&tab);
+    else
+        tab = "Nao existe";
     MEN_MenuCorrente(ms,&id);
     MEN_GetMenuOpcoes(ms,id,&opc);
     MEN_GetMenuNome(ms,id,&nome);
     printf("\n###############\n#  Labirinto  #\n###############");
-    printf("\n %s\n--------------",nome);
+    printf("\nmenu: %s\nlabirinto atual: %s\n------------",nome,tab);
     printf("\nDigite:\n\n");
     LIS_IrInicioLista(opc);
     do
@@ -476,14 +513,11 @@ void ApresentaMenu(EST_tppEstado e){
 void ApresentaTabuleiro(EST_tppEstado e){
 	TAB_tppTabuleiro Tabuleiro; 
 	int a,l,i,j,jx,jy;
-    char* nome;
     TAB_tpCasa casa;
     EST_GetTabuleiro(e,&Tabuleiro);
 	TAB_GetAltura(Tabuleiro,&a);
 	TAB_GetLargura(Tabuleiro,&l);
-    TAB_GetNome(Tabuleiro,&nome);
 	TAB_PosicaoJogador(Tabuleiro,&jx,&jy);
-	printf("Nome do Tabuleiro: %s\n",nome);
     for(i=0;i<a;i++){
 	    for(j=0;j<l;j++){
 	       TAB_GetTipoCasa(Tabuleiro,j,i,&casa);

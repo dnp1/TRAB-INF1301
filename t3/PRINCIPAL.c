@@ -509,9 +509,9 @@ static void PopulaMenuJogo(EST_tppEstado e){
 }
 static PRI_tpCondRet PopulaMenus(EST_tppEstado e){
     MEN_tppMenus menus;
-    if(MEN_CriarMenus(&menus)!=CondRetOK){
-        EST_DestroiEstado(e);
-        return PRI_CondRetFaltouMemoria;
+    if(MEN_CriarMenus(&menus)!=MEN_CondRetOK){
+        EST_DestruirEstado(e);
+        return PRI_CondRetInvalido;
     }
     EST_SetMenus(e,menus);
     PopulaMenuInicio(e);
@@ -538,7 +538,7 @@ static void ApresentaMenu(EST_tppEstado e){
     int i;
     MEN_tppMenus ms;
     EST_GetMenus(e,&ms);
-    if(EST_GetTabuleiro(e,&t)!EST_CondRetOK)    
+    if(EST_GetTabuleiro(e,&t)!=EST_CondRetOK)    
         TAB_GetNome(t,&tab);
     else
         tab = "Nao existe";

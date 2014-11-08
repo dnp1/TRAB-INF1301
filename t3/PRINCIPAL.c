@@ -25,9 +25,11 @@ typedef enum{
 /*
     Funcoes presentes
 */
-//Output
+//==Output
+//erros
 static void Erro(char* comm, int CondRet,tpmodulo module);
 static void Msg(char* comm);
+//estado
 static void ApresentaMenu(EST_tppEstado e);
 static void ApresentaSolucao(EST_tppEstado e);
 static void ApresentaTabuleiro(EST_tppEstado e);
@@ -38,7 +40,7 @@ static PRI_tpCondRet validaint(int n);
 static PRI_tpCondRet LeCmd(EST_tppEstado e);
 static PRI_tpCondRet LeString(char** dst, PRI_tpCondRet (*valida)(char* s));
 static PRI_tpCondRet LeInt(int* dst, PRI_tpCondRet (*valida)(int t));
-//callbacks
+//==callbacks
 //movimentacao
 static MEN_tpCondRet vaiMenu1(EST_tppEstado e); 
 static MEN_tpCondRet vaiMenu2(EST_tppEstado e); 
@@ -67,7 +69,7 @@ static MEN_tpCondRet andadirjogador(EST_tppEstado e);
 static MEN_tpCondRet andaesqjogador(EST_tppEstado e);
 static MEN_tpCondRet andabaixojogador(EST_tppEstado e);
 static MEN_tpCondRet andacimajogador(EST_tppEstado e);
-//inicialização
+//==inicialização
 static void PopulaMenuInicio(EST_tppEstado e);
 static void PopulaMenuEditor(EST_tppEstado e);
 static void PopulaMenuResolvedor(EST_tppEstado e);

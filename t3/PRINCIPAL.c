@@ -180,22 +180,9 @@ static MEN_tpCondRet soluciona(EST_tppEstado e){
         ApresentaSolucao(e); 
     }
 }
-/*
-void carregar(EST_tppEstado e){
-
-    TAB le o dir
-        p cada arquivo,i 
-        char nome[10];
-    TAB le o nome
-*
-        Erro("Lendo diretorio...", MEN_CriarOpcao(EST_GetMenus(e),idCarrega,to_char(i),nome,carrega),MEN) ;
-    vaiMenuidCarrega(e);
-
-}
-*/
 static MEN_tpCondRet carrega(EST_tppEstado e){
     TAB_tppTabuleiro t,a;
-    char* nome;
+    char* nome = malloc(sizeof(char)*10);
     char** nomes;
     int tam;
     int i;
@@ -267,7 +254,7 @@ static MEN_tpCondRet andacimaeditor(EST_tppEstado e){
 *   Checa Vitoria
 *   verifica se o usuário, durante o jogo, solucionou o labirinto. Caso afirmativo,retorna para o menu acima. 
 */
-void ChecaVitoria(EST_tppEstado e){  
+static void ChecaVitoria(EST_tppEstado e){  
     TAB_tppTabuleiro t;
     MEN_tppMenus m;
     int x,y;
@@ -336,16 +323,8 @@ static MEN_tpCondRet poeparede(EST_tppEstado e){
     EST_GetTabuleiro(e,&t);
     TAB_PoeParede(t);
 }
-/*
-   Tres tipos de retorno: 
-   no inicial, que termina o programa
-   em um generico, volta para o menu acima
-   os que exibem tabuleiro(jogo e editor), que precisam limpar o tabuleiro antes de voltar
-    Mudar para nao usar GRAxxx
 
- */
-
-PRI_tpCondRet validastring(char* s){
+static PRI_tpCondRet validastring(char* s){
     if(strlen(s)<10){
         if(strcmp(s,"")){
             return PRI_CondRetOK;
@@ -358,7 +337,7 @@ PRI_tpCondRet validastring(char* s){
         return PRI_CondRetInvalido;
     }
 }
-PRI_tpCondRet validaint(int n){
+static PRI_tpCondRet validaint(int n){
     if(n>=0 && n<11) 
         return PRI_CondRetOK;
     else 
@@ -402,13 +381,12 @@ static MEN_tpCondRet novo_tab(EST_tppEstado e){
 	
     Erro("Criando tabuleiro",TAB_CriarTabuleiro(&a,alt,lar,nome),TAB);
     EST_SetTabuleiro(e,a);
-    //Erro("Salvando tabuleiro",TAB_SalvarTabuleiro(a,nome),TAB);
     
     EST_GetMenus(e,&m);
     MEN_MudaMenu(m,EDITOR); 
 }
 
-void PopulaMenuInicio(EST_tppEstado e){
+static void PopulaMenuInicio(EST_tppEstado e){
     int idMenu = 1;
     int idPai = 0;
     MEN_tppMenus m;
@@ -420,7 +398,7 @@ void PopulaMenuInicio(EST_tppEstado e){
     Erro("criando opcao 3 de Inicio", MEN_CriarOpcao(m,idMenu,'3',"Jogar",vaiMenu4),MEN);
 }
 
-void PopulaMenuEditor(EST_tppEstado e){
+static void PopulaMenuEditor(EST_tppEstado e){
     int idMenu = 2;
     int idPai = 1;
     MEN_tppMenus m;
@@ -432,7 +410,7 @@ void PopulaMenuEditor(EST_tppEstado e){
     Erro("criando opcao 3 de Editor", MEN_CriarOpcao(m,idMenu,'3',"Deletar",deleta),MEN);
     Erro("criando opcao 4 de Editor", MEN_CriarOpcao(m,idMenu,'4',"Editar atual",edita),MEN) ;
 }
-void PopulaMenuResolvedor(EST_tppEstado e){
+static void PopulaMenuResolvedor(EST_tppEstado e){
     int idMenu = 3;
     int idPai = 1;
     MEN_tppMenus m;
@@ -442,7 +420,7 @@ void PopulaMenuResolvedor(EST_tppEstado e){
     Erro("criando opcao 1 de Resolvedor", MEN_CriarOpcao(m,idMenu,'1',"Carregar",carrega),MEN);
     Erro("criando opcao 2 de Resolvedor", MEN_CriarOpcao(m,idMenu,'2',"Solucionar atual",soluciona),MEN) ;
 }
-void PopulaMenuJogar(EST_tppEstado e){
+static void PopulaMenuJogar(EST_tppEstado e){
     int idMenu = 4;
     int idPai = 1;
     MEN_tppMenus m;
@@ -452,7 +430,7 @@ void PopulaMenuJogar(EST_tppEstado e){
     Erro("criando opcao 1 de Jogar", MEN_CriarOpcao(m,idMenu,'1',"Jogar atual",joga),MEN) ;
     Erro("criando opcao 2 de Jogar", MEN_CriarOpcao(m,idMenu,'2',"Carregar",carrega),MEN) ;
 }
-void PopulaMenuEdicao(EST_tppEstado e){
+static void PopulaMenuEdicao(EST_tppEstado e){
     int idMenu = EDITOR;
     int idPai = 2;
     MEN_tppMenus m;
@@ -470,7 +448,7 @@ void PopulaMenuEdicao(EST_tppEstado e){
     Erro("criando opcao 9 de Edicao", MEN_CriarOpcao(m,idMenu,'5',"salvar",salva),MEN) ;
     Erro("criando opcao 10 de Edicao", MEN_CriarOpcao(m,idMenu,'6',"jogar",joga),MEN) ;
 }
-void PopulaMenuJogo(EST_tppEstado e){
+static void PopulaMenuJogo(EST_tppEstado e){
     int idMenu = JOGO;
     int idPai = 4;
     MEN_tppMenus m;
@@ -482,11 +460,12 @@ void PopulaMenuJogo(EST_tppEstado e){
     Erro("criando opcao 3 de Jogo", MEN_CriarOpcao(m,idMenu,'a',"andar para esquerda",andaesqjogador),MEN) ;
     Erro("criando opcao 4 de Jogo", MEN_CriarOpcao(m,idMenu,'d',"andar para direita",andadirjogador),MEN) ;
 }
-//housekeeping
-//tpCondRet
-PRI_tpCondRet PopulaMenus(EST_tppEstado e){
+static PRI_tpCondRet PopulaMenus(EST_tppEstado e){
     MEN_tppMenus menus;
-    MEN_CriarMenus(&menus);
+    if(MEN_CriarMenus(&menus)!=CondRetOK){
+        EST_DestroiEstado(e);
+        return PRI_CondRetFaltouMemoria;
+    }
     EST_SetMenus(e,menus);
     PopulaMenuInicio(e);
     PopulaMenuEditor(e);
@@ -496,14 +475,11 @@ PRI_tpCondRet PopulaMenus(EST_tppEstado e){
     PopulaMenuJogo(e);
     return PRI_CondRetOK;
 }
-/*
- *   Apresenta Dados para o usuario
- */
 
 /*
    Apresenta o Menu corrente
  */
-void ApresentaMenu(EST_tppEstado e){
+static void ApresentaMenu(EST_tppEstado e){
     char cmd;
     int id;
     char* nome;
@@ -515,12 +491,9 @@ void ApresentaMenu(EST_tppEstado e){
     int i;
     MEN_tppMenus ms;
     EST_GetMenus(e,&ms);
-    EST_GetTabuleiro(e,&t);    
-	/*
-	if(t!=NULL)
+    if(EST_GetTabuleiro(e,&t)!EST_CondRetOK)    
         TAB_GetNome(t,&tab);
     else
-	*/
         tab = "Nao existe";
     MEN_MenuCorrente(ms,&id);
     MEN_GetMenuOpcoes(ms,id,&opc,&tam);
@@ -539,7 +512,7 @@ void ApresentaMenu(EST_tppEstado e){
 }
 
 
-void ApresentaTabuleiro(EST_tppEstado e){
+static void ApresentaTabuleiro(EST_tppEstado e){
 	TAB_tppTabuleiro Tabuleiro; 
 	int a,l,i,j,jx,jy;
     TAB_tpCasa casa;
@@ -555,7 +528,6 @@ void ApresentaTabuleiro(EST_tppEstado e){
                    printf("O");    
                }
                else{
-		       //printf("%d",casa);
                
                if(casa==TAB_tpCasaInicio) printf("I"); 
 		       else if(casa==TAB_tpCasaFim) printf("F"); 
@@ -568,7 +540,7 @@ void ApresentaTabuleiro(EST_tppEstado e){
 	}
 }
 
-void ApresentaSolucao(EST_tppEstado e){
+static void ApresentaSolucao(EST_tppEstado e){
     int * solucao;
     int tam;
     int i;

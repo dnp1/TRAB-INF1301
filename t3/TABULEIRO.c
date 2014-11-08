@@ -395,7 +395,7 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y , int colisao ) ;
 *  ****/
     
     TAB_tpCondRet TAB_GetNome (TAB_tppTabuleiro pTab, char** nome){
-        *nome = pTab->nome;
+		*nome = pTab->nome;
         return TAB_CondRetOK;
     }
 
@@ -739,15 +739,20 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y , int colisao ) ;
 *  ****/  
 
     TAB_tpCondRet TAB_SalvarTabuleiro(TAB_tppTabuleiro pTab, char* path){
-        int idVisitado, i;
+        int idVisitado, idCorrente, i;
         int* visitados,* idOrigem,* idProx,* vizinho;
+		char* pathTemp;
         FILE* saida;
         Casa* casaVizinho,* casaCorrente;
         LIS_tppLista fila = NULL;
         LIS_tppLista origens = NULL;
         LIS_tppLista vizinhos = NULL;
 
-        saida = fopen(path,"w");
+		GRA_ObterIDCorrente(pTab->pGrafo,&idCorrente);
+
+		pathTemp = (char*)malloc(sizeof(path));
+		strcpy(pathTemp,path);
+        saida = fopen(strcat(pathTemp,".txt"),"w");
         fprintf(saida,"%d\n%d\n%s",pTab->largura,pTab->altura,pTab->nome);
 
         // vetor de inteiros usado como flag
@@ -802,25 +807,25 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y , int colisao ) ;
                GRA_ObterVizinhosCorrente(pTab->pGrafo,&vizinhos);
                LIS_IrInicioLista(vizinhos);
                 
-               
-               do{// preenche a fila com os vizinhos
+				   if(LIS_NumeroDeElementos(vizinhos) > 0){
+				   do{// preenche a fila com os vizinhos
 
-                   vizinho = (int*)LIS_ObterValor(vizinhos);
-                   // vizinho ja foi visitado ?
-                   if(visitados[*vizinho] != -2){
-                       GRA_ObterValor(pTab->pGrafo,*vizinho,(void**)&casaVizinho);
+					   vizinho = (int*)LIS_ObterValor(vizinhos);
+					   // vizinho ja foi visitado ?
+					   if(visitados[*vizinho] != -2){
+						   GRA_ObterValor(pTab->pGrafo,*vizinho,(void**)&casaVizinho);
                        
-                       // Escreve vizinho no arquivo
-                       fprintf(saida,"\n%d %d %d",casaVizinho->x,casaVizinho->y,casaVizinho->tipo);
+						   // Escreve vizinho no arquivo
+						   fprintf(saida,"\n%d %d %d",casaVizinho->x,casaVizinho->y,casaVizinho->tipo);
 
-                       // vizinho foi visitado
-                       LIS_InserirElementoApos(fila,vizinho);
-                       visitados[*vizinho] = -2;
-                   }
-                   else continue;
+						   // vizinho foi visitado
+						   LIS_InserirElementoApos(fila,vizinho);
+						   visitados[*vizinho] = -2;
+					   }
+					   else continue;
 
-               }while(LIS_AvancarElementoCorrente(vizinhos,1) == LIS_CondRetOK);
-
+				   }while(LIS_AvancarElementoCorrente(vizinhos,1) == LIS_CondRetOK);
+			   }	
                // Retira o elemento da fila - vertice ja foi visitado
                LIS_IrInicioLista(fila);
                LIS_ExcluirElemento(fila);
@@ -836,6 +841,7 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y , int colisao ) ;
         }while(LIS_AvancarElementoCorrente(origens,1) == LIS_CondRetOK);
 
         fclose(saida);
+		GRA_MudarCorrente(pTab->pGrafo,idCorrente);
         return TAB_CondRetOK;
     }
 

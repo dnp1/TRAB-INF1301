@@ -708,5 +708,28 @@ typedef struct TAB_tpTabuleiro_* TAB_tppTabuleiro ;
 *
 ***********************************************************************/
 
-    TAB_tpCondRet TAB_IrInicio ( TAB_tppTabuleiro pTab) ;        
+    TAB_tpCondRet TAB_IrInicio ( TAB_tppTabuleiro pTab) ;    
+    
+/***********************************************************************
+*
+*  $FC Função: TAB  &Lista Tabuleiros
+*
+*  $ED Descrição da função
+*     Lista todos os arquivos do diretorio corrente com a extensão .tab	
+*  $EP Parâmetros
+*     pTabuleiros - ponteiro o vetor de strings; cada string representa um arquivo valido encontrado
+*     pTam	- ponteiro para o inteiro que representa a quantidade de arquivos achados
+*
+*  $FV Valor retornado
+*     TAB_CondRetOK - O tabuleiro é válido;
+*
+*  Assertivas de Entrada: 
+*      pTab != NULL
+*
+*  Assertivas de Saida: 
+*      pTab != NULL
+*
+***********************************************************************/
+
+    TAB_tpCondRet TAB_ListaTabuleiros ( char*** tabuleiros, int* tam ) ;  
 #endif

@@ -46,7 +46,7 @@ static MEN_tppOpcao getbycmd(MEN_tppMenus m, int id, char cmd){
    }
    while(LIS_AvancarElementoCorrente(menu->opcoes,1)==LIS_CondRetOK);
 }
-
+//Externas
 MEN_tpCondRet MEN_DestruirOpcao(MEN_tppMenus m, int idMenu, char cmd){
    MEN_tppMenu menu;
    GRA_ObterValor(m->grafo,idMenu,(void**)&menu); 

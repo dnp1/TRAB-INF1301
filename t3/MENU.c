@@ -1,3 +1,21 @@
+/***************************************************************************
+*  $MCI Módulo de implementação: MEN  Menus
+*
+*  Arquivo gerado:              MENU.c
+*  Letras identificadoras:      MEN
+*
+*  Nome da base de software:    Arcabouço para a automação de testes de programas redigidos em C
+*  Arquivo da base de software: D:\AUTOTEST\PROJETOS\MENU.BSW
+*
+*  Projeto: INF 1301 / Labirinto
+*  Gestor:  LSKDANEAV
+*  Autores: lsk
+*
+*  $HA Histórico de evolução:
+*     Versão  Autor    Data     Observações
+*		 1	   lsk	 20/10/2014		//
+*
+***************************************************************************/
 #include "MENU.h"
 #include "ESTADO.h"
 #include "GRAFO.h"
@@ -105,7 +123,7 @@
 
 /***********************************************************************
 *
-*  $FC Função: MEN getbycmd
+*  $FC Função: MEN volta
 *
 *  $ED Descrição da Função
 *      Volta Menu para seu pai(nível acima)
@@ -337,3 +355,4 @@
         GRA_MudarCorrente(menus->grafo,id);
         return MEN_CondRetOK;
     }
+/********** Fim do módulo de implementação: MEN Menu **********/

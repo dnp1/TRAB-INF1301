@@ -20,6 +20,7 @@
 #include    <stdio.h>
 #include    <stdlib.h>
 #include    <malloc.h>
+#include    <io.h>
 
 #define TABULEIRO_OWN
 #include "TABULEIRO.h"
@@ -945,8 +946,40 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y , int colisao ) ;
 *  Função: TAB  &Ir inicio
 *  ****/  
     TAB_tpCondRet TAB_IrInicio ( TAB_tppTabuleiro pTab){
-        GRA_MudarCorrente(pTab->pGrafo,temp);
+        int idInicio;
+        idInicio = TemInicio(pTab);
+
+        GRA_MudarCorrente(pTab->pGrafo,idInicio);
         return TAB_CondRetOK;
+    }
+               
+/***************************************************************************
+*
+*  Função: TAB  &Lista tabuleiros
+*  ****/  
+    TAB_tpCondRet TAB_ListaTabuleiros ( char*** tabuleiros, int* tam ){
+        struct _finddata_t txt_file;
+        long hFile;
+
+        /* Find first .txt file in current directory */
+        if( (hFile = _findfirst( "*.txt", &txt_file )) == -1L )
+           printf( "No *.txt files in current directory!\n" );
+        else
+        {
+            printf( "Listing of .txt files\n\n" );
+            printf( "\nFILE\n", ' ' );
+            printf( " %25c \n", ' ' );
+
+            printf( " %-12s\n", txt_file.name );
+
+            /* Find the rest of the .txt files */
+            while( _findnext( hFile, &txt_file ) == 0 )
+            {
+                printf( " %-12s \n", txt_file.name );
+            }
+
+           _findclose( hFile );
+       }
     }
             
 /*****  Código das funções encapsuladas no módulo  *****/

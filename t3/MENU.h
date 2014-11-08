@@ -37,8 +37,6 @@
 
 /* Tipo referência para um grafo de Menus */
 typedef struct Menus_ * MEN_tppMenus;
-/* Tipo referência para uma Opção de um Menu */
-typedef struct Opcao_ * MEN_tppOpcao; 
 
 /***********************************************************************
 *

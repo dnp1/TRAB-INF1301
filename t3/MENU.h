@@ -37,8 +37,6 @@
 
 /* Tipo referência para um grafo de Menus */
 typedef struct Menus_ * MEN_tppMenus;
-/* Tipo referência para um Menu */
-typedef struct Menu_ * MEN_tppMenu;
 /* Tipo referência para uma Opção de um Menu */
 typedef struct Opcao_ * MEN_tppOpcao; 
 
@@ -145,9 +143,8 @@ MEN_tpCondRet MEN_CriarOpcao(MEN_tppMenus menus, int idMenu,char cmd, char* nome
 
 MEN_tpCondRet MEN_GetMenuOpcoes(MEN_tppMenus m,int id,LIS_tppLista* l); 
 MEN_tpCondRet MEN_GetMenuNome(MEN_tppMenus m,int id, char** nome);
-MEN_tpCondRet MEN_GetOpcaoCmd(MEN_tppOpcao o, char* cmd);
-MEN_tpCondRet MEN_GetOpcaoNome(MEN_tppOpcao o, char** nome);
-MEN_tpCondRet MEN_Callback(MEN_tppOpcao o, EST_tppEstado e);
+MEN_tpCondRet MEN_GetOpcaoNome(MEN_tppMenus m, int id, char cmd, char** nome);
+MEN_tpCondRet MEN_Callback(MEN_tppMenus m, int id, char cmd, EST_tppEstado e);
 MEN_tpCondRet MEN_MudaMenu(MEN_tppMenus m, int id);
 MEN_tpCondRet MEN_MenuInicial(MEN_tppMenus men);
 MEN_tpCondRet MEN_MenuCorrente(MEN_tppMenus e, int* id);

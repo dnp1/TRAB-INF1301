@@ -156,7 +156,7 @@ MEN_tpCondRet MEN_DestruirMenu(MEN_tppMenus m, int id);
 MEN_tpCondRet MEN_DestruirOpcao(MEN_tppMenus m, int id, char cmd);
 /***********************************************************************
 *
-*  $FC Função: MEN  &Destruir Menu
+*  $FC Função: MEN  &Criar Opcao
 *
 *  $ED Descrição da função
 *     Destroi o menu de id 'id' em m
@@ -174,7 +174,7 @@ MEN_tpCondRet MEN_DestruirOpcao(MEN_tppMenus m, int id, char cmd);
 MEN_tpCondRet MEN_CriarOpcao(MEN_tppMenus menus, int idMenu,char cmd, char* nome,MEN_tpCondRet (*callback)(EST_tppEstado e));
 /***********************************************************************
 *
-*  $FC Função: MEN  &Destruir Menu
+*  $FC Função: MEN  &Get Menu Opcoes
 *
 *  $ED Descrição da função
 *     Destroi o menu de id 'id' em m
@@ -192,7 +192,7 @@ MEN_tpCondRet MEN_CriarOpcao(MEN_tppMenus menus, int idMenu,char cmd, char* nome
 MEN_tpCondRet MEN_GetMenuOpcoes(MEN_tppMenus m,int id,char** l,int* tam); 
 /***********************************************************************
 *
-*  $FC Função: MEN  &Destruir Menu
+*  $FC Função: MEN  &Get Menu Nome
 *
 *  $ED Descrição da função
 *     Destroi o menu de id 'id' em m
@@ -208,7 +208,7 @@ MEN_tpCondRet MEN_GetMenuOpcoes(MEN_tppMenus m,int id,char** l,int* tam);
 MEN_tpCondRet MEN_GetMenuNome(MEN_tppMenus m,int id, char** nome);
 /***********************************************************************
 *
-*  $FC Função: MEN  &Destruir Menu
+*  $FC Função: MEN  &Get Opcao Nome
 *
 *  $ED Descrição da função
 *     Destroi o menu de id 'id' em m
@@ -225,7 +225,7 @@ MEN_tpCondRet MEN_GetMenuNome(MEN_tppMenus m,int id, char** nome);
 MEN_tpCondRet MEN_GetOpcaoNome(MEN_tppMenus m, int id, char cmd, char** nome);
 /***********************************************************************
 *
-*  $FC Função: MEN  &Destruir Menu
+*  $FC Função: MEN  &Callback
 *
 *  $ED Descrição da função
 *     Chama a Callback associada à opção correspondente à cmd, no menu de id id, em m.

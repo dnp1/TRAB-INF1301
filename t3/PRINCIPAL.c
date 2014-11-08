@@ -29,6 +29,7 @@ static void Erro(char* comm, int CondRet,tpmodulo module);
 static void ApresentaMenu(EST_tppEstado e);
 static void ApresentaSolucao(EST_tppEstado e);
 static void ApresentaTabuleiro(EST_tppEstado e);
+PRI_tpCondRet validastring(char* s);
 /*
  *   Tratamento de Erros
  */
@@ -192,9 +193,20 @@ void carregar(EST_tppEstado e){
 }
 */
 void carrega(EST_tppEstado e){
-    //EST_AlterarTabuleiro(e,TAB_CriarTabuleiro()); 
-    //if(e != NULL)
-    //    TAB_carrega(MEN_GetNomeOpcao(opc));    
+    TAB_tppTabuleiro t;
+    char* nome;
+	/*
+	do{
+        Msg("Digite o nome (menos de 10 caracteres) ou 0 para voltar");
+        Erro("validando:",LeString(&nome,validastring),PRI);
+        if(!strcmp(nome,"0")){
+            Msg("cancelando operacao");
+             return;
+        }
+    }while(!strcmp(nome,""));
+	*/
+	Erro("Carregando tabuleiro",TAB_CarregarTabuleiro(&t,"catatau.txt"),TAB);
+
 }
 void deleta(EST_tppEstado e){
 //    TAB_Deletar(EST_GetTabuleiro(e));

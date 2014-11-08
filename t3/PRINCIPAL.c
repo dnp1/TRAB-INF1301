@@ -59,7 +59,7 @@ PRI_tpCondRet LeCmd(EST_tppEstado e){
     EST_GetMenus(e,&ms);
     MEN_MenuCorrente(ms,&id);
     MEN_GetMenuOpcoes(ms,id,&opcoes,&tam);
-    for(i=0;i,tam;i++){
+    for(i=0;i<tam;i++){
         if(opcoes[i] == c){
             Erro("Executando opcao selecionada:",MEN_Callback(ms,id,c,e),MEN);
             return PRI_CondRetOK;

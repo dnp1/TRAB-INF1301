@@ -126,7 +126,7 @@ MEN_tpCondRet MEN_Callback(MEN_tppMenus m, int id, char cmd, EST_tppEstado e){
     return o->callback(e);
 }
 
-MEN_tpCondRet MEN_GetMenuOpcoes(MEN_tppMenus m,int id,char* l, int* tam){
+MEN_tpCondRet MEN_GetMenuOpcoes(MEN_tppMenus m,int id,char** l, int* tam){
     int n,x;
     MEN_tppMenu menu;
     n = 0;

@@ -1,6 +1,6 @@
 
 CC=gcc
-CFLAGS=-I. -L. -O0 -g -fpermissive #-fdiagnostics-color="always"
+CFLAGS=-I. -L. -O0 -g -fpermissive -Wno-write-strings #-fdiagnostics-color="always"
 
 all: lista grafo menu tabuleiro estado principal teste-tabuleiro teste-menu
 estado:

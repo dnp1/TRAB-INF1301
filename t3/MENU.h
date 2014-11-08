@@ -139,7 +139,7 @@ MEN_tpCondRet MEN_DestruirOpcao(MEN_tppMenus m, int idMenu, char cmd);
 MEN_tpCondRet MEN_CriarOpcao(MEN_tppMenus menus, int idMenu,char cmd, char* nome,MEN_tpCondRet (*callback)(EST_tppEstado e));
 
 
-MEN_tpCondRet MEN_GetMenuOpcoes(MEN_tppMenus m,int id,LIS_tppLista* l); 
+MEN_tpCondRet MEN_GetMenuOpcoes(MEN_tppMenus m,int id,char* l,int* tam); 
 MEN_tpCondRet MEN_GetMenuNome(MEN_tppMenus m,int id, char** nome);
 MEN_tpCondRet MEN_GetOpcaoNome(MEN_tppMenus m, int id, char cmd, char** nome);
 MEN_tpCondRet MEN_Callback(MEN_tppMenus m, int id, char cmd, EST_tppEstado e);

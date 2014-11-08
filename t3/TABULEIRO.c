@@ -945,7 +945,7 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y , int colisao ) ;
 *  Função: TAB  &Ir inicio
 *  ****/  
     TAB_tpCondRet TAB_IrInicio ( TAB_tppTabuleiro pTab){
-        GRA_MudarCorrente(pTab->pGrafo,temp);
+        GRA_MudarCorrente(pTab->pGrafo,TemInicio(pTab));
         return TAB_CondRetOK;
     }
             

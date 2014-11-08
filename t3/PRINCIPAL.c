@@ -256,8 +256,8 @@ static MEN_tpCondRet carrega(EST_tppEstado e){
     }while(!strcmp(nome,"") && cr != PRI_CondRetOK);
 	
     Erro("Carregando tabuleiro",TAB_CarregarTabuleiro(&t,nome),TAB);
-    if(EST_GetTabuleiro(e,&a)==EST_CondRetOK)
-        TAB_DestruirTabuleiro(a);
+    //if(EST_GetTabuleiro(e,&a)==EST_CondRetOK)
+    //    TAB_DestruirTabuleiro(a);
     EST_SetTabuleiro(e,t);
 }
 static MEN_tpCondRet deleta(EST_tppEstado e){
@@ -423,8 +423,8 @@ static MEN_tpCondRet novo_tab(EST_tppEstado e){
         }
     }while(!strcmp(nome,""));
     
-    if(EST_GetTabuleiro(e,&a)==EST_CondRetOK)
-        TAB_DestruirTabuleiro(a);
+    //if(EST_GetTabuleiro(e,&a)==EST_CondRetOK)
+    //    TAB_DestruirTabuleiro(a);
 	
     Erro("Criando tabuleiro",TAB_CriarTabuleiro(&a,alt,lar,nome),TAB);
     EST_SetTabuleiro(e,a);

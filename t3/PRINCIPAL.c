@@ -202,7 +202,7 @@ static MEN_tpCondRet joga(EST_tppEstado e){
     MEN_tppMenus m;
     TAB_tppTabuleiro t;
     EST_GetMenus(e,&m);
-    if(EST_GetTabuleiro(e,&t)!=EST_CondRetOK) return MEN_CondRetFaltouMemoria;
+    if(EST_GetTabuleiro(e,&t)==EST_CondRetOK) return MEN_CondRetFaltouMemoria;
     if(TAB_ValidarTabuleiro(t)!=TAB_CondRetOK)  return MEN_CondRetFaltouMemoria;
     TAB_IrInicio(t);
     MEN_MudaMenu(m,JOGO);

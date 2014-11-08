@@ -34,16 +34,13 @@ static const char CRIAR_OPC_CMD         [] = "=criaropc"       ;
 static const char DESTRUIR_MEN_CMD      [] = "=destruirmen"    ;
 static const char DESTRUIR_MENS_CMD     [] = "=destruirmens"   ;
 static const char DESTRUIR_OPC_CMD      [] = "=destruiropc"    ;
-static const char GET_MENU_CMD          [] = "=getmenu"        ;
-static const char GET_MENUOPC_CMD       [] = "=getopc"         ;
-static const char GET_MENUNOME_CMD      [] = "=getnome"        ;
-static const char GET_OPCCMD_CMD        [] = "=getcmd"         ;
-static const char GET_OPCNOME_CMD       [] = "=getnomeopc"     ;
+static const char GET_MENUOPCS_CMD      [] = "=getmenuopcs"        ;
+static const char GET_MENUNOME_CMD      [] = "=getmenunome"        ;
+static const char GET_OPCNOME_CMD       [] = "=getopcnome"     ;
 static const char CALLBACK_CMD          [] = "=call"           ;
 static const char MUDAMEN_CMD           [] = "=mudamenu"       ;
 static const char INICIAL_CMD           [] = "=inicial"        ;
 static const char CORRENTE_CMD          [] = "=corrente"       ;
-static const char MUDA_ULTIMO_CMD       [] = "=mudaultimo"     ;
 
 
 #define DIM_VT_MENUS   10
@@ -56,7 +53,7 @@ LIS_tppLista stringsUsadas = NULL;
 
     static int VerificarInx( int inxMenu );
     static char* newString(char str[STR_LEN]);
-    MEN_tpCondRet CallBackTeste(EST_tppEstado e,MEN_tppOpcao o);
+    MEN_tpCondRet CallBackTeste(EST_tppEstado e);
 
 /*****  Código das funções exportadas pelo módulo  *****/
 
@@ -73,17 +70,15 @@ LIS_tppLista stringsUsadas = NULL;
 *     =criarmen      inxMenu    idMenu         nome    idPai   CondRetEsp
 *     =criaropc      inxMenu    idMenu        cmd   nome CondRetEsp        
 *     =destruirmens  inxMenu    CondRetEsp    
-*     =destruirmen   inxMenu    idMenu                CondRetEsp  
-*     =getmenu       inxMenu    idMenu                CondRetEsp
-*     =getopc        inxMenu    idMenu        cmd     CondRetEsp
-*     =getnome       inxMenu    idMenu        cmd     CondRetEsp
-*     =getcmd        inxMenu    idMenu        cmd     CondRetEsp
-*     =getnomeopc    inxMenu    idMenu        cmd     CondRetEsp
+*     =destruirmen   inxMenu    idMenu        CondRetEsp  
+*     =destruiropc   inxMenu    idMenu        cmd     CondRetEsp
+*     =getmenuopcs   inxMenu    idMenu        CondRetEsp
+*     =getmenunome   inxMenu    idMenu        CondRetEsp
+*     =getopcnome    inxMenu    idMenu        cmd     CondRetEsp
 *     =call          inxMenu    idMenu        cmd     CondRetEsp
-*     =mudamenu      inxMenu    idMenu        cmd     CondRetEsp
-*     =inicial       inxMenu    CondRetEsp
+*     =mudamenu      inxMenu    idMenu        CondRetEsp
+*     =inicial       inxMenu    CondRetEsp    
 *     =corrente      inxMenu    CondRetEsp
-*     =mudaultimo    inxMenu    CondRetEsp
 *
 ***********************************************************************/
    
@@ -94,19 +89,20 @@ TST_tpCondRet TST_EfetuarComando(char * ComandoTeste) {
                                       /* inicializa para qualquer coisa */
       MEN_tpCondRet CondRetTemp = MEN_CondRetFaltouMemoria ;
                                       /* inicializa para qualquer coisa */
-      MEN_tppOpcao opcao = NULL;
-      LIS_tppLista opcoes = NULL;
+      char* opcoes = NULL;
       static int estaInicializado = 0 ;
-      int i ;
+      int i = 0;
+      int ok = 0;
       int NumLidos = -1 ;
       int inxMenu = -1 ;
       int idMenu = -1;
       int idMenuEsperado = -1;
       int idPai = -1;
       char cmd = -1;
+      char c = -1;
+      int tam = 0;
       char nome[STR_LEN];
       char* nomeRef = NULL;
-
 
       /* Tratar: inicializar contexto */
       
@@ -126,6 +122,7 @@ TST_tpCondRet TST_EfetuarComando(char * ComandoTeste) {
 
       } /* fim ativa: Tratar: inicializar contexto */      
 
+
       /* Testar MEN Criar Menus */
          else if (strcmp(ComandoTeste , CRIAR_MENS_CMD) == 0) { 
 
@@ -138,6 +135,7 @@ TST_tpCondRet TST_EfetuarComando(char * ComandoTeste) {
 
          } /* fim ativa: Testar MEN Criar TAD 'Menus' */
 
+
       /* Testar MEN Destruir menus */
          else if (strcmp(ComandoTeste , DESTRUIR_MENS_CMD) == 0) { 
             NumLidos = LER_LerParametros("ii", &inxMenu, &CondRetEsperada);
@@ -148,6 +146,7 @@ TST_tpCondRet TST_EfetuarComando(char * ComandoTeste) {
             return TST_CompararInt(CondRetEsperada , CondRetObtida , "Retorno errado ao destruir um TAD 'Menus'.");
          } /* fim ativa: Testar MEN Destruir TAD 'Menus' */
 
+
       /* Testar MEN_Criar menu */
          else if (strcmp(ComandoTeste , CRIAR_MEN_CMD) == 0) { 
             NumLidos = LER_LerParametros("iisii", &inxMenu, &idMenu, nome, &idPai, &CondRetEsperada);
@@ -157,6 +156,7 @@ TST_tpCondRet TST_EfetuarComando(char * ComandoTeste) {
             CondRetObtida = MEN_CriarMenu(vtRefMenus[inxMenu], idMenu, newString(nome), idPai);
             return TST_CompararInt(CondRetEsperada , CondRetObtida , "Retorno errado ao criar menu.");
          } /* fim ativa: Testar MEN Criar menu */
+
 
       /* Testar MEN_Destruir menu */
          else if (strcmp(ComandoTeste , DESTRUIR_MEN_CMD) == 0) {
@@ -179,6 +179,7 @@ TST_tpCondRet TST_EfetuarComando(char * ComandoTeste) {
             return TST_CompararInt(CondRetEsperada , CondRetObtida , "Retorno errado ao criar opção.");
          } /* fim ativa: Testar MEN Criar Opc */
 
+
       /* Testar MEN_Destruir Opção */
          else if (strcmp(ComandoTeste , DESTRUIR_OPC_CMD) == 0) {
             NumLidos = LER_LerParametros("iici", &inxMenu, &idMenu, &cmd, &CondRetEsperada);
@@ -189,16 +190,18 @@ TST_tpCondRet TST_EfetuarComando(char * ComandoTeste) {
             return TST_CompararInt(CondRetEsperada , CondRetObtida , "Retorno errado ao destruir opção.");
          } /* fim ativa: Testar MEN Destruir Opc */
 
+
       /* Testar MEN_Get Menu Opcoes */
-         else if (strcmp(ComandoTeste , GET_MENUOPC_CMD) == 0) {
+         else if (strcmp(ComandoTeste , GET_MENUOPCS_CMD) == 0) {
             NumLidos = LER_LerParametros("iii", &inxMenu, &idMenu, &CondRetEsperada);
             if(NumLidos != 3 || !VerificarInx(inxMenu)) {
                return TST_CondRetParm;
             }
-            CondRetObtida = MEN_GetMenuOpcoes(vtRefMenus[inxMenu], idMenu, &opcoes);
-            LIS_DestruirLista(opcoes); //mantendo a memória limpa
+            CondRetObtida = MEN_GetMenuOpcoes(vtRefMenus[inxMenu], idMenu, &opcoes, &tam);
+            free(opcoes); //mantendo a memória limpa
             return TST_CompararInt(CondRetEsperada , CondRetObtida , "Retorno errado ao obter opções.");
          } /* fim ativa: Testar MEN_Get Menu Opcoes */
+
 
       /* Testar MEN_Get Menu Nome */
          else if (strcmp(ComandoTeste , GET_MENUNOME_CMD) == 0) {
@@ -214,6 +217,7 @@ TST_tpCondRet TST_EfetuarComando(char * ComandoTeste) {
             return TST_CompararString(nome, nomeRef, "Valor obtido não é o esperado na obter nome do menu.");
          } /* fim ativa: Testar MEN_Get Menu Nome */
 
+
       /* Testar MEN Menu Inicial*/
          else if (strcmp(ComandoTeste , INICIAL_CMD) == 0) {
             NumLidos = LER_LerParametros("ii", &inxMenu, &CondRetEsperada);
@@ -223,6 +227,8 @@ TST_tpCondRet TST_EfetuarComando(char * ComandoTeste) {
             CondRetObtida = MEN_MenuInicial(vtRefMenus[inxMenu]);
             return TST_CompararInt(CondRetEsperada , CondRetObtida , "Retorno errado ao obter menu inicial.");
          } /* fim ativa: Testar MEN_Get Menu Inicial */
+
+
       /* Testar MEN Muda Menu*/
          else if (strcmp(ComandoTeste , MUDAMEN_CMD) == 0) {
             NumLidos = LER_LerParametros("iii", &inxMenu, &idMenu, &CondRetEsperada);
@@ -233,6 +239,7 @@ TST_tpCondRet TST_EfetuarComando(char * ComandoTeste) {
             return TST_CompararInt(CondRetEsperada , CondRetObtida , "Retorno errado ao Mudar menu corrente.");
          } /* fim ativa: Testar MEN_Get Muda Menu*/
 
+
       /* Testar MEN Menu Corrente*/
          else if (strcmp(ComandoTeste , CORRENTE_CMD) == 0) {
             NumLidos = LER_LerParametros("iiii", &inxMenu, &idMenuEsperado, &CondRetEsperada);
@@ -240,14 +247,54 @@ TST_tpCondRet TST_EfetuarComando(char * ComandoTeste) {
                return TST_CondRetParm;
             }
             CondRetObtida = MEN_MenuCorrente(vtRefMenus[inxMenu], &idMenu);
-            if (CondRetObtida != CondRetObtida) {
-               return TST_CompararInt(CondRetEsperada , CondRetObtida , "Retorno ao obter menu corrente.");
-            }
+            if (CondRetEsperada == MEN_CondRetOK && CondRetObtida == CondRetEsperada) {
                return TST_CompararInt(idMenuEsperado , idMenu , "Id do Menu Corrente esperado diferente do Obtido");
+            }
+            return TST_CompararInt(CondRetEsperada , CondRetObtida , "Retorno errado ao obter menu corrente.");
          } /* fim ativa: Testar MEN_Get Muda Menu*/
 
-          
       
+
+      /* Testar MEN Get Opcao Nome */
+         else if (strcmp(ComandoTeste , GET_OPCNOME_CMD) == 0) {
+            NumLidos = LER_LerParametros("iiisi", &inxMenu, &idMenu, &cmd, nome, &CondRetEsperada);
+            if (NumLidos != 5 || !VerificarInx(inxMenu)) {
+               return TST_CondRetParm;
+            }
+
+            CondRetObtida = MEN_GetMenuOpcoes(vtRefMenus[inxMenu], idMenu, &opcoes, &tam);
+            if( CondRetObtida != MEN_CondRetOK) {
+               free(opcoes);
+               return TST_CompararInt(MEN_CondRetOK , CondRetObtida , "Não fomos capaz de encontrar este comando");
+            }
+            for (ok=0, i=0; i < tam; i++) {
+               if (opcoes[i] == cmd) {
+                  ok = 1;
+                  break;
+               }
+            }
+            free(opcoes);
+            if (!ok) {
+               return TST_CompararChar(MEN_CondRetOK , -1 , "Não fomos capaz de encontrar este comando"); //Não sei que condRet por aqui;
+            }
+            CondRetObtida = MEN_GetOpcaoNome(vtRefMenus[inxMenu], idMenu, cmd, &nomeRef);
+            if (CondRetEsperada == MEN_CondRetOK && CondRetObtida==CondRetEsperada)   {
+               return TST_CompararString(nome, nomeRef, "Valor de nome encontrado diferente do esperado"); //Não sei que condRet por aqui;
+            }
+            return TST_CompararInt(CondRetEsperada, CondRetObtida, "Condição de retorno obtida diferente da esperada");
+         } /* fim ativa: Testar MEN Get Opcao Nome*/
+
+
+         /* Testar MEN CallBack*/
+         else if (strcmp(ComandoTeste , CALLBACK_CMD) == 0) {
+            NumLidos = LER_LerParametros("iiii", &inxMenu, &idMenu, &cmd, &CondRetEsperada);
+            if (NumLidos != 4 || !VerificarInx(inxMenu)) {
+               return TST_CondRetParm;
+            }
+            CondRetObtida = MEN_Callback(vtRefMenus[inxMenu], idMenu, cmd, NULL);
+            return TST_CompararInt(CondRetEsperada , CondRetObtida , "Id do Menu Corrente esperado diferente do Obtido");
+         } /* fim ativa: Testar MEN Callback*/
+
       return TST_CondRetNaoConhec ;  
    }
    
@@ -302,7 +349,7 @@ TST_tpCondRet TST_EfetuarComando(char * ComandoTeste) {
 *
 ***********************************************************************/
 
-   MEN_tpCondRet CallBackTeste(EST_tppEstado e,MEN_tppOpcao o) {
+   MEN_tpCondRet CallBackTeste(EST_tppEstado e) {
       MEN_CondRetOK;
    }
 

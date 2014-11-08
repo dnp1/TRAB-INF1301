@@ -160,9 +160,11 @@ void joga(EST_tppEstado e,MEN_tppOpcao opc){
     MEN_tppMenus m;
     TAB_tppTabuleiro t;
     EST_GetMenus(e,&m);
-    EST_GetTabuleiro(e,&t);
-    TAB_IrInicio(t);
-    MEN_MudaMenu(m,JOGO);
+    if(EST_GetTabuleiro(e,&t)==EST_CondRetOK)
+    {
+        TAB_IrInicio(t);
+        MEN_MudaMenu(m,JOGO);
+    }
 }
 void edita(EST_tppEstado e,MEN_tppOpcao opc){ 
     MEN_tppMenus m;
@@ -170,18 +172,18 @@ void edita(EST_tppEstado e,MEN_tppOpcao opc){
     EST_GetMenus(e,&m);
     EST_GetTabuleiro(e,&t);
      
-    if(t==NULL)
-        Msg("Nao existe atual");
-    else
+    if(EST_GetTabuleiro(e,&t)==EST_CondRetOK)
+    {
         MEN_MudaMenu(m,EDITOR);
+    }
 }
 static void soluciona(EST_tppEstado e,MEN_tppOpcao opc){ 
     TAB_tppTabuleiro t;
     EST_GetTabuleiro(e,&t);
-    if(t==NULL)
-        Msg("Nao existe atual");
-    else
+    if(EST_GetTabuleiro(e,&t)==EST_CondRetOK)
+    {
         ApresentaSolucao(e); 
+    }
 }
 /*
 void carregar(EST_tppEstado e,MEN_tppOpcao opc){
@@ -208,7 +210,10 @@ void salva(EST_tppEstado e,MEN_tppOpcao opc){
     TAB_tppTabuleiro t;
     char* nome;
     EST_GetTabuleiro(e,&t);
-    Erro("Salvando tabuleiro",TAB_SalvarTabuleiro(t,nome),TAB);
+    if(t!=NULL)
+        Erro("Salvando tabuleiro",TAB_SalvarTabuleiro(t,nome),TAB);
+    else 
+       Msg("nao existe atual");
 }
 void andadireditor(EST_tppEstado e,MEN_tppOpcao opc){
     TAB_tppTabuleiro t;
@@ -367,6 +372,7 @@ void novo_tab(EST_tppEstado e){
              return;
         }
     }
+    
     if(EST_GetTabuleiro(e,&a)==EST_CondRetOK)
         TAB_DestruirTabuleiro(a);
     Erro("Criando tabuleiro",TAB_CriarTabuleiro(&a,alt,lar,nome),TAB);
@@ -556,15 +562,16 @@ void ApresentaSolucao(EST_tppEstado e){
 int main(){
     int atual;
     EST_tppEstado e;
+    EST_tpCondRet cr1;
+    PRI_tpCondRet cr2;
     MEN_tppMenus menus;
-    Erro("Alocando Estado",EST_CriaEstado(&e),EST);
-    if(e!=NULL){
-        PRI_tpCondRet cr = PopulaMenus(e);
-        Erro("Populando Menus",cr,PRI);
-        if(cr!=PRI_CondRetOK)
-            return 0;
+    cr1 = EST_CriaEstado(&e);
+    Erro("Alocando Estado",cr1,EST);
+    if(cr1==EST_CondRetOK){
+        cr2 = PopulaMenus(e);
+        Erro("Populando Menus",cr2,PRI);
     }
-    else{
+    if(cr1 != EST_CondRetOK || cr2 != PRI_CondRetOK){
         return 0;
     }
     

@@ -234,11 +234,6 @@ static MEN_tpCondRet carrega(EST_tppEstado e){
     int tam;
     int i;
 	PRI_tpCondRet cr = PRI_CondRetInvalido;
-    //Erro("Lendo Diretorio:",TAB_ListaTabuleiros(&nomes, &tam),TAB);
-    for(i=0;i<tam;i++){
-        printf("\t%s",nomes[i]);
-    }
-     
     
 	do{
         Msg("Digite o nome (menos de 10 caracteres) ou 0 para voltar");
@@ -247,11 +242,6 @@ static MEN_tpCondRet carrega(EST_tppEstado e){
             Msg("cancelando operacao");
             return MEN_CondRetFaltouMemoria;
         }
-    
-        for(i=0;i<tam;i++){
-            if(strcmp(nome,nomes[i])==0) cr = PRI_CondRetOK;
-        }
-        Erro("validando[2] (nome do arquivo ok):",cr,PRI);
 	
     }while(!strcmp(nome,"") && cr != PRI_CondRetOK);
 	
@@ -538,10 +528,12 @@ static void ApresentaMenu(EST_tppEstado e){
     int i;
     MEN_tppMenus ms;
     EST_GetMenus(e,&ms);
-    if(EST_GetTabuleiro(e,&t)!=EST_CondRetOK)    
+
+    if(EST_GetTabuleiro(e,&t)==EST_CondRetOK)    
         TAB_GetNome(t,&tab);
     else
         tab = "Nao existe";
+
     MEN_MenuCorrente(ms,&id);
     MEN_GetMenuOpcoes(ms,id,&opc,&tam);
     MEN_GetMenuNome(ms,id,&nome);
@@ -597,7 +589,6 @@ static void ApresentaSolucao(EST_tppEstado e){
     for(i=0;i<tam;i+=2){
         printf("Passo %d: (x,y) -> (%d,%d)\n",(i/2)+1,solucao[i],solucao[i+1]);    
     }
-    free(solucao);
 }
 /*
  *   Função Principal

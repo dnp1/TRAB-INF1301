@@ -1,7 +1,6 @@
 #include "TABULEIRO.h"
 #include "ESTADO.h"
 #include "MENU.h"
-#include "LISTA.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -48,31 +47,26 @@ void TrataPRI(int CondRet){
 /*
     Tratamento de input
 */
-/* 
-mudar de lis->gra
-*/
 PRI_tpCondRet LeCmd(EST_tppEstado e){
     char c; 
     char cmd;
     int id;
-    LIS_tppLista opcoes;
+    char* opcoes;
+    int tam;
+    int i;
     MEN_tppMenus ms;
     scanf(" %c",&c);
     EST_GetMenus(e,&ms);
     MEN_MenuCorrente(ms,&id);
-    MEN_GetMenuOpcoes(ms,id,&opcoes);
-    LIS_IrInicioLista(opcoes);
-    do
-    {
-        MEN_tppOpcao opcao = LIS_ObterValor(opcoes);
-        MEN_GetOpcaoCmd(opcao,&cmd),MEN;
-        if(cmd == c){
-            Erro("Executando opcao selecionada:",MEN_Callback(opcao,e),MEN);
+    MEN_GetMenuOpcoes(ms,id,opcoes,&tam);
+    for(i=0;i,tam;i++){
+        if(opcoes[i] == c){
+            Erro("Executando opcao selecionada:",MEN_Callback(ms,id,c,e),MEN);
             return PRI_CondRetOK;
         }    
+    
     }
-    while(LIS_AvancarElementoCorrente(opcoes,1)==LIS_CondRetOK);
-  
+    free(opcoes);
     return PRI_CondRetSemOpcao;         
 }
 
@@ -136,27 +130,27 @@ void Erro(char* comm, int CondRet,tpmodulo module){
 
 #define JOGO 6 
 #define EDITOR 5 
-void vaiMenu1(EST_tppEstado e,MEN_tppOpcao opc){ 
+void vaiMenu1(EST_tppEstado e){ 
     MEN_tppMenus m;
     EST_GetMenus(e,&m);
     MEN_MudaMenu(m,1); 
 }
-void vaiMenu2(EST_tppEstado e,MEN_tppOpcao opc){ 
+void vaiMenu2(EST_tppEstado e){ 
     MEN_tppMenus m;
     EST_GetMenus(e,&m);
     MEN_MudaMenu(m,2); 
 }
-void vaiMenu3(EST_tppEstado e,MEN_tppOpcao opc){ 
+void vaiMenu3(EST_tppEstado e){ 
     MEN_tppMenus m;
     EST_GetMenus(e,&m);
     MEN_MudaMenu(m,3); 
 }
-void vaiMenu4(EST_tppEstado e,MEN_tppOpcao opc){ 
+void vaiMenu4(EST_tppEstado e){ 
     MEN_tppMenus m;
     EST_GetMenus(e,&m);
     MEN_MudaMenu(m,4); 
 }
-void joga(EST_tppEstado e,MEN_tppOpcao opc){ 
+void joga(EST_tppEstado e){ 
     MEN_tppMenus m;
     TAB_tppTabuleiro t;
     EST_GetMenus(e,&m);
@@ -166,7 +160,7 @@ void joga(EST_tppEstado e,MEN_tppOpcao opc){
         MEN_MudaMenu(m,JOGO);
     }
 }
-void edita(EST_tppEstado e,MEN_tppOpcao opc){ 
+void edita(EST_tppEstado e){ 
     MEN_tppMenus m;
     TAB_tppTabuleiro t;
     EST_GetMenus(e,&m);
@@ -177,7 +171,7 @@ void edita(EST_tppEstado e,MEN_tppOpcao opc){
         MEN_MudaMenu(m,EDITOR);
     }
 }
-static void soluciona(EST_tppEstado e,MEN_tppOpcao opc){ 
+static void soluciona(EST_tppEstado e){ 
     TAB_tppTabuleiro t;
     EST_GetTabuleiro(e,&t);
     if(EST_GetTabuleiro(e,&t)==EST_CondRetOK)
@@ -186,7 +180,7 @@ static void soluciona(EST_tppEstado e,MEN_tppOpcao opc){
     }
 }
 /*
-void carregar(EST_tppEstado e,MEN_tppOpcao opc){
+void carregar(EST_tppEstado e){
 
     TAB le o dir
         p cada arquivo,i 
@@ -198,15 +192,15 @@ void carregar(EST_tppEstado e,MEN_tppOpcao opc){
 
 }
 */
-void carrega(EST_tppEstado e,MEN_tppOpcao opc){
+void carrega(EST_tppEstado e){
     //EST_AlterarTabuleiro(e,TAB_CriarTabuleiro()); 
     //if(e != NULL)
     //    TAB_carrega(MEN_GetNomeOpcao(opc));    
 }
-void deleta(EST_tppEstado e,MEN_tppOpcao opc){
+void deleta(EST_tppEstado e){
 //    TAB_Deletar(EST_GetTabuleiro(e));
 }
-void salva(EST_tppEstado e,MEN_tppOpcao opc){
+void salva(EST_tppEstado e){
     TAB_tppTabuleiro t;
     char* nome;
     EST_GetTabuleiro(e,&t);
@@ -215,25 +209,25 @@ void salva(EST_tppEstado e,MEN_tppOpcao opc){
     else 
        Msg("nao existe atual");
 }
-void andadireditor(EST_tppEstado e,MEN_tppOpcao opc){
+void andadireditor(EST_tppEstado e){
     TAB_tppTabuleiro t;
     EST_GetTabuleiro(e,&t);
     if(TAB_PodeAndarPraDireita(t,0)==TAB_CondRetOK)
         TAB_AndarPraDireita(t);
 }
-void andaesqeditor(EST_tppEstado e,MEN_tppOpcao opc){
+void andaesqeditor(EST_tppEstado e){
     TAB_tppTabuleiro t;
     EST_GetTabuleiro(e,&t);
     if(TAB_PodeAndarPraEsquerda(t,0)==TAB_CondRetOK)
         TAB_AndarPraEsquerda(t);
 }
-void andabaixoeditor(EST_tppEstado e,MEN_tppOpcao opc){
+void andabaixoeditor(EST_tppEstado e){
     TAB_tppTabuleiro t;
     EST_GetTabuleiro(e,&t);
     if(TAB_PodeAndarPraBaixo(t,0)==TAB_CondRetOK)
         TAB_AndarPraBaixo(t);
 }
-void andacimaeditor(EST_tppEstado e,MEN_tppOpcao opc){
+void andacimaeditor(EST_tppEstado e){
     TAB_tppTabuleiro t;
     EST_GetTabuleiro(e,&t);
     if(TAB_PodeAndarPraCima(t,0)==TAB_CondRetOK)
@@ -258,7 +252,7 @@ void ChecaVitoria(EST_tppEstado e){
         //4 é o pai de JOGO 
     }
 }
-void andadirjogador(EST_tppEstado e,MEN_tppOpcao opc){
+void andadirjogador(EST_tppEstado e){
     TAB_tppTabuleiro t;
     EST_GetTabuleiro(e,&t);
     if(TAB_PodeAndarPraDireita(t,1)==TAB_CondRetOK){
@@ -266,7 +260,7 @@ void andadirjogador(EST_tppEstado e,MEN_tppOpcao opc){
         ChecaVitoria(e);
     }
 }
-void andaesqjogador(EST_tppEstado e,MEN_tppOpcao opc){
+void andaesqjogador(EST_tppEstado e){
     TAB_tppTabuleiro t;
     EST_GetTabuleiro(e,&t);
     if(TAB_PodeAndarPraEsquerda(t,1)==TAB_CondRetOK){
@@ -274,7 +268,7 @@ void andaesqjogador(EST_tppEstado e,MEN_tppOpcao opc){
         ChecaVitoria(e);
     }
 }
-void andabaixojogador(EST_tppEstado e,MEN_tppOpcao opc){
+void andabaixojogador(EST_tppEstado e){
     TAB_tppTabuleiro t;
     EST_GetTabuleiro(e,&t);
     if(TAB_PodeAndarPraBaixo(t,1)==TAB_CondRetOK){
@@ -282,7 +276,7 @@ void andabaixojogador(EST_tppEstado e,MEN_tppOpcao opc){
         ChecaVitoria(e);
     }
 }
-void andacimajogador(EST_tppEstado e,MEN_tppOpcao opc){
+void andacimajogador(EST_tppEstado e){
     TAB_tppTabuleiro t;
     EST_GetTabuleiro(e,&t);
     if(TAB_PodeAndarPraCima(t,1)==TAB_CondRetOK){
@@ -291,23 +285,23 @@ void andacimajogador(EST_tppEstado e,MEN_tppOpcao opc){
     }
 }
 
-void poefim(EST_tppEstado e,MEN_tppOpcao opc){
+void poefim(EST_tppEstado e){
     TAB_tppTabuleiro t;
     EST_GetTabuleiro(e,&t);
     TAB_PoeFim(t);
 }
-void poeinicio(EST_tppEstado e,MEN_tppOpcao opc){
+void poeinicio(EST_tppEstado e){
     TAB_tppTabuleiro t;
     EST_GetTabuleiro(e,&t);
     TAB_PoeInicio(t);
 }
-void poechao(EST_tppEstado e,MEN_tppOpcao opc){
+void poechao(EST_tppEstado e){
     TAB_tppTabuleiro t;
     EST_GetTabuleiro(e,&t);
     TAB_PoeChao(t);
 }
 
-void poeparede(EST_tppEstado e,MEN_tppOpcao opc){
+void poeparede(EST_tppEstado e){
     TAB_tppTabuleiro t;
     EST_GetTabuleiro(e,&t);
     TAB_PoeParede(t);
@@ -485,7 +479,9 @@ void ApresentaMenu(EST_tppEstado e){
     char* nomeopc;
     char* tab;
     TAB_tppTabuleiro t;
-    LIS_tppLista opc;
+    char* opc;
+    int tam;
+    int i;
     MEN_tppMenus ms;
     EST_GetMenus(e,&ms);
     EST_GetTabuleiro(e,&t);
@@ -494,22 +490,16 @@ void ApresentaMenu(EST_tppEstado e){
     else
         tab = "Nao existe";
     MEN_MenuCorrente(ms,&id);
-    MEN_GetMenuOpcoes(ms,id,&opc);
+    MEN_GetMenuOpcoes(ms,id,opc,&tam);
     MEN_GetMenuNome(ms,id,&nome);
     printf("\n###############\n#  Labirinto  #\n###############");
     printf("\nmenu: %s\nlabirinto atual: %s\n------------",nome,tab);
     printf("\nDigite:\n\n");
-    LIS_IrInicioLista(opc);
-    do
-    {
-        MEN_tppOpcao opcao = LIS_ObterValor(opc);
-        if(opcao!=NULL){
-            MEN_GetOpcaoCmd(opcao,&cmd);
-            MEN_GetOpcaoNome(opcao,&nomeopc);
-            printf("\n %c para %s", cmd,nomeopc);
-        }
+    for(i=0;i<tam;i++){
+       MEN_GetOpcaoNome(ms,id,opc[i],&nomeopc);
+       printf("\n %c para %s", opc[i],nomeopc);
     }
-    while(LIS_AvancarElementoCorrente(opc,1)==LIS_CondRetOK);
+    free(opc);
 
     printf("\n--------------\n");
 
@@ -555,6 +545,7 @@ void ApresentaSolucao(EST_tppEstado e){
     for(i=0;i<tam;i+=2){
         printf("Passo %d: (x,y) -> (%d,%d)\n",(i/2)+1,solucao[i],solucao[i+1]);    
     }
+    free(solucao);
 }
 /*
  *   Função Principal

@@ -154,11 +154,11 @@ void joga(EST_tppEstado e){
     MEN_tppMenus m;
     TAB_tppTabuleiro t;
     EST_GetMenus(e,&m);
-    if(EST_GetTabuleiro(e,&t)==EST_CondRetOK)
-    {
-        TAB_IrInicio(t);
-        MEN_MudaMenu(m,JOGO);
-    }
+    if(EST_GetTabuleiro(e,&t)!=EST_CondRetOK) break;
+    if(TAB_ValidarTabuleiro(t)!=TAB_CondRetOK) break;
+    TAB_IrInicio(t);
+    MEN_MudaMenu(m,JOGO);
+   
 }
 void edita(EST_tppEstado e){ 
     MEN_tppMenus m;
@@ -205,7 +205,7 @@ void carrega(EST_tppEstado e){
         }
     }while(!strcmp(nome,""));
 	*/
-	Erro("Carregando tabuleiro",TAB_CarregarTabuleiro(&t,"catatau.txt"),TAB);
+	Erro("Carregando tabuleiro",TAB_CarregarTabuleiro(&t,"tabuleiro.txt"),TAB);
 
 }
 void deleta(EST_tppEstado e){
@@ -214,12 +214,10 @@ void deleta(EST_tppEstado e){
 void salva(EST_tppEstado e){
     TAB_tppTabuleiro t;
     char* nome;
-    EST_GetTabuleiro(e,&t);
-	TAB_GetNome(t,&nome);
-    if(t!=NULL)
-        Erro("Salvando tabuleiro",TAB_SalvarTabuleiro(t,nome),TAB);
-    else 
-       Msg("nao existe atual");
+    if(EST_GetTabuleiro(e,&t)!=EST_CondRetOK) break;
+	if(TAB_ValidarTabuleiro(t)!=TAB_CondRetOK) break;
+    TAB_GetNome(t,&nome);
+    Erro("Salvando tabuleiro",TAB_SalvarTabuleiro(t,nome),TAB);
 }
 void andadireditor(EST_tppEstado e){
     TAB_tppTabuleiro t;

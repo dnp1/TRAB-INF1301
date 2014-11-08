@@ -945,8 +945,7 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y , int colisao ) ;
 *  Função: TAB  &Ir inicio
 *  ****/  
     TAB_tpCondRet TAB_IrInicio ( TAB_tppTabuleiro pTab){
-        //procura o inicio de pTab 
-        //jogador = inicio
+        GRA_MudarCorrente(pTab->pGrafo,temp);
         return TAB_CondRetOK;
     }
             

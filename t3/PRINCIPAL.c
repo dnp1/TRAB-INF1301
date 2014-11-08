@@ -398,8 +398,8 @@ void PopulaMenuEditor(EST_tppEstado e){
 
     Erro("criando opcao 1 de Editor", MEN_CriarOpcao(m,idMenu,'1',"Carregar",carrega),MEN) ;
     Erro("criando opcao 2 de Editor", MEN_CriarOpcao(m,2,'2',"Novo",novo_tab),MEN);
-    Erro("criando opcao 3 de Editor", MEN_CriarOpcao(m,idMenu,'3',"Deletar",deleta),MEN);
-    Erro("criando opcao 4 de Editor", MEN_CriarOpcao(m,idMenu,'4',"Editar atual",edita),MEN) ;
+    Erro("criando opcao 3 de Editor", MEN_CriarOpcao(m,idMenu,'3',"Editar atual",edita),MEN) ;
+    //Erro("criando opcao 4 de Editor", MEN_CriarOpcao(m,idMenu,'4',"Deletar",deleta),MEN);
 }
 void PopulaMenuResolvedor(EST_tppEstado e){
     int idMenu = 3;

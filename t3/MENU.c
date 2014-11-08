@@ -18,14 +18,33 @@ typedef struct Menu_{
 typedef struct Opcao_{
     char cmd;
     char* nome;
-    MEN_tpCondRet (*callback)(EST_tppEstado e,MEN_tppOpcao o);
+    MEN_tpCondRet (*callback)(EST_tppEstado e);
 } Opcao;
+
+
+/* Tipo referência para uma Opção de um Menu */
+typedef struct Menu_ * MEN_tppMenu; 
+
+/* Tipo referência para uma Opção de um Menu */
+typedef struct Opcao_ * MEN_tppOpcao; 
 
 static void ExcluirMenu(void* menu){
     LIS_tppLista l = ((MEN_tppMenu)menu)->opcoes;
     LIS_DestruirLista(l);
     free(menu);
 }
+static MEN_tppOpcao getbycmd(MEN_tppMenus m, int id, char cmd){
+   MEN_tppMenu menu;
+   GRA_ObterValor(m->grafo,id,(void**)&menu); 
+   do{
+        MEN_tppOpcao o = LIS_ObterValor(menu->opcoes);
+        if(o->cmd == cmd){
+            return o;
+        }
+   }
+   while(LIS_AvancarElementoCorrente(menu->opcoes,1)==LIS_CondRetOK);
+}
+
 MEN_tpCondRet MEN_DestruirOpcao(MEN_tppMenus m, int idMenu, char cmd){
    MEN_tppMenu menu;
    GRA_ObterValor(m->grafo,idMenu,(void**)&menu); 
@@ -54,7 +73,7 @@ MEN_tpCondRet MEN_DestruirMenus(MEN_tppMenus m){
  */
 //mudar pra usar grafo em vez de lista
 #include<stdio.h>
-void volta(EST_tppEstado e,MEN_tppOpcao o){
+void volta(EST_tppEstado e){
    MEN_tppMenus menus;
    MEN_tppMenu atual;
    EST_GetMenus(e,&menus);
@@ -87,14 +106,11 @@ MEN_tpCondRet MEN_CriarMenu(MEN_tppMenus menus, int id, char* nome,int idpai){
     return cr;
 }
 
-//mudar lis->gra
 MEN_tpCondRet MEN_CriarOpcao(MEN_tppMenus menus, int idMenu,char cmd, char* nome,MEN_tpCondRet (*callback)(EST_tppEstado e,MEN_tppOpcao o)){
     MEN_tppMenu m;
     MEN_tppOpcao o = (MEN_tppOpcao)malloc(sizeof(Opcao));
     if(o==NULL)
         return MEN_CondRetFaltouMemoria;
-    //if(nome==NULL)
-    //return erro;
     o->nome = nome;
     o->cmd = cmd;
     o->callback = callback;
@@ -105,14 +121,26 @@ MEN_tpCondRet MEN_CriarOpcao(MEN_tppMenus menus, int idMenu,char cmd, char* nome
 }
 
 
-MEN_tpCondRet MEN_Callback(MEN_tppOpcao o, EST_tppEstado e){
-    return o->callback(e,o);
+MEN_tpCondRet MEN_Callback(MEN_tppMenus m, int id, char cmd, EST_tppEstado e){
+    MEN_tppOpcao o = getbycmd(m,id,cmd);
+    return o->callback(e);
 }
 
-MEN_tpCondRet MEN_GetMenuOpcoes(MEN_tppMenus m,int id,LIS_tppLista* l){
+MEN_tpCondRet MEN_GetMenuOpcoes(MEN_tppMenus m,int id,char* l, int* tam){
+    int n,x;
     MEN_tppMenu menu;
+    n = 0;
     GRA_ObterValor(m->grafo,id,&menu);
-    *l = menu->opcoes;
+    x = LIS_NumeroDeElementos(menu->opcoes);
+    char* l1 = malloc(x); 
+    do{
+        MEN_tppOpcao o = LIS_ObterValor(menu->opcoes);
+        l1[n] = o->cmd;
+        n++;
+    }
+    while(LIS_AvancarElementoCorrente(menu->opcoes,1)==LIS_CondRetOK);
+    *tam = n;
+    *l = l1;
     return MEN_CondRetOK;
 } 
 MEN_tpCondRet MEN_GetMenuNome(MEN_tppMenus m, int id, char** nome){
@@ -122,12 +150,8 @@ MEN_tpCondRet MEN_GetMenuNome(MEN_tppMenus m, int id, char** nome){
     return MEN_CondRetOK;
 
 }
-MEN_tpCondRet MEN_GetOpcaoCmd(MEN_tppOpcao o, char* cmd){
-    *cmd = o->cmd;
-    return MEN_CondRetOK;
-
-}
-MEN_tpCondRet MEN_GetOpcaoNome(MEN_tppOpcao o, char** nome){
+MEN_tpCondRet MEN_GetOpcaoNome(MEN_tppMenus m, int id, char cmd, char** nome){
+    MEN_tppOpcao o = getbycmd(m,id,cmd);
     *nome = o->nome;
     return MEN_CondRetOK;
 

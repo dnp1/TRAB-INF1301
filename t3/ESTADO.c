@@ -53,7 +53,10 @@ EST_tpCondRet EST_CriaEstado(EST_tppEstado* est){
         free(e);
         return EST_CondRetFaltouMemoria;
     }; 
+    e->Tabuleiro = NULL;
+    e->Menus = NULL;
     *est = e;
+    
     return EST_CondRetOK;
 }
 
@@ -95,7 +98,8 @@ EST_tpCondRet EST_SetTabuleiro(EST_tppEstado e,TAB_tppTabuleiro tab){
 ***********************************************************************/
 EST_tpCondRet EST_GetMenus(EST_tppEstado e, MEN_tppMenus* men){
     *men =  e->Menus;
-    if(e->Menus == NULL) return EST_CondRetFaltouMemoria;
+    if(e->Menus == NULL) 
+        return EST_CondRetFaltouMemoria;
     return EST_CondRetOK;
 }
 /***********************************************************************
@@ -105,7 +109,8 @@ EST_tpCondRet EST_GetMenus(EST_tppEstado e, MEN_tppMenus* men){
 ***********************************************************************/
 EST_tpCondRet EST_GetTabuleiro(EST_tppEstado e,TAB_tppTabuleiro* tab){
     *tab =  e->Tabuleiro;
-    if(e->Tabuleiro == NULL) return EST_CondRetFaltouMemoria;
+    if(e->Tabuleiro == NULL) 
+        return EST_CondRetFaltouMemoria;
     return EST_CondRetOK;
 }
 /********** Fim do módulo de implementação: EST Estado **********/

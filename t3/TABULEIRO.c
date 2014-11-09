@@ -906,7 +906,6 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y , int colisao ) ;
             return TAB_CondRetOK;
         }
         else{
-            fclose(entrada);
             return TAB_CondRetTabuleiroInvalido;
         }
     }

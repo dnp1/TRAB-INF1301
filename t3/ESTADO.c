@@ -66,8 +66,11 @@ EST_tpCondRet EST_CriaEstado(EST_tppEstado* est){
 *
 ***********************************************************************/
 EST_tpCondRet EST_DestruirEstado(EST_tppEstado est){
-    TAB_DestruirTabuleiro(est->Tabuleiro);
-    MEN_DestruirMenus(est->Menus);
+    if(est->Tabuleiro!=NULL)
+        TAB_DestruirTabuleiro(est->Tabuleiro);
+    if(est->Menus!=NULL)
+        MEN_DestruirMenus(est->Menus);
+    
     free(est);
 
     return EST_CondRetOK;

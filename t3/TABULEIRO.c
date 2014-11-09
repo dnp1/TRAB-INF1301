@@ -20,6 +20,7 @@
 #include    <stdio.h>
 #include    <stdlib.h>
 #include    <malloc.h>
+#include    <errno.h>
 
 #define TABULEIRO_OWN
 #include "TABULEIRO.h"
@@ -752,7 +753,13 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y , int colisao ) ;
 
 		pathTemp = (char*)malloc(sizeof(path));
 		strcpy(pathTemp,path);
-        saida = fopen(strcat(pathTemp,".txt"),"w");
+        strcat(pathTemp,".txt");
+        saida = fopen(pathTemp,"w");
+        if(saida == NULL){
+            perror("Erro ao abrir o arquivo");
+            return TAB_CondRetTabuleiroInvalido;
+        }
+
         fprintf(saida,"%d\n%d\n%s",pTab->largura,pTab->altura,pTab->nome);
 
         // vetor de inteiros usado como flag
@@ -856,8 +863,12 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y , int colisao ) ;
         Casa corrente;
         int altura, largura, x, y, idCorrente;
         char linha[DIM_VALOR];
-
-        entrada = fopen(path,"r");
+        char* pathTemp,* nomeTemp;
+        
+		pathTemp = (char*)malloc(sizeof(path));
+		strcpy(pathTemp,path);
+        strcat(pathTemp,".txt");
+        entrada = fopen(pathTemp,"r");
         if(entrada != NULL){
 
             fgets(linha,sizeof(linha),entrada);
@@ -867,7 +878,10 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y , int colisao ) ;
             altura = atoi(linha);
 
             fgets(linha,sizeof(linha),entrada);
-            TAB_CriarTabuleiro(pTab,altura,largura,linha);
+            nomeTemp = (char*)malloc(strlen(linha));
+            strcpy(nomeTemp,linha);
+
+            TAB_CriarTabuleiro(pTab,altura,largura,nomeTemp);
             
             do{
                 fscanf(entrada,"%d %d %d",&x,&y,&casa);
@@ -887,10 +901,14 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y , int colisao ) ;
                     return TAB_CondRetTabuleiroInvalido;
                 }
             }while(fgets(linha,sizeof(linha),entrada));
+
+            fclose(entrada);
             return TAB_CondRetOK;
         }
-        else
+        else{
+            fclose(entrada);
             return TAB_CondRetTabuleiroInvalido;
+        }
     }
 
 /***************************************************************************
@@ -948,14 +966,7 @@ static int GetIdByXY ( TAB_tppTabuleiro pTab , int x , int y , int colisao ) ;
         GRA_MudarCorrente(pTab->pGrafo,TemInicio(pTab));
         return TAB_CondRetOK;
     }
-                
-/***************************************************************************
-*
-*  Função: TAB  &Lista tabuleiros
-*  ****/  
-    TAB_tpCondRet TAB_ListaTabuleiros ( char*** tabuleiros, int* tam ){
-        return TAB_CondRetFaltouMemoria;
-    }
+
                    
 /*****  Código das funções encapsuladas no módulo  *****/
     

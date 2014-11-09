@@ -246,8 +246,8 @@ static MEN_tpCondRet carrega(EST_tppEstado e){
     }while(!strcmp(nome,"") && cr != PRI_CondRetOK);
 	
     Erro("Carregando tabuleiro",TAB_CarregarTabuleiro(&t,nome),TAB);
-    //if(EST_GetTabuleiro(e,&a)==EST_CondRetOK)
-    //    TAB_DestruirTabuleiro(a);
+    if(EST_GetTabuleiro(e,&a)==EST_CondRetOK)
+        TAB_DestruirTabuleiro(a);
     EST_SetTabuleiro(e,t);
 }
 static MEN_tpCondRet deleta(EST_tppEstado e){
@@ -413,8 +413,8 @@ static MEN_tpCondRet novo_tab(EST_tppEstado e){
         }
     }while(!strcmp(nome,""));
     
-    //if(EST_GetTabuleiro(e,&a)==EST_CondRetOK)
-    //    TAB_DestruirTabuleiro(a);
+    if(EST_GetTabuleiro(e,&a)==EST_CondRetOK)
+        TAB_DestruirTabuleiro(a);
 	
     Erro("Criando tabuleiro",TAB_CriarTabuleiro(&a,alt,lar,nome),TAB);
     EST_SetTabuleiro(e,a);
@@ -581,11 +581,15 @@ static void ApresentaTabuleiro(EST_tppEstado e){
 
 static void ApresentaSolucao(EST_tppEstado e){
     int * solucao;
-    int tam;
+    int tam = 0;
     int i;
     TAB_tppTabuleiro t;
     EST_GetTabuleiro(e,&t);
     TAB_SolucionarTabuleiro(t,&solucao,&tam);
+    
+    if(!tam)
+        printf("\nO tabuleiro nao possui solucao!\n");
+
     for(i=0;i<tam;i+=2){
         printf("Passo %d: (x,y) -> (%d,%d)\n",(i/2)+1,solucao[i],solucao[i+1]);    
     }

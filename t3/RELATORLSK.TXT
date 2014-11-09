@@ -19,4 +19,4 @@ Tabela de Horários ; Modular 2014.2 ; T3
 06/11 ; Leonardo  ; 19h ; 06h ; Diagnosticar e corrigir problemas;;
 07/11 ; Leonardo  ; 19h ; 03h ; Diagnosticar e corrigir problemas;;  
 08/11 ; Leonardo  ; 17h ; 07h ; Diagnosticar e corrigir problemas;;  
-09/11 ; Leonardo  ; 19h ; 04h ; Revisar especificações; TesteManual e Revisão como um todo;
+08/11 ; Leonardo  ; 19h ; 04h ; Revisar especificações; TesteManual e Revisão como um todo;

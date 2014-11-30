@@ -28,6 +28,7 @@
 *     Este ponteiro é provido pela função GRA_CriarGrafo
 *     Para o bom funcionamento do módulo, o usuário deve garantir estas hipóteses.
 ***************************************************************************/
+#define DEBUG
 
 #if defined( GRAFO_OWN )
    #define GRAFO_EXT
@@ -36,6 +37,7 @@
 #endif
 
 #include "LISTA.h"
+#include <assert.h>
 
 /***** Declarações exportadas pelo módulo *****/
 
@@ -711,6 +713,26 @@ GRA_tpCondRet GRA_ObterVizinhosCorrente(GRA_tppGrafo pGrafo, LIS_tppLista* pList
 
   GRA_tpCondRet GRA_MudarCorrente( GRA_tppGrafo pGrafo , int idVertice ) ;   
 
+/***********************************************************************
+*
+*  $FC Função: GRA  &Verifica
+*
+*  $ED Descrição da função
+*     Verifica as assertivas estruturais do grafo.
+*   
+*  $EP Parâmetros
+*     pGrafo - ponteiro para o grafo
+*
+*  $FV Valor retornado
+*     GRA_CondRetOK	- O grafo é válido
+*
+*  Assertivas de Entrada: 
+*
+*  Assertivas de Saida: 
+*
+***********************************************************************/
+
+  GRA_tpCondRet GRA_Verifica( GRA_tppGrafo pGrafo ) ; 
 
 
 #endif

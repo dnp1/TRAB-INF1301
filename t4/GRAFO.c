@@ -1355,15 +1355,90 @@ tpAresta* get_edge_by_vertex(LIS_tppLista  vizinhos, tpVertice * v){
 
 #ifdef DEBUG
 
-GRA_tpCondRet Verifica(GRA_tppGrafo g){
+GRA_tpCondRet GRA_Verifica(GRA_tppGrafo g){
+    int vertices, arestas, origens, i;
+    tpVertice * v,* o1,* o2;
+    tpAresta * a;
+    LIS_tppLista listaV, listaA, listaO, caminho;
+    LIS_tpCondRet cr;
     
+    // listas auxiliares / V -> vertices / A -> arestas / O -> origens
+    listaV = LIS_CriarLista(NULL);
+    listaA = LIS_CriarLista(NULL);
+    listaO = LIS_CriarLista(NULL);
+
     //#origens <= #vertices
+    vertices = LIS_NumeroDeElementos(g->vertices);
+    origens = LIS_NumeroDeElementos(g->componentes);
+    assert(origens <= vertices);
+
     //#arestas <= #vertices ^ 2
-    //todo vertice tem um node (todo vertice eh valido)
-    //toda aresta liga dois vertices validos 
-    //nao existem duas origens iguais
-    //as componentes conexas realmente sao conexas(da para chegar de qualquer vertice de uma componente em qualquer outro da msm)
+    if(g->vertices != NULL && LIS_NumeroDeElementos(g->vertices) >= 1){
+        listaV = g->vertices;
+        LIS_IrInicioLista(listaV);
+        arestas = 0;
+        do{
+            v = (tpVertice*)LIS_ObterValor(listaV);
+            if(v != NULL) arestas += LIS_NumeroDeElementos(v->pNode->arestas);
+        }while(LIS_AvancarElementoCorrente(listaV,1) == LIS_CondRetOK);
+        arestas = arestas/2;
+        assert(arestas <= vertices*vertices);
+        
+        //todo vertice tem um node (todo vertice eh valido)
+        //toda aresta liga dois vertices validos
+        LIS_IrInicioLista(listaV);
+        do{
+            v = (tpVertice*)LIS_ObterValor(listaV);
+            assert(v->pNode != NULL);
+            listaA = v->pNode->arestas;
+            LIS_IrInicioLista(listaA);
+            do{
+                a = (tpAresta*)LIS_ObterValor(listaA);
+                if(a != NULL) assert(a->pVizinho->pNode != NULL);
+            }while(LIS_AvancarElementoCorrente(listaA,1) == LIS_CondRetOK);
+        }while(LIS_AvancarElementoCorrente(listaV,1) == LIS_CondRetOK);
+
+         
+    }
+    /*
+    if(g->componentes != NULL && LIS_NumeroDeElementos(g->componentes) > 1){
+        //nao existem duas origens iguais
+
+        //copia origens para lista auxiliar
+        do{
+            o1 = (tpVertice*)LIS_ObterValor(g->componentes);
+            LIS_InserirElementoApos(listaO,(void*)o1);
+        }while(LIS_AvancarElementoCorrente(g->componentes,1) == LIS_CondRetOK);
+
+        LIS_IrInicioLista(g->componentes);
+        do{
+            o1 = (tpVertice*)LIS_ObterValor(g->componentes);
+        
+            // busca origem na lista auxiliar e remove
+            LIS_ProcurarValor(listaO,(void*)o1);
+            LIS_ExcluirElemento(listaO);
+
+            LIS_IrInicioLista(listaO);
+            do{
+                o2 = (tpVertice*)LIS_ObterValor(listaO);
+                assert(o1 != o2);
+                
+                //as componentes conexas realmente sao conexas(não existe um caminho de uma origem para outra qualquer)
+                assert(GRA_BuscarCaminho(g,o1->id,o2->id,&caminho) == GRA_CondRetNaoEhConexo);
+
+            }while(LIS_AvancarElementoCorrente(listaO,1) == LIS_CondRetOK);
+        }while(LIS_AvancarElementoCorrente(g->componentes,1) == LIS_CondRetOK);
+        
+        
+        do{
+            listaO = g->componentes;
+        }while(LIS_AvancarElementoCorrente(g->componentes,1) == LIS_CondRetOK);
+    }
+
     //as componentes conexas nao possuem pontes entre si(nao da p chegar em um vertice saindo de um vertice de outra componente)(nao existem duas origens na mesma componente)
+    */
+
+    return GRA_CondRetOK;
 } 
 
 GRA_tpCondRet Deturpa(GRA_tppGrafo g,int cmd, int valor1, int valor2,int valor3){
@@ -1374,14 +1449,6 @@ GRA_tpCondRet Deturpa(GRA_tppGrafo g,int cmd, int valor1, int valor2,int valor3)
     //adiciona origem
     //adiciona aresta
 }
-
-
-
-
-
-
-
-
 
 
 #endif

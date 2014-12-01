@@ -1367,7 +1367,6 @@ tpAresta* get_edge_by_vertex(LIS_tppLista  vizinhos, tpVertice * v){
 
 #ifdef _DEBUG
 
-#define  
 GRA_tpCondRet GRA_Verifica(GRA_tppGrafo g,int* Numerros){
     int numerros;
     int vertices, arestas, origens, i;

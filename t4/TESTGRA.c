@@ -152,6 +152,8 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
       int  inxGrafo     = -1 ;
     #ifdef _DEBUG
       int acao = -1;
+      int numErrosEsperados = 0;
+      int numErros = 0;
     #endif 
       int i ;
       int id, _id , idEsp , idAresta;
@@ -691,14 +693,20 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
           } /* fim ativa: Testar GRA Deturpa Corrente */ 
 
           else if (strcmp( ComandoTeste , VERIFICA ) == 0) {
-            NumLidos = LER_LerParametros( "ii" , &inxGrafo , &CondRetEsperada ) ;
-            if (( NumLidos != 2 ) || !VerificarInx(inxGrafo)) {
+            TST_tpCondRet retorno;
+            NumLidos = LER_LerParametros( "iii" , &inxGrafo , &numErrosEsperados, &CondRetEsperada ) ;
+            if (( NumLidos != 3 ) || !VerificarInx(inxGrafo)) {
                return TST_CondRetParm ;
             } /* if */           
 
-            CondRetObtida = GRA_Verifica( vtRefGrafos[ inxGrafo ] ) ;           
-            return TST_CompararInt( CondRetEsperada , CondRetObtida ,
+            CondRetObtida = GRA_Verifica( vtRefGrafos[ inxGrafo ], &numErros ) ;           
+            retorno =  TST_CompararInt( CondRetEsperada , CondRetObtida ,
                                     "Retorno errado ao verificar Grafo." );
+            if (retorno != TST_CondOK) {
+              return retorno;
+            }
+            return TST_CompararInt( numErrosEsperados , numErros ,
+                                    "Numero de Erros diferente do esperado." );
           } /* fim ativa: Testar GRA Mudar Corrente */ 
         #endif
         return TST_CondRetNaoConhec ;

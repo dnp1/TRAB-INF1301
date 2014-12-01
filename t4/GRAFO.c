@@ -382,7 +382,8 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
                 LIS_ExcluirElemento(pGrafo->componentes);
             }
 #ifdef _DEBUG
-            CED_MarcarEspacoAtivo(pAresta);
+            CED_MarcarEspacoAtivo(aresta1);
+            CED_MarcarEspacoAtivo(aresta2);
 #endif
 
             return GRA_CondRetOK;

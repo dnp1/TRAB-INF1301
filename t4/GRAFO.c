@@ -1441,18 +1441,18 @@ GRA_tpCondRet Deturpa(GRA_tppGrafo g, int acao){
     if(g->corrente!=-1)
         v = get_by_id(g->corrente);
     
-    if( ação == 1 ) { //elimina o elemento corrente da estrutura escolhida.
+    if( acao == 1 ) { //elimina o elemento corrente da estrutura escolhida.
         ExcluirVertice(g,v);      
         g->corrente = -1;
     }
-    if( ação == 2 ) { //atribui NULL ao ponteiro para um vértice sucessor.
+    if( acao == 2 ) { //atribui NULL ao ponteiro para um vértice sucessor.
         LIS_IrInicioLista(v->pNode->arestas);
         a = LIS_ObterValor(v->pNode->arestas);
         if(a != NULL) {
             a->pVizinho = NULL;
         }   
     }
-    if( ação == 3 ) { //atribui NULL ao ponteiro para um vértice predecessor.
+    if( acao == 3 ) { //atribui NULL ao ponteiro para um vértice predecessor.
         LIS_IrInicioLista(v->pNode->arestas);
         a = LIS_ObterValor(v->pNode->arestas);
         if(a != NULL) {
@@ -1465,7 +1465,7 @@ GRA_tpCondRet Deturpa(GRA_tppGrafo g, int acao){
         }   
         
     }
-    if( ação == 4 ) { //atribui lixo ao ponteiro para a referência a um vértice sucessor
+    if( acao == 4 ) { //atribui lixo ao ponteiro para a referência a um vértice sucessor
         LIS_IrInicioLista(v->pNode->arestas);
         a = LIS_ObterValor(v->pNode->arestas);
         if(a != NULL) {
@@ -1473,7 +1473,7 @@ GRA_tpCondRet Deturpa(GRA_tppGrafo g, int acao){
         }   
         
     }
-    if( ação == 5 ) { //atribui lixo ao ponteiro para a referência a um vértice predecessor.
+    if( acao == 5 ) { //atribui lixo ao ponteiro para a referência a um vértice predecessor.
         LIS_IrInicioLista(v->pNode->arestas);
         a = LIS_ObterValor(v->pNode->arestas);
         if(a != NULL) {
@@ -1486,20 +1486,20 @@ GRA_tpCondRet Deturpa(GRA_tppGrafo g, int acao){
         }   
         
     }
-    if( ação == 6 ) { //atribui NULL ao ponteiro para o conteúdo do vértice.
+    if( acao == 6 ) { //atribui NULL ao ponteiro para o conteúdo do vértice.
         v->pNode = NULL;
     }
-    if( ação == 7 ) { //altera o tipo de estrutura apontado no vértice.
+    if( acao == 7 ) { //altera o tipo de estrutura apontado no vértice.
         v->pNode = (tpNode*)0x00000001;
     }
-    if( ação == 8 ) { //destaca vértice do grafo sem liberá-lo com free 
+    if( acao == 8 ) { //destaca vértice do grafo sem liberá-lo com free 
 
         LIS_EsvaziarLista(no->arestas);
     }
-    if( ação == 9 ) { //atribui NULL ao ponteiro corrente
+    if( acao == 9 ) { //atribui NULL ao ponteiro corrente
         v = NULL;
     }
-    if( ação == 10 ) { //atribui NULL a um ponteiro de origem.
+    if( acao == 10 ) { //atribui NULL a um ponteiro de origem.
         v = ObterOrigem(g,v);
         v = NULL;
     }

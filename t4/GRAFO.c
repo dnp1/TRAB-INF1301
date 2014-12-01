@@ -1353,7 +1353,7 @@ tpAresta* get_edge_by_vertex(LIS_tppLista  vizinhos, tpVertice * v){
     }
 
 
-#ifdef DEBUG
+#ifdef _DEBUG
 
 GRA_tpCondRet GRA_Verifica(GRA_tppGrafo g){
     int vertices, arestas, origens, i;
@@ -1435,11 +1435,11 @@ GRA_tpCondRet GRA_Verifica(GRA_tppGrafo g){
     return GRA_CondRetOK;
 } 
 
-GRA_tpCondRet Deturpa(GRA_tppGrafo g, int acao){
+GRA_tpCondRet GRA_Deturpa(GRA_tppGrafo g, int acao){
     tpVertice* v;
     tpAresta* a;
     if(g->corrente!=-1)
-        v = get_by_id(g->corrente);
+        v = get_by_id(g, g->corrente);
     
     if( acao == 1 ) { //elimina o elemento corrente da estrutura escolhida.
         ExcluirVertice(g,v);      
@@ -1494,7 +1494,7 @@ GRA_tpCondRet Deturpa(GRA_tppGrafo g, int acao){
     }
     if( acao == 8 ) { //destaca vértice do grafo sem liberá-lo com free 
 
-        LIS_EsvaziarLista(no->arestas);
+        LIS_EsvaziarLista(v->pNode->arestas);
     }
     if( acao == 9 ) { //atribui NULL ao ponteiro corrente
         v = NULL;

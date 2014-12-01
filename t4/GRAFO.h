@@ -28,7 +28,6 @@
 *     Este ponteiro é provido pela função GRA_CriarGrafo
 *     Para o bom funcionamento do módulo, o usuário deve garantir estas hipóteses.
 ***************************************************************************/
-#define DEBUG
 
 #if defined( GRAFO_OWN )
    #define GRAFO_EXT
@@ -713,6 +712,7 @@ GRA_tpCondRet GRA_ObterVizinhosCorrente(GRA_tppGrafo pGrafo, LIS_tppLista* pList
 
   GRA_tpCondRet GRA_MudarCorrente( GRA_tppGrafo pGrafo , int idVertice ) ;   
 
+#ifdef _DEBUG
 /***********************************************************************
 *
 *  $FC Função: GRA  &Verifica
@@ -731,9 +731,29 @@ GRA_tpCondRet GRA_ObterVizinhosCorrente(GRA_tppGrafo pGrafo, LIS_tppLista* pList
 *  Assertivas de Saida: 
 *
 ***********************************************************************/
-
   GRA_tpCondRet GRA_Verifica( GRA_tppGrafo pGrafo ) ; 
 
+/***********************************************************************
+*
+*  $FC Função: GRA  &Deturpa
+*
+*  $ED Descrição da função
+*     Deturpa um TAD Grafo, invalidando uma ou mais assertivas estruturais do grafo.
+*   
+*  $EP Parâmetros
+*     pGrafo - ponteiro para o grafo
+*     acao - inteiro representando a ação (tipo de assertiva a ser invalidade) a ser executada no grafo.
+*
+*  $FV Valor retornado
+*     GRA_CondRetOK - A acao era valida e foi executada com sucesso. (O Grafo passa a ser invalido)
+*
+*  Assertivas de Entrada: 
+*
+*  Assertivas de Saida: 
+*
+***********************************************************************/
+  GRA_tpCondRet GRA_Deturpa( GRA_tppGrafo pGrafo, int acao) ; 
+#endif
 
 #endif
 

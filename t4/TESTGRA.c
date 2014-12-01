@@ -52,7 +52,7 @@ static const char ALT_VAL_CORR_CMD        [ ] = "=altvalcorr"     ;
 static const char BUSCA_CAM_CORR_CMD      [ ] = "=buscacamcorr"   ;
 static const char IR_VIZ_CORR_CMD         [ ] = "=irvizcorr"      ;
 static const char MUDAR_CORR_CMD          [ ] = "=mudarcorr"      ;
-#ifdef DEBUG
+#ifdef _DEBUG
 static const char DETURPA                 [ ] = "=deturpa"        ;
 static const char VERIFICA                [ ] = "=verifica"       ;
 #endif
@@ -150,7 +150,7 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
 
       int  NumLidos      = -1 ;
       int  inxGrafo     = -1 ;
-    #ifdef DEBUG
+    #ifdef _DEBUG
       int acao = -1;
     #endif 
       int i ;
@@ -678,7 +678,7 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
                   
                   
 
-        #ifdef DEBUG
+        #ifdef _DEBUG
           else if (strcmp( ComandoTeste , DETURPA ) == 0) {
             NumLidos = LER_LerParametros( "iii" , &inxGrafo , &acao , &CondRetEsperada ) ;
             if (( NumLidos != 3 ) || !VerificarInx(inxGrafo)) {

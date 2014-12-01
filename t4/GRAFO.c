@@ -152,7 +152,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
             } /* if */
             
             #ifdef _DEBUG
-                //CNT_CONTAR( "GRA_CriarGrafo" ) ;
+                CNT_CONTAR( "GRA_CriarGrafo" ) ;
             #endif
 
             l_vertice = LIS_CriarLista(free); //A Exclusão será manual, iterando sobre os elementos;
@@ -171,12 +171,6 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
             pGrafo->componentes = l_componente;
             pGrafo->ExcluirValor = ExcluirValor ;
             pGrafo->corrente = -1;
-#ifdef _DEBUG
-            CED_MarcarEspacoAtivo(pGrafo);
-            pGrafo->numVertice = 0;
-            pGrafo->tam = 0;
-#endif
-
             return pGrafo;
      } 
      /* Fim função: GRA  &Criar grafo */
@@ -194,7 +188,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
             #endif
             
             #ifdef _DEBUG
-                //CNT_CONTAR( "GRA_DestruirGrafo" ) ;
+                CNT_CONTAR( "GRA_DestruirGrafo" ) ;
             #endif
             
             LIS_DestruirLista(pGrafo->componentes); //Lista que não mexe com "ninguém"
@@ -203,7 +197,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
             do {
                             
                 #ifdef _DEBUG
-                    //CNT_CONTAR( "GRA_DestruirGrafo-while0" ) ;
+                    CNT_CONTAR( "GRA_DestruirGrafo-while0" ) ;
                 #endif
 
                 pVertice = (tpVertice *)LIS_ObterValor(pGrafo->vertices);
@@ -212,7 +206,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
                 if (pVertice->pNode->pValor != NULL && pGrafo->ExcluirValor != NULL) {
                     
                     #ifdef _DEBUG
-                        //CNT_CONTAR( "GRA_DestruirGrafo-if0" ) ;
+                        CNT_CONTAR( "GRA_DestruirGrafo-if0" ) ;
                     #endif
 
                     pGrafo->ExcluirValor(pVertice->pNode->pValor);
@@ -244,18 +238,12 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         #endif
                          
         #ifdef _DEBUG
-            //CNT_CONTAR( "GRA_InserirVertice" ) ;
+            CNT_CONTAR( "GRA_InserirVertice" ) ;
         #endif
 
         /* Criar o Vertice antes */
         
         pElem = CriarVertice( pGrafo, pValor, id ) ;
-
-#ifdef _DEBUG
-        pElem->pGrafo = pGrafo;
-        pElem->tam = CED_ObterTamanhoValor(pValor);
-        pElem->tipo = CED_ObterTipoEspaco(pValor);
-#endif
         
         if ( pElem == NULL ) {
             return GRA_CondRetFaltouMemoria ;
@@ -269,16 +257,12 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         if(pGrafo->corrente == -1) { 
 
             #ifdef _DEBUG
-                //CNT_CONTAR( "GRA_InserirVertice-if0" ) ;
+                CNT_CONTAR( "GRA_InserirVertice-if0" ) ;
             #endif
 
             pGrafo->corrente = id;
         }
         LIS_NumeroDeElementos(pElem->pNode->arestas);
-#ifdef _DEBUG
-        (pGrafo->numVertice)++;
-        pGrafo->tam += pElem->tam;
-#endif
         return GRA_CondRetOK ;
      } 
      /* Fim função: GRA  &Inserir vertice */
@@ -293,14 +277,14 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         tpVertice * pVertice;
 
         #ifdef _DEBUG
-            //CNT_CONTAR( "GRA_ExcluirVertice" ) ;
+            CNT_CONTAR( "GRA_ExcluirVertice" ) ;
         #endif
        
         pVertice = get_by_id(pGrafo, idVertice);
 
         if (pVertice == NULL) {
             #ifdef _DEBUG
-                //CNT_CONTAR( "GRA_ExcluirVertice-if0" ) ;
+                CNT_CONTAR( "GRA_ExcluirVertice-if0" ) ;
             #endif
             return GRA_CondRetNaoEhVertice;
         }
@@ -323,14 +307,14 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         tpVertice* pVertice2 = get_by_id(pGrafo,idVertice2);
         
         #ifdef _DEBUG
-            //CNT_CONTAR( "GRA_InserirAresta" ) ;
+            CNT_CONTAR( "GRA_InserirAresta" ) ;
         #endif
 
         /* Verifica se vertice pertence ao grafo; */
         if (pVertice1 == NULL || pVertice2 == NULL) {
 
             #ifdef _DEBUG
-                //CNT_CONTAR( "GRA_InserirAresta-if0" ) ;
+                CNT_CONTAR( "GRA_InserirAresta-if0" ) ;
             #endif
 
             return GRA_CondRetNaoEhVertice;
@@ -339,7 +323,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         if (pVertice1 == pVertice2) {
 
             #ifdef _DEBUG
-                //CNT_CONTAR( "GRA_InserirAresta-if1" ) ;
+                CNT_CONTAR( "GRA_InserirAresta-if1" ) ;
             #endif
 
             return GRA_CondRetEhVizinho;
@@ -348,7 +332,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
             !EhVizinho(pGrafo, pVertice2, pVertice1) ) {
 
             #ifdef _DEBUG
-                //CNT_CONTAR( "GRA_InserirAresta-if3" ) ;
+                CNT_CONTAR( "GRA_InserirAresta-if3" ) ;
             #endif
 
 
@@ -374,24 +358,20 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
             if (origem1 != origem2) { //Estavam em componentes distintas? Se sim, junta
                 
                 #ifdef _DEBUG
-                    //CNT_CONTAR( "GRA_InserirAresta-if4" ) ;
+                    CNT_CONTAR( "GRA_InserirAresta-if4" ) ;
                 #endif
 
                 LIS_IrInicioLista(pGrafo->componentes);
                 LIS_ProcurarValor(pGrafo->componentes, origem1);
                 LIS_ExcluirElemento(pGrafo->componentes);
             }
-#ifdef _DEBUG
-            CED_MarcarEspacoAtivo(aresta1);
-            CED_MarcarEspacoAtivo(aresta2);
-#endif
 
             return GRA_CondRetOK;
         } 
         else {
 
             #ifdef _DEBUG
-                //CNT_CONTAR( "GRA_InserirAresta-else0" ) ;
+                CNT_CONTAR( "GRA_InserirAresta-else0" ) ;
             #endif
 
             return GRA_CondRetEhVizinho;
@@ -409,7 +389,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         tpVertice * pVertice2 = NULL;
 
         #ifdef _DEBUG
-            //CNT_CONTAR( "GRA_ExcluirAresta" ) ;
+            CNT_CONTAR( "GRA_ExcluirAresta" ) ;
         #endif
 
         get_pair_by_id(pGrafo,idAresta, &pVertice1, &pVertice2);
@@ -417,7 +397,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         if (pVertice1 == NULL || pVertice2 == NULL) {
 
             #ifdef _DEBUG
-                //CNT_CONTAR( "GRA_ExcluirAresta-if0" ) ;
+                CNT_CONTAR( "GRA_ExcluirAresta-if0" ) ;
             #endif
 
             return GRA_CondRetNaoEhVertice;
@@ -426,7 +406,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         if(!EhVizinho(pGrafo,pVertice1,pVertice2)){
             
             #ifdef _DEBUG
-                //CNT_CONTAR( "GRA_ExcluirAresta-if1" ) ;
+                CNT_CONTAR( "GRA_ExcluirAresta-if1" ) ;
             #endif
 
             return GRA_CondRetNaoEhVizinho;
@@ -453,13 +433,13 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         int* idVerticeVizinho = NULL;
 
         #ifdef _DEBUG
-            //CNT_CONTAR( "GRA_ObterVizinhos" ) ;
+            CNT_CONTAR( "GRA_ObterVizinhos" ) ;
         #endif
 
         if (pVertice == NULL) {
             
             #ifdef _DEBUG
-                //CNT_CONTAR( "GRA_ObterVizinhos-if0" ) ;
+                CNT_CONTAR( "GRA_ObterVizinhos-if0" ) ;
             #endif
 
             return GRA_CondRetNaoEhVertice; 
@@ -477,13 +457,13 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         if (LIS_NumeroDeElementos(vizinhos) > 0) {
 
             #ifdef _DEBUG
-                //CNT_CONTAR( "GRA_ObterVizinhos-if1" ) ;
+                CNT_CONTAR( "GRA_ObterVizinhos-if1" ) ;
             #endif
 
             do {
 
                 #ifdef _DEBUG
-                    //CNT_CONTAR( "GRA_ObterVizinhos-while0" ) ;
+                    CNT_CONTAR( "GRA_ObterVizinhos-while0" ) ;
                 #endif
 
                 idVerticeVizinho = (int*) malloc(sizeof(int));
@@ -511,13 +491,13 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
     GRA_tpCondRet GRA_ObterVizinhosCorrente ( GRA_tppGrafo pGrafo, LIS_tppLista * pLista) {
         
         #ifdef _DEBUG
-            //CNT_CONTAR( "GRA_ObterVizinhosCorrente" ) ;
+            CNT_CONTAR( "GRA_ObterVizinhosCorrente" ) ;
         #endif
 
         if (pGrafo->corrente == -1 ) {
             
             #ifdef _DEBUG
-                //CNT_CONTAR( "GRA_ObterVizinhosCorrente-if0" ) ;
+                CNT_CONTAR( "GRA_ObterVizinhosCorrente-if0" ) ;
             #endif
 
             return GRA_CondRetGrafoVazio; 
@@ -537,7 +517,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         tpVertice * no;
 
         #ifdef _DEBUG
-            //CNT_CONTAR( "GRA_ObterOrigens" ) ;
+            CNT_CONTAR( "GRA_ObterOrigens" ) ;
         #endif
 
         Ret_origens = LIS_CriarLista(NULL);  
@@ -551,7 +531,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         do {
 
             #ifdef _DEBUG
-                //CNT_CONTAR( "GRA_ObterOrigens-while0" ) ;
+                CNT_CONTAR( "GRA_ObterOrigens-while0" ) ;
             #endif
 
             no = (tpVertice *)LIS_ObterValor(origens);
@@ -577,7 +557,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         tpVertice * pVertice;
 
         #ifdef _DEBUG
-            //CNT_CONTAR( "GRA_ObterValor" ) ;
+            CNT_CONTAR( "GRA_ObterValor" ) ;
         #endif
 
         pVertice = get_by_id(pGrafo,idVertice);
@@ -586,7 +566,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         if (pVertice == NULL) {
             
             #ifdef _DEBUG
-                //CNT_CONTAR( "GRA_ObterValor-if0" ) ;
+                CNT_CONTAR( "GRA_ObterValor-if0" ) ;
             #endif
 
             return GRA_CondRetNaoEhVertice;
@@ -608,14 +588,14 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
     GRA_tpCondRet GRA_ObterValorCorrente( GRA_tppGrafo pGrafo, void** pDado ) {
 
         #ifdef _DEBUG
-            //CNT_CONTAR( "GRA_ObterValorCorrente" ) ;
+            CNT_CONTAR( "GRA_ObterValorCorrente" ) ;
         #endif
 
         /* Verifica se vertice pertence ao grafo; */
         if (pGrafo->corrente == -1) {
             
             #ifdef _DEBUG
-                //CNT_CONTAR( "GRA_ObterValorCorrente-if0" ) ;
+                CNT_CONTAR( "GRA_ObterValorCorrente-if0" ) ;
             #endif
 
             return GRA_CondRetGrafoVazio;
@@ -634,14 +614,14 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
     GRA_tpCondRet GRA_ObterIDCorrente( GRA_tppGrafo pGrafo, int* id ) {
 
         #ifdef _DEBUG
-            //CNT_CONTAR( "GRA_ObterIDCorrente" ) ;
+            CNT_CONTAR( "GRA_ObterIDCorrente" ) ;
         #endif
 
         /* Verifica se vertice pertence ao grafo; */
         if (pGrafo->corrente == -1) {
             
             #ifdef _DEBUG
-                //CNT_CONTAR( "GRA_ObterIDCorrente-if0" ) ;
+                CNT_CONTAR( "GRA_ObterIDCorrente-if0" ) ;
             #endif
 
             *id = -1 ;
@@ -650,7 +630,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         else {
             
             #ifdef _DEBUG
-                //CNT_CONTAR( "GRA_ObterIDCorrente-else0" ) ;
+                CNT_CONTAR( "GRA_ObterIDCorrente-else0" ) ;
             #endif
 
             *id = pGrafo->corrente;
@@ -669,7 +649,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         tpVertice * pVertice;
 
         #ifdef _DEBUG
-            //CNT_CONTAR( "GRA_AlterarValor" ) ;
+            CNT_CONTAR( "GRA_AlterarValor" ) ;
         #endif
 
         pVertice = get_by_id(pGrafo,idVertice);
@@ -677,17 +657,12 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         if (pVertice == NULL) {
             
             #ifdef _DEBUG
-                //CNT_CONTAR( "GRA_AlterarValor-if0" ) ;
+                CNT_CONTAR( "GRA_AlterarValor-if0" ) ;
             #endif
 
             return GRA_CondRetNaoEhVertice;
         }
-#ifdef _DEBUG
-        pGrafo->tam -= pVertice->tam;
-        pVertice->tipo = CED_ObterTipoEspaco(pDado);
-        pVertice->tam = CED_ObterTamanhoValor(pDado);
-        pGrafo->tam += pVertice->tam;
-#endif        
+        
         pVertice->pNode->pValor = pDado;
             
         return GRA_CondRetOK;
@@ -703,14 +678,14 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
     GRA_tpCondRet GRA_AlterarValorCorrente( GRA_tppGrafo pGrafo , void* pDado ) {
 
         #ifdef _DEBUG
-            //CNT_CONTAR( "GRA_AlterarValorCorrente" ) ;
+            CNT_CONTAR( "GRA_AlterarValorCorrente" ) ;
         #endif
 
         /* Verifica se vertice pertence ao grafo; */
         if (pGrafo->corrente == -1) {
             
             #ifdef _DEBUG
-                //CNT_CONTAR( "GRA_AlterarValorCorrente-if0" ) ;
+                CNT_CONTAR( "GRA_AlterarValorCorrente-if0" ) ;
             #endif
 
             return GRA_CondRetGrafoVazio;
@@ -734,13 +709,13 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         int achou = 0;
  
         #ifdef _DEBUG
-            //CNT_CONTAR( "GRA_ExcluirVizinhoCorrente" ) ;
+            CNT_CONTAR( "GRA_ExcluirVizinhoCorrente" ) ;
         #endif
 
         if (pGrafo->corrente == -1) { //Checagem de grafo vazio
              
             #ifdef _DEBUG
-                //CNT_CONTAR( "GRA_ExcluirVizinhoCorrente-if0" ) ;
+                CNT_CONTAR( "GRA_ExcluirVizinhoCorrente-if0" ) ;
             #endif
 
             return GRA_CondRetGrafoVazio ;
@@ -750,7 +725,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         if(pVerticeCorrente == NULL) {
              
             #ifdef _DEBUG
-                //CNT_CONTAR( "GRA_ExcluirVizinhoCorrente-if1" ) ;
+                CNT_CONTAR( "GRA_ExcluirVizinhoCorrente-if1" ) ;
             #endif
 
             return GRA_CondRetGrafoVazio ; //Questionável
@@ -760,7 +735,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         if (pVertice == NULL) {
              
             #ifdef _DEBUG
-                //CNT_CONTAR( "GRA_ExcluirVizinhoCorrente-if2" ) ;
+                CNT_CONTAR( "GRA_ExcluirVizinhoCorrente-if2" ) ;
             #endif
 
             return GRA_CondRetNaoEhVertice;
@@ -771,7 +746,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         if(achou) {
              
             #ifdef _DEBUG
-                //CNT_CONTAR( "GRA_ExcluirVizinhoCorrente-if3" ) ;
+                CNT_CONTAR( "GRA_ExcluirVizinhoCorrente-if3" ) ;
             #endif
 
             return ExcluirVertice(pGrafo, pVertice);
@@ -779,7 +754,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         else {    
 
             #ifdef _DEBUG
-                //CNT_CONTAR( "GRA_ExcluirVizinhoCorrente-else0" ) ;
+                CNT_CONTAR( "GRA_ExcluirVizinhoCorrente-else0" ) ;
             #endif
 
             return GRA_CondRetNaoEhVizinho ;
@@ -797,14 +772,14 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         tpVertice * vizinho = NULL;
  
         #ifdef _DEBUG
-            //CNT_CONTAR( "GRA_IrVizinhoCorrente" ) ;
+            CNT_CONTAR( "GRA_IrVizinhoCorrente" ) ;
         #endif
 
         /* Verifica se o grafo não está vazio(possui corrente); */
         if (pGrafo->corrente == -1) {
 
             #ifdef _DEBUG
-                //CNT_CONTAR( "GRA_IrVizinhoCorrente-if0" ) ;
+                CNT_CONTAR( "GRA_IrVizinhoCorrente-if0" ) ;
             #endif
 
             return GRA_CondRetGrafoVazio;
@@ -813,7 +788,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         if (vizinho == NULL) {
 
             #ifdef _DEBUG
-                //CNT_CONTAR( "GRA_IrVizinhoCorrente-if1" ) ;
+                CNT_CONTAR( "GRA_IrVizinhoCorrente-if1" ) ;
             #endif
 
             return GRA_CondRetNaoEhVertice;
@@ -822,7 +797,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         if (!EhVizinho(pGrafo,get_by_id(pGrafo,pGrafo->corrente),vizinho)) {
 
             #ifdef _DEBUG
-                //CNT_CONTAR( "GRA_IrVizinhoCorrente-if2" ) ;
+                CNT_CONTAR( "GRA_IrVizinhoCorrente-if2" ) ;
             #endif
 
             return GRA_CondRetNaoEhVizinho;  
@@ -847,14 +822,14 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         GRA_tpCondRet r;
  
         #ifdef _DEBUG
-            //CNT_CONTAR( "GRA_InserirVizinhoCorrente" ) ;
+            CNT_CONTAR( "GRA_InserirVizinhoCorrente" ) ;
         #endif
 
         /* Verifica se vertice pertence ao grafo; */
         if (pGrafo->corrente == -1) {
              
             #ifdef _DEBUG
-                //CNT_CONTAR( "GRA_InserirVizinhoCorrente-if0" ) ;
+                CNT_CONTAR( "GRA_InserirVizinhoCorrente-if0" ) ;
             #endif
 
             return GRA_CondRetGrafoVazio;
@@ -864,7 +839,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         if(r != GRA_CondRetOK){
           
             #ifdef _DEBUG
-                //CNT_CONTAR( "GRA_InserirVizinhoCorrente-if1" ) ;
+                CNT_CONTAR( "GRA_InserirVizinhoCorrente-if1" ) ;
             #endif
 
             return r;
@@ -885,14 +860,14 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         tpVertice * vizinho = NULL;
  
         #ifdef _DEBUG
-            //CNT_CONTAR( "GRA_MudarCorrente" ) ;
+            CNT_CONTAR( "GRA_MudarCorrente" ) ;
         #endif
 
         /* Verifica se vertice pertence ao grafo; */
         if (pGrafo->corrente == -1) {
              
             #ifdef _DEBUG
-                //CNT_CONTAR( "GRA_MudarCorrente-if0" ) ;
+                CNT_CONTAR( "GRA_MudarCorrente-if0" ) ;
             #endif
 
             return GRA_CondRetGrafoVazio;
@@ -901,7 +876,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         if(vizinho == NULL){
          
             #ifdef _DEBUG
-                //CNT_CONTAR( "GRA_MudarCorrente-if1" ) ;
+                CNT_CONTAR( "GRA_MudarCorrente-if1" ) ;
             #endif
 
             return GRA_CondRetNaoEhVertice;
@@ -926,13 +901,13 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         /* Verifica se vertice pertence ao grafo; */
   
         #ifdef _DEBUG
-            //CNT_CONTAR( "GRA_BuscarCaminhoCorrente" ) ;
+            CNT_CONTAR( "GRA_BuscarCaminhoCorrente" ) ;
         #endif
 
         if (pGrafo->corrente == -1) {  
 
             #ifdef _DEBUG
-                //CNT_CONTAR( "GRA_BuscarCaminhoCorrente-if0" ) ;
+                CNT_CONTAR( "GRA_BuscarCaminhoCorrente-if0" ) ;
             #endif
 
             return GRA_CondRetGrafoVazio;
@@ -1053,7 +1028,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         Dist* currDist = NULL;
  
         #ifdef _DEBUG
-            //CNT_CONTAR( "GRA_BuscarCaminho" ) ;
+            CNT_CONTAR( "GRA_BuscarCaminho" ) ;
         #endif
 
         lenD = 1;
@@ -1065,14 +1040,14 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         if(v == NULL || u == NULL) { 
 
             #ifdef _DEBUG
-                //CNT_CONTAR( "GRA_BuscarCaminho-if0" ) ;
+                CNT_CONTAR( "GRA_BuscarCaminho-if0" ) ;
             #endif
 
             return GRA_CondRetNaoEhVertice; 
         }
 
         #ifdef _DEBUG
-            //CNT_CONTAR( "GRA_BuscarCaminho-pr0" ) ;
+            CNT_CONTAR( "GRA_BuscarCaminho-pr0" ) ;
         #endif
 
         origem1 = ObterOrigem(pGrafo, v);
@@ -1080,14 +1055,14 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         if (origem1 != origem2) { 
 
             #ifdef _DEBUG
-                //CNT_CONTAR( "GRA_BuscarCaminho-if1" ) ;
+                CNT_CONTAR( "GRA_BuscarCaminho-if1" ) ;
             #endif
 
             return GRA_CondRetNaoEhConexo;
         }//Else: É conexo, devia retornar Ok.
         
         #ifdef _DEBUG
-            //CNT_CONTAR( "GRA_BuscarCaminho-pr1" ) ;
+            CNT_CONTAR( "GRA_BuscarCaminho-pr1" ) ;
         #endif
 
         for (;;) {
@@ -1098,7 +1073,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
             }
             
             #ifdef _DEBUG
-                //CNT_CONTAR( "GRA_BuscarCaminho-pr2" ) ;
+                CNT_CONTAR( "GRA_BuscarCaminho-pr2" ) ;
             #endif
 
             dists[0] = newDist(idVerticeOrigem, 0);
@@ -1110,13 +1085,13 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
             else if (v == u) {
                 
                 #ifdef _DEBUG
-                    //CNT_CONTAR( "GRA_BuscarCaminho-else0" ) ;
+                    CNT_CONTAR( "GRA_BuscarCaminho-else0" ) ;
                 #endif
 
                 if( LIS_InserirElementoApos(retorno, newInt(idVerticeOrigem)) == LIS_CondRetOK) {
                     
                     #ifdef _DEBUG
-                        //CNT_CONTAR( "GRA_BuscarCaminho-if2" ) ;
+                        CNT_CONTAR( "GRA_BuscarCaminho-if2" ) ;
                     #endif
 
                     *pLista = retorno;
@@ -1127,7 +1102,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
             }
             
             #ifdef _DEBUG
-                //CNT_CONTAR( "GRA_BuscarCaminho-pr3" ) ;
+                CNT_CONTAR( "GRA_BuscarCaminho-pr3" ) ;
             #endif
 
             visitados = (int*) malloc((LIS_NumeroDeElementos(pGrafo->vertices)+1)*sizeof(int));
@@ -1137,7 +1112,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
             }         
 
             #ifdef _DEBUG
-                //CNT_CONTAR( "GRA_BuscarCaminho-pr4" ) ;
+                CNT_CONTAR( "GRA_BuscarCaminho-pr4" ) ;
             #endif
 
             Q = LIS_CriarLista(free);
@@ -1146,7 +1121,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
             }            
 
             #ifdef _DEBUG
-                //CNT_CONTAR( "GRA_BuscarCaminho-pr5" ) ;
+                CNT_CONTAR( "GRA_BuscarCaminho-pr5" ) ;
             #endif
 
             visitados[0] = idVerticeOrigem;
@@ -1156,7 +1131,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
             } //enque
 
             #ifdef _DEBUG
-                    //CNT_CONTAR( "GRA_BuscarCaminho-pr6" ) ;
+                    CNT_CONTAR( "GRA_BuscarCaminho-pr6" ) ;
             #endif
 
             ok = 1;
@@ -1164,7 +1139,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         }
 
         #ifdef _DEBUG
-                //CNT_CONTAR( "GRA_BuscarCaminho-pr7" ) ;
+                CNT_CONTAR( "GRA_BuscarCaminho-pr7" ) ;
         #endif
 
         if (!ok) {
@@ -1176,13 +1151,13 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         }
         
         #ifdef _DEBUG
-            //CNT_CONTAR( "GRA_BuscarCaminho-pr8" ) ;
+            CNT_CONTAR( "GRA_BuscarCaminho-pr8" ) ;
         #endif
 
         while (LIS_NumeroDeElementos(Q) > 0) {
 
             #ifdef _DEBUG
-                //CNT_CONTAR( "GRA_BuscarCaminho-while0" ) ;
+                CNT_CONTAR( "GRA_BuscarCaminho-while0" ) ;
             #endif
 
             //dequeue
@@ -1202,27 +1177,27 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
             }
 
             #ifdef _DEBUG
-                //CNT_CONTAR( "GRA_BuscarCaminho-pr9" ) ;
+                CNT_CONTAR( "GRA_BuscarCaminho-pr9" ) ;
             #endif
 
             alt = currDist->dist + 1;
             for (i=0; i < len; i++) {
 
                 #ifdef _DEBUG
-                    //CNT_CONTAR( "GRA_BuscarCaminho-for0" ) ;
+                    CNT_CONTAR( "GRA_BuscarCaminho-for0" ) ;
                 #endif
 
                 in = 0;
                 for (j=0; j < lenV; j++) {
 
                     #ifdef _DEBUG
-                        //CNT_CONTAR( "GRA_BuscarCaminho-for1" ) ;
+                        CNT_CONTAR( "GRA_BuscarCaminho-for1" ) ;
                     #endif
 
                     if (visitados[j] == vizinhos[i]) {
                         
                         #ifdef _DEBUG
-                            //CNT_CONTAR( "GRA_BuscarCaminho-if3" ) ;
+                            CNT_CONTAR( "GRA_BuscarCaminho-if3" ) ;
                         #endif
 
                         in = 1;
@@ -1231,14 +1206,14 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
                 if (!in) {
                     
                     #ifdef _DEBUG
-                        //CNT_CONTAR( "GRA_BuscarCaminho-if4" ) ;
+                        CNT_CONTAR( "GRA_BuscarCaminho-if4" ) ;
                     #endif
 
                     dist = getDist(dists, vizinhos[i]);
                     if (dist == NULL) { //infinity
 
                         #ifdef _DEBUG
-                            //CNT_CONTAR( "GRA_BuscarCaminho-if5" ) ;
+                            CNT_CONTAR( "GRA_BuscarCaminho-if5" ) ;
                         #endif
 
                         dists[lenD] = newDist(vizinhos[i], alt);
@@ -1248,7 +1223,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
                     } else if (alt < dist->dist) {
                         
                         #ifdef _DEBUG
-                            //CNT_CONTAR( "GRA_BuscarCaminho-else2" ) ;
+                            CNT_CONTAR( "GRA_BuscarCaminho-else2" ) ;
                         #endif
 
                         dist->dist = alt;
@@ -1257,7 +1232,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
                     if (idVerticeDestino == vizinhos[i]) {
                         
                         #ifdef _DEBUG
-                            //CNT_CONTAR( "GRA_BuscarCaminho-if6" ) ;
+                            CNT_CONTAR( "GRA_BuscarCaminho-if6" ) ;
                         #endif
 
                         currDist = dist;
@@ -1265,7 +1240,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
                     }
 
                     #ifdef _DEBUG
-                        //CNT_CONTAR( "GRA_BuscarCaminho-pr9" ) ;
+                        CNT_CONTAR( "GRA_BuscarCaminho-pr9" ) ;
                     #endif
 
                     visitados[lenV] = vizinhos[i];
@@ -1274,19 +1249,19 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
                 }
                 
                 #ifdef _DEBUG
-                    //CNT_CONTAR( "GRA_BuscarCaminho-pr10" ) ;
+                    CNT_CONTAR( "GRA_BuscarCaminho-pr10" ) ;
                 #endif
             }
             
             #ifdef _DEBUG
-                //CNT_CONTAR( "GRA_BuscarCaminho-pr11" ) ;
+                CNT_CONTAR( "GRA_BuscarCaminho-pr11" ) ;
             #endif
 
             free(vizinhos);
             if (achou) {
                 
                 #ifdef _DEBUG
-                    //CNT_CONTAR( "GRA_BuscarCaminho-if7" ) ;
+                    CNT_CONTAR( "GRA_BuscarCaminho-if7" ) ;
                 #endif
 
                 currDist = dist;
@@ -1294,31 +1269,31 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
             }         
 
             #ifdef _DEBUG
-                //CNT_CONTAR( "GRA_BuscarCaminho-pr12" ) ;
+                CNT_CONTAR( "GRA_BuscarCaminho-pr12" ) ;
             #endif
 
             if(lenV == LIS_NumeroDeElementos(pGrafo->vertices)) {
                 
                 #ifdef _DEBUG
-                    //CNT_CONTAR( "GRA_BuscarCaminho-if8" ) ;
+                    CNT_CONTAR( "GRA_BuscarCaminho-if8" ) ;
                 #endif
 
                 break;
             }
                         
             #ifdef _DEBUG
-                //CNT_CONTAR( "GRA_BuscarCaminho-pr13" ) ;
+                CNT_CONTAR( "GRA_BuscarCaminho-pr13" ) ;
             #endif
         }         
 
         #ifdef _DEBUG
-            //CNT_CONTAR( "GRA_BuscarCaminho-pr14" ) ;
+            CNT_CONTAR( "GRA_BuscarCaminho-pr14" ) ;
         #endif
         
         if (achou) {
 
             #ifdef _DEBUG
-                //CNT_CONTAR( "GRA_BuscarCaminho-if9" ) ;
+                CNT_CONTAR( "GRA_BuscarCaminho-if9" ) ;
             #endif
 
             //printf("\n");
@@ -1328,7 +1303,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
             while (currDist) {
                 
                 #ifdef _DEBUG
-                    //CNT_CONTAR( "GRA_BuscarCaminho-while1" ) ;
+                    CNT_CONTAR( "GRA_BuscarCaminho-while1" ) ;
                 #endif
 
                 LIS_InserirElementoAntes(retorno, newInt(currDist->id));
@@ -1336,27 +1311,27 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
             }
                         
             #ifdef _DEBUG
-                //CNT_CONTAR( "GRA_BuscarCaminho-pr15" ) ;
+                CNT_CONTAR( "GRA_BuscarCaminho-pr15" ) ;
             #endif
 
         }
                     
         #ifdef _DEBUG
-            //CNT_CONTAR( "GRA_BuscarCaminho-pr16" ) ;
+            CNT_CONTAR( "GRA_BuscarCaminho-pr16" ) ;
         #endif
 
         //Limpando a memória        
         for (i=0; i < lenD; i++) {
             
             #ifdef _DEBUG
-                //CNT_CONTAR( "GRA_BuscarCaminho-for2" ) ;
+                CNT_CONTAR( "GRA_BuscarCaminho-for2" ) ;
             #endif
 
             free(dists[i]);
         }
                     
         #ifdef _DEBUG
-            //CNT_CONTAR( "GRA_BuscarCaminho-pr17" ) ;
+            CNT_CONTAR( "GRA_BuscarCaminho-pr17" ) ;
         #endif
 
         free(dists);
@@ -1374,13 +1349,13 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         vertices = pGrafo->vertices;
 
         #ifdef _DEBUG
-            //CNT_CONTAR( "GRA_BuscarVertice" ) ;
+            CNT_CONTAR( "GRA_BuscarVertice" ) ;
         #endif
 
         if(LIS_NumeroDeElementos(vertices) == 0){
             
             #ifdef _DEBUG
-                //CNT_CONTAR( "GRA_BuscarVertice-if0" ) ;
+                CNT_CONTAR( "GRA_BuscarVertice-if0" ) ;
             #endif
 
             *idVertice = -1;
@@ -1392,7 +1367,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         {
             
             #ifdef _DEBUG
-                //CNT_CONTAR( "GRA_BuscarVertice-while0" ) ;
+                CNT_CONTAR( "GRA_BuscarVertice-while0" ) ;
             #endif
 
             vertice = (tpVertice*)LIS_ObterValor(vertices);
@@ -1401,7 +1376,7 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
             {
                 
                 #ifdef _DEBUG
-                    //CNT_CONTAR( "GRA_BuscarVertice-if1" ) ;
+                    CNT_CONTAR( "GRA_BuscarVertice-if1" ) ;
                 #endif
 
                 *idVertice = vertice->id;
@@ -1434,14 +1409,14 @@ static int EhVizinho( GRA_tppGrafo pGrafo, tpVertice * v, tpVertice * u ){
     int vizinho = 0;
  
     #ifdef _DEBUG
-        //CNT_CONTAR( "EhVizinho" ) ;
+        CNT_CONTAR( "EhVizinho" ) ;
     #endif
 
     vizinhos = u->pNode->arestas;
     if(vizinhos == NULL){
         
         #ifdef _DEBUG
-            //CNT_CONTAR( "EhVizinho-if0" ) ;
+            CNT_CONTAR( "EhVizinho-if0" ) ;
         #endif
 
         return vizinho; 
@@ -1450,14 +1425,14 @@ static int EhVizinho( GRA_tppGrafo pGrafo, tpVertice * v, tpVertice * u ){
     do {      
 
         #ifdef _DEBUG
-            //CNT_CONTAR( "EhVizinho-while0" ) ;
+            CNT_CONTAR( "EhVizinho-while0" ) ;
         #endif
 
         viz = (tpAresta *)LIS_ObterValor(vizinhos);
         if(viz == NULL){
                     
             #ifdef _DEBUG
-                //CNT_CONTAR( "EhVizinho-if1" ) ;
+                CNT_CONTAR( "EhVizinho-if1" ) ;
             #endif
 
             break;
@@ -1465,7 +1440,7 @@ static int EhVizinho( GRA_tppGrafo pGrafo, tpVertice * v, tpVertice * u ){
         else if ( viz->pVizinho == v ){
                  
             #ifdef _DEBUG
-                //CNT_CONTAR( "EhVizinho-else0" ) ;
+                CNT_CONTAR( "EhVizinho-else0" ) ;
             #endif
 
             vizinho = 1 ;  
@@ -1492,13 +1467,13 @@ static tpVertice * get_by_id(GRA_tppGrafo pGrafo , int idVertice){
         tpVertice * vertice = NULL;
 
         #ifdef _DEBUG
-            //CNT_CONTAR( "get_by_id" ) ;
+            CNT_CONTAR( "get_by_id" ) ;
         #endif
 
         if (pGrafo->vertices == NULL) {
 
             #ifdef _DEBUG
-                //CNT_CONTAR( "get_by_id-if0" ) ;
+                CNT_CONTAR( "get_by_id-if0" ) ;
             #endif
 
             return NULL;
@@ -1507,14 +1482,14 @@ static tpVertice * get_by_id(GRA_tppGrafo pGrafo , int idVertice){
         do {
 
             #ifdef _DEBUG
-                //CNT_CONTAR( "get_by_id-while0" ) ;
+                CNT_CONTAR( "get_by_id-while0" ) ;
             #endif
 
             vertice = (tpVertice*)LIS_ObterValor( pGrafo->vertices ) ;
             if(vertice == NULL){
      
                 #ifdef _DEBUG
-                    //CNT_CONTAR( "get_by_id-if1" ) ;
+                    CNT_CONTAR( "get_by_id-if1" ) ;
                 #endif     
 
                 return NULL;
@@ -1522,7 +1497,7 @@ static tpVertice * get_by_id(GRA_tppGrafo pGrafo , int idVertice){
             else if(vertice->id == idVertice){
       
                 #ifdef _DEBUG
-                    //CNT_CONTAR( "get_by_id-else0" ) ;
+                    CNT_CONTAR( "get_by_id-else0" ) ;
                 #endif       
 
                 return vertice;
@@ -1549,7 +1524,7 @@ void get_pair_by_id(GRA_tppGrafo pGrafo, int idAresta, tpVertice ** u, tpVertice
     tpVertice * vertice = NULL;
      
     #ifdef _DEBUG
-        //CNT_CONTAR( "get_pair_by_id" ) ;
+        CNT_CONTAR( "get_pair_by_id" ) ;
     #endif
 
     LIS_IrInicioLista( pGrafo->vertices );
@@ -1558,14 +1533,14 @@ void get_pair_by_id(GRA_tppGrafo pGrafo, int idAresta, tpVertice ** u, tpVertice
     do{     
 
         #ifdef _DEBUG
-            //CNT_CONTAR( "get_pair_by_id-while0" ) ;
+            CNT_CONTAR( "get_pair_by_id-while0" ) ;
         #endif
 
         vertice = (tpVertice*)LIS_ObterValor( pGrafo->vertices ) ;
         if(vertice == NULL){
                  
             #ifdef _DEBUG
-                //CNT_CONTAR( "get_pair_by_id-if0" ) ;
+                CNT_CONTAR( "get_pair_by_id-if0" ) ;
             #endif
 
             break;
@@ -1575,7 +1550,7 @@ void get_pair_by_id(GRA_tppGrafo pGrafo, int idAresta, tpVertice ** u, tpVertice
         do{
 
             #ifdef _DEBUG
-                //CNT_CONTAR( "get_pair_by_id-while1" ) ;
+                CNT_CONTAR( "get_pair_by_id-while1" ) ;
             #endif
 
             aresta = (tpAresta*)LIS_ObterValor( vertice->pNode->arestas ) ;
@@ -1583,7 +1558,7 @@ void get_pair_by_id(GRA_tppGrafo pGrafo, int idAresta, tpVertice ** u, tpVertice
             if(aresta == NULL){
 
                 #ifdef _DEBUG
-                    //CNT_CONTAR( "get_pair_by_id-if1" ) ;
+                    CNT_CONTAR( "get_pair_by_id-if1" ) ;
                 #endif
 
                 continue;
@@ -1592,7 +1567,7 @@ void get_pair_by_id(GRA_tppGrafo pGrafo, int idAresta, tpVertice ** u, tpVertice
             if ( aresta->id == idAresta ){
 
                 #ifdef _DEBUG
-                    //CNT_CONTAR( "get_pair_by_id-if2" ) ;
+                    CNT_CONTAR( "get_pair_by_id-if2" ) ;
                 #endif
 
                 *u = vertice ;
@@ -1627,7 +1602,7 @@ tpAresta* get_edge_by_vertex(LIS_tppLista  vizinhos, tpVertice * v){
         tpAresta * aresta =  NULL;  
          
         #ifdef _DEBUG
-            //CNT_CONTAR( "get_edge_by_vertex" ) ;
+            CNT_CONTAR( "get_edge_by_vertex" ) ;
         #endif
 
         if (vizinhos == NULL) return NULL;
@@ -1636,14 +1611,14 @@ tpAresta* get_edge_by_vertex(LIS_tppLista  vizinhos, tpVertice * v){
         do {
 
             #ifdef _DEBUG
-                //CNT_CONTAR( "get_edge_by_vertex-while0" ) ;
+                CNT_CONTAR( "get_edge_by_vertex-while0" ) ;
             #endif
 
             aresta = (tpAresta*)LIS_ObterValor(vizinhos); 
             if (aresta->pVizinho == v) {
 
                 #ifdef _DEBUG
-                    //CNT_CONTAR( "get_edge_by_vertex-if0" ) ;
+                    CNT_CONTAR( "get_edge_by_vertex-if0" ) ;
                 #endif
 
                 return aresta ;
@@ -1674,7 +1649,7 @@ tpAresta* get_edge_by_vertex(LIS_tppLista  vizinhos, tpVertice * v){
             LIS_tppLista arestas = NULL;
              
             #ifdef _DEBUG
-                //CNT_CONTAR( "CriarVertice" ) ;
+                CNT_CONTAR( "CriarVertice" ) ;
             #endif
 
             v = (tpVertice*) malloc( sizeof(tpVertice) );
@@ -1707,8 +1682,8 @@ tpAresta* get_edge_by_vertex(LIS_tppLista  vizinhos, tpVertice * v){
             }
 
             #ifdef _DEBUG
-                //CED_DefinirTipoEspaco( v, ID_VER_tppVertice );
-                //CED_MarcarEspacoAtivo(v);
+                CED_DefinirTipoEspaco( v, ID_VER_tppVertice );
+                CED_MarcarEspacoAtivo(v);
             #endif
 
             return v;
@@ -1729,7 +1704,7 @@ tpAresta* get_edge_by_vertex(LIS_tppLista  vizinhos, tpVertice * v){
         tpAresta * aresta_v = NULL;
          
         #ifdef _DEBUG
-            //CNT_CONTAR( "RemoverAresta" ) ;
+            CNT_CONTAR( "RemoverAresta" ) ;
         #endif
 
         vizinhos = u->pNode->arestas;
@@ -1739,7 +1714,7 @@ tpAresta* get_edge_by_vertex(LIS_tppLista  vizinhos, tpVertice * v){
         if (aresta_v != NULL && (LIS_ProcurarValor(vizinhos, aresta_v ) == LIS_CondRetOK)) {         
             
             #ifdef _DEBUG
-                //CNT_CONTAR( "RemoverAresta-if0" ) ;
+                CNT_CONTAR( "RemoverAresta-if0" ) ;
             #endif
 
             LIS_ExcluirElemento(vizinhos);
@@ -1760,7 +1735,7 @@ tpAresta* get_edge_by_vertex(LIS_tppLista  vizinhos, tpVertice * v){
         int i = 0;
          
         #ifdef _DEBUG
-            //CNT_CONTAR( "ExcluirVertice" ) ;
+            CNT_CONTAR( "ExcluirVertice" ) ;
         #endif
         
         no = pVertice->pNode;
@@ -1771,7 +1746,7 @@ tpAresta* get_edge_by_vertex(LIS_tppLista  vizinhos, tpVertice * v){
         if (LIS_NumeroDeElementos(no->arestas) > 0) {       
 
             #ifdef _DEBUG
-                //CNT_CONTAR( "ExcluirVertice-if1" ) ;
+                CNT_CONTAR( "ExcluirVertice-if1" ) ;
             #endif
 
             vizinhos = (tpAresta**)malloc(LIS_NumeroDeElementos(no->arestas)* sizeof(tpAresta*));
@@ -1781,7 +1756,7 @@ tpAresta* get_edge_by_vertex(LIS_tppLista  vizinhos, tpVertice * v){
             do {    
 
                 #ifdef _DEBUG
-                    //CNT_CONTAR( "ExcluirVertice-while0" ) ;
+                    CNT_CONTAR( "ExcluirVertice-while0" ) ;
                 #endif
 
                 vizinhos[i] = (tpAresta *)LIS_ObterValor(no->arestas);
@@ -1791,7 +1766,7 @@ tpAresta* get_edge_by_vertex(LIS_tppLista  vizinhos, tpVertice * v){
             for (; i; i--) {         
 
                 #ifdef _DEBUG
-                    //CNT_CONTAR( "ExcluirVertice-for0" ) ;
+                    CNT_CONTAR( "ExcluirVertice-for0" ) ;
                 #endif
 
                 ExcluirAresta(pGrafo, pVertice, vizinhos[i-1]->pVizinho); 
@@ -1800,7 +1775,7 @@ tpAresta* get_edge_by_vertex(LIS_tppLista  vizinhos, tpVertice * v){
             if (pGrafo->ExcluirValor != NULL && no->pValor != NULL) {   
 
                 #ifdef _DEBUG
-                    //CNT_CONTAR( "ExcluirVertice-if2" ) ;
+                    CNT_CONTAR( "ExcluirVertice-if2" ) ;
                 #endif
 
                 pGrafo->ExcluirValor(no->pValor);
@@ -1832,7 +1807,7 @@ tpAresta* get_edge_by_vertex(LIS_tppLista  vizinhos, tpVertice * v){
     static GRA_tpCondRet ExcluirAresta (GRA_tppGrafo grafo, tpVertice* v, tpVertice* u) {
          
         #ifdef _DEBUG
-            //CNT_CONTAR( "ExcluirAresta" ) ;
+            CNT_CONTAR( "ExcluirAresta" ) ;
         #endif
         
         RemoverAresta(v, u);//mexe só em v, ou deveria       
@@ -1842,13 +1817,13 @@ tpAresta* get_edge_by_vertex(LIS_tppLista  vizinhos, tpVertice * v){
         if (BFS(v,u) != 1) { //Estão em componentes distintas         
 
             #ifdef _DEBUG
-                //CNT_CONTAR( "ExcluirAresta-if0" ) ;
+                CNT_CONTAR( "ExcluirAresta-if0" ) ;
             #endif
 
             if (LIS_InserirElementoApos(grafo->componentes, u) != LIS_CondRetOK) {
 
                 #ifdef _DEBUG
-                    //CNT_CONTAR( "ExcluirAresta-if1" ) ;
+                    CNT_CONTAR( "ExcluirAresta-if1" ) ;
                 #endif
 
                 return GRA_CondRetFaltouMemoria;
@@ -1881,7 +1856,7 @@ tpAresta* get_edge_by_vertex(LIS_tppLista  vizinhos, tpVertice * v){
 
 
         #ifdef _DEBUG
-            //CNT_CONTAR( "BFS" ) ;
+            CNT_CONTAR( "BFS" ) ;
         #endif
 
         V = LIS_CriarLista(NULL); // dados são referenciados por outros, não devem ser apagados
@@ -1892,7 +1867,7 @@ tpAresta* get_edge_by_vertex(LIS_tppLista  vizinhos, tpVertice * v){
         while (LIS_NumeroDeElementos(Q) > 0) {
 
             #ifdef _DEBUG
-                //CNT_CONTAR( "BFS-while0" ) ;
+                CNT_CONTAR( "BFS-while0" ) ;
             #endif
 
             LIS_IrInicioLista(Q);
@@ -1901,7 +1876,7 @@ tpAresta* get_edge_by_vertex(LIS_tppLista  vizinhos, tpVertice * v){
             if (t == u) {
 
                 #ifdef _DEBUG
-                    //CNT_CONTAR( "BFS-if0" ) ;
+                    CNT_CONTAR( "BFS-if0" ) ;
                 #endif
 
                 achou = 1; 
@@ -1912,7 +1887,7 @@ tpAresta* get_edge_by_vertex(LIS_tppLista  vizinhos, tpVertice * v){
             do {
 
                 #ifdef _DEBUG
-                    //CNT_CONTAR( "BFS-while1" ) ;
+                    CNT_CONTAR( "BFS-while1" ) ;
                 #endif
 
                 a = (tpAresta *)LIS_ObterValor(arestas);
@@ -1924,14 +1899,14 @@ tpAresta* get_edge_by_vertex(LIS_tppLista  vizinhos, tpVertice * v){
                 do {
                     
                     #ifdef _DEBUG
-                        //CNT_CONTAR( "BFS-while2" ) ;
+                        CNT_CONTAR( "BFS-while2" ) ;
                     #endif
 
                     re = (tpVertice *)LIS_ObterValor(V);
                     if (re == NULL) {
 
                         #ifdef _DEBUG
-                            //CNT_CONTAR( "BFS-if1" ) ;
+                            CNT_CONTAR( "BFS-if1" ) ;
                         #endif
 
                         continue;
@@ -1939,7 +1914,7 @@ tpAresta* get_edge_by_vertex(LIS_tppLista  vizinhos, tpVertice * v){
                     if(re == s){
                      
                         #ifdef _DEBUG
-                            //CNT_CONTAR( "BFS-if2" ) ;
+                            CNT_CONTAR( "BFS-if2" ) ;
                         #endif
 
                         achou_V = 1;
@@ -1949,7 +1924,7 @@ tpAresta* get_edge_by_vertex(LIS_tppLista  vizinhos, tpVertice * v){
                 if (!achou_V) {
 
                     #ifdef _DEBUG
-                        //CNT_CONTAR( "BFS-if3" ) ;
+                        CNT_CONTAR( "BFS-if3" ) ;
                     #endif
 
                     if(LIS_InserirElementoApos(V, s)!= LIS_CondRetOK){ achou = -1;break;}
@@ -1979,7 +1954,7 @@ tpAresta* get_edge_by_vertex(LIS_tppLista  vizinhos, tpVertice * v){
         int i = 0; 
 
         #ifdef _DEBUG
-            //CNT_CONTAR( "ObterOrigem" ) ;
+            CNT_CONTAR( "ObterOrigem" ) ;
         #endif
         
         LIS_IrInicioLista(grafo->vertices);
@@ -1987,7 +1962,7 @@ tpAresta* get_edge_by_vertex(LIS_tppLista  vizinhos, tpVertice * v){
         if (LIS_ProcurarValor(origens, v) == LIS_CondRetOK) {
 
             #ifdef _DEBUG
-                //CNT_CONTAR( "ObterOrigem-if0" ) ;
+                CNT_CONTAR( "ObterOrigem-if0" ) ;
             #endif
 
             return v; //é a origem da própria componente
@@ -1995,7 +1970,7 @@ tpAresta* get_edge_by_vertex(LIS_tppLista  vizinhos, tpVertice * v){
         if(LIS_NumeroDeElementos(origens) > 0) {
 
             #ifdef _DEBUG
-                //CNT_CONTAR( "ObterOrigem-if1" ) ;
+                CNT_CONTAR( "ObterOrigem-if1" ) ;
             #endif
 
             us = (tpVertice**) malloc(LIS_NumeroDeElementos(origens) * sizeof(tpVertice*));
@@ -2005,14 +1980,14 @@ tpAresta* get_edge_by_vertex(LIS_tppLista  vizinhos, tpVertice * v){
             do {
 
                 #ifdef _DEBUG
-                    //CNT_CONTAR( "ObterOrigem-while0" ) ;
+                    CNT_CONTAR( "ObterOrigem-while0" ) ;
                 #endif
 
                 u = (tpVertice *)LIS_ObterValor(origens);
                 if(u == NULL){
                 
                     #ifdef _DEBUG
-                        //CNT_CONTAR( "ObterOrigem-if1" ) ;
+                        CNT_CONTAR( "ObterOrigem-if1" ) ;
                     #endif
 
                     break;
@@ -2025,13 +2000,13 @@ tpAresta* get_edge_by_vertex(LIS_tppLista  vizinhos, tpVertice * v){
             for ( ;i; i--) {
 
                 #ifdef _DEBUG
-                    //CNT_CONTAR( "ObterOrigem-for0" ) ;
+                    CNT_CONTAR( "ObterOrigem-for0" ) ;
                 #endif
 
                 if (BFS(us[i-1],v) == 1) {
 
                     #ifdef _DEBUG
-                        //CNT_CONTAR( "ObterOrigem-if2" ) ;
+                        CNT_CONTAR( "ObterOrigem-if2" ) ;
                     #endif
 
                     u =  us[i-1];
@@ -2055,7 +2030,7 @@ GRA_tpCondRet GRA_Verifica(GRA_tppGrafo g,int* Numerros){
     LIS_tpCondRet cr;
      
     #ifdef _DEBUG
-        //CNT_CONTAR( "GRA_Verifica" ) ;
+        CNT_CONTAR( "GRA_Verifica" ) ;
     #endif
     
     numerros = 0;
@@ -2074,21 +2049,21 @@ GRA_tpCondRet GRA_Verifica(GRA_tppGrafo g,int* Numerros){
     if(!(origens <= vertices)){
         
         #ifdef _DEBUG
-            //CNT_CONTAR( "GRA_Verifica-if0" ) ;
+            CNT_CONTAR( "GRA_Verifica-if0" ) ;
         #endif
 
         numerros++;
     }     
 
     #ifdef _DEBUG
-        //CNT_CONTAR( "GRA_Verifica-pr0" ) ;
+        CNT_CONTAR( "GRA_Verifica-pr0" ) ;
     #endif
 
     //#arestas <= #vertices ^ 2
     if(g->vertices != NULL && LIS_NumeroDeElementos(g->vertices) >= 1){        
         
         #ifdef _DEBUG
-            //CNT_CONTAR( "GRA_Verifica-if1" ) ;
+            CNT_CONTAR( "GRA_Verifica-if1" ) ;
         #endif
 
         listaV = g->vertices;
@@ -2097,47 +2072,47 @@ GRA_tpCondRet GRA_Verifica(GRA_tppGrafo g,int* Numerros){
         if (LIS_NumeroDeElementos(listaV) > 0) {      
 
             #ifdef _DEBUG
-                //CNT_CONTAR( "GRA_Verifica-if2" ) ;
+                CNT_CONTAR( "GRA_Verifica-if2" ) ;
             #endif
 
             do{        
 
                 #ifdef _DEBUG
-                    //CNT_CONTAR( "GRA_Verifica-while0" ) ;
+                    CNT_CONTAR( "GRA_Verifica-while0" ) ;
                 #endif
 
                 v = (tpVertice*)LIS_ObterValor(listaV);
                 if (v != NULL && v->pNode != NULL) {       
 
                     #ifdef _DEBUG
-                        //CNT_CONTAR( "GRA_Verifica-if3" ) ;
+                        CNT_CONTAR( "GRA_Verifica-if3" ) ;
                     #endif
 
                     arestas += LIS_NumeroDeElementos(v->pNode->arestas);
                 }
                         
                 #ifdef _DEBUG
-                    //CNT_CONTAR( "GRA_Verifica-pr1" ) ;
+                    CNT_CONTAR( "GRA_Verifica-pr1" ) ;
                 #endif
 
             }while(LIS_AvancarElementoCorrente(listaV,1) == LIS_CondRetOK);
                 
             #ifdef _DEBUG
-                //CNT_CONTAR( "GRA_Verifica-pr2" ) ;
+                CNT_CONTAR( "GRA_Verifica-pr2" ) ;
             #endif
 
             arestas = arestas/2;
             if (!(arestas <= vertices*vertices)) {
                         
                 #ifdef _DEBUG
-                    //CNT_CONTAR( "GRA_Verifica-if4" ) ;
+                    CNT_CONTAR( "GRA_Verifica-if4" ) ;
                 #endif
 
                 numerros++;
             }
                             
             #ifdef _DEBUG
-                //CNT_CONTAR( "GRA_Verifica-pr3" ) ;
+                CNT_CONTAR( "GRA_Verifica-pr3" ) ;
             #endif
             
             //todo vertice tem um node (todo vertice eh valido)
@@ -2148,14 +2123,14 @@ GRA_tpCondRet GRA_Verifica(GRA_tppGrafo g,int* Numerros){
             do {    
 
                 #ifdef _DEBUG
-                    //CNT_CONTAR( "GRA_Verifica-while1" ) ;
+                    CNT_CONTAR( "GRA_Verifica-while1" ) ;
                 #endif
 
                 v = (tpVertice*)LIS_ObterValor(listaV);
                 if (v->pNode == NULL) {        
 
                     #ifdef _DEBUG
-                        //CNT_CONTAR( "GRA_Verifica-if5" ) ;
+                        CNT_CONTAR( "GRA_Verifica-if5" ) ;
                     #endif
 
                     numerros++;
@@ -2163,7 +2138,7 @@ GRA_tpCondRet GRA_Verifica(GRA_tppGrafo g,int* Numerros){
                 }      
 
                 #ifdef _DEBUG
-                    //CNT_CONTAR( "GRA_Verifica-pr4" ) ;
+                    CNT_CONTAR( "GRA_Verifica-pr4" ) ;
                 #endif
 
                 listaA = v->pNode->arestas;
@@ -2171,7 +2146,7 @@ GRA_tpCondRet GRA_Verifica(GRA_tppGrafo g,int* Numerros){
                 // para cada vizinho
                 do{
                     #ifdef _DEBUG
-                        //CNT_CONTAR( "GRA_Verifica-while2" ) ;
+                        CNT_CONTAR( "GRA_Verifica-while2" ) ;
                     #endif
                     
                     ehPredecessor = -1;
@@ -2180,13 +2155,13 @@ GRA_tpCondRet GRA_Verifica(GRA_tppGrafo g,int* Numerros){
                     if(a != NULL) {
 
                         #ifdef _DEBUG
-                            //CNT_CONTAR( "GRA_Verifica-if6" ) ;
+                            CNT_CONTAR( "GRA_Verifica-if6" ) ;
                         #endif
 
                         if (a->pVizinho == NULL) { // Aresta aponta pra vizinho inexistente
 
                             #ifdef _DEBUG
-                                //CNT_CONTAR( "GRA_Verifica-if7" ) ;
+                                CNT_CONTAR( "GRA_Verifica-if7" ) ;
                             #endif
 
                             numerros++;
@@ -2195,7 +2170,7 @@ GRA_tpCondRet GRA_Verifica(GRA_tppGrafo g,int* Numerros){
                         else if(CED_ObterTamanhoValor(a->pVizinho) == -1) {
                             
                             #ifdef _DEBUG
-                                //CNT_CONTAR( "GRA_Verifica-else0" ) ;
+                                CNT_CONTAR( "GRA_Verifica-else0" ) ;
                             #endif
 
                             numerros++;
@@ -2204,14 +2179,14 @@ GRA_tpCondRet GRA_Verifica(GRA_tppGrafo g,int* Numerros){
                         else if (a->pVizinho->pNode == NULL) { //Vizinho apontado pela aresta está quebrado    
                             
                             #ifdef _DEBUG
-                                //CNT_CONTAR( "GRA_Verifica-else1" ) ;
+                                CNT_CONTAR( "GRA_Verifica-else1" ) ;
                             #endif
 
                             numerros++;
                         }      
 
                         #ifdef _DEBUG
-                            //CNT_CONTAR( "GRA_Verifica-pr5" ) ;
+                            CNT_CONTAR( "GRA_Verifica-pr5" ) ;
                         #endif
 
                         // v é predecessor de a->pVizinho ? 
@@ -2220,21 +2195,21 @@ GRA_tpCondRet GRA_Verifica(GRA_tppGrafo g,int* Numerros){
                         do{
 
                             #ifdef _DEBUG
-                                //CNT_CONTAR( "GRA_Verifica-while3" ) ;
+                                CNT_CONTAR( "GRA_Verifica-while3" ) ;
                             #endif
 
                             predecessor = (tpAresta*)LIS_ObterValor(vizinhosAux);
                             if(predecessor->pVizinho->id == v->id) {
    
                                 #ifdef _DEBUG
-                                    //CNT_CONTAR( "GRA_Verifica-if8" ) ;
+                                    CNT_CONTAR( "GRA_Verifica-if8" ) ;
                                 #endif
 
                                 ehPredecessor = 1;
                             }
                             
                         #ifdef _DEBUG
-                            //CNT_CONTAR( "GRA_Verifica-pr6" ) ;
+                            CNT_CONTAR( "GRA_Verifica-pr6" ) ;
                         #endif
 
                         }while(LIS_AvancarElementoCorrente(vizinhosAux,1) == LIS_CondRetOK);
@@ -2242,40 +2217,40 @@ GRA_tpCondRet GRA_Verifica(GRA_tppGrafo g,int* Numerros){
                         if(ehPredecessor == -1){
                                
                             #ifdef _DEBUG
-                                //CNT_CONTAR( "GRA_Verifica-if9" ) ;
+                                CNT_CONTAR( "GRA_Verifica-if9" ) ;
                             #endif
 
                             numerros++;
                         }
 
                     #ifdef _DEBUG
-                        //CNT_CONTAR( "GRA_Verifica-pr7" ) ;
+                        CNT_CONTAR( "GRA_Verifica-pr7" ) ;
                     #endif
 
                     } // FIM EhPredecessor
 
                 #ifdef _DEBUG
-                    //CNT_CONTAR( "GRA_Verifica-pr8" ) ;
+                    CNT_CONTAR( "GRA_Verifica-pr8" ) ;
                 #endif
 
                 } while(LIS_AvancarElementoCorrente(listaA,1) == LIS_CondRetOK);
                 // FIM para cada vizinho
 
             #ifdef _DEBUG
-                //CNT_CONTAR( "GRA_Verifica-pr9" ) ;
+                CNT_CONTAR( "GRA_Verifica-pr9" ) ;
             #endif
 
             } while(LIS_AvancarElementoCorrente(listaV,1) == LIS_CondRetOK);
             // FIM para cada vertice      
 
         #ifdef _DEBUG
-            //CNT_CONTAR( "GRA_Verifica-pr10" ) ;
+            CNT_CONTAR( "GRA_Verifica-pr10" ) ;
         #endif
 
         }
                                     
     #ifdef _DEBUG
-        //CNT_CONTAR( "GRA_Verifica-pr11" ) ;
+        CNT_CONTAR( "GRA_Verifica-pr11" ) ;
     #endif
 
     }
@@ -2288,7 +2263,7 @@ GRA_tpCondRet GRA_Verifica(GRA_tppGrafo g,int* Numerros){
         do{
 
             #ifdef _DEBUG
-                //CNT_CONTAR( "GRA_Verifica-while4" ) ;
+                CNT_CONTAR( "GRA_Verifica-while4" ) ;
             #endif
 
             o1 = (tpVertice*)LIS_ObterValor(g->componentes);
@@ -2296,14 +2271,14 @@ GRA_tpCondRet GRA_Verifica(GRA_tppGrafo g,int* Numerros){
         }while(LIS_AvancarElementoCorrente(g->componentes,1) == LIS_CondRetOK);
                                     
         #ifdef _DEBUG
-            //CNT_CONTAR( "GRA_Verifica-pr12" ) ;
+            CNT_CONTAR( "GRA_Verifica-pr12" ) ;
         #endif
 
         LIS_IrInicioLista(g->componentes);
         do{
 
             #ifdef _DEBUG
-                //CNT_CONTAR( "GRA_Verifica-while5" ) ;
+                CNT_CONTAR( "GRA_Verifica-while5" ) ;
             #endif
 
             o1 = (tpVertice*)LIS_ObterValor(g->componentes);
@@ -2317,66 +2292,66 @@ GRA_tpCondRet GRA_Verifica(GRA_tppGrafo g,int* Numerros){
             if (LIS_NumeroDeElementos(listaO) > 0) {
 
                 #ifdef _DEBUG
-                    //CNT_CONTAR( "GRA_Verifica-if10" ) ;
+                    CNT_CONTAR( "GRA_Verifica-if10" ) ;
                 #endif
 
                 LIS_IrInicioLista(listaO);
                 do {
 
                     #ifdef _DEBUG
-                        //CNT_CONTAR( "GRA_Verifica-while6" ) ;
+                        CNT_CONTAR( "GRA_Verifica-while6" ) ;
                     #endif
 
                     o2 = (tpVertice*)LIS_ObterValor(listaO);
                     if(o1 != o2){
 
                         #ifdef _DEBUG
-                            //CNT_CONTAR( "GRA_Verifica-if11" ) ;
+                            CNT_CONTAR( "GRA_Verifica-if11" ) ;
                         #endif
 
                         numerros++;
                     }
 
                     #ifdef _DEBUG
-                        //CNT_CONTAR( "GRA_Verifica-pr13" ) ;
+                        CNT_CONTAR( "GRA_Verifica-pr13" ) ;
                     #endif
                     
                     //as componentes conexas realmente sao conexas(não existe um caminho de uma origem para outra qualquer)
                     if(GRA_BuscarCaminho(g,o1->id,o2->id,&caminho) == GRA_CondRetNaoEhConexo){
                         
                         #ifdef _DEBUG
-                            //CNT_CONTAR( "GRA_Verifica-if14" ) ;
+                            CNT_CONTAR( "GRA_Verifica-if14" ) ;
                         #endif
                     
                         numerros++;
                     }         
 
                     #ifdef _DEBUG
-                        //CNT_CONTAR( "GRA_Verifica-pr14" ) ;
+                        CNT_CONTAR( "GRA_Verifica-pr14" ) ;
                     #endif
 
                 } while(LIS_AvancarElementoCorrente(listaO,1) == LIS_CondRetOK);
                                                     
             #ifdef _DEBUG
-                //CNT_CONTAR( "GRA_Verifica-pr15" ) ;
+                CNT_CONTAR( "GRA_Verifica-pr15" ) ;
             #endif
 
             }   
 
         #ifdef _DEBUG
-            //CNT_CONTAR( "GRA_Verifica-pr16" ) ;
+            CNT_CONTAR( "GRA_Verifica-pr16" ) ;
         #endif
 
         }while(LIS_AvancarElementoCorrente(g->componentes,1) == LIS_CondRetOK);
 
     #ifdef _DEBUG
-        //CNT_CONTAR( "GRA_Verifica-pr17" ) ;
+        CNT_CONTAR( "GRA_Verifica-pr17" ) ;
     #endif
 
     }
 
     #ifdef _DEBUG
-        //CNT_CONTAR( "GRA_Verifica-pr18" ) ;
+        CNT_CONTAR( "GRA_Verifica-pr18" ) ;
     #endif 
 
     *Numerros = numerros;
@@ -2442,7 +2417,6 @@ GRA_tpCondRet GRA_Deturpa(GRA_tppGrafo g, int acao){
     if( acao == 8 ) { //destaca vértice do grafo sem liberá-lo com free 
 
         LIS_EsvaziarLista(v->pNode->arestas);
-        CED_MarcarEspacoNaoAtivo(v);
     }
     if( acao == 9 ) { //atribui NULL ao ponteiro corrente
         v = NULL;

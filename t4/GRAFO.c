@@ -187,6 +187,12 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
             pGrafo->componentes = l_componente;
             pGrafo->ExcluirValor = ExcluirValor ;
             pGrafo->corrente = -1;
+#ifdef _DEBUG
+            CED_MarcarEspacoAtivo(pGrafo);
+            pGrafo->numVertice = 0;
+            pGrafo->tam = 0;
+#endif
+
             return pGrafo;
      } 
      /* Fim função: GRA  &Criar grafo */
@@ -242,6 +248,12 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         /* Criar o Vertice antes */
         
         pElem = CriarVertice( pGrafo, pValor, id ) ;
+
+#ifdef _DEBUG
+        pElem->pGrafo = pGrafo;
+        pElem->tam = CED_ObterTamanhoValor(pValor);
+        pElem->tipo = CED_ObterTipoEspaco(pValor);
+#endif
         
         if ( pElem == NULL ) {
             return GRA_CondRetFaltouMemoria ;
@@ -256,6 +268,10 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
             pGrafo->corrente = id;
         }
         LIS_NumeroDeElementos(pElem->pNode->arestas);
+#ifdef _DEBUG
+        (pGrafo->numVertice)++;
+        pGrafo->tam += pElem->tam;
+#endif
         return GRA_CondRetOK ;
      } 
      /* Fim função: GRA  &Inserir vertice */
@@ -326,6 +342,9 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
                 LIS_ProcurarValor(pGrafo->componentes, origem1);
                 LIS_ExcluirElemento(pGrafo->componentes);
             }
+#ifdef _DEBUG
+            CED_MarcarEspacoAtivo(pAresta);
+#endif
 
             return GRA_CondRetOK;
         } 
@@ -541,7 +560,12 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
         if (pVertice == NULL) {
             return GRA_CondRetNaoEhVertice;
         }
-        
+#ifdef _DEBUG
+        pGrafo->tam -= pVertice->tam;
+        pVertice->tipo = CED_ObterTipoEspaco(pDado);
+        pVertice->tam = CED_ObterTamanhoValor(pDado);
+        pGrafo->tam += pVertice->tam;
+#endif        
         pVertice->pNode->pValor = pDado;
             
         return GRA_CondRetOK;
@@ -1543,6 +1567,7 @@ GRA_tpCondRet GRA_Deturpa(GRA_tppGrafo g, int acao){
     if( acao == 8 ) { //destaca vértice do grafo sem liberá-lo com free 
 
         LIS_EsvaziarLista(v->pNode->arestas);
+        CED_MarcarEspacoNaoAtivo(v);
     }
     if( acao == 9 ) { //atribui NULL ao ponteiro corrente
         v = NULL;

@@ -54,6 +54,11 @@
      typedef struct tpVertice_ {
         tpNode * pNode ;
         int id;
+#ifdef _DEBUG
+        int tipo;
+        GRA_tppGrafo pGrafo;
+        int tam;
+#endif
                              /* Ponteiro para a cabeça de nó */      
      } tpVertice ;
 
@@ -90,6 +95,11 @@
         LIS_tppLista componentes;
      
         void ( * ExcluirValor ) ( void * pValor ) ;
+#ifdef _DEBUG
+        int numVertice;
+        int tam;
+#endif                
+                
                  /* Ponteiro para a função de destruição do valor contido em um elemento */
      } GRA_tpGrafo;
 
@@ -1357,13 +1367,17 @@ tpAresta* get_edge_by_vertex(LIS_tppLista  vizinhos, tpVertice * v){
 
 #ifdef _DEBUG
 
-GRA_tpCondRet GRA_Verifica(GRA_tppGrafo g){
+#define  
+GRA_tpCondRet GRA_Verifica(GRA_tppGrafo g,int* Numerros){
+    int numerros;
     int vertices, arestas, origens, i;
     tpVertice * v,* o1,* o2;
     tpAresta * a;
     LIS_tppLista listaV, listaA, listaO, caminho;
     LIS_tpCondRet cr;
     
+    numerros = 0;
+
     // listas auxiliares / V -> vertices / A -> arestas / O -> origens
     listaV = LIS_CriarLista(NULL);
     listaA = LIS_CriarLista(NULL);
@@ -1372,7 +1386,7 @@ GRA_tpCondRet GRA_Verifica(GRA_tppGrafo g){
     //#origens <= #vertices
     vertices = LIS_NumeroDeElementos(g->vertices);
     origens = LIS_NumeroDeElementos(g->componentes);
-    assert(origens <= vertices);
+    if(origens <= vertices){ numerros++; }
 
     //#arestas <= #vertices ^ 2
     if(g->vertices != NULL && LIS_NumeroDeElementos(g->vertices) >= 1){
@@ -1384,19 +1398,19 @@ GRA_tpCondRet GRA_Verifica(GRA_tppGrafo g){
             if(v != NULL) arestas += LIS_NumeroDeElementos(v->pNode->arestas);
         }while(LIS_AvancarElementoCorrente(listaV,1) == LIS_CondRetOK);
         arestas = arestas/2;
-        assert(arestas <= vertices*vertices);
+        if(arestas <= vertices*vertices){ numerros++; }
         
         //todo vertice tem um node (todo vertice eh valido)
         //toda aresta liga dois vertices validos
         LIS_IrInicioLista(listaV);
         do{
             v = (tpVertice*)LIS_ObterValor(listaV);
-            assert(v->pNode != NULL);
+            if(v->pNode != NULL){ numerros++; }
             listaA = v->pNode->arestas;
             LIS_IrInicioLista(listaA);
             do{
                 a = (tpAresta*)LIS_ObterValor(listaA);
-                if(a != NULL) assert(a->pVizinho->pNode != NULL);
+                if(a != NULL) if(a->pVizinho->pNode != NULL){ numerros++; }
             }while(LIS_AvancarElementoCorrente(listaA,1) == LIS_CondRetOK);
         }while(LIS_AvancarElementoCorrente(listaV,1) == LIS_CondRetOK);
 
@@ -1425,10 +1439,10 @@ GRA_tpCondRet GRA_Verifica(GRA_tppGrafo g){
             LIS_IrInicioLista(listaO);
             do {
                 o2 = (tpVertice*)LIS_ObterValor(listaO);
-                assert(o1 != o2);
+                if(o1 != o2){ numerros++; }
                 
                 //as componentes conexas realmente sao conexas(não existe um caminho de uma origem para outra qualquer)
-                assert(GRA_BuscarCaminho(g,o1->id,o2->id,&caminho) == GRA_CondRetNaoEhConexo);
+                if(GRA_BuscarCaminho(g,o1->id,o2->id,&caminho) == GRA_CondRetNaoEhConexo){ numerros++; }
 
             } while(LIS_AvancarElementoCorrente(listaO,1) == LIS_CondRetOK);
         }while(LIS_AvancarElementoCorrente(g->componentes,1) == LIS_CondRetOK);

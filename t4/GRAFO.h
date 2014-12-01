@@ -722,6 +722,7 @@ GRA_tpCondRet GRA_ObterVizinhosCorrente(GRA_tppGrafo pGrafo, LIS_tppLista* pList
 *   
 *  $EP Parâmetros
 *     pGrafo - ponteiro para o grafo
+*     Numerros - a quantidade de erros
 *
 *  $FV Valor retornado
 *     GRA_CondRetOK	- O grafo é válido
@@ -731,7 +732,7 @@ GRA_tpCondRet GRA_ObterVizinhosCorrente(GRA_tppGrafo pGrafo, LIS_tppLista* pList
 *  Assertivas de Saida: 
 *
 ***********************************************************************/
-  GRA_tpCondRet GRA_Verifica( GRA_tppGrafo pGrafo ) ; 
+  GRA_tpCondRet GRA_Verifica( GRA_tppGrafo pGrafo, int* Numerros) ; 
 
 /***********************************************************************
 *

@@ -152,7 +152,7 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
       int  inxGrafo     = -1 ;
     #ifdef _DEBUG
       int acao = -1;
-      int numErrosEsperados = 0;
+      int estadoErrosEsperado = 0;
       int numErros = 0;
     #endif 
       int i ;
@@ -694,7 +694,7 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
 
           else if (strcmp( ComandoTeste , VERIFICA ) == 0) {
             TST_tpCondRet retorno;
-            NumLidos = LER_LerParametros( "iii" , &inxGrafo , &numErrosEsperados, &CondRetEsperada ) ;
+            NumLidos = LER_LerParametros( "iii" , &inxGrafo , &estadoErrosEsperado, &CondRetEsperada ) ;
             if (( NumLidos != 3 ) || !VerificarInx(inxGrafo)) {
                return TST_CondRetParm ;
             } /* if */           
@@ -705,10 +705,11 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
             if (retorno != TST_CondOK) {
               return retorno;
             }
-            return TST_CompararInt( numErrosEsperados , numErros ,
+            return TST_CompararInt( estadoErrosEsperado , numErros > 0 ,
                                     "Numero de Erros diferente do esperado." );
           } /* fim ativa: Testar GRA Mudar Corrente */ 
         #endif
+
         return TST_CondRetNaoConhec ;
     } 
 /*****  Código das funções encapsuladas no módulo  *****/

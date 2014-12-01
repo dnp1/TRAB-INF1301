@@ -52,6 +52,12 @@ static const char ALT_VAL_CORR_CMD        [ ] = "=altvalcorr"     ;
 static const char BUSCA_CAM_CORR_CMD      [ ] = "=buscacamcorr"   ;
 static const char IR_VIZ_CORR_CMD         [ ] = "=irvizcorr"      ;
 static const char MUDAR_CORR_CMD          [ ] = "=mudarcorr"      ;
+#ifdef DEBUG
+static const char DETURPA                 [ ] = "=deturpa"        ;
+static const char VERIFICA                [ ] = "=verifica"       ;
+#endif
+
+
 
 int estaInicializado = 0 ;
 
@@ -121,6 +127,8 @@ int corrente[ DIM_VT_GRAFOS ];
 *     =buscacamcorr           inxGrafo  v1  CondRetEsp
 *     =irvizcorr              inxGrafo  v1  CondRetEsp
 *     =mudarcorr              inxGrafo  v1  CondRetEsp
+*     =deturpa                inxGrafo  acao  CondRetEsp
+*     =verifica               inxGrafo  CondRetEsp
 *
 ***********************************************************************/
 #define TAMANHO 256
@@ -142,7 +150,9 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
 
       int  NumLidos      = -1 ;
       int  inxGrafo     = -1 ;
-
+    #ifdef DEBUG
+      int acao = -1;
+    #endif 
       int i ;
       int id, _id , idEsp , idAresta;
       int id2;
@@ -667,8 +677,32 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
          } /* fim ativa: Testar GRA Mudar Corrente */        
                   
                   
-         return TST_CondRetNaoConhec ;
-    }     
+
+        #ifdef DEBUG
+          else if (strcmp( ComandoTeste , DETURPA ) == 0) {
+            NumLidos = LER_LerParametros( "iii" , &inxGrafo , &acao , &CondRetEsperada ) ;
+            if (( NumLidos != 3 ) || !VerificarInx(inxGrafo)) {
+               return TST_CondRetParm ;
+            } /* if */           
+
+            CondRetObtida = GRA_Deturpa( vtRefGrafos[ inxGrafo ] , acao ) ;           
+            return TST_CompararInt( CondRetEsperada , CondRetObtida ,
+                                    "Retorno errado ao deturpar o Grafo.." );
+          } /* fim ativa: Testar GRA Deturpa Corrente */ 
+
+          else if (strcmp( ComandoTeste , VERIFICA ) == 0) {
+            NumLidos = LER_LerParametros( "ii" , &inxGrafo , &CondRetEsperada ) ;
+            if (( NumLidos != 2 ) || !VerificarInx(inxGrafo)) {
+               return TST_CondRetParm ;
+            } /* if */           
+
+            CondRetObtida = GRA_Verifica( vtRefGrafos[ inxGrafo ] ) ;           
+            return TST_CompararInt( CondRetEsperada , CondRetObtida ,
+                                    "Retorno errado ao verificar Grafo." );
+          } /* fim ativa: Testar GRA Mudar Corrente */ 
+        #endif
+        return TST_CondRetNaoConhec ;
+    } 
 /*****  Código das funções encapsuladas no módulo  *****/
 
 /***********************************************************************

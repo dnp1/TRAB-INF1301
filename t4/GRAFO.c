@@ -1400,11 +1400,12 @@ GRA_tpCondRet GRA_Verifica(GRA_tppGrafo g){
 
          
     }
-    /*
+
     if(g->componentes != NULL && LIS_NumeroDeElementos(g->componentes) > 1){
         //nao existem duas origens iguais
 
         //copia origens para lista auxiliar
+        LIS_IrInicioLista(g->componentes);
         do{
             o1 = (tpVertice*)LIS_ObterValor(g->componentes);
             LIS_InserirElementoApos(listaO,(void*)o1);
@@ -1413,7 +1414,8 @@ GRA_tpCondRet GRA_Verifica(GRA_tppGrafo g){
         LIS_IrInicioLista(g->componentes);
         do{
             o1 = (tpVertice*)LIS_ObterValor(g->componentes);
-        
+            
+            LIS_IrInicioLista(listaO);
             // busca origem na lista auxiliar e remove
             LIS_ProcurarValor(listaO,(void*)o1);
             LIS_ExcluirElemento(listaO);
@@ -1428,15 +1430,7 @@ GRA_tpCondRet GRA_Verifica(GRA_tppGrafo g){
 
             }while(LIS_AvancarElementoCorrente(listaO,1) == LIS_CondRetOK);
         }while(LIS_AvancarElementoCorrente(g->componentes,1) == LIS_CondRetOK);
-        
-        
-        do{
-            listaO = g->componentes;
-        }while(LIS_AvancarElementoCorrente(g->componentes,1) == LIS_CondRetOK);
     }
-
-    //as componentes conexas nao possuem pontes entre si(nao da p chegar em um vertice saindo de um vertice de outra componente)(nao existem duas origens na mesma componente)
-    */
 
     return GRA_CondRetOK;
 } 

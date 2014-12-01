@@ -1447,7 +1447,7 @@ GRA_tpCondRet GRA_Verifica(GRA_tppGrafo g,int* Numerros){
             } while(LIS_AvancarElementoCorrente(listaO,1) == LIS_CondRetOK);
         }while(LIS_AvancarElementoCorrente(g->componentes,1) == LIS_CondRetOK);
     }
-
+    *Numerros = numerros;
     return GRA_CondRetOK;
 } 
 

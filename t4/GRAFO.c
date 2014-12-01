@@ -2029,9 +2029,7 @@ GRA_tpCondRet GRA_Verifica(GRA_tppGrafo g,int* Numerros){
     LIS_tppLista listaV, listaA, listaO, caminho, vizinhosAux;
     LIS_tpCondRet cr;
      
-    #ifdef _DEBUG
-        CNT_CONTAR( "GRA_Verifica" ) ;
-    #endif
+    CNT_CONTAR( "GRA_Verifica" ) ;
     
     numerros = 0;
     ehPredecessor = -1;
@@ -2048,72 +2046,52 @@ GRA_tpCondRet GRA_Verifica(GRA_tppGrafo g,int* Numerros){
     origens = LIS_NumeroDeElementos(g->componentes);
     if(!(origens <= vertices)){
         
-        #ifdef _DEBUG
-            CNT_CONTAR( "GRA_Verifica-if0" ) ;
-        #endif
-
+        CNT_CONTAR( "GRA_Verifica-if0" ) ;
+        
         numerros++;
     }     
 
-    #ifdef _DEBUG
-        CNT_CONTAR( "GRA_Verifica-pr0" ) ;
-    #endif
-
+    CNT_CONTAR( "GRA_Verifica-pr0" ) ;
+    
     //#arestas <= #vertices ^ 2
     if(g->vertices != NULL && LIS_NumeroDeElementos(g->vertices) >= 1){        
         
-        #ifdef _DEBUG
-            CNT_CONTAR( "GRA_Verifica-if1" ) ;
-        #endif
-
+        CNT_CONTAR( "GRA_Verifica-if1" ) ;
+        
         listaV = g->vertices;
         LIS_IrInicioLista(listaV);
         arestas = 0;
         if (LIS_NumeroDeElementos(listaV) > 0) {      
 
-            #ifdef _DEBUG
-                CNT_CONTAR( "GRA_Verifica-if2" ) ;
-            #endif
-
+            CNT_CONTAR( "GRA_Verifica-if2" ) ;
+            
             do{        
 
-                #ifdef _DEBUG
-                    CNT_CONTAR( "GRA_Verifica-while0" ) ;
-                #endif
-
+                CNT_CONTAR( "GRA_Verifica-while0" ) ;
+                
                 v = (tpVertice*)LIS_ObterValor(listaV);
                 if (v != NULL && v->pNode != NULL) {       
 
-                    #ifdef _DEBUG
-                        CNT_CONTAR( "GRA_Verifica-if3" ) ;
-                    #endif
-
+                    CNT_CONTAR( "GRA_Verifica-if3" ) ;
+                    
                     arestas += LIS_NumeroDeElementos(v->pNode->arestas);
                 }
-                        
-                #ifdef _DEBUG
-                    CNT_CONTAR( "GRA_Verifica-pr1" ) ;
-                #endif
-
+                    
+                CNT_CONTAR( "GRA_Verifica-pr1" ) ;
+                
             }while(LIS_AvancarElementoCorrente(listaV,1) == LIS_CondRetOK);
                 
-            #ifdef _DEBUG
-                CNT_CONTAR( "GRA_Verifica-pr2" ) ;
-            #endif
-
+            CNT_CONTAR( "GRA_Verifica-pr2" ) ;
+            
             arestas = arestas/2;
             if (!(arestas <= vertices*vertices)) {
-                        
-                #ifdef _DEBUG
-                    CNT_CONTAR( "GRA_Verifica-if4" ) ;
-                #endif
-
+                     
+                CNT_CONTAR( "GRA_Verifica-if4" ) ;
+                
                 numerros++;
             }
-                            
-            #ifdef _DEBUG
-                CNT_CONTAR( "GRA_Verifica-pr3" ) ;
-            #endif
+                   
+            CNT_CONTAR( "GRA_Verifica-pr3" ) ;
             
             //todo vertice tem um node (todo vertice eh valido)
             //toda aresta liga dois vertices validos
@@ -2122,137 +2100,102 @@ GRA_tpCondRet GRA_Verifica(GRA_tppGrafo g,int* Numerros){
             LIS_IrInicioLista(listaV);
             do {    
 
-                #ifdef _DEBUG
-                    CNT_CONTAR( "GRA_Verifica-while1" ) ;
-                #endif
-
+                CNT_CONTAR( "GRA_Verifica-while1" ) ;
+                
                 v = (tpVertice*)LIS_ObterValor(listaV);
                 if (v->pNode == NULL) {        
 
-                    #ifdef _DEBUG
-                        CNT_CONTAR( "GRA_Verifica-if5" ) ;
-                    #endif
-
+                    CNT_CONTAR( "GRA_Verifica-if5" ) ;
+                    
                     numerros++;
                     break; 
                 }      
 
-                #ifdef _DEBUG
-                    CNT_CONTAR( "GRA_Verifica-pr4" ) ;
-                #endif
-
+                CNT_CONTAR( "GRA_Verifica-pr4" ) ;
+                
                 listaA = v->pNode->arestas;
                 LIS_IrInicioLista(listaA);
                 // para cada vizinho
                 do{
-                    #ifdef _DEBUG
-                        CNT_CONTAR( "GRA_Verifica-while2" ) ;
-                    #endif
+                    
+                    CNT_CONTAR( "GRA_Verifica-while2" ) ;
                     
                     ehPredecessor = -1;
 
                     a = (tpAresta*)LIS_ObterValor(listaA);
                     if(a != NULL) {
 
-                        #ifdef _DEBUG
-                            CNT_CONTAR( "GRA_Verifica-if6" ) ;
-                        #endif
-
+                        CNT_CONTAR( "GRA_Verifica-if6" ) ;
+                        
                         if (a->pVizinho == NULL) { // Aresta aponta pra vizinho inexistente
 
-                            #ifdef _DEBUG
-                                CNT_CONTAR( "GRA_Verifica-if7" ) ;
-                            #endif
-
+                            CNT_CONTAR( "GRA_Verifica-if7" ) ;
+                            
                             numerros++;
                         } 
-                        /*
+                        
                         else if(CED_ObterTamanhoValor(a->pVizinho) == -1) {
                             
-                            #ifdef _DEBUG
-                                CNT_CONTAR( "GRA_Verifica-else0" ) ;
-                            #endif
-
+                            CNT_CONTAR( "GRA_Verifica-else0" ) ;
+                            
                             numerros++;
                         }
-                        */
+                        
                         else if (a->pVizinho->pNode == NULL) { //Vizinho apontado pela aresta está quebrado    
                             
-                            #ifdef _DEBUG
-                                CNT_CONTAR( "GRA_Verifica-else1" ) ;
-                            #endif
-
+                            CNT_CONTAR( "GRA_Verifica-else1" ) ;
+                            
                             numerros++;
                         }      
 
-                        #ifdef _DEBUG
-                            CNT_CONTAR( "GRA_Verifica-pr5" ) ;
-                        #endif
-
+                        CNT_CONTAR( "GRA_Verifica-pr5" ) ;
+                        
                         // v é predecessor de a->pVizinho ? 
                         vizinhosAux = a->pVizinho->pNode->arestas;
                         LIS_IrInicioLista(vizinhosAux);
                         do{
 
-                            #ifdef _DEBUG
-                                CNT_CONTAR( "GRA_Verifica-while3" ) ;
-                            #endif
-
+                            CNT_CONTAR( "GRA_Verifica-while3" ) ;
+                            
                             predecessor = (tpAresta*)LIS_ObterValor(vizinhosAux);
                             if(predecessor->pVizinho->id == v->id) {
    
-                                #ifdef _DEBUG
-                                    CNT_CONTAR( "GRA_Verifica-if8" ) ;
-                                #endif
-
+                                CNT_CONTAR( "GRA_Verifica-if8" ) ;
+                                
                                 ehPredecessor = 1;
                             }
                             
-                        #ifdef _DEBUG
-                            CNT_CONTAR( "GRA_Verifica-pr6" ) ;
-                        #endif
-
+                        CNT_CONTAR( "GRA_Verifica-pr6" ) ;
+                        
                         }while(LIS_AvancarElementoCorrente(vizinhosAux,1) == LIS_CondRetOK);
 
                         if(ehPredecessor == -1){
                                
-                            #ifdef _DEBUG
-                                CNT_CONTAR( "GRA_Verifica-if9" ) ;
-                            #endif
-
+                            CNT_CONTAR( "GRA_Verifica-if9" ) ;
+                            
                             numerros++;
                         }
 
-                    #ifdef _DEBUG
-                        CNT_CONTAR( "GRA_Verifica-pr7" ) ;
-                    #endif
-
+                    CNT_CONTAR( "GRA_Verifica-pr7" ) ;
+                    
                     } // FIM EhPredecessor
 
-                #ifdef _DEBUG
-                    CNT_CONTAR( "GRA_Verifica-pr8" ) ;
-                #endif
-
+                CNT_CONTAR( "GRA_Verifica-pr8" ) ;
+                
                 } while(LIS_AvancarElementoCorrente(listaA,1) == LIS_CondRetOK);
                 // FIM para cada vizinho
 
-            #ifdef _DEBUG
-                CNT_CONTAR( "GRA_Verifica-pr9" ) ;
-            #endif
-
+            CNT_CONTAR( "GRA_Verifica-pr9" ) ;
+            
             } while(LIS_AvancarElementoCorrente(listaV,1) == LIS_CondRetOK);
             // FIM para cada vertice      
 
-        #ifdef _DEBUG
-            CNT_CONTAR( "GRA_Verifica-pr10" ) ;
-        #endif
-
+        CNT_CONTAR( "GRA_Verifica-pr10" ) ;
+        
         }
-                                    
-    #ifdef _DEBUG
-        CNT_CONTAR( "GRA_Verifica-pr11" ) ;
-    #endif
-
+            
+    CNT_CONTAR( "GRA_Verifica-pr11" ) ;
+    
     }
 
     if(g->componentes != NULL && LIS_NumeroDeElementos(g->componentes) > 1){
@@ -2262,25 +2205,19 @@ GRA_tpCondRet GRA_Verifica(GRA_tppGrafo g,int* Numerros){
         LIS_IrInicioLista(g->componentes);
         do{
 
-            #ifdef _DEBUG
-                CNT_CONTAR( "GRA_Verifica-while4" ) ;
-            #endif
-
+            CNT_CONTAR( "GRA_Verifica-while4" ) ;
+            
             o1 = (tpVertice*)LIS_ObterValor(g->componentes);
             LIS_InserirElementoApos(listaO,(void*)o1);
         }while(LIS_AvancarElementoCorrente(g->componentes,1) == LIS_CondRetOK);
-                                    
-        #ifdef _DEBUG
-            CNT_CONTAR( "GRA_Verifica-pr12" ) ;
-        #endif
-
+                       
+        CNT_CONTAR( "GRA_Verifica-pr12" ) ;
+        
         LIS_IrInicioLista(g->componentes);
         do{
 
-            #ifdef _DEBUG
-                CNT_CONTAR( "GRA_Verifica-while5" ) ;
-            #endif
-
+            CNT_CONTAR( "GRA_Verifica-while5" ) ;
+            
             o1 = (tpVertice*)LIS_ObterValor(g->componentes);
             
             LIS_IrInicioLista(listaO);
@@ -2291,69 +2228,49 @@ GRA_tpCondRet GRA_Verifica(GRA_tppGrafo g,int* Numerros){
             // Se não há outra componente, acabamos aqui; Se não
             if (LIS_NumeroDeElementos(listaO) > 0) {
 
-                #ifdef _DEBUG
-                    CNT_CONTAR( "GRA_Verifica-if10" ) ;
-                #endif
-
+                CNT_CONTAR( "GRA_Verifica-if10" ) ;
+                
                 LIS_IrInicioLista(listaO);
                 do {
 
-                    #ifdef _DEBUG
-                        CNT_CONTAR( "GRA_Verifica-while6" ) ;
-                    #endif
-
+                    CNT_CONTAR( "GRA_Verifica-while6" ) ;
+                    
                     o2 = (tpVertice*)LIS_ObterValor(listaO);
                     if(o1 != o2){
 
-                        #ifdef _DEBUG
-                            CNT_CONTAR( "GRA_Verifica-if11" ) ;
-                        #endif
-
+                        CNT_CONTAR( "GRA_Verifica-if11" ) ;
+                        
                         numerros++;
                     }
 
-                    #ifdef _DEBUG
-                        CNT_CONTAR( "GRA_Verifica-pr13" ) ;
-                    #endif
+                    CNT_CONTAR( "GRA_Verifica-pr13" ) ;
                     
                     //as componentes conexas realmente sao conexas(não existe um caminho de uma origem para outra qualquer)
                     if(GRA_BuscarCaminho(g,o1->id,o2->id,&caminho) == GRA_CondRetNaoEhConexo){
                         
-                        #ifdef _DEBUG
-                            CNT_CONTAR( "GRA_Verifica-if14" ) ;
-                        #endif
-                    
+                        CNT_CONTAR( "GRA_Verifica-if14" ) ;
+                        
                         numerros++;
                     }         
 
-                    #ifdef _DEBUG
-                        CNT_CONTAR( "GRA_Verifica-pr14" ) ;
-                    #endif
-
+                    CNT_CONTAR( "GRA_Verifica-pr14" ) ;
+                    
                 } while(LIS_AvancarElementoCorrente(listaO,1) == LIS_CondRetOK);
-                                                    
-            #ifdef _DEBUG
-                CNT_CONTAR( "GRA_Verifica-pr15" ) ;
-            #endif
-
+                    
+            CNT_CONTAR( "GRA_Verifica-pr15" ) ;
+            
             }   
 
-        #ifdef _DEBUG
-            CNT_CONTAR( "GRA_Verifica-pr16" ) ;
-        #endif
-
+        CNT_CONTAR( "GRA_Verifica-pr16" ) ;
+        
         }while(LIS_AvancarElementoCorrente(g->componentes,1) == LIS_CondRetOK);
 
-    #ifdef _DEBUG
-        CNT_CONTAR( "GRA_Verifica-pr17" ) ;
-    #endif
-
+    CNT_CONTAR( "GRA_Verifica-pr17" ) ;
+   
     }
 
-    #ifdef _DEBUG
-        CNT_CONTAR( "GRA_Verifica-pr18" ) ;
-    #endif 
-
+    CNT_CONTAR( "GRA_Verifica-pr18" ) ;
+     
     *Numerros = numerros;
     return GRA_CondRetOK;
 } 

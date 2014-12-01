@@ -800,6 +800,8 @@ static tpAresta* get_edge_by_vertex(LIS_tppLista  l, tpVertice * v);
 
         lenD = 1;
 
+        *pLista = NULL; // Limpando o ponteiro
+
         v = get_by_id(pGrafo, idVerticeOrigem);
         u = get_by_id(pGrafo, idVerticeDestino);
         if(v == NULL || u == NULL) {
@@ -1421,14 +1423,14 @@ GRA_tpCondRet GRA_Verifica(GRA_tppGrafo g){
             LIS_ExcluirElemento(listaO);
 
             LIS_IrInicioLista(listaO);
-            do{
+            do {
                 o2 = (tpVertice*)LIS_ObterValor(listaO);
                 assert(o1 != o2);
                 
                 //as componentes conexas realmente sao conexas(não existe um caminho de uma origem para outra qualquer)
                 assert(GRA_BuscarCaminho(g,o1->id,o2->id,&caminho) == GRA_CondRetNaoEhConexo);
 
-            }while(LIS_AvancarElementoCorrente(listaO,1) == LIS_CondRetOK);
+            } while(LIS_AvancarElementoCorrente(listaO,1) == LIS_CondRetOK);
         }while(LIS_AvancarElementoCorrente(g->componentes,1) == LIS_CondRetOK);
     }
 
@@ -1463,7 +1465,6 @@ GRA_tpCondRet GRA_Deturpa(GRA_tppGrafo g, int acao){
                 a->pVizinho = NULL;
             }
         }   
-        
     }
     if( acao == 4 ) { //atribui lixo ao ponteiro para a referência a um vértice sucessor
         LIS_IrInicioLista(v->pNode->arestas);
@@ -1503,7 +1504,7 @@ GRA_tpCondRet GRA_Deturpa(GRA_tppGrafo g, int acao){
         v = ObterOrigem(g,v);
         v = NULL;
     }
-
+    return GRA_CondRetOK;
 }
 
 

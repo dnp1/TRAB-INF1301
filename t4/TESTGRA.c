@@ -634,7 +634,7 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
 
             
             CondRetObtida = GRA_BuscarCaminhoCorrente( vtRefGrafos[ inxGrafo ] , id , &caminho) ;
-            if(caminho!=NULL){
+            if(CondRetObtida == GRA_CondRetOK && caminho !=NULL ){
                  LIS_DestruirLista(caminho);
             }
             return TST_CompararInt( CondRetEsperada , CondRetObtida ,

@@ -130,6 +130,7 @@ typedef struct LIS_tagLista * LIS_tppLista ;
 *     O parâmetro ponteiro para a lista não é modificado.
 *     Se ocorrer algum erro durante a destruição, a lista resultará
 *     estruturalmente incorreta.
+*     Se o ponteiro for NULL(0) retorna sem fazer nada
 *     OBS. não existe previsão para possíveis falhas de execução.
 *
 *  $FV Valor retornado

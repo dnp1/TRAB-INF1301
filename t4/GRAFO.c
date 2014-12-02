@@ -2135,7 +2135,7 @@ GRA_tpCondRet GRA_Verifica(GRA_tppGrafo g,int* Numerros){
                             numerros++;
                         } 
                         
-                        else if(CED_ObterTamanhoValor(a->pVizinho) == -1) {
+                        else if(printf("p: %p", a->pVizinho) || CED_EhEspacoAtivo(a->pVizinho))  {
                             
                             CNT_CONTAR( "GRA_Verifica-else0" ) ;
                             
@@ -2282,6 +2282,13 @@ GRA_tpCondRet GRA_Verifica(GRA_tppGrafo g,int* Numerros){
     local_qnt = 0;
     flag = true;
     //para cada vertice{
+    LIS_IrInicioLista(g->vertices);
+    do {
+        v = (tpVertice*) LIS_ObterValor(g->vertices);
+        if (v == NULL) { 
+            break; //Tratar caso de grafo vazio 
+        }
+
         if(v->pGrafo != g){
             CNT_CONTAR( "GRA_VerificarEstrura-if15" );
             numerros++;
@@ -2308,7 +2315,7 @@ GRA_tpCondRet GRA_Verifica(GRA_tppGrafo g,int* Numerros){
         local_qnt++;
 
         local_tam += v->tam;
-    //}
+    } while (LIS_AvancarElementoCorrente(g->vertices, 1) == LIS_CondRetOK);
     if (g->numVertice != local_qnt) {
         CNT_CONTAR( "GRA_VerificarEstrura-if19" );
         numerros++;

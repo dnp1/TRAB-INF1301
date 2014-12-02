@@ -1868,6 +1868,14 @@ GRA_tpCondRet GRA_Verifica(GRA_tppGrafo g,int* Numerros){
     local_qnt = 0;
     flag = 1;
 
+    LIS_IrInicioLista(g->vertices);
+    do {
+
+        v = (tpVertice*) LIS_ObterValor(g->vertices);
+        if (v == NULL) {
+            break; //Tratar caso de grafo vazio
+        }
+
         if(v->pGrafo != g){
             CNT_CONTAR( "GRA_Verifica-if15" );
                   
@@ -1903,13 +1911,14 @@ GRA_tpCondRet GRA_Verifica(GRA_tppGrafo g,int* Numerros){
             CNT_CONTAR( "GRA_Verifica-if18" );
 
             numerros++;
-        }
+        } 
 
         CNT_CONTAR( "GRA_Verifica-pr23" ) ;
 
         local_qnt++;
 
         local_tam += v->tam;
+    } while (LIS_AvancarElementoCorrente(g->vertices, 1) == LIS_CondRetOK);
 
     if (g->numVertice != local_qnt) {
         CNT_CONTAR( "GRA_Verifica-if19" );

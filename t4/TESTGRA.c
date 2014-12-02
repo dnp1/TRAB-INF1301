@@ -30,6 +30,10 @@
 #include    "GRAFO.h"
 #include    "LISTA.h"
 
+#ifdef _DEBUG
+#include "CESPDIN.H"
+#endif
+
 
 static const char RESET_GRAFO_CMD         [ ] = "=resetteste"     ;
 static const char CRIAR_GRAFO_CMD         [ ] = "=criargrafo"     ;

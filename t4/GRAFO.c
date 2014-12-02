@@ -2157,14 +2157,14 @@ GRA_tpCondRet GRA_Verifica(GRA_tppGrafo g,int* Numerros){
                             vizinhosAux = a->pVizinho->pNode->arestas;
 
                             
-                            if(LIS_NumeroDeElementos(vizinhosAux) > 0) {
+                            if (LIS_NumeroDeElementos(vizinhosAux) > 0) {
                                 LIS_IrInicioLista(vizinhosAux);
                                 do {
 
                                     CNT_CONTAR( "GRA_Verifica-while3" ) ;
                                     
                                     predecessor = (tpAresta*) LIS_ObterValor(vizinhosAux);
-                                    if (predecessor->pVizinho->id == v->id) {
+                                    if (predecessor->pVizinho != NULL && predecessor->pVizinho->id == v->id) {
            
                                         CNT_CONTAR( "GRA_Verifica-if8" ) ;
                                         
@@ -2173,7 +2173,7 @@ GRA_tpCondRet GRA_Verifica(GRA_tppGrafo g,int* Numerros){
                                     
                                 CNT_CONTAR( "GRA_Verifica-pr6" ) ;
                                 
-                                }while(LIS_AvancarElementoCorrente(vizinhosAux,1) == LIS_CondRetOK);
+                                } while(LIS_AvancarElementoCorrente(vizinhosAux,1) == LIS_CondRetOK);
 
                                 if(ehPredecessor == -1){
                                        
@@ -2282,7 +2282,7 @@ GRA_tpCondRet GRA_Verifica(GRA_tppGrafo g,int* Numerros){
     local_qnt = 0;
     flag = true;
     //para cada vertice{
-        if(v->pCabeca != pGrafo){
+        if(v->pGrafo != g){
             CNT_CONTAR( "GRA_VerificarEstrura-if15" );
             numerros++;
         }
@@ -2305,16 +2305,16 @@ GRA_tpCondRet GRA_Verifica(GRA_tppGrafo g,int* Numerros){
             numerros++;
         }
 
-        local_qtd++;
+        local_qnt++;
 
-        local_tam += pVertice->tamValor;
-    }
-    if(pGrafo->numVertice != local_qtd){
+        local_tam += v->tam;
+    //}
+    if (g->numVertice != local_qnt) {
         CNT_CONTAR( "GRA_VerificarEstrura-if19" );
         numerros++;
     }
 
-    if(pGrafo->tam != local_tam){
+    if (g->tam != local_tam) {
         CNT_CONTAR( "GRA_VerificarEstrura-if20" );
         numerros++;
     }

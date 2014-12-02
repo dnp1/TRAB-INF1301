@@ -35,6 +35,11 @@
 =declararparm	comErros			int 1
 =declararparm	semErros			int 0
 
+== Iniciar contagem
+=inicializarcontadores  ""
+=lercontadores          "Grafo"
+=iniciarcontagem
+
 == Sequencia Criar-destruir no Grafo
 =criargrafo 1
 =destruirgrafo 1

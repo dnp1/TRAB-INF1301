@@ -382,30 +382,20 @@
 =insaresta  9  255  64    50   OK
 
 
-==Deturpa Grafo 0 (acão 1)
-=deturpa 0 1 OK
 
 ==Verifica Grafo 0
 =verifica 0 semErros OK
 
-==Deturpa Grafo 1 (acão 2)
-=deturpa 1 2 OK
 
 ==Verifica Grafo 1
 =verifica 1 semErros OK
 
-
 ==Verifica Grafo 2
 =verifica 2 semErros OK
 
-//==Deturpa Grafo 3 (acão 4)
-//=deturpa 3 4 OK
 
 //==Verifica Grafo 3
 //=verifica 3 semErros OK
-
-//==Deturpa Grafo 4 (acão 5)
-//=deturpa 4 5 OK
 
 //==Verifica Grafo 4
 //=verifica 4 semErros OK

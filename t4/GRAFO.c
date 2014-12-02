@@ -2024,6 +2024,7 @@ tpAresta* get_edge_by_vertex(LIS_tppLista  vizinhos, tpVertice * v){
 GRA_tpCondRet GRA_Verifica(GRA_tppGrafo g,int* Numerros){
     int numerros;
     int vertices, arestas, origens, i, ehPredecessor;
+    int local_tam, local_qnt, local_tipo, flag;
     tpVertice * v,* o1,* o2;
     tpAresta * a,* predecessor;
     LIS_tppLista listaV, listaA, listaO, caminho, vizinhosAux;
@@ -2270,7 +2271,47 @@ GRA_tpCondRet GRA_Verifica(GRA_tppGrafo g,int* Numerros){
     }
 
     CNT_CONTAR( "GRA_Verifica-pr18" ) ;
-     
+    local_tam = 0;
+    local_qnt = 0;
+    flag = true;
+    //para cada vertice{
+        if(v->pCabeca != pGrafo){
+            CNT_CONTAR( "GRA_VerificarEstrura-if15" );
+            numerros++;
+        }
+
+        if((v->pNode->pValor == NULL && v->tam != 0) || (v->pNode->pValor != NULL && v->tam != CED_ObterTamanhoValor(v->pNode->pValor) )){
+            CNT_CONTAR( "GRA_VerificarEstrura-if16" );
+            numerros++;
+        }
+
+        if(v->pNode->pValor != NULL && v->tipo != CED_ObterTipoEspaco(v->pNode->pValor)){
+            CNT_CONTAR( "GRA_VerificarEstrura-if17" );
+            numerros++;
+        }
+        if(flag){
+            flag = !flag;
+            local_tipo = v->tipo;
+        }     
+        if(v->tipo != local_tipo){
+            CNT_CONTAR( "GRA_VerificarEstrura-if18" );
+            numerros++;
+        }
+
+        local_qtd++;
+
+        local_tam += pVertice->tamValor;
+    }
+    if(pGrafo->numVertice != local_qtd){
+        CNT_CONTAR( "GRA_VerificarEstrura-if19" );
+        numerros++;
+    }
+
+    if(pGrafo->tam != local_tam){
+        CNT_CONTAR( "GRA_VerificarEstrura-if20" );
+        numerros++;
+    }
+
     *Numerros = numerros;
     return GRA_CondRetOK;
 } 

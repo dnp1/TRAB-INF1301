@@ -1643,7 +1643,7 @@ GRA_tpCondRet GRA_Verifica(GRA_tppGrafo g,int* Numerros){
     CNT_CONTAR( "GRA_Verifica-pr0" ) ;
     
     //#arestas <= #vertices ^ 2
-    if(g->vertices != NULL && LIS_NumeroDeElementos(g->vertices) >= 1){        
+    if(g->vertices != NULL && LIS_NumeroDeElementos(g->vertices) >= 1) {        
         
         CNT_CONTAR( "GRA_Verifica-if1" ) ;
         
@@ -1654,7 +1654,7 @@ GRA_tpCondRet GRA_Verifica(GRA_tppGrafo g,int* Numerros){
 
             CNT_CONTAR( "GRA_Verifica-if2" ) ;
             
-            do{        
+            do {        
 
                 CNT_CONTAR( "GRA_Verifica-while0" ) ;
                 
@@ -1668,7 +1668,7 @@ GRA_tpCondRet GRA_Verifica(GRA_tppGrafo g,int* Numerros){
                     
                 CNT_CONTAR( "GRA_Verifica-pr1" ) ;
                 
-            }while(LIS_AvancarElementoCorrente(listaV,1) == LIS_CondRetOK);
+            } while(LIS_AvancarElementoCorrente(listaV,1) == LIS_CondRetOK);
                 
             CNT_CONTAR( "GRA_Verifica-pr2" ) ;
             

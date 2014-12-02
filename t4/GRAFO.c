@@ -24,8 +24,8 @@
 
 #ifdef _DEBUG
     #include <assert.h>
-    //#include "CONTA.H"
-    //#include "CESPDIN.H"
+    #include "CONTA.H"
+    #include "CESPDIN.H"
     #define ID_VER_tppVertice 1
 #endif
 
@@ -2146,34 +2146,41 @@ GRA_tpCondRet GRA_Verifica(GRA_tppGrafo g,int* Numerros){
                             CNT_CONTAR( "GRA_Verifica-else1" ) ;
                             
                             numerros++;
-                        }      
+                        }
 
-                        CNT_CONTAR( "GRA_Verifica-pr5" ) ;
-                        
-                        // v é predecessor de a->pVizinho ? 
-                        vizinhosAux = a->pVizinho->pNode->arestas;
-                        LIS_IrInicioLista(vizinhosAux);
-                        do{
+                        else {      
 
-                            CNT_CONTAR( "GRA_Verifica-while3" ) ;
+                            CNT_CONTAR( "GRA_Verifica-pr5" ) ;
                             
-                            predecessor = (tpAresta*)LIS_ObterValor(vizinhosAux);
-                            if(predecessor->pVizinho->id == v->id) {
-   
-                                CNT_CONTAR( "GRA_Verifica-if8" ) ;
+                            // v é predecessor de a->pVizinho ? 
+                            vizinhosAux = a->pVizinho->pNode->arestas;
+
+                            
+                            if(LIS_NumeroDeElementos(vizinhosAux) > 0) {
+                                LIS_IrInicioLista(vizinhosAux);
+                                do {
+
+                                    CNT_CONTAR( "GRA_Verifica-while3" ) ;
+                                    
+                                    predecessor = (tpAresta*) LIS_ObterValor(vizinhosAux);
+                                    if (predecessor->pVizinho->id == v->id) {
+           
+                                        CNT_CONTAR( "GRA_Verifica-if8" ) ;
+                                        
+                                        ehPredecessor = 1;
+                                    }
+                                    
+                                CNT_CONTAR( "GRA_Verifica-pr6" ) ;
                                 
-                                ehPredecessor = 1;
-                            }
-                            
-                        CNT_CONTAR( "GRA_Verifica-pr6" ) ;
-                        
-                        }while(LIS_AvancarElementoCorrente(vizinhosAux,1) == LIS_CondRetOK);
+                                }while(LIS_AvancarElementoCorrente(vizinhosAux,1) == LIS_CondRetOK);
 
-                        if(ehPredecessor == -1){
-                               
-                            CNT_CONTAR( "GRA_Verifica-if9" ) ;
-                            
-                            numerros++;
+                                if(ehPredecessor == -1){
+                                       
+                                    CNT_CONTAR( "GRA_Verifica-if9" ) ;
+                                    
+                                    numerros++;
+                                }
+                            }
                         }
 
                     CNT_CONTAR( "GRA_Verifica-pr7" ) ;

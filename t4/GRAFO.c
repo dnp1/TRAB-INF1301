@@ -1763,8 +1763,7 @@ GRA_tpCondRet GRA_Verifica(GRA_tppGrafo g,int* Numerros){
                                 
                                 } while(LIS_AvancarElementoCorrente(vizinhosAux,1) == LIS_CondRetOK);
 
-                                if(ehPredecessor == -1){
-                                       
+                                if(ehPredecessor == -1){ 
                                     CNT_CONTAR( "GRA_Verifica-if9" ) ;
                                     
                                     numerros++;
@@ -1832,20 +1831,18 @@ GRA_tpCondRet GRA_Verifica(GRA_tppGrafo g,int* Numerros){
                     CNT_CONTAR( "GRA_Verifica-while6" ) ;
                     
                     o2 = (tpVertice*)LIS_ObterValor(listaO);
-                    if(o1 != o2){
+                    if(o1 == o2){
 
                         CNT_CONTAR( "GRA_Verifica-if11" ) ;
-                        
                         numerros++;
                     }
 
                     CNT_CONTAR( "GRA_Verifica-pr13" ) ;
                     
                     //as componentes conexas realmente sao conexas(não existe um caminho de uma origem para outra qualquer)
-                    if(GRA_BuscarCaminho(g,o1->id,o2->id,&caminho) == GRA_CondRetNaoEhConexo){
+                    if(GRA_BuscarCaminho(g,o1->id,o2->id,&caminho) == GRA_CondRetOK){
                         
                         CNT_CONTAR( "GRA_Verifica-if14" ) ;
-                        
                         numerros++;
                     }         
 
@@ -1873,6 +1870,7 @@ GRA_tpCondRet GRA_Verifica(GRA_tppGrafo g,int* Numerros){
 
         if(v->pGrafo != g){
             CNT_CONTAR( "GRA_Verifica-if15" );
+                  
             numerros++;
         }
         
@@ -1880,6 +1878,7 @@ GRA_tpCondRet GRA_Verifica(GRA_tppGrafo g,int* Numerros){
 
         if((v->pNode->pValor == NULL && v->tam != 0) || (v->pNode->pValor != NULL && v->tam != CED_ObterTamanhoValor(v->pNode->pValor) )){
             CNT_CONTAR( "GRA_Verifica-if16" );
+
             numerros++;
         }
 
@@ -1887,6 +1886,7 @@ GRA_tpCondRet GRA_Verifica(GRA_tppGrafo g,int* Numerros){
 
         if(v->pNode->pValor != NULL && v->tipo != CED_ObterTipoEspaco(v->pNode->pValor)){
             CNT_CONTAR( "GRA_Verifica-if17" );
+
             numerros++;
         }
 
@@ -1901,6 +1901,7 @@ GRA_tpCondRet GRA_Verifica(GRA_tppGrafo g,int* Numerros){
 
         if(v->tipo != local_tipo){
             CNT_CONTAR( "GRA_Verifica-if18" );
+
             numerros++;
         }
 
@@ -1912,6 +1913,7 @@ GRA_tpCondRet GRA_Verifica(GRA_tppGrafo g,int* Numerros){
 
     if (g->numVertice != local_qnt) {
         CNT_CONTAR( "GRA_Verifica-if19" );
+
         numerros++;
     }
     
@@ -1919,6 +1921,7 @@ GRA_tpCondRet GRA_Verifica(GRA_tppGrafo g,int* Numerros){
 
     if (g->tam != local_tam) {
         CNT_CONTAR( "GRA_Verifica-if20" );
+
         numerros++;
     }
     

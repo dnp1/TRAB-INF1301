@@ -1,9 +1,3 @@
-<<<<<<< HEAD
-=======
-// Script:    TesteLista.script
-=======
-// Script:    TesteGrafo.script
->>>>>>> e4bd6e5c19101748af08ad6b2a4c05319403cde9
 // Autor:     eav - Eduardo Alberto Verdeja
 // Data:      30/set/2014
 // Propósito: Testar superficialmente o módulo grafo 
@@ -103,7 +97,6 @@
 =insaresta 0  4  3  6  OK
 =insaresta 0  5  2  9  OK
 =insaresta 0  6  5  7  OK
-
 
 == Verifica Grafo 0
 =verifica 0 semErros OK
@@ -355,7 +348,6 @@
 =insaresta 3  4  5  5  OK
 =insaresta 3  4  3  6  OK
 =insaresta 3  5  2  9  OK
-=insaresta
 =insaresta  4  32   64    10   OK
 =insaresta  4  32   128   20  OK
 =insaresta  4  32   255   30   OK
@@ -407,17 +399,17 @@
 =verifica 2 comErros OK
 
 
-==Deturpa Grafo 3 (acão 4)
-=deturpa 3 4 OK
+//==Deturpa Grafo 3 (acão 4)
+//=deturpa 3 4 OK
 
-// ==Verifica Grafo 3
-// =verifica 3 comErros OK
+//==Verifica Grafo 3
+//=verifica 3 comErros OK
 
-==Deturpa Grafo 4 (acão 5)
-=deturpa 4 5 OK
+//==Deturpa Grafo 4 (acão 5)
+//=deturpa 4 5 OK
 
-==Verifica Grafo 4
-=verifica 4 comErros OK
+//==Verifica Grafo 4
+//=verifica 4 comErros OK
 
 ==Deturpa Grafo 5 (acão 6)
 =deturpa 5 6 OK

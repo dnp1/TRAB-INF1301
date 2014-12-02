@@ -30,6 +30,10 @@
 #include    "GRAFO.h"
 #include    "LISTA.h"
 
+#ifdef _DEBUG
+#include "CESPDIN.H"
+#endif
+
 
 static const char RESET_GRAFO_CMD         [ ] = "=resetteste"     ;
 static const char CRIAR_GRAFO_CMD         [ ] = "=criargrafo"     ;
@@ -244,7 +248,10 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
             } /* if */      
 
             stringDado = (char*)calloc(1, strlen(stringTemp)+1);
-
+#ifdef _DEBUG
+            CED_EhEspacoAtivo(stringDado);
+            CED_DefinirTipoEspaco(stringDado, 1);
+#endif
             if ( stringDado == NULL ) {
                return TST_CondRetMemoria ;
             } /* if */  
@@ -402,6 +409,9 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
      
             stringDado = (char* ) calloc(1, strlen(stringTemp) + 1) ;
 
+#ifdef _DEBUG
+            CED_DefinirTipoEspaco(stringDado, 1);
+#endif
             if (stringDado == NULL) {
                return TST_CondRetMemoria ;
             } /* if */  
@@ -468,6 +478,10 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
 
             stringDado = (char*)calloc(strlen(stringTemp) + 1, sizeof(char));
 
+#ifdef _DEBUG
+            CED_EhEspacoAtivo(stringDado);
+            CED_DefinirTipoEspaco(stringDado, 1);
+#endif
             strcpy(stringDado, stringTemp);          
 
             CondRetObtida = GRA_InserirVizinhoCorrente( vtRefGrafos[ inxGrafo ] , stringDado , id , id2) ;
@@ -597,6 +611,9 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
                return TST_CondRetMemoria ;
             } /* if */  
 
+#ifdef _DEBUG
+            CED_DefinirTipoEspaco(stringDado, 1);
+#endif
 
             strcpy( stringDado,stringTemp ) ;
             

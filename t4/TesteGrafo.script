@@ -405,8 +405,8 @@
 ==Deturpa Grafo 3 (acão 4)
 =deturpa 3 4 OK
 
-==Verifica Grafo 3
-=verifica 3 comErros OK
+// ==Verifica Grafo 3
+// =verifica 3 comErros OK
 
 ==Deturpa Grafo 4 (acão 5)
 =deturpa 4 5 OK
@@ -417,14 +417,14 @@
 ==Deturpa Grafo 5 (acão 6)
 =deturpa 5 6 OK
 
-==Verifica Grafo 5
-=verifica 5 comErros OK
+// ==Verifica Grafo 5
+// =verifica 5 comErros OK
 
 ==Deturpa Grafo 6 (acão 7)
 =deturpa 6 7 OK
 
-==Verifica Grafo 6
-=verifica 6 comErros OK
+// ==Verifica Grafo 6
+// =verifica 6 comErros OK
 
 ==Deturpa Grafo 7 (acão 8)
 =deturpa 7 8 OK

@@ -30,9 +30,11 @@
 =declararparm	semErros			int 0
 
 == Iniciar contagem
-=inicializarcontadores  ""
+=inicializarcontadores  "log"
 =lercontadores          "Grafo"
 =iniciarcontagem
+
+
 
 == Sequencia Criar-destruir no Grafo
 =criargrafo 1
@@ -195,8 +197,8 @@
 =insaresta  5  128  255   40  OK
 =insaresta  5  255  64    50   OK
 
-== Verifica Grafo 0
-=verifica 0 semErros OK
+== Verifica Grafo 5
+=verifica 5 semErros OK
 
 == Excluir Todos Vertices
 =excvert 5  18    NaoEhVertice
@@ -441,3 +443,6 @@
 ==Verifica Grafo 9
 =verifica 9 comErros OK
 
+
+== Terminar contagem
+=terminarcontadores

@@ -247,7 +247,7 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
                return TST_CondRetParm ;
             } /* if */      
 
-            stringDado = (char*)calloc(1, strlen(stringTemp)+1);
+            stringDado = (char*)malloc(strlen(stringTemp)+1);
 #ifdef _DEBUG
             CED_EhEspacoAtivo(stringDado);
             CED_DefinirTipoEspaco(stringDado, 1);
@@ -407,7 +407,7 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
               free ( pDado ) ;
             }
      
-            stringDado = (char* ) calloc(1, strlen(stringTemp) + 1) ;
+            stringDado = (char* ) malloc(strlen(stringTemp) + 1) ;
 
 #ifdef _DEBUG
             CED_DefinirTipoEspaco(stringDado, 1);
@@ -476,7 +476,7 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
                return TST_CondRetParm ;
             } /* if */ 
 
-            stringDado = (char*)calloc(strlen(stringTemp) + 1, sizeof(char));
+            stringDado = (char*)malloc((strlen(stringTemp) + 1)* sizeof(char));
 
 #ifdef _DEBUG
             CED_EhEspacoAtivo(stringDado);
@@ -605,7 +605,7 @@ TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
 
             free ( pDado ) ;
             
-            stringDado = (char* ) calloc(strlen( stringTemp ) + 1, sizeof(char)) ;
+            stringDado = (char* ) malloc((strlen( stringTemp ) + 1)* sizeof(char)) ;
             if ( stringDado == NULL )
             {
                return TST_CondRetMemoria ;
